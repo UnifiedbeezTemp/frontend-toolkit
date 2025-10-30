@@ -1,4 +1,3 @@
-import { Loader2 } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -77,7 +76,7 @@ export function Button({
       className={combinedClasses}
       whileTap={{ scale: 0.98 }}
     >
-      {loading && <Loader2 className="animate-spin" />}
+      {loading && <>loading</>}
 
       {!loading && icon && iconPosition === "left" && (
         <span className="flex-shrink-0">{icon}</span>
