@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+
+  --color-text-primary: var(--text-primary);
+
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+
+  --color-border: var(--border);
+
+  --color-muted: var(--muted);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+}
+
+:root {
+  --brand-primary: #053d27;
+  --brand-secondary: #fab403;
+
+  --text-primary: #545859;
+
+  --primary: #fff;
+  --secondary: #0b1012;
+
+  --border: #d0d5dd80;
+
+  --muted: #C5C6C9;
+  --warning: #FAB403;
+  --destructive: #cc0e11;
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.layout-body {
+  background: linear-gradient(to bottom right, #fff 18.59%, #fcedc6 143.2%);
+}
+
+button {
+  cursor: pointer;
+}
+
+.header {
+  background: linear-gradient(to bottom right, #053d27 21.47%, #fab403 289.64%);
+}
+
+.highlight-inside {
+  box-shadow: inset 5px 0 15px #267556, inset 0 0 5px #267556;
+}
+
+.highlight-inside:hover {
+  box-shadow: inset 0px 0 0px #26755500, inset 0 0 0px #26755500;
+}
+
+.grad-btn {
+  color: white;
+  background: var(
+    --gradient,
+    linear-gradient(143deg, #053d27 21.47%, #fab403 289.64%)
+  );
+}

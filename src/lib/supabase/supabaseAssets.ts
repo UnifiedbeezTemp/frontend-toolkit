@@ -1,0 +1,69 @@
+const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`;
+
+export const getAssetUrl = (path: string): string => {
+  return `${CDN_BASE_URL}/${path}`;
+};
+
+export const SUPABASE_IMAGES = {
+  websiteWebChat: "images/website-webchat.png",
+  avatar: "images/avatar.png",
+} as const;
+
+export const SUPABASE_ICONS = {
+  searchSmIcon: "icons/search-sm.svg",
+  lucideSearch: "icons/lucide_search.svg",
+  filterLinesIcon: "icons/filter-lines.svg",
+  linkExternal: "icons/link-external.svg",
+  beeZoraWelcome: "icons/beeZoraWelcome.svg",
+  beeGreyLeft: "icons/bee-grey-left.svg",
+  mingcuteTimeLine: "icons/mingcute_time-line.svg",
+  hiveOutlineRounded: "icons/material-symbols_hive-outline-rounded.svg",
+  fluentPeople: "icons/fluent_people-team-24-regular.svg",
+  users: "icons/users-02.svg",
+  bulb: "icons/bulb.svg",
+  zap: "icons/zap.svg",
+  inbox: "icons/inbox-01.svg",
+  home: "icons/home-line.svg",
+  data: "icons/data.svg",
+  settings: "icons/settings-active.svg",
+  threeDot: "icons/dots-vertical.svg",
+  checkbox: "icons/Checkbox.svg",
+
+  redTag: "icons/red-tag.svg",
+  copy: "icons/copy.svg",
+  cart: "icons/tdesign_cart.svg",
+  net: "icons/net.svg",
+  envelope: "icons/envelope.svg",
+  box: "icons/box.svg",
+  usersPlus: "icons/users-plus.svg",
+
+  beeGreenRight: "icons/bee-green-right.svg",
+
+  pattern: "icons/Pattern.svg",
+  messagingTextSquare: "icons/message-text-square-02.svg",
+  userGroup3: "icons/user-group-03.svg",
+  dataFlow: "icons/dataflow-01.svg",
+  warning: "icons/solar_danger-triangle-outline.svg",
+  check: "icons/checkbox-base.svg",
+
+  whatsappIcon: "icons/whatsapp.svg",
+  facebookMessengerLogo: "icons/facebook-messenger-logo.svg",
+  instagramLogo: "icons/instagram-logo.svg",
+  telegramLogo: "icons/telegram-logo.svg",
+  linkedinLogo: "icons/linkedin-logo.svg",
+
+  zoomLogo: "icons/zoom-icon-logo.svg",
+  microsoftLogo: "icons/Microsoft-logo.svg",
+  calendyLogo: "icons/calendly-logo.svg",
+  googleLogo: "icons/google-logo.svg",
+  hubspotLogo: "icons/hubspot-logo.svg",
+  pipedriveLogo: "icons/pipedrive-logo.svg",
+  slackLogo: "icons/slack-logo.svg",
+  stripeLogo: "icons/stripe-logo.svg",
+  paypalLogo: "icons/paypal-logo.svg",
+  shopifyLogo: "icons/shopify-logo.svg",
+};
+
+export const SUPABASE_GIFS = {
+  celebrationPopup: "/celebration-v3.gif",
+} as const;
