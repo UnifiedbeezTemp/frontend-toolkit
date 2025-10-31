@@ -61,7 +61,7 @@ export default function Modal({
             ref={modalRef}
             className={`
               outline-none ring-none
-              relative bg-primary rounded-xl shadow-xl w-full   overflow-auto
+              relative bg-primary rounded-xl shadow-xl w-full overflow-auto
               ${getSizeClasses(size)}
               ${size === "fullscreen" ? "rounded-none" : ""}
               ${className}
