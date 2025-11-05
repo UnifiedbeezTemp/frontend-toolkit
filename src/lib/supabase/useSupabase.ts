@@ -11,6 +11,14 @@ export const useSupabaseImages = () => {
     () => ({
       websiteWebChat: getAssetUrl(SUPABASE_IMAGES.websiteWebChat),
       avatar: getAssetUrl(SUPABASE_IMAGES.avatar),
+      investorXWebsiteImage: getAssetUrl(SUPABASE_IMAGES.investorXWebsiteImage),
+      beehiveImg: getAssetUrl(SUPABASE_IMAGES.beehiveImg),
+      aiImg: getAssetUrl(SUPABASE_IMAGES.aiImg),
+      automationsImg: getAssetUrl(SUPABASE_IMAGES.automationsImg),
+      womanGivingManCard: getAssetUrl(SUPABASE_IMAGES.womanGivingManCard),
+      beeImg: getAssetUrl(SUPABASE_IMAGES.beeImg),
+      beeBotImg: getAssetUrl(SUPABASE_IMAGES.beeBotImg),
+      footerBg: getAssetUrl(SUPABASE_IMAGES.footerBg),
     }),
     []
   );
@@ -67,6 +75,8 @@ export const useSupabaseIcons = () => {
       stripeLogo: getAssetUrl(SUPABASE_ICONS.stripeLogo),
       paypalLogo: getAssetUrl(SUPABASE_ICONS.paypalLogo),
       shopifyLogo: getAssetUrl(SUPABASE_ICONS.shopifyLogo),
+      colorPicker: getAssetUrl(SUPABASE_ICONS.colorPicker),
+      send2: getAssetUrl(SUPABASE_ICONS.send2),
     }),
     []
   );

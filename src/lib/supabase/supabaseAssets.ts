@@ -1,3 +1,5 @@
+import { color } from "framer-motion";
+
 const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`;
 
 export const getAssetUrl = (path: string): string => {
@@ -7,6 +9,14 @@ export const getAssetUrl = (path: string): string => {
 export const SUPABASE_IMAGES = {
   websiteWebChat: "images/website-webchat.png",
   avatar: "images/avatar.png",
+  investorXWebsiteImage: "images/beehive-hero-img.png",
+  beehiveImg: "images/beehive-img.png",
+  aiImg: "images/ai-image.png",
+  automationsImg: "images/automationsImg.png",
+  womanGivingManCard: "images/woman-giving-man-card.png",
+  beeImg: "images/beeImg.png",
+  beeBotImg: "images/beebot-icon.svg",
+  footerBg: "images/footer-bg.png",
 } as const;
 
 export const SUPABASE_ICONS = {
@@ -62,6 +72,9 @@ export const SUPABASE_ICONS = {
   stripeLogo: "icons/stripe-logo.svg",
   paypalLogo: "icons/paypal-logo.svg",
   shopifyLogo: "icons/shopify-logo.svg",
+
+  colorPicker: "icons/color-picker-icon.svg",
+  send2: "icons/send2.svg",
 };
 
 export const SUPABASE_GIFS = {
