@@ -17,7 +17,7 @@ export default function Card({
   return (
     <Component
       className={cn(
-        "border border-border rounded-lg px-[10px] py-[15px] shadow bg-primary flex flex-col gap-[50px] cursor-pointer hover:shadow-md transition-shadow duration-300",
+        "border border-border rounded-lg px-[10px] py-[15px] shadow bg-primary cursor-pointer hover:shadow-md transition-shadow duration-300",
         className
       )}
       onClick={onClick}
