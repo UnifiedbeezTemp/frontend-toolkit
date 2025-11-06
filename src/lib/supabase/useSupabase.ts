@@ -77,6 +77,16 @@ export const useSupabaseIcons = () => {
       shopifyLogo: getAssetUrl(SUPABASE_ICONS.shopifyLogo),
       colorPicker: getAssetUrl(SUPABASE_ICONS.colorPicker),
       send2: getAssetUrl(SUPABASE_ICONS.send2),
+      arrowLeft: getAssetUrl(SUPABASE_ICONS.arrowLeft),
+      palette: getAssetUrl(SUPABASE_ICONS.palette),
+      websiteGreen: getAssetUrl(SUPABASE_ICONS.websiteGreen),
+      image: getAssetUrl(SUPABASE_ICONS.image),
+      upload: getAssetUrl(SUPABASE_ICONS.upload),
+      uploadCloud: getAssetUrl(SUPABASE_ICONS.uploadCloud),
+      featuredIcon1: getAssetUrl(SUPABASE_ICONS.featuredIcon1),
+      featuredIcon2: getAssetUrl(SUPABASE_ICONS.featuredIcon2),
+      featuredIcon3: getAssetUrl(SUPABASE_ICONS.featuredIcon3),
+      featuredIcon4: getAssetUrl(SUPABASE_ICONS.featuredIcon4),
     }),
     []
   );

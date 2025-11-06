@@ -1,5 +1,3 @@
-import { color } from "framer-motion";
-
 const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`;
 
 export const getAssetUrl = (path: string): string => {
@@ -75,6 +73,18 @@ export const SUPABASE_ICONS = {
 
   colorPicker: "icons/color-picker-icon.svg",
   send2: "icons/send2.svg",
+
+  arrowLeft: "icons/arrow-left.svg",
+  palette: "icons/palette.svg",
+  websiteGreen: "icons/website-green.svg",
+  image: "icons/image-01.svg",
+  upload: "icons/upload.svg",
+  uploadCloud: "icons/upload-cloud.svg",
+
+  featuredIcon1: "icons/featured-icon1.svg",
+  featuredIcon2: "icons/featured-icon2.svg",
+  featuredIcon3: "icons/featured-icon3.svg",
+  featuredIcon4: "icons/featured-icon4.svg",
 };
 
 export const SUPABASE_GIFS = {
