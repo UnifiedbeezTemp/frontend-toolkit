@@ -1,0 +1,27 @@
+/* styles/fonts.css */
+@font-face {
+  font-family: "SK Modernist Regular";
+  src: url("https://woplvzpumzbpydgumpgc.supabase.co/storage/v1/object/public/assets/assets/fonts/Sk-Modernist-Regular.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SK Modernist Bold";
+  src: url("https://woplvzpumzbpydgumpgc.supabase.co/storage/v1/object/public/assets/assets/fonts/Sk-Modernist-Bold.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SK Modernist Mono";
+  src: url("https://woplvzpumzbpydgumpgc.supabase.co/storage/v1/object/public/assets/assets/fonts/Sk-Modernist-Mono.otf")
+    format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

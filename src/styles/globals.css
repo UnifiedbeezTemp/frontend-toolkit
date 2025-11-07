@@ -4,6 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "SK Modernist Regular", sans-serif;
+  --font-sk-bold: "SK Modernist Bold", sans-serif;
+  --font-sk-mono: "SK Modernist Mono", monospace;
+  --font-sk-regular: "SK Modernist Regular", sans-serif;
+
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
 
