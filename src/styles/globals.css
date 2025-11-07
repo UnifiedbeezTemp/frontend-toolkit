@@ -4,6 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "SK Modernist Regular", sans-serif;
+  --font-sk-bold: "SK Modernist Bold", sans-serif;
+  --font-sk-mono: "SK Modernist Mono", monospace;
+  --font-sk-regular: "SK Modernist Regular", sans-serif;
+
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
 
@@ -30,8 +35,8 @@
 
   --border: #d0d5dd80;
 
-  --muted: #C5C6C9;
-  --warning: #FAB403;
+  --muted: #c5c6c9;
+  --warning: #fab403;
   --destructive: #cc0e11;
 }
 
