@@ -109,7 +109,7 @@ export default function Avatar({
             containerClassName="w-full h-full"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-brand-primary text-white font-[700]">
+          <div className="w-full h-full flex items-center justify-center bg-brand-primary text-white font-bold">
             {initials}
           </div>
         )}
