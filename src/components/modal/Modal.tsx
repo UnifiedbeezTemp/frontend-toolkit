@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useModal } from "./hooks/useModal";
 import { contentTransition } from "./animations";
 import { getSizeClasses } from "./utils/modalUtils";
+import {cn} from "../../lib/utils"; 
 
 interface ModalProps {
   isOpen: boolean;
@@ -59,13 +60,12 @@ export default function Modal({
 
           <motion.div
             ref={modalRef}
-            className={`
-              outline-none ring-none
-              relative bg-primary rounded-xl shadow-xl w-full overflow-auto
-              ${getSizeClasses(size)}
-              ${size === "fullscreen" ? "rounded-none" : ""}
-              ${className}
-            `}
+            className={cn(
+              "outline-none ring-none relative bg-primary rounded-xl shadow-xl w-full overflow-auto",
+              getSizeClasses(size),
+              size === "fullscreen" && "rounded-none",
+              className 
+            )}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}

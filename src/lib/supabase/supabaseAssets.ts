@@ -16,6 +16,9 @@ export const SUPABASE_IMAGES = {
   beeBotImg: "images/beebot-icon.svg",
   footerBg: "images/footer-bg.png",
   bgImage: "images/bg-frame.webp",
+  img1: "images/img1.jpg",
+  img2: "images/img2.jpg",
+  img3: "images/img3.jpg",
 } as const;
 
 export const SUPABASE_ICONS = {
@@ -86,6 +89,17 @@ export const SUPABASE_ICONS = {
   featuredIcon2: "icons/featured-icon2.svg",
   featuredIcon3: "icons/featured-icon3.svg",
   featuredIcon4: "icons/featured-icon4.svg",
+
+  smArrowDown: "icons/smArrowDown.svg",
+  trash: "icons/trash.svg",
+  igIcon: "icons/logo_instagram.svg",
+  fbIcon: "icons/logos_facebook.svg",
+  youtubeIcon: "icons/logos_youtube-icon.svg",
+  twitterIcon: "icons/bi_twitter-x.svg",
+  linkedinIcon: "icons/devicon_linkedin.svg",
+  monitor: "icons/monitor.svg",
+
+  emailpreviewImage: "icons/emailpreviewimage.jpg",
 };
 
 export const SUPABASE_GIFS = {
