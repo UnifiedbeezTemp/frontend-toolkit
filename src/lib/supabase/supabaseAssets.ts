@@ -15,6 +15,7 @@ export const SUPABASE_IMAGES = {
   beeImg: "images/beeImg.png",
   beeBotImg: "images/beebot-icon.svg",
   footerBg: "images/footer-bg.png",
+  bgImage: "images/bg-frame.webp",
 } as const;
 
 export const SUPABASE_ICONS = {
