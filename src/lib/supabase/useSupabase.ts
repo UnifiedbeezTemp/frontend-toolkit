@@ -20,6 +20,9 @@ export const useSupabaseImages = () => {
       beeBotImg: getAssetUrl(SUPABASE_IMAGES.beeBotImg),
       footerBg: getAssetUrl(SUPABASE_IMAGES.footerBg),
       bgImage: getAssetUrl(SUPABASE_IMAGES.bgImage),
+      img1: getAssetUrl(SUPABASE_IMAGES.img1),
+      img2: getAssetUrl(SUPABASE_IMAGES.img2),
+      img3: getAssetUrl(SUPABASE_IMAGES.img3),
     }),
     []
   );
@@ -89,6 +92,16 @@ export const useSupabaseIcons = () => {
       featuredIcon2: getAssetUrl(SUPABASE_ICONS.featuredIcon2),
       featuredIcon3: getAssetUrl(SUPABASE_ICONS.featuredIcon3),
       featuredIcon4: getAssetUrl(SUPABASE_ICONS.featuredIcon4),
+
+      smArrowDown: getAssetUrl(SUPABASE_ICONS.smArrowDown),
+      trash: getAssetUrl(SUPABASE_ICONS.trash),
+      igIcon: getAssetUrl(SUPABASE_ICONS.igIcon),
+      fbIcon: getAssetUrl(SUPABASE_ICONS.fbIcon),
+      // whatsappIcon: getAssetUrl(SUPABASE_ICONS.whatsappIcon),
+      youtubeIcon: getAssetUrl(SUPABASE_ICONS.youtubeIcon),
+      twitterIcon: getAssetUrl(SUPABASE_ICONS.twitterIcon),
+      linkedinIcon: getAssetUrl(SUPABASE_ICONS.linkedinIcon),
+      emailpreviewImage: getAssetUrl(SUPABASE_ICONS.emailpreviewImage),
     }),
     []
   );

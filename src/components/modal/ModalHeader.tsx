@@ -1,6 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
+import Heading from "../ui/Heading";
+import Text from "../ui/Text";
 
 interface ChildProps {
   text: string;
@@ -21,13 +23,13 @@ export default function ModalHeader({
     <div
       className={`${
         borderB ? "border-b" : ""
-      } flex items-center justify-between border-border pb-[15px] sticky top-0 z-[10] bg-primary`}
+      } flex items-center justify-between border-border pb-[5px] sticky top-0 pt-[16px] z-[10] bg-primary`}
     >
-      <div className="flex items-center gap-[10px]">
+      <div className="flex items-center gap-[15px]">
         {leftContent}
         <div className=" ">
-          <p className="text-secondary text-[24px] font-[700]">{text}</p>
-          <p className="text-secondary text-[14px]">{description}</p>
+          <Heading>{text}</Heading>
+          <Text size="sm" className="line-height-[19px]">{description}</Text>
         </div>
       </div>
 
