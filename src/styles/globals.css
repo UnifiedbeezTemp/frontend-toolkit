@@ -19,6 +19,7 @@
   --color-secondary: var(--secondary);
 
   --color-border: var(--border);
+  --color-steps-bg: var(--steps-bg);
 
   --color-muted: var(--muted);
   --color-warning: var(--warning);
@@ -36,6 +37,7 @@
   --secondary: #0b1012;
 
   --border: #d0d5dd80;
+  --steps-bg: #fab40333;
 
   --muted: #c5c6c9;
   --warning: #fab403;

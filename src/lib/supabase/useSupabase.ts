@@ -19,6 +19,7 @@ export const useSupabaseImages = () => {
       beeImg: getAssetUrl(SUPABASE_IMAGES.beeImg),
       beeBotImg: getAssetUrl(SUPABASE_IMAGES.beeBotImg),
       footerBg: getAssetUrl(SUPABASE_IMAGES.footerBg),
+      bgImage: getAssetUrl(SUPABASE_IMAGES.bgImage),
       img1: getAssetUrl(SUPABASE_IMAGES.img1),
       img2: getAssetUrl(SUPABASE_IMAGES.img2),
       img3: getAssetUrl(SUPABASE_IMAGES.img3),
