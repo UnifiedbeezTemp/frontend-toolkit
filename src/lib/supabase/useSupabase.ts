@@ -76,6 +76,7 @@ export const useSupabaseIcons = () => {
       stripeLogo: getAssetUrl(SUPABASE_ICONS.stripeLogo),
       paypalLogo: getAssetUrl(SUPABASE_ICONS.paypalLogo),
       shopifyLogo: getAssetUrl(SUPABASE_ICONS.shopifyLogo),
+      chatLogo: getAssetUrl(SUPABASE_ICONS.chatLogo),
       colorPicker: getAssetUrl(SUPABASE_ICONS.colorPicker),
       send2: getAssetUrl(SUPABASE_ICONS.send2),
       arrowLeft: getAssetUrl(SUPABASE_ICONS.arrowLeft),
