@@ -1,25 +1,53 @@
+@font-face {
+  font-family: "SK Modernist";
+  src: url("https://woplvzpumzbpydgumpgc.supabase.co/storage/v1/object/public/assets/assets/fonts/Sk-Modernist-Regular.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SK Modernist";
+  src: url("https://woplvzpumzbpydgumpgc.supabase.co/storage/v1/object/public/assets/assets/fonts/Sk-Modernist-Bold.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SK Modernist Mono";
+  src: url("https://woplvzpumzbpydgumpgc.supabase.co/storage/v1/object/public/assets/assets/fonts/Sk-Modernist-Mono.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "SK Modernist Regular", sans-serif;
-  --font-sk-bold: "SK Modernist Bold", sans-serif;
-  --font-sk-mono: "SK Modernist Mono", monospace;
-  --font-sk-regular: "SK Modernist Regular", sans-serif;
+  --font-sans: "SK Modernist", sans-serif;
+  --font-mono: "SK Modernist Mono", monospace;
 
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
 
   --color-text-primary: var(--text-primary);
+  --color-text-primary-2: var(--text-primary-2);
   --color-text-secondary: var(--text-secondary);
 
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
 
   --color-border: var(--border);
-  --color-steps-bg: var(--steps-bg);
+   --color-steps-bg: var(--steps-bg);
+     --color-input-filled: var(--input-filled);
+  --color-inactive-color: var(--inactive-color);
 
   --color-muted: var(--muted);
   --color-warning: var(--warning);
@@ -31,13 +59,16 @@
   --brand-secondary: #fab403;
 
   --text-primary: #545859;
+  --text-primary-2: #6D7071;
   --text-secondary: #0b1012;
 
   --primary: #fff;
   --secondary: #0b1012;
 
   --border: #d0d5dd80;
-  --steps-bg: #fab40333;
+    --steps-bg: #fab40333;
+     --input-filled: #f8f8f8;
+  --inactive-color: #c5c6c9;
 
   --muted: #c5c6c9;
   --warning: #fab403;
@@ -46,8 +77,28 @@
 
 * {
   box-sizing: border-box;
+  font-family: "SK Modernist", sans-serif;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "SK Modernist", sans-serif;
+  scroll-behavior: smooth;
+  font-weight: 400;
+}
+
+body,
+html,
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
 }
 
 .layout-body {
@@ -72,10 +123,7 @@ button {
 
 .grad-btn {
   color: white;
-  background: var(
-    --gradient,
-    linear-gradient(143deg, #053d27 21.47%, #fab403 289.64%)
-  );
+  background: linear-gradient(to bottom right, #053d27 21.47%, #fab403 289.64%);
 }
 
 .beehive-home-hero-section {
