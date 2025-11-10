@@ -18,10 +18,14 @@ export const SUPABASE_IMAGES = {
   img1: "images/img1.jpg",
   img2: "images/img2.jpg",
   img3: "images/img3.jpg",
+  autoImg1: "images/auto-img1.png",
+  autoImg2: "images/auto-img2.png",
+  autoImg3: "images/auto-img3.png",
 } as const;
 
 export const SUPABASE_ICONS = {
   searchSmIcon: "icons/search-sm.svg",
+  searchIg: "icons/search-lg.svg",
   lucideSearch: "icons/lucide_search.svg",
   filterLinesIcon: "icons/filter-lines.svg",
   linkExternal: "icons/link-external.svg",
@@ -97,6 +101,24 @@ export const SUPABASE_ICONS = {
   twitterIcon: "icons/bi_twitter-x.svg",
   linkedinIcon: "icons/devicon_linkedin.svg",
   monitor: "icons/monitor.svg",
+
+  profileActive: "icons/profile-active.svg",
+  profileInactive: "icons/profile-inactive.svg",
+  preferenceActive: "icons/preference-active.svg",
+  preferenceInactive: "icons/preference-inactive.svg",
+  notificationsActive: "icons/notifications-active.svg",
+  notificationsInactive: "icons/notifications-inactive.svg",
+  securityActive: "icons/security-active.svg",
+  securityInactive: "icons/security-inactive.svg",
+  channelsActive: "icons/channels-active.svg",
+  channelsInactive: "icons/channels-inactive.svg",
+  teamActive: "icons/team-active.svg",
+  teamInactive: "icons/team-inactive.svg",
+  edit: "icons/edit-04.svg",
+  luggage: "icons/luggage-02.svg",
+  checkMark: "icons/check-white.svg",
+  camera: "icons/camera.svg",
+
 
   emailpreviewImage: "icons/emailpreviewimage.jpg",
 };

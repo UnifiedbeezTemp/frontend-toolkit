@@ -5,6 +5,7 @@ import {
   SUPABASE_ICONS,
   SUPABASE_IMAGES,
 } from "./supabaseAssets";
+import { profile } from "console";
 
 export const useSupabaseImages = () => {
   return useMemo(
@@ -22,6 +23,9 @@ export const useSupabaseImages = () => {
       img1: getAssetUrl(SUPABASE_IMAGES.img1),
       img2: getAssetUrl(SUPABASE_IMAGES.img2),
       img3: getAssetUrl(SUPABASE_IMAGES.img3),
+      autoImg1: getAssetUrl(SUPABASE_IMAGES.autoImg1),
+      autoImg2: getAssetUrl(SUPABASE_IMAGES.autoImg2),
+      autoImg3: getAssetUrl(SUPABASE_IMAGES.autoImg3),
     }),
     []
   );
@@ -31,6 +35,7 @@ export const useSupabaseIcons = () => {
   return useMemo(
     () => ({
       searchSmIcon: getAssetUrl(SUPABASE_ICONS.searchSmIcon),
+      searchIg: getAssetUrl(SUPABASE_ICONS.searchIg),
       lucideSearch: getAssetUrl(SUPABASE_ICONS.lucideSearch),
       linkExternal: getAssetUrl(SUPABASE_ICONS.linkExternal),
       filterLinesIcon: getAssetUrl(SUPABASE_ICONS.filterLinesIcon),
@@ -100,6 +105,23 @@ export const useSupabaseIcons = () => {
       twitterIcon: getAssetUrl(SUPABASE_ICONS.twitterIcon),
       linkedinIcon: getAssetUrl(SUPABASE_ICONS.linkedinIcon),
       emailpreviewImage: getAssetUrl(SUPABASE_ICONS.emailpreviewImage),
+
+      profileActive: getAssetUrl(SUPABASE_ICONS.profileActive),
+      profileInactive: getAssetUrl(SUPABASE_ICONS.profileInactive),
+      preferenceActive: getAssetUrl(SUPABASE_ICONS.preferenceActive),
+      preferenceInactive: getAssetUrl(SUPABASE_ICONS.preferenceInactive), 
+      notificationsActive: getAssetUrl(SUPABASE_ICONS.notificationsActive), 
+      notificationsInactive: getAssetUrl(SUPABASE_ICONS.notificationsInactive), 
+      securityActive: getAssetUrl(SUPABASE_ICONS.securityActive),
+      securityInactive: getAssetUrl(SUPABASE_ICONS.securityInactive),
+      channelsActive: getAssetUrl(SUPABASE_ICONS.channelsActive),
+      channelsInactive: getAssetUrl(SUPABASE_ICONS.channelsInactive),
+      teamActive: getAssetUrl(SUPABASE_ICONS.teamActive),
+      teamInactive: getAssetUrl(SUPABASE_ICONS.teamInactive),
+      edit: getAssetUrl(SUPABASE_ICONS.edit),
+      luggage: getAssetUrl(SUPABASE_ICONS.luggage),
+      checkMark: getAssetUrl(SUPABASE_ICONS.checkMark),
+      camera: getAssetUrl(SUPABASE_ICONS.camera),
     }),
     []
   );

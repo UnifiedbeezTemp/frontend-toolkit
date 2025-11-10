@@ -48,7 +48,7 @@ export default function Input({
   return (
     <div className="relative w-full">
       {leftIcon && (
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+        <div className="absolute left-[1.4rem] top-1/2 transform -translate-y-1/2 flex items-center justify-center h-6">
           {leftIcon}
         </div>
       )}
@@ -58,17 +58,18 @@ export default function Input({
         onChange={onChange}
         placeholder={placeholder}
         className={cn(
-          "w-full border border-border rounded-lg py-[6px] px-[10px]",
-          "focus:ring-0 focus:outline-0 focus:border-brand-primary",
-          "placeholder:text-text-primary placeholder:text-[16px]",
-          "text-text-primary bg-transparent",
-          leftIcon && "pl-10",
-          rightIcon && "pr-10",
+          "w-full border border-border rounded-[0.8rem] px-[1.4rem] py-[1rem]",
+          "focus:ring-0 focus:outline-0 focus:border-brand-primary focus:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]",
+          "placeholder:text-text-primary placeholder:text-[1.6rem]",
+          "text-text-primary bg-transparent text-[1.6rem]",
+          "leading-[1.6rem]",
+          leftIcon && "pl-[4rem]",
+          rightIcon && "pr-[4rem]",
           className
         )}
       />
       {rightIcon && (
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+        <div className="absolute right-[1.4rem] top-1/2 transform -translate-y-1/2 flex items-center justify-center h-6">
           {rightIcon}
         </div>
       )}

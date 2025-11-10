@@ -33,13 +33,13 @@ interface HeadingProps {
 }
 
 const sizeClasses = {
-  xs: "text-[14px]",
-  sm: "text-[16px]",
-  md: "text-[20px]",
-  lg: "text-[24px]",
-  xl: "text-[32px]",
-  "2xl": "text-[40px]",
-  "3xl": "text-[48px]",
+  xs: "text-[1.4rem]",
+  sm: "text-[1.6rem]",
+  md: "text-[2rem]",
+  lg: "text-[2.4rem]",
+  xl: "text-[3.2rem]",
+  "2xl": "text-[4rem]",
+  "3xl": "text-[4.8rem]",
 };
 
 const alignClasses = {

@@ -1,10 +1,10 @@
 export function getSizeClasses(size: "sm" | "md" | "lg" | "xl" | "xxl" | "fullscreen"): string {
   const sizeClasses = {
     sm: "max-w-md",
-    md: "max-w-lg",
+    md: "max-w-[50rem]",
     lg: "max-w-2xl",
-    xl: "max-w-4xl",
-    xxl: "max-w-6xl",
+    xl: "max-w-[80rem]",
+    xxl: "max-w-[120rem]",
     fullscreen: "max-w-full max-h-full m-4",
   };
 

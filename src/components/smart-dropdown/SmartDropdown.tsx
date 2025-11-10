@@ -6,7 +6,6 @@ import { createPortal } from "react-dom";
 import { useDropdownPosition } from "./hooks/useDropdownPosition";
 import { useDropdownInteractions } from "./hooks/useDropdownInteractions";
 
-// Export the type from this file
 export type DropdownPlacement = 
   | "top-start"
   | "top-end"
@@ -97,7 +96,6 @@ export default function SmartDropdown({
     closeOnOutsideClick,
     closeOnClick,
     onPositionChange: () => {
-      // Recalculate position instead of closing
       if (dropdownRef.current) {
         const dropdownRect = dropdownRef.current.getBoundingClientRect();
         refinePosition(dropdownRect);
@@ -105,20 +103,17 @@ export default function SmartDropdown({
     },
   });
 
-  // Handle initial position calculation when dropdown opens
   useEffect(() => {
     if (isOpen) {
       setIsMounted(true);
-      // Initial calculation with estimated dimensions
       calculatePosition();
       
-      // Refine position after dropdown renders with actual dimensions
       const timeoutId = setTimeout(() => {
         if (dropdownRef.current) {
           const dropdownRect = dropdownRef.current.getBoundingClientRect();
           refinePosition(dropdownRect);
         }
-      }, 16); // One animation frame
+      }, 16); 
 
       return () => clearTimeout(timeoutId);
     } else {
@@ -127,7 +122,6 @@ export default function SmartDropdown({
     }
   }, [isOpen, calculatePosition, refinePosition, resetCalculation]);
 
-  // Don't render if not open and not mounted
   if (!isOpen && !isMounted) return null;
 
   return createPortal(

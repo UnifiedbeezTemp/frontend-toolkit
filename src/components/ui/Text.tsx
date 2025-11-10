@@ -37,15 +37,15 @@ interface TextProps {
 }
 
 const sizeClasses = {
-  xs: "text-[12px]",
-  sm: "text-[14px]",
-  base: "text-[16px]",
-  lg: "text-[18px]",
-  xl: "text-[20px]",
+  xs: "text-[1.2rem]",
+  sm: "text-[1.4rem]",
+  base: "text-[1.6rem]",
+  lg: "text-[1.8rem]",
+  xl: "text-[2rem]",
 };
 
 const weightClasses = {
-  normal: "font-normal",
+  normal: "font-[400]",
   medium: "font-medium",
   semibold: "font-semibold",
   bold: "font-bold",
