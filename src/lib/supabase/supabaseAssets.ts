@@ -78,6 +78,7 @@ export const SUPABASE_ICONS = {
   stripeLogo: "icons/stripe-logo.svg",
   paypalLogo: "icons/paypal-logo.svg",
   shopifyLogo: "icons/shopify-logo.svg",
+  chatLogo: "icons/chat-logo.svg",
 
   colorPicker: "icons/color-picker-icon.svg",
   send2: "icons/send2.svg",
