@@ -57,7 +57,7 @@ interface TabsProps {
 
 const sizeClasses = {
   sm: "text-1.2rem px-0.8rem py-0.8rem",
-  md: "text-1.6rem px-0.8rem py-0.8rem",
+  md: "text-1.6rem pl-0.8rem pr-1.6rem py-0.8rem",
   lg: "text-2.4rem px-6 py-3",
 };
 
@@ -125,7 +125,7 @@ export default function Tabs({
 
   // Variant-specific container styles
   const containerVariants = {
-    default: "bg-tab-filled border border-border rounded-lg p-1.5",
+    default: "bg-tab-filled border border-border ",
     pills: "bg-transparent gap-2",
     underline: "border-b border-border",
   };
@@ -135,7 +135,7 @@ export default function Tabs({
     const variants = {
       default: isActive
         ? "bg-primary text-text-primary shadow-sm"
-        : "bg-transparent text-muted hover:text-text-secondary",
+        : "bg-transparent text-muted font-normal hover:text-text-secondary",
       pills: isActive
         ? "bg-brand-primary text-white"
         : "bg-primary text-text-primary border border-border hover:bg-brand-primary/10",
@@ -150,6 +150,7 @@ export default function Tabs({
     <div
       className={cn(
         "inline-flex items-center",
+        "rounded-lg p-1.5 shadow-xs gap-2",
         containerVariants[variant],
         fullWidth && "w-full",
         className
@@ -171,7 +172,7 @@ export default function Tabs({
             onClick={() => !tab.disabled && handleTabChange(tab.value)}
             onKeyDown={(e) => !tab.disabled && handleKeyDown(e, index)}
             className={cn(
-              "font-bold rounded-lg transition-all duration-200 ",
+              "font-bold rounded-lg transition-all duration-200 p-[0.8rem]",
               "capitalize",
               sizeClasses[size],
               fullWidth && "flex-1",
