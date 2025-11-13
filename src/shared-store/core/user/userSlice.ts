@@ -16,7 +16,7 @@ interface UserProfile {
 // initial test data
 const initialState: UserProfile = {
   id: "test-id",
-  name: "ariana Grande",
+  name: "ariana grande",
   email: "ariana@unifiedbeez.com",
   accountType: "basic",
   phoneNumber: "+44-213-8314",
