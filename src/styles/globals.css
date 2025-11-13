@@ -27,9 +27,19 @@
 
   --color-tab-filled: var(--toggle-filled);
   --color-dark-base-40: var(--dark-base-40);
+  --color-card-gray-900: var(--gray-900);
+  --color-card-gray-200: var(--gray-200);
+
+  --radius-card-testimonial: 20px;
+
+  --shadow-tab-xs: var(--shadow-tab-xs);
 }
 
 :root {
+  /* fonts */
+  --base-font-size: 62.5%;
+
+  /* colors */
   --brand-primary: #053d27;
   --brand-secondary: #fab403;
 
@@ -48,18 +58,37 @@
 
   --input-stroke: #d0d5dd;
   --toggle-filled: #f6f6f6;
-  --gradient-2: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
 
   --primary-90: #1e503d;
   --dark-base-40: #9d9fa0;
   --focus-ring: rgba(5, 61, 39, 0.2);
+  --card-gray-900: #101828;
+  --card-gray-200: rgba(11, 16, 18, 0.7);
+
+  /* shadow */
   --shadow-ring: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-tab-xs: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+
+  /* gradient */
+  --gradient-2: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
 }
 
 * {
   box-sizing: border-box;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  -webkit-text-size-adjust: 100%;
+}
+
+html {
+  font-size: var(--base-font-size);
+}
+
+body {
+  font-size: 1.6rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
 
 .layout-body {
