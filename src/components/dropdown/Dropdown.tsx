@@ -1,7 +1,8 @@
 "use client";
 
-import { ChevronDown, X } from "lucide-react";
 import { useDropdown, DropdownOption } from "./hooks/useDropdown";
+import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
+import ImageComponent from "../ui/ImageComponent";
 
 export interface DropdownProps {
   options: DropdownOption[];
@@ -32,6 +33,13 @@ export default function Dropdown({
     placeholder,
   });
 
+  const icons = useSupabaseIcons();
+
+  const handleReset = () => {
+    clearSelection();
+    toggleDropdown();
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -47,22 +55,16 @@ export default function Dropdown({
         `}
       >
         <div className="flex items-center gap-2">
-          {value ? (
-            <div
-              onClick={clearSelection}
-              className="p-[.2rem] rounded-full hover:bg-brand-primary/10 hover:bg-opacity-10 transition-colors border-brand-primary border"
-            >
-              <X className="w-[1.5rem] h-[1.5rem]" />
-            </div>
-          ) : (
-            icon
-          )}
+          {icon}
           <span className="min-w-[120px] text-left">{getCurrentLabel()}</span>
         </div>
 
-        <ChevronDown
-          size={20}
-          className={`transition-transform duration-200 text-[2rem] ${
+        <ImageComponent
+          alt=""
+          src={icons.chevronDown}
+          width={25}
+          height={25}
+          className={`object-cover transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -86,13 +88,25 @@ export default function Dropdown({
               {option.label}
 
               {value === option.value && (
-                <ChevronDown
-                  size={20}
-                  className={`transition-transform duration-200 text-[2rem]`}
+                <ImageComponent
+                  alt="Selected"
+                  src={icons.chevronDown}
+                  width={20}
+                  height={20}
+                  className="object-cover"
                 />
               )}
             </button>
           ))}
+
+          {value && (
+            <button
+              onClick={handleReset}
+              className="w-full px-4 py-3 text-left text-[1.4rem] text-destructive border-t border-border hover:bg-destructive/10 transition-all duration-200 flex items-center justify-between"
+            >
+              Reset
+            </button>
+          )}
         </div>
       )}
     </div>

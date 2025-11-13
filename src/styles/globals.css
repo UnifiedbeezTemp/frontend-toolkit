@@ -36,6 +36,7 @@
 
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
+  --color-brand-secondary-transparent: var(--brand-secondary-transparent);
 
   --color-text-primary: var(--text-primary);
   --color-text-primary-2: var(--text-primary-2);
@@ -43,6 +44,8 @@
 
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-background: var(--background);
+  --color-background-gradient: var(--background-gradient);
 
   --color-border: var(--border);
   --color-steps-bg: var(--steps-bg);
@@ -57,16 +60,19 @@
 :root {
   --brand-primary: #053d27;
   --brand-secondary: #fab403;
+  --brand-secondary-transparent: #fab4031a;
 
   --text-primary: #545859;
   --text-primary-2: #6d7071;
   --text-secondary: #0b1012;
 
-  --primary: #fff;
+  --primary: #ffffff;
   --secondary: #0b1012;
+  --background: #ffffff;
+  --background-gradient: linear-gradient(to bottom right, #fff 18.59%, #fcedc6 143.2%);
 
   --border: #d0d5dd80;
-  --steps-bg: #fab40333;
+  --steps-bg: #fab40333; 
   --input-filled: #f8f8f8;
   --inactive-color: #c5c6c9;
 
@@ -75,11 +81,39 @@
   --destructive: #cc0e11;
 }
 
+[data-theme="dark"] {
+  --brand-primary: #0a7a4d;
+  --brand-secondary: #ffc83d;
+  --brand-secondary-transparent: #ffc83d1a;
+
+  --text-primary: #e1e5e9;
+  --text-primary-2: #b8bcc0;
+  --text-secondary: #ffffff;
+
+  --primary: #0f172a;
+  --secondary: #1e293b;
+  --background: #0f172a;
+  --background-gradient: linear-gradient(to bottom right, #0f172a 18.59%, #1a1426 143.2%);
+
+  --border: #334155;
+  --steps-bg: #ffc83d4d; 
+  --input-filled: #1e293b;
+  --inactive-color: #475569;
+
+  --muted: #64748b;
+  --warning: #ffc83d;
+  --destructive: #f87171;
+}
+
 * {
   box-sizing: border-box;
   font-family: "SK Modernist", sans-serif;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
 }
 
 html {
@@ -90,6 +124,8 @@ body {
   font-family: "SK Modernist", sans-serif;
   scroll-behavior: smooth;
   font-weight: 400;
+  background: var(--background);
+  color: var(--text-primary);
 }
 
 body,
@@ -102,32 +138,40 @@ button {
 }
 
 .layout-body {
-  background: linear-gradient(to bottom right, #fff 18.59%, #fcedc6 143.2%);
+  background: var(--background-gradient);
 }
 
 button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 .header {
-  background: linear-gradient(to bottom right, #053d27 21.47%, #fab403 289.64%);
+  background: linear-gradient(to bottom right, var(--brand-primary) 21.47%, var(--brand-secondary) 289.64%);
 }
 
 .highlight-inside {
-  box-shadow: inset 5px 0 15px #267556, inset 0 0 5px #267556;
+  box-shadow: 
+    inset 2px 0 4px color-mix(in srgb, var(--primary) 40%, transparent),
+    inset 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
 .highlight-inside:hover {
-  box-shadow: inset 0px 0 0px #26755500, inset 0 0 0px #26755500;
+  box-shadow: none;
+  border: 1px solid var(--brand-primary);
 }
 
 .grad-btn {
   color: white;
-  background: linear-gradient(to bottom right, #053d27 21.47%, #fab403 289.64%);
+  background: linear-gradient(to bottom right, var(--brand-primary) 21.47%, var(--brand-secondary) 289.64%);
 }
 
 .beehive-home-hero-section {
   border-radius: 24px;
   border: 1px solid var(--border);
-  background: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
+  background: linear-gradient(165deg, color-mix(in srgb, var(--brand-primary) 8%, white) -11.22%, color-mix(in srgb, var(--brand-secondary) 20%, white) 219.35%);
 }
+

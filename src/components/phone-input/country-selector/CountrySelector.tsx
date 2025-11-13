@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { CountrySelectorProps } from '../types';
 import CountryDropdown from './CountryDropdown';
+import { useSupabaseIcons } from '../../../lib/supabase/useSupabase';
+import ImageComponent from '../../ui/ImageComponent';
 
 export default function CountrySelector({
   selectedCountry,
@@ -9,6 +11,7 @@ export default function CountrySelector({
   onToggle,
 }: CountrySelectorProps) {
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const icons = useSupabaseIcons()
 
   return (
     <div className="w-[18%] max-w-[8rem]">
@@ -21,15 +24,7 @@ export default function CountrySelector({
           <span>{selectedCountry.flag}</span>
           <span className="text-[1.6rem] text-text-primary">{selectedCountry.alpha2Code}</span>
         </span>
-        <svg 
-          width="16" 
-          height="16" 
-          viewBox="0 0 16 16" 
-          fill="var(--text-primary)"
-          className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
-        >
-          <path d="M4 6L8 10L12 6" stroke="var(--text-primary)" strokeWidth="2" fill="none"/>
-        </svg>
+        <ImageComponent src={icons.chevronDown} alt={""} width={20} height={20} />
       </button>
 
       <CountryDropdown

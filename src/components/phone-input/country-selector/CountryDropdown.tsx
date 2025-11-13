@@ -40,7 +40,7 @@ export default function CountryDropdown({
       onClose={onClose}
       triggerRef={triggerRef}
       placement="bottom-start"
-      className="min-w-[50rem] bg-[red] h-[500rem]"
+      className="min-w-[50rem] h-[500rem]"
       maxHeight="30rem"
       closeOnClick={false}
     >

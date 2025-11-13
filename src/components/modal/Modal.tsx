@@ -3,9 +3,11 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useModal } from "./hooks/useModal";
-import { contentTransition } from "./animations";
 import { getSizeClasses } from "./utils/modalUtils";
-import {cn} from "../../lib/utils"; 
+import { cn } from "../../lib/utils"; 
+import ModalPortal from "./ModalPortal";
+import { contentTransition } from "./utils/animations";
+import { useModalStack } from "./hooks/useModalStack";
 
 interface ModalProps {
   isOpen: boolean;
@@ -18,6 +20,7 @@ interface ModalProps {
   className?: string;
   preventScroll?: boolean;
   initialFocusRef?: React.RefObject<HTMLElement>;
+  priority?: number;
 }
 
 export default function Modal({
@@ -29,6 +32,7 @@ export default function Modal({
   className = "",
   preventScroll = true,
   initialFocusRef,
+  priority = 0,
 }: ModalProps) {
   const { modalRef, handleOverlayClick } = useModal({
     isOpen,
@@ -38,16 +42,19 @@ export default function Modal({
     initialFocusRef,
   });
 
-  return (
+  const { getZIndex } = useModalStack(isOpen, priority);
+
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-4"
+          className="fixed inset-0 flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          style={{ zIndex: getZIndex() }}
         >
           <motion.div
             className="absolute inset-0 bg-black/40"
@@ -77,5 +84,11 @@ export default function Modal({
         </motion.div>
       )}
     </AnimatePresence>
+  );
+
+  return (
+    <ModalPortal isOpen={isOpen}>
+      {modalContent}
+    </ModalPortal>
   );
 }
