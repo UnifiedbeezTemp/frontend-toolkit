@@ -6,7 +6,9 @@ module.exports = {
     // This will be extended in each Next.js project
   ],
   theme: {
-    extend: {},
+    extend: {
+      screen: {},
+    },
   },
   plugins: [],
 };
