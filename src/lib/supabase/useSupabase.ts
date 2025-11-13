@@ -5,7 +5,6 @@ import {
   SUPABASE_ICONS,
   SUPABASE_IMAGES,
 } from "./supabaseAssets";
-import { profile } from "console";
 
 export const useSupabaseImages = () => {
   return useMemo(
@@ -27,6 +26,7 @@ export const useSupabaseImages = () => {
       autoImg1: getAssetUrl(SUPABASE_IMAGES.autoImg1),
       autoImg2: getAssetUrl(SUPABASE_IMAGES.autoImg2),
       autoImg3: getAssetUrl(SUPABASE_IMAGES.autoImg3),
+      darkMode: getAssetUrl(SUPABASE_IMAGES.darkMode),
     }),
     []
   );
@@ -124,6 +124,18 @@ export const useSupabaseIcons = () => {
       luggage: getAssetUrl(SUPABASE_ICONS.luggage),
       checkMark: getAssetUrl(SUPABASE_ICONS.checkMark),
       camera: getAssetUrl(SUPABASE_ICONS.camera),
+      linkExternal2: getAssetUrl(SUPABASE_ICONS.linkExternal2),
+      checkboxBase2: getAssetUrl(SUPABASE_ICONS.checkboxBase2),
+      chevronDown: getAssetUrl(SUPABASE_ICONS.chevronDown),
+      fileActive: getAssetUrl(SUPABASE_ICONS.fileActive),
+      fileInactive: getAssetUrl(SUPABASE_ICONS.fileInactive),
+      websiteInactive: getAssetUrl(SUPABASE_ICONS.websiteInactive),
+      websiteActive: getAssetUrl(SUPABASE_ICONS.websiteActive),
+      document: getAssetUrl(SUPABASE_ICONS.document),
+      beeGreenLeft: getAssetUrl(SUPABASE_ICONS.beeGreenLeft),
+      documentGreen: getAssetUrl(SUPABASE_ICONS.documentGreen),
+      close: getAssetUrl(SUPABASE_ICONS.close),
+      lightMode: getAssetUrl(SUPABASE_ICONS.lightMode),
     }),
     []
   );
@@ -133,6 +145,8 @@ export const useSupabaseGifs = () => {
   return useMemo(
     () => ({
       celebrationPopup: getAssetUrl(SUPABASE_GIFS.celebrationPopup),
+      lightMode: getAssetUrl(SUPABASE_GIFS.lightMode),
+      darkMode: getAssetUrl(SUPABASE_GIFS.darkMode),
     }),
     []
   );

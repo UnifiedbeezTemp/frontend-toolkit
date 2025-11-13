@@ -22,6 +22,7 @@ export const SUPABASE_IMAGES = {
   autoImg1: "images/auto-img1.png",
   autoImg2: "images/auto-img2.png",
   autoImg3: "images/auto-img3.png",
+  darkMode: "images/dark-mode.png",
 } as const;
 
 export const SUPABASE_ICONS = {
@@ -54,6 +55,7 @@ export const SUPABASE_ICONS = {
   usersPlus: "icons/users-plus.svg",
 
   beeGreenRight: "icons/bee-green-right.svg",
+  beeGreenLeft: "icons/bee-green-left.svg",
 
   pattern: "icons/Pattern.svg",
   messagingTextSquare: "icons/message-text-square-02.svg",
@@ -121,10 +123,22 @@ export const SUPABASE_ICONS = {
   checkMark: "icons/check-white.svg",
   camera: "icons/camera.svg",
 
-
+  linkExternal2: "icons/link-external-01.svg",
+  checkboxBase2: "icons/checkbox-base-2.svg",
+  chevronDown: "icons/chevron-down-grey.svg",
+  fileActive: "icons/file-active.svg",
+  fileInactive: "icons/file-inactive.svg",
+  websiteInactive: "icons/website-inactive.svg",
+  websiteActive: "icons/website-active.svg",
+  document: "icons/Document.svg",
+  documentGreen: "icons/file.svg",
+  close: "icons/x-close.svg",
+  lightMode: "icons/light-mode.svg",
   emailpreviewImage: "icons/emailpreviewimage.jpg",
 };
 
 export const SUPABASE_GIFS = {
   celebrationPopup: "/celebration-v3.gif",
+  lightMode: "gifs/light-mode.gif",
+  darkMode: "gifs/dark-mode.gif",
 } as const;

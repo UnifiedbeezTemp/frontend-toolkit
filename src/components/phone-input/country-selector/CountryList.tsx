@@ -1,4 +1,4 @@
-import { Country, CountryListProps } from '../types';
+import { CountryListProps } from '../types';
 
 export default function CountryList({
   countries,
@@ -17,25 +17,25 @@ export default function CountryList({
     <div className="max-h-[40rem] overflow-y-auto">
       {countries.map((country) => (
         <button
-          key={country.alpha2Code}
+          key={country?.alpha2Code}
           onClick={() => onCountrySelect(country)}
           className={`w-full px-4 py-3 text-left hover:bg-border/10 transition-colors flex  text-[1.6rem] items-center justify-between ${
-            country.alpha2Code === selectedCountry.alpha2Code ? 'bg-brand-primary/10' : ''
+            country?.alpha2Code === selectedCountry?.alpha2Code ? 'bg-brand-primary/10' : ''
           }`}
         >
           <div className="flex items-center gap-3">
-            <span className="text-[2rem]">{country.flag}</span>
+            <span className="text-[2rem]">{country?.flag}</span>
             <div className="flex flex-col items-start">
               <span className="font-medium text-text-secondary">
-                {country.name}
+                {country?.name}
               </span>
               <span className="text-text-primary">
-                {country.alpha2Code}
+                {country?.alpha2Code}
               </span>
             </div>
           </div>
           <span className="text-text-primary">
-            +{country.callingCodes[0]}
+            +{country?.callingCodes[0]}
           </span>
         </button>
       ))}

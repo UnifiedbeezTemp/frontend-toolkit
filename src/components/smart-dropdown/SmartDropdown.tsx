@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useDropdownPosition } from "./hooks/useDropdownPosition";
 import { useDropdownInteractions } from "./hooks/useDropdownInteractions";
+import { cn } from "../../lib/utils";
 
-export type DropdownPlacement = 
+export type DropdownPlacement =
   | "top-start"
   | "top-end"
   | "bottom-start"
@@ -15,39 +16,6 @@ export type DropdownPlacement =
   | "left-end"
   | "right-start"
   | "right-end";
-
-/**
- * COMPONENT: SmartDropdown
- * 
- * PURPOSE:
- * Reusable dropdown component with intelligent positioning
- * Automatically adjusts placement to avoid viewport edges
- * Renders in portal to avoid z-index issues
- * 
- * USAGE:
- * <SmartDropdown
- *   isOpen={isOpen}
- *   onClose={onClose}
- *   triggerRef={triggerRef}
- *   placement="bottom-start"
- *   className="min-w-[200px]"
- * >
- *   <DropdownItem onClick={handleEdit}>Edit</DropdownItem>
- *   <DropdownItem onClick={handleDelete}>Delete</DropdownItem>
- * </SmartDropdown>
- * 
- * PROPS:
- * - isOpen: boolean - Controls visibility
- * - onClose: () => void - Close callback
- * - triggerRef: React.RefObject<HTMLElement> - Trigger element reference
- * - placement: DropdownPlacement - Preferred placement
- * - offset: number - Distance from trigger (default: 8)
- * - maxHeight: string - Max height before scroll (default: '16rem')
- * - className: string - Additional CSS classes
- * - closeOnClick: boolean - Close on item click (default: true)
- * - closeOnOutsideClick: boolean - Close on outside click (default: true)
- * - children: React.ReactNode - Dropdown content
- */
 
 interface SmartDropdownProps {
   isOpen: boolean;
@@ -76,12 +44,13 @@ export default function SmartDropdown({
 }: SmartDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
 
-  const { 
-    calculatedPosition, 
-    calculatePosition, 
-    refinePosition, 
-    resetCalculation 
+  const {
+    calculatedPosition,
+    calculatePosition,
+    refinePosition,
+    resetCalculation,
   } = useDropdownPosition({
     triggerRef,
     placement,
@@ -104,21 +73,50 @@ export default function SmartDropdown({
   });
 
   useEffect(() => {
+    if (isOpen && triggerRef.current) {
+      const width = triggerRef.current.getBoundingClientRect().width;
+      setTriggerWidth(width);
+    }
+  }, [isOpen, triggerRef]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const updatePosition = () => {
+      if (dropdownRef.current) {
+        const dropdownRect = dropdownRef.current.getBoundingClientRect();
+        refinePosition(dropdownRect);
+      }
+    };
+
+    updatePosition();
+
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [isOpen, refinePosition]);
+
+  useEffect(() => {
     if (isOpen) {
       setIsMounted(true);
       calculatePosition();
-      
+
       const timeoutId = setTimeout(() => {
         if (dropdownRef.current) {
           const dropdownRect = dropdownRef.current.getBoundingClientRect();
           refinePosition(dropdownRect);
         }
-      }, 16); 
+      }, 16);
 
       return () => clearTimeout(timeoutId);
     } else {
       setIsMounted(false);
       resetCalculation();
+      setTriggerWidth(null);
     }
   }, [isOpen, calculatePosition, refinePosition, resetCalculation]);
 
@@ -129,15 +127,17 @@ export default function SmartDropdown({
       {isOpen && (
         <motion.div
           ref={dropdownRef}
-          className={`
-            fixed bg-primary border border-border rounded-lg shadow-xl z-50
-            overflow-hidden backdrop-blur-sm
-            ${className}
-          `}
+          className={cn(
+            "fixed bg-primary border border-border rounded-[0.8rem] shadow-xl z-50 overflow-hidden backdrop-blur-sm z-[1000]",
+            className.includes("w-full") ? "w-full" : "",
+            !className.includes("w-full") && triggerWidth ? `min-w-[${triggerWidth}px]` : "",
+            className
+          )}
           style={{
             top: calculatedPosition.top,
             left: calculatedPosition.left,
             maxHeight,
+            ...(!className.includes("w-full") && triggerWidth && { width: triggerWidth }),
           }}
           initial={{ opacity: 0, scale: 0.95, y: -5 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -146,7 +146,7 @@ export default function SmartDropdown({
           role="menu"
           aria-orientation="vertical"
         >
-          <div 
+          <div
             className="overflow-y-auto"
             style={{ maxHeight }}
             onClick={handleDropdownClick}

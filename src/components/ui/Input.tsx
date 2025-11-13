@@ -18,6 +18,7 @@ import { cn } from '../../lib/utils';
  * - leftIcon: React node for left icon
  * - rightIcon: React node for right icon
  * - className: Add custom styles (overrides defaults)
+ * - disabled: Boolean for when input can be used
  * 
  * DEFAULTS:
  * - Border focus states
@@ -34,6 +35,7 @@ interface InputProps {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 export default function Input({
@@ -43,7 +45,8 @@ export default function Input({
   type = 'text',
   leftIcon,
   rightIcon,
-  className = ''
+  className = '',
+  disabled = false,
 }: InputProps) {
   return (
     <div className="relative w-full">
@@ -56,13 +59,14 @@ export default function Input({
         type={type}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         placeholder={placeholder}
         className={cn(
           "w-full border border-border rounded-[0.8rem] px-[1.4rem] py-[1rem]",
           "focus:ring-0 focus:outline-0 focus:border-brand-primary focus:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]",
           "placeholder:text-text-primary placeholder:text-[1.6rem]",
           "text-text-primary bg-transparent text-[1.6rem]",
-          "leading-[1.6rem]",
+          "leading-[1.6rem] transition-all duration-300",
           leftIcon && "pl-[4rem]",
           rightIcon && "pr-[4rem]",
           className

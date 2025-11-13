@@ -42,8 +42,8 @@ export function useDropdown({
     setIsOpen(false);
   };
 
-  const clearSelection = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const clearSelection = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     setIsOpen(false);
     onSelect("");
   };

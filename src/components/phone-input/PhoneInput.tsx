@@ -1,26 +1,8 @@
-/**
- * COMPONENT: PhoneInput
- * 
- * PURPOSE:
- * Main phone input component with country selection and number input
- * Handles international phone number formatting and state management
- * 
- * USAGE:
- * <PhoneInput
- *   value={phoneNumber}
- *   onChange={setPhoneNumber}
- *   countryCode={countryCode}
- *   onCountryChange={setCountryCode}
- *   isEditing={isEditing}
- * />
- */
-
-import { useState, useEffect } from 'react';
-import PhoneNumberInput from './phone-number-input/PhoneNumberInput';
-import { PhoneInputProps, Country } from './types';
-import { extractLocalNumber, formatInternationalNumber, getCountryByCode } from './utils';
-import Heading from '../ui/Heading';
-import CountrySelector from './country-selector';
+import Heading from "../ui/Heading";
+import PhoneNumberInput from "./phone-number-input/PhoneNumberInput";
+import CountrySelector from "./country-selector";
+import { PhoneInputProps } from "./types";
+import { usePhoneInput } from "./hooks/usePhoneInput";
 
 export default function PhoneInput({
   value,
@@ -28,42 +10,21 @@ export default function PhoneInput({
   countryCode,
   onCountryChange,
   isEditing,
-  className = '',
+  className = "",
 }: PhoneInputProps) {
-  const [selectedCountry, setSelectedCountry] = useState<Country>(() => 
-    getCountryByCode(countryCode)
-  );
-  const [localNumber, setLocalNumber] = useState(() => 
-    extractLocalNumber(value, selectedCountry)
-  );
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    const newCountry = getCountryByCode(countryCode);
-    setSelectedCountry(newCountry);
-  }, [countryCode]);
-
-  useEffect(() => {
-    if (value) {
-      const newLocalNumber = extractLocalNumber(value, selectedCountry);
-      setLocalNumber(newLocalNumber);
-    }
-  }, [value, selectedCountry]);
-
-  const handleCountrySelect = (country: Country) => {
-    setSelectedCountry(country);
-    onCountryChange(country.alpha2Code);
-    
-    const fullNumber = formatInternationalNumber(country, localNumber);
-    onChange(fullNumber);
-  };
-
-  const handleLocalNumberChange = (newLocalNumber: string) => {
-    setLocalNumber(newLocalNumber);
-
-    const fullNumber = formatInternationalNumber(selectedCountry, newLocalNumber);
-    onChange(fullNumber);
-  };
+  const {
+    selectedCountry,
+    localNumber,
+    isDropdownOpen,
+    handleCountrySelect,
+    handleLocalNumberChange,
+    handleToggleDropdown,
+  } = usePhoneInput({
+    value,
+    onChange,
+    countryCode,
+    onCountryChange,
+  });
 
   if (!isEditing) {
     return (
@@ -83,12 +44,12 @@ export default function PhoneInput({
       <Heading size="sm" className="mb-[0.8rem]">
         Phone number
       </Heading>
-      <div className="flex items-center gap-0 rounded-[0.8rem] border border-border overflow-hidden  focus-within:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]">
+      <div className="flex items-center gap-0 rounded-[0.8rem] border border-border overflow-hidden focus-within:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]">
         <CountrySelector
           selectedCountry={selectedCountry}
           onCountrySelect={handleCountrySelect}
           isOpen={isDropdownOpen}
-          onToggle={setIsDropdownOpen}
+          onToggle={handleToggleDropdown}
         />
 
         <PhoneNumberInput

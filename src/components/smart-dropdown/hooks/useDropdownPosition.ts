@@ -24,25 +24,6 @@ interface UseDropdownPositionProps {
   offset?: number;
 }
 
-/**
- * HOOK: useDropdownPosition
- * 
- * PURPOSE:
- * Calculates optimal dropdown position with viewport edge detection
- * Automatically flips placement if content would be cut off
- * 
- * USAGE:
- * const { calculatedPosition, calculatePosition } = useDropdownPosition({
- *   triggerRef,
- *   placement: 'bottom-start',
- *   offset: 8,
- * });
- * 
- * RETURNS:
- * - calculatedPosition: { top, left, placement }
- * - calculatePosition: () => void - Manual recalculation function
- */
-
 export function useDropdownPosition({
   triggerRef,
   placement,
