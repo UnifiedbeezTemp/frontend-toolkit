@@ -141,6 +141,8 @@ export const useSupabaseIcons = () => {
       lightMode: getAssetUrl(SUPABASE_ICONS.lightMode),
       refreshGreen: getAssetUrl(SUPABASE_ICONS.refreshGreen),
       rectangle4: getAssetUrl(SUPABASE_ICONS.rectangle4),
+      logout: getAssetUrl(SUPABASE_ICONS.logout),
+      logoutRed: getAssetUrl(SUPABASE_ICONS.logoutRed)
     }),
     []
   );
