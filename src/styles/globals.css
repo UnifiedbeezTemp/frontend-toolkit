@@ -30,7 +30,7 @@
   --color-card-gray-900: var(--gray-900);
   --color-card-gray-200: var(--gray-200);
 
-  --radius-card-testimonial: 20px;
+  --radius-card-testimonial: 2rem;
 
   --shadow-tab-xs: var(--shadow-tab-xs);
 }
