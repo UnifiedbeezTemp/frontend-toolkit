@@ -4,13 +4,13 @@ import { cn } from "../../lib/utils";
 
 /**
  * REUSABLE BUTTON COMPONENT
- * 
+ *
  * USAGE:
  * <Button>Click me</Button>
  * <Button variant="secondary">Cancel</Button>
  * <Button loading>Processing...</Button>
  * <Button className="custom-styles">Custom</Button>
- * 
+ *
  * PROPS:
  * - variant: primary | secondary | outline | ghost | danger (default: primary)
  * - size: sm | md | lg (default: md)
@@ -20,7 +20,7 @@ import { cn } from "../../lib/utils";
  * - onClick: Click handler function
  * - className: Add custom styles (overrides defaults)
  * - children: Button content (text, icons, etc.)
- * 
+ *
  * DEFAULTS:
  * - Smooth hover animations
  * - Scale tap animation
@@ -49,19 +49,23 @@ export default function Button({
   className = "",
   children,
 }: ButtonProps) {
-  const baseClasses = "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none";
+  const baseClasses =
+    "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none";
 
   const variantClasses = {
-    primary: "bg-brand-primary text-white border border-brand-primary hover:bg-primary hover:text-brand-primary hover:scale-105 hover:border-brand-primary hover:shadow-md",
-    secondary: "border bg-primary border-border text-text-primary hover:shadow-md",
-    outline: "bg-transparent border border-border text-brand-primary hover:bg-brand-primary hover:text-white",
+    primary:
+      "bg-brand-primary text-white border border-brand-primary hover:bg-primary hover:text-brand-primary hover:scale-105 hover:border-brand-primary hover:shadow-md",
+    secondary:
+      "border bg-primary border-border text-text-primary hover:shadow-md",
+    outline:
+      "bg-transparent border border-border text-brand-primary hover:bg-brand-primary hover:text-white",
     ghost: "text-text-primary",
     danger: "bg-destructive text-white hover:bg-destructive/90 hover:shadow-md",
   };
 
   const sizeClasses = {
     sm: "p-[0.8rem] text-[1.4rem]",
-    md: "p-[0.8rem] text-[1.6rem]", 
+    md: "p-[0.8rem] text-[1.6rem]",
     lg: "p-[0.8rem] text-[1.8rem]",
   };
 
