@@ -1,7 +1,8 @@
 "use client";
 
-import { ChevronDown, X } from "lucide-react";
 import { useDropdown, DropdownOption } from "./hooks/useDropdown";
+import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
+import ImageComponent from "../ui/ImageComponent";
 
 export interface DropdownProps {
   options: DropdownOption[];
@@ -32,59 +33,80 @@ export default function Dropdown({
     placeholder,
   });
 
+  const icons = useSupabaseIcons();
+
+  const handleReset = () => {
+    clearSelection();
+    toggleDropdown();
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className={`
-          group flex items-center gap-2 px-4 py-[6px] rounded-lg border-2 transition-all text-[16px] duration-300 font-medium
+          group flex items-center justify-between w-full p-[8px] rounded-[0.8rem] border transition-all text-[1.6rem] duration-300 font-medium
           ${
             value
-              ? "text-text-primary border-border bg-opacity-5"
+              ? "text-text-primary border-border bg-primary"
               : "bg-primary text-text-primary border-border hover:shadow-md"
           }
           hover:scale-105 active:scale-95
         `}
       >
-        {value ? (
-          <div
-            onClick={clearSelection}
-            className="p-1 rounded-full hover:bg-brand-primary/10 hover:bg-opacity-10 transition-colors border-brand-primary border"
-          >
-            <X className="w-3 h-3" />
-          </div>
-        ) : (
-          icon
-        )}
-        <span className="min-w-[120px] text-left">{getCurrentLabel()}</span>
-
-        <div className="flex items-center gap-1">
-          <ChevronDown
-            className={`w-4 h-4 transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
-            }`}
-          />
+        <div className="flex items-center gap-2">
+          {icon}
+          <span className="min-w-[120px] text-left">{getCurrentLabel()}</span>
         </div>
+
+        <ImageComponent
+          alt=""
+          src={icons.chevronDown}
+          width={25}
+          height={25}
+          className={`object-cover transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-64 bg-primary border border-border rounded-lg shadow-lg z-10 overflow-hidden">
+        <div className="absolute top-full right-0 mt-2 w-[25rem] bg-primary border border-border rounded-[0.8rem] shadow-lg z-[10] overflow-hidden">
           {options.map((option) => (
             <button
               key={option.value}
               onClick={() => handleSelect(option.value)}
               className={`
-                w-full px-4 py-3 text-left transition-all duration-200 hover:text-white hover:bg-brand-primary
+                w-full px-4 py-3 text-left text-[1.4rem] transition-all duration-200 hover:text-white flex items-center justify-between hover:bg-brand-primary
                 ${
                   value === option.value
-                    ? "text-white bg-brand-primary bg-opacity-10 font-medium"
+                    ? "text-brand-primary font-medium"
                     : "text-text-primary"
                 }
               `}
             >
               {option.label}
+
+              {value === option.value && (
+                <ImageComponent
+                  alt="Selected"
+                  src={icons.chevronDown}
+                  width={20}
+                  height={20}
+                  className="object-cover"
+                />
+              )}
             </button>
           ))}
+
+          {value && (
+            <button
+              onClick={handleReset}
+              className="w-full px-4 py-3 text-left text-[1.4rem] text-destructive border-t border-border hover:bg-destructive/10 transition-all duration-200 flex items-center justify-between"
+            >
+              Reset
+            </button>
+          )}
         </div>
       )}
     </div>
