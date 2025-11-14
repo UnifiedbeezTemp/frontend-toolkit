@@ -149,7 +149,7 @@ export default function SmartDropdown({
           <div
             className="overflow-y-auto"
             style={{ maxHeight }}
-            onClick={handleDropdownClick}
+            // onClick={handleDropdownClick}
           >
             {children}
           </div>

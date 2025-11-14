@@ -87,6 +87,7 @@ export const useSupabaseIcons = () => {
       chatLogo: getAssetUrl(SUPABASE_ICONS.chatLogo),
       colorPicker: getAssetUrl(SUPABASE_ICONS.colorPicker),
       send2: getAssetUrl(SUPABASE_ICONS.send2),
+      send: getAssetUrl(SUPABASE_ICONS.send),
       arrowLeft: getAssetUrl(SUPABASE_ICONS.arrowLeft),
       palette: getAssetUrl(SUPABASE_ICONS.palette),
       websiteGreen: getAssetUrl(SUPABASE_ICONS.websiteGreen),
@@ -100,6 +101,7 @@ export const useSupabaseIcons = () => {
 
       smArrowDown: getAssetUrl(SUPABASE_ICONS.smArrowDown),
       trash: getAssetUrl(SUPABASE_ICONS.trash),
+      trashRed: getAssetUrl(SUPABASE_ICONS.trashRed),
       igIcon: getAssetUrl(SUPABASE_ICONS.igIcon),
       fbIcon: getAssetUrl(SUPABASE_ICONS.fbIcon),
       // whatsappIcon: getAssetUrl(SUPABASE_ICONS.whatsappIcon),
@@ -121,6 +123,7 @@ export const useSupabaseIcons = () => {
       teamActive: getAssetUrl(SUPABASE_ICONS.teamActive),
       teamInactive: getAssetUrl(SUPABASE_ICONS.teamInactive),
       edit: getAssetUrl(SUPABASE_ICONS.edit),
+      tablerEdit: getAssetUrl(SUPABASE_ICONS.tablerEdit),
       luggage: getAssetUrl(SUPABASE_ICONS.luggage),
       checkMark: getAssetUrl(SUPABASE_ICONS.checkMark),
       camera: getAssetUrl(SUPABASE_ICONS.camera),
@@ -136,6 +139,8 @@ export const useSupabaseIcons = () => {
       documentGreen: getAssetUrl(SUPABASE_ICONS.documentGreen),
       close: getAssetUrl(SUPABASE_ICONS.close),
       lightMode: getAssetUrl(SUPABASE_ICONS.lightMode),
+      refreshGreen: getAssetUrl(SUPABASE_ICONS.refreshGreen),
+      rectangle4: getAssetUrl(SUPABASE_ICONS.rectangle4),
     }),
     []
   );
