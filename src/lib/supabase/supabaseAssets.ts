@@ -139,7 +139,9 @@ export const SUPABASE_ICONS = {
   emailpreviewImage: "icons/emailpreviewimage.jpg",
   tablerEdit: "icons/tabler_edit.svg",
   refreshGreen: "icons/refresh-green.svg",
-  rectangle4: "icons/rectangle-4.svg"
+  rectangle4: "icons/rectangle-4.svg",
+  logout: "icons/material-symbols_logout.svg",
+  logoutRed: "icons/material-symbols_logout_red.svg",
 };
 
 export const SUPABASE_GIFS = {
