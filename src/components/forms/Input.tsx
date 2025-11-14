@@ -101,7 +101,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-text-secondary text-base font-normal mb-2"
+            className="block text-text-secondary text-[1.6rem] font-normal mb-2"
           >
             {label}
             {/* {required && <span className="text-destructive ml-1">*</span>} */}
@@ -135,12 +135,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               error ? errorId : helperText ? helperId : undefined
             }
             className={cn(
-              "w-full  rounded-lg py-1.5 px-2.5",
+              "w-full  rounded-lg py-[0.8rem] px-[0.8rem]",
               "border border-(--input-stroke) bg-primary",
               "focus:border-(--primary-90) focus:ring-4 focus:ring-(--focus-ring) focus:outline-none",
               "shadow-xs",
-              "placeholder:text-text-primary placeholder:text-base",
-              "text-text-primary bg-primary transition-colors duration-200",
+              "placeholder:text-text-primary placeholder:text-[1.6rem]",
+              "text-text-primary text-[1.6rem] bg-primary transition-colors duration-200",
               "autofill:bg-primary autofill:text-text-primary",
               "[-webkit-text-fill-color:var(--text-primary)]",
               "[-webkit-box-shadow:0_0_0px_1000px_var(--primary)_inset]",

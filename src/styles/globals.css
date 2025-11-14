@@ -64,10 +64,12 @@
 
   --color-tab-filled: var(--toggle-filled);
   --color-soft-green: var(--soft-green);
-
 }
 
 :root {
+  /* fonts */
+
+  /* colors */
   --brand-primary: #053d27;
   --brand-secondary: #fab403;
   --brand-secondary-transparent: #fab4031a;
@@ -103,10 +105,13 @@
   --primary-90: #1e503d;
   --dark-base-40: #9d9fa0;
   --dark-base-70: #545859;
-  
+
   --focus-ring: rgba(5, 61, 39, 0.2);
   --shadow-ring: 0 1px 2px rgba(16, 24, 40, 0.05);
-  --soft-green: #F7FFFC;
+  --soft-green: #f7fffc;
+  --soft-green: #f7fffc;
+
+  --card-gradient: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
 }
 
 [data-theme="dark"] {
@@ -142,6 +147,22 @@
   font-family: "SK Modernist", sans-serif;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  /* -webkit-text-size-adjust: 100%; */
+}
+
+body {
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html,
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
 }
 
 *::-webkit-scrollbar {
@@ -222,7 +243,7 @@ button:disabled {
 .card-base {
   border-radius: 24px;
   border: 1px solid var(--input-stroke);
-  background: var(--gradient-2);
+  background: var(--card-gradient);
   box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
 }
 

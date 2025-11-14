@@ -150,6 +150,7 @@ export default function Tabs({
     <div
       className={cn(
         "inline-flex items-center",
+        "rounded-[0.8rem] p-[0.8rem] shadow-xs gap-2",
         containerVariants[variant],
         fullWidth && "w-full",
         className
