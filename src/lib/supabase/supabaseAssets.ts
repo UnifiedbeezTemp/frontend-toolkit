@@ -84,6 +84,7 @@ export const SUPABASE_ICONS = {
 
   colorPicker: "icons/color-picker-icon.svg",
   send2: "icons/send2.svg",
+  send: "icons/send.svg",
 
   arrowLeft: "icons/arrow-left.svg",
   palette: "icons/palette.svg",
@@ -99,6 +100,7 @@ export const SUPABASE_ICONS = {
 
   smArrowDown: "icons/smArrowDown.svg",
   trash: "icons/trash.svg",
+  trashRed: "icons/trash-01.svg",
   igIcon: "icons/logo_instagram.svg",
   fbIcon: "icons/logos_facebook.svg",
   youtubeIcon: "icons/logos_youtube-icon.svg",
@@ -135,6 +137,9 @@ export const SUPABASE_ICONS = {
   close: "icons/x-close.svg",
   lightMode: "icons/light-mode.svg",
   emailpreviewImage: "icons/emailpreviewimage.jpg",
+  tablerEdit: "icons/tabler_edit.svg",
+  refreshGreen: "icons/refresh-green.svg",
+  rectangle4: "icons/rectangle-4.svg"
 };
 
 export const SUPABASE_GIFS = {

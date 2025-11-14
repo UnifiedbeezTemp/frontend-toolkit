@@ -38,6 +38,7 @@ interface AvatarProps {
   onlineStatus?: "online" | "offline" | "away";
   className?: string;
   onClick?: () => void;
+  imageContainerClassName?: string;
 }
 
 const sizeClasses = {
@@ -79,6 +80,7 @@ export default function Avatar({
   showOnline = false,
   onlineStatus = "online",
   className = "",
+  imageContainerClassName = "",
   onClick,
 }: AvatarProps) {
   const hasImage = !!src;
@@ -97,7 +99,8 @@ export default function Avatar({
         className={cn(
           "rounded-full overflow-hidden border border-border bg-primary transition-all duration-200",
           sizeClasses[size],
-          onClick && "hover:scale-105 active:scale-95"
+          onClick && "hover:scale-105 active:scale-95",
+          imageContainerClassName
         )}
       >
         {hasImage ? (

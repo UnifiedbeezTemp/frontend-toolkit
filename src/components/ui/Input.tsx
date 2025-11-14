@@ -62,7 +62,7 @@ export default function Input({
         disabled={disabled}
         placeholder={placeholder}
         className={cn(
-          "w-full border border-border rounded-[0.8rem] px-[1.4rem] py-[1rem]",
+          "w-full border border-input-stroke rounded-[0.8rem] px-[1.4rem] py-[1rem]",
           "focus:ring-0 focus:outline-0 focus:border-brand-primary focus:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]",
           "placeholder:text-text-primary placeholder:text-[1.6rem]",
           "text-text-primary bg-transparent text-[1.6rem]",
