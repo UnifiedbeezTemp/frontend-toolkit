@@ -37,12 +37,19 @@ export const SUPABASE_ICONS = {
   hiveOutlineRounded: "icons/material-symbols_hive-outline-rounded.svg",
   fluentPeople: "icons/fluent_people-team-24-regular.svg",
   users: "icons/users-02.svg",
+  usersGreen: "icons/users-green.svg",
   bulb: "icons/bulb.svg",
+  bulbGreen: "icons/bulb-green.svg",
   zap: "icons/zap.svg",
+  zapGreen: "icons/zap-green.svg",
   inbox: "icons/inbox-01.svg",
+  inboxGreen: "icons/inbox-01-green.svg",
   home: "icons/home-line.svg",
+  homeGreen: "icons/home-line-green.svg",
   data: "icons/data.svg",
+  dataGreen: "icons/data-green.svg",
   settings: "icons/settings-active.svg",
+  settingsGreen: "icons/settings-green.svg",
   threeDot: "icons/dots-vertical.svg",
   checkbox: "icons/Checkbox.svg",
 
@@ -87,6 +94,8 @@ export const SUPABASE_ICONS = {
   send: "icons/send.svg",
 
   arrowLeft: "icons/arrow-left.svg",
+  arrowRight1: "icons/arrow-right1.svg",
+  arrowLeft1: "icons/arrow-left1.svg",
   palette: "icons/palette.svg",
   websiteGreen: "icons/website-green.svg",
   image: "icons/image-01.svg",
@@ -142,6 +151,8 @@ export const SUPABASE_ICONS = {
   rectangle4: "icons/rectangle-4.svg",
   logout: "icons/material-symbols_logout.svg",
   logoutRed: "icons/material-symbols_logout_red.svg",
+  editPen: "icons/edit-01.svg",
+  playGreen1: "icons/play-green1.svg",
 };
 
 export const SUPABASE_GIFS = {
