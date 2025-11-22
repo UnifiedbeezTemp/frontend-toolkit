@@ -6,11 +6,33 @@ import { useProfileImage } from "./hooks/useProfileImage";
 import Text from "../ui/Text";
 import { ImageUploadSectionProps } from "./types";
 import Heading from "../ui/Heading";
+import { useEffect, useState } from "react";
 
 const sizeClasses = {
   sm: "w-[6rem] h-[6rem]",
   md: "w-[8.6rem] h-[8.6rem]",
   lg: "w-[12rem] h-[12rem]",
+};
+
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
+const isValidImageFile = (file: File): boolean => {
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    return false;
+  }
+  if (
+    file.type === "image/svg+xml" ||
+    file.name.toLowerCase().endsWith(".svg")
+  ) {
+    return false;
+  }
+
+  return true;
 };
 
 export default function ImageUploadSection({
@@ -33,20 +55,72 @@ export default function ImageUploadSection({
     handleCaptureClick,
     handleSelectImage,
   } = useImageUpload({ onImageSelect });
-  const { getInitials } = useProfileImage();
+  const { getInitials, createObjectURL } = useProfileImage();
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedFile) {
+      const url = createObjectURL(selectedFile);
+      setPreviewUrl(url);
+
+      return () => {
+        URL.revokeObjectURL(url);
+      };
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [selectedFile]);
+
+  const handleFileSelect = (file: File | undefined) => {
+    setFileError(null);
+
+    if (!file) return;
+
+    if (!isValidImageFile(file)) {
+      setFileError(
+        "Please select a valid image file (JPEG, PNG, GIF, WebP, BMP, TIFF). SVG files are not allowed."
+      );
+      return;
+    }
+
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setFileError(
+        "File size too large. Please select an image smaller than 10MB."
+      );
+      return;
+    }
+
+    handleSelectImage(file);
+  };
 
   const renderImagePreview = () => {
+    if (previewUrl) {
+      return (
+        <ImageComponent
+          src={previewUrl}
+          alt={`${type} preview`}
+          width={500}
+          height={500}
+          className={`${sizeClasses[size]} rounded-full object-cover object-center`}
+        />
+      );
+    }
+
     if (image) {
       return (
         <ImageComponent
           src={image}
           alt={`${type} preview`}
-          width={50}
-          height={50}
+          width={500}
+          height={500}
           className={`${sizeClasses[size]} rounded-full object-cover object-center`}
         />
       );
     }
+
     if (type === "logo") {
       return (
         <div
@@ -58,8 +132,8 @@ export default function ImageUploadSection({
             <ImageComponent
               src={icons.profileActive}
               alt={`${type} preview`}
-              width={50}
-              height={50}
+              width={500}
+              height={500}
               className={`rounded-full object-cover object-center`}
             />
           )}
@@ -77,13 +151,19 @@ export default function ImageUploadSection({
           <ImageComponent
             src={icons.preferenceActive}
             alt={`${type} preview`}
-            width={10}
-            height={10}
-            className={`rounded-full object-cover object-center`}
+            width={100}
+            height={100}
+            className={`rounded-full object-cover object-center hidden`}
           />
         )}
       </div>
     );
+  };
+
+  const handleRemoveImage = () => {
+    onImageSelect(null as any);
+    setPreviewUrl(null);
+    setFileError(null);
   };
 
   if (!isEditing) {
@@ -105,80 +185,118 @@ export default function ImageUploadSection({
   }
 
   return (
-    <div className="flex gap-8 items-center">
-      <div
-        className={`${sizeClasses[size]} border border-border bg-border/20 rounded-full relative`}
-      >
-        {renderImagePreview()}
-
-        <button
-          onClick={handleUploadClick}
-          className="absolute bottom-[1px] right-[-5px] border-border p-[2px] rounded-full border-[1px] bg-primary"
+    <div className="flex flex-col">
+      <div className="flex items-center gap-[2rem]">
+        <div
+          className={`${sizeClasses[size]} border border-border bg-border/20 rounded-full relative`}
         >
-          <ImageComponent alt="" src={icons.upload} width={15} height={15} />
-        </button>
-      </div>
+          {renderImagePreview()}
 
-      <div className="flex-1">
-        <Heading size="sm">
-          {title}
-          {optional && (
-            <span className="text-text-primary text-[1.4rem] font-[400]">
-              {" "}
-              (Optional)
-            </span>
-          )}
-        </Heading>
-        <Text className="mt-[.6rem]" size="sm">
-          {description}
-        </Text>
-
-        <div className="mt-[1.6rem] flex gap-3">
-          <Button
-            variant="secondary"
+          <button
             onClick={handleUploadClick}
-            className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem]"
+            className="absolute bottom-[1px] right-[-5px] border-border p-[2px] rounded-full border-[1px] bg-primary hidden sm:block"
           >
-            <ImageComponent
-              src={icons.uploadCloud}
-              alt="upload"
-              width={16}
-              height={16}
-            />
-            Upload photo
-          </Button>
-
-          <Button
-            variant="secondary"
-            onClick={handleCaptureClick}
-            className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem]"
-          >
-            <ImageComponent
-              src={icons.camera}
-              alt="camera"
-              width={16}
-              height={16}
-            />
-            Take photo
-          </Button>
+            <ImageComponent alt="" src={icons.upload} width={15} height={15} />
+          </button>
         </div>
 
-        <input
-          ref={uploadRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => handleSelectImage(e.target.files?.[0])}
-        />
+        <div className="flex-1">
+          <Heading size="sm">
+            {title}
+            {optional && (
+              <span className="text-text-primary text-[1.4rem] font-[400]">
+                {" "}
+                (Optional)
+              </span>
+            )}
+          </Heading>
+          <Text className="mt-[.6rem]" size="sm">
+            {description}
+          </Text>
 
-        <input
-          ref={captureRef}
-          type="file"
-          accept="image/*"
-          capture="user"
-          className="hidden"
-          onChange={(e) => handleSelectImage(e.target.files?.[0])}
-        />
+          {fileError && (
+            <Text className="mt-2 text-red-500" size="sm">
+              {fileError}
+            </Text>
+          )}
+
+          <div className="mt-[1.6rem] flex gap-3 hidden sm:flex">
+            <Button
+              variant="secondary"
+              onClick={handleUploadClick}
+              className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
+            >
+              <ImageComponent
+                src={icons.uploadCloud}
+                alt="upload"
+                width={16}
+                height={16}
+              />
+              {previewUrl || image ? "Change photo" : "Upload photo"}
+            </Button>
+
+            <Button
+              variant="secondary"
+              onClick={handleCaptureClick}
+              className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
+            >
+              <ImageComponent
+                src={icons.camera}
+                alt="camera"
+                width={16}
+                height={16}
+              />
+              Take photo
+            </Button>
+          </div>
+
+          <input
+            ref={uploadRef}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/bmp,image/tiff"
+            className="hidden"
+            onChange={(e) => handleFileSelect(e.target.files?.[0])}
+          />
+
+          <input
+            ref={captureRef}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/bmp,image/tiff"
+            capture="user"
+            className="hidden"
+            onChange={(e) => handleFileSelect(e.target.files?.[0])}
+          />
+        </div>
+      </div>
+
+      <div className="mt-[2.9rem] flex sm:hidden gap-3">
+        <Button
+          variant="secondary"
+          onClick={handleUploadClick}
+          className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
+        >
+          <ImageComponent
+            src={icons.uploadCloud}
+            alt="upload"
+            width={16}
+            height={16}
+          />
+          {previewUrl || image ? "Change photo" : "Upload photo"}
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={handleCaptureClick}
+          className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
+        >
+          <ImageComponent
+            src={icons.camera}
+            alt="camera"
+            width={16}
+            height={16}
+          />
+          Take photo
+        </Button>
       </div>
     </div>
   );

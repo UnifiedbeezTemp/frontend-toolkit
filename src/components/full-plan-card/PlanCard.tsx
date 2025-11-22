@@ -1,0 +1,54 @@
+"use client";
+
+import { Plan } from "../../data/plansData";
+import Card from "../ui/Card";
+import { usePlanCard } from "./hooks/usePlanCard";
+import PlanCardHeader from "./PlanCardHeader";
+import PlanCardTitle from "./PlanCardTitle";
+import PlanCardPricing from "./PlanCardPricing";
+import PlanCardFeatures from "./PlanCardFeatures";
+import PlanCardFooter from "./PlanCardFooter";
+
+interface PlanCardProps {
+  plan: Plan;
+  isYearly: boolean;
+  isSelected: boolean;
+  onSelect: (planId: string) => void;
+}
+
+export default function PlanCard({
+  plan,
+  isYearly,
+  isSelected,
+  onSelect,
+}: PlanCardProps) {
+  const { showFeatures, displayPrice, toggleFeatures } = usePlanCard(
+    plan,
+    isYearly
+  );
+
+  return (
+    <Card
+      className={`p-[1.6rem] rounded-[1.1rem] w-full transition-all duration-300 sm:flex flex-col gap-[8rem] ${
+        isSelected ? "ring-1 ring-brand-primary" : ""
+      }`}
+    >
+      <div>
+        <PlanCardHeader plan={plan} />
+        <PlanCardTitle plan={plan} />
+        <PlanCardPricing
+          plan={plan}
+          displayPrice={displayPrice}
+          isYearly={isYearly}
+        />
+        <PlanCardFeatures
+          plan={plan}
+          showFeatures={showFeatures}
+          onToggle={toggleFeatures}
+        />
+      </div>
+
+      <PlanCardFooter plan={plan} isSelected={isSelected} onSelect={onSelect} />
+    </Card>
+  );
+}

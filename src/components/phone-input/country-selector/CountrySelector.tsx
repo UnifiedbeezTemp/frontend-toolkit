@@ -14,17 +14,17 @@ export default function CountrySelector({
   const icons = useSupabaseIcons()
 
   return (
-    <div className="w-[18%] max-w-[8rem]">
+    <div className="">
       <button
         ref={triggerRef}
         onClick={() => onToggle(!isOpen)}
-        className="w-full h-[4.4rem] bg-primary px-[1.2rem] text-[1.4rem] flex items-center justify-between hover:bg-border/10 transition-colors"
+        className="w-full py-[0.8rem] bg-primary px-[1.2rem] text-[1.4rem] flex items-center justify-between hover:bg-border/10 transition-colors"
       >
         <span className="flex items-center gap-2">
           <span>{selectedCountry.flag}</span>
-          <span className="text-[1.6rem] text-text-primary">{selectedCountry.alpha2Code}</span>
+          <span className="text-[1.6rem] text-text-primary">+{selectedCountry.callingCodes[0]}</span>
         </span>
-        <ImageComponent src={icons.chevronDown} alt={""} width={20} height={20} />
+        <ImageComponent src={icons.chevronDown} alt={""} width={20} height={20} className='shrink-0 flex-1' />
       </button>
 
       <CountryDropdown

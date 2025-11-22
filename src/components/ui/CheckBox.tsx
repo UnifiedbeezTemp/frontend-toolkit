@@ -28,6 +28,7 @@ export default function Checkbox({
   return (
     <button
       onClick={() => !disabled && onChange(!checked)}
+      type="button"
       disabled={disabled}
       className={cn(
         "rounded-[0.5rem] border flex items-center justify-center transition-all duration-200",

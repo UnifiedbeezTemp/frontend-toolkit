@@ -3,7 +3,7 @@ import type { TypedUseSelectorHook } from "react-redux";
 import type {
   OnboardingState,
   OnboardingDispatch,
-} from "../../onboarding/store";
+} from "../store";
 
 export const useOnboardingDispatch: () => OnboardingDispatch = useDispatch;
 export const useOnboardingSelector: TypedUseSelectorHook<OnboardingState> =

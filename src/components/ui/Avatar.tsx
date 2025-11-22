@@ -39,13 +39,14 @@ interface AvatarProps {
   className?: string;
   onClick?: () => void;
   imageContainerClassName?: string;
+  initialsClassName?: string;
 }
 
 const sizeClasses = {
   xs: "w-6 h-6 text-[10px]",
   sm: "w-8 h-8 text-[12px]",
-  md: "w-12 h-12 text-[14px]",
-  lg: "w-16 h-16 text-[18px]",
+  md: "w-[4rem] h-[4rem] text-[14px]",
+  lg: "w-[8rem] h-[8rem] text-[18px]",
   xl: "w-24 h-24 text-[24px]",
 };
 
@@ -81,6 +82,7 @@ export default function Avatar({
   onlineStatus = "online",
   className = "",
   imageContainerClassName = "",
+  initialsClassName= "",
   onClick,
 }: AvatarProps) {
   const hasImage = !!src;
@@ -112,7 +114,7 @@ export default function Avatar({
             containerClassName="w-full h-full"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-brand-primary text-white font-bold">
+          <div className={cn("w-full h-full flex items-center justify-center bg-brand-primary text-white font-bold", initialsClassName)}>
             {initials}
           </div>
         )}

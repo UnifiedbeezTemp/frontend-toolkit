@@ -56,9 +56,9 @@ interface TabsProps {
 }
 
 const sizeClasses = {
-  sm: "text-1.2rem px-0.8rem py-0.8rem",
-  md: "text-1.6rem px-0.8rem py-0.8rem",
-  lg: "text-2.4rem px-6 py-3",
+  sm: "text-[1.2rem] px-[0.8rem] py-[0.8rem]",
+  md: "text-[1.4rem] px-[0.8rem] py-[0.8rem]",
+  lg: "text-[2.4rem] px-6 py-3",
 };
 
 export default function Tabs({
@@ -71,12 +71,10 @@ export default function Tabs({
   fullWidth = true,
   className = "",
 }: TabsProps) {
-  // Normalize tabs to Tab objects
   const normalizedTabs: Tab[] = tabs.map((tab) =>
     typeof tab === "string" ? { label: tab, value: tab, disabled: false } : tab
   );
 
-  // Initialize active tab
   const initialTab =
     controlledActiveTab ?? defaultTab ?? normalizedTabs[0]?.value;
 
@@ -84,7 +82,6 @@ export default function Tabs({
     initialTab
   );
 
-  // Use controlled or uncontrolled mode
   const activeTab =
     controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
 
@@ -125,7 +122,8 @@ export default function Tabs({
 
   // Variant-specific container styles
   const containerVariants = {
-    default: "bg-tab-filled border border-border rounded-lg p-1.5",
+    default:
+      "bg-toggle-filled border-[2px] border-input-stroke rounded-[0.8rem] p-[0.8rem]",
     pills: "bg-transparent gap-2",
     underline: "border-b border-border",
   };
@@ -172,7 +170,7 @@ export default function Tabs({
             onClick={() => !tab.disabled && handleTabChange(tab.value)}
             onKeyDown={(e) => !tab.disabled && handleKeyDown(e, index)}
             className={cn(
-              "font-bold rounded-lg transition-all duration-200 ",
+              "font-bold rounded-[0.8rem] transition-all duration-200 ",
               "capitalize",
               sizeClasses[size],
               fullWidth && "flex-1",

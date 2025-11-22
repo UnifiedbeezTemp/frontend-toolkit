@@ -33,7 +33,7 @@ export const filterCountries = (query: string): Country[] => {
 export const getCountryByCode = (countryCode: string): Country => {
   return (
     countries.find((c) => c.alpha2Code === countryCode) ||
-    countries.find((c) => c.alpha2Code === "NG") ||
+    countries.find((c) => c.alpha2Code === "GB") ||
     countries[0]
   );
 };
