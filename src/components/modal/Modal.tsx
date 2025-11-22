@@ -21,6 +21,9 @@ interface ModalProps {
   preventScroll?: boolean;
   initialFocusRef?: React.RefObject<HTMLElement>;
   priority?: number;
+  isBlur?: boolean;
+  bottomSheet?: boolean;
+  maxHeight?: string;
 }
 
 export default function Modal({
@@ -33,6 +36,9 @@ export default function Modal({
   preventScroll = true,
   initialFocusRef,
   priority = 0,
+  isBlur = false,
+  bottomSheet = false,
+  maxHeight = "90vh", 
 }: ModalProps) {
   const { modalRef, handleOverlayClick } = useModal({
     isOpen,
@@ -44,11 +50,47 @@ export default function Modal({
 
   const { getZIndex } = useModalStack(isOpen, priority);
 
+  const bottomSheetVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: "100%",
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+    },
+    exit: { 
+      opacity: 0, 
+      y: "100%",
+    }
+  };
+
+  const regularModalVariants = {
+    hidden: { 
+      opacity: 0, 
+      scale: 0.9, 
+      y: 20 
+    },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      y: 0 
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 0.9, 
+      y: 20 
+    }
+  };
+
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center p-4"
+          className={cn(
+            "fixed inset-0 flex items-center justify-center",
+            bottomSheet && "items-end sm:items-center" 
+          )}
           role="dialog"
           aria-modal="true"
           initial={{ opacity: 0 }}
@@ -57,7 +99,7 @@ export default function Modal({
           style={{ zIndex: getZIndex() }}
         >
           <motion.div
-            className="absolute inset-0 bg-black/40"
+            className={cn("absolute inset-0 bg-black/40", isBlur && "backdrop-blur-sm")}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -68,18 +110,31 @@ export default function Modal({
           <motion.div
             ref={modalRef}
             className={cn(
-              "outline-none ring-none relative bg-primary rounded-xl shadow-xl w-full overflow-auto",
-              getSizeClasses(size),
+              "outline-none ring-none relative bg-primary shadow-xl overflow-auto",
+              bottomSheet 
+                ? "w-full sm:w-auto" 
+                : "rounded-xl m-4",
+              bottomSheet 
+                ? "" 
+                : getSizeClasses(size), 
               size === "fullscreen" && "rounded-none",
               className 
             )}
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            style={{
+              ...(bottomSheet && { 
+                maxHeight: maxHeight 
+              })
+            }}
+            variants={bottomSheet ? bottomSheetVariants : regularModalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             transition={contentTransition}
             tabIndex={-1}
           >
-            <div className="">{children}</div>
+            <div className="w-full">
+              {children}
+            </div>
           </motion.div>
         </motion.div>
       )}

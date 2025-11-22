@@ -1,42 +1,6 @@
 import React from "react";
 import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
 import Input from "./Input";
-import { cn } from "../../lib/utils";
-
-/**
- * FORM FIELD WRAPPER COMPONENT
- *
- * Wraps Input component with React Hook Form Controller for easy integration
- *
- * USAGE:
- * <FormField
- *   name="email"
- *   control={control}
- *   label="Email Address"
- *   placeholder="Enter your email"
- *   leftIcon={<Mail />}
- * />
- *
- * <FormField
- *   name="password"
- *   control={control}
- *   label="Password"
- *   type="password"
- *   rightIcon={showPassword ? <EyeOff /> : <Eye />}
- *   helperText="Must be at least 8 characters"
- * />
- *
- * PROPS:
- * - name: Field name (must match your form schema)
- * - control: React Hook Form control object
- * - label: Label text
- * - All other Input component props
- *
- * FEATURES:
- * - Automatic error handling from React Hook Form
- * - Connects to form validation (Zod schemas)
- * - Maintains all Input component features
- */
 
 interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> {
   name: FieldPath<TFieldValues>;
@@ -47,10 +11,19 @@ interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   helperText?: string;
+  error?: string;
   disabled?: boolean;
   required?: boolean;
   className?: string;
   inputClassName?: string;
+  labelClassName?: string;
+  showRequired?: boolean;
+  autoComplete?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function FormField<
@@ -64,29 +37,51 @@ export default function FormField<
   leftIcon,
   rightIcon,
   helperText,
+  error,
   disabled = false,
   required = false,
   className,
   inputClassName,
+  labelClassName,
+  showRequired,
+  autoComplete,
+  value,
+  onChange,
+  onBlur,
+  onFocus,
+  onInput,
+  ...props
 }: FormFieldProps<TFieldValues>) {
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
+      render={({ field, fieldState: { error: fieldError } }) => (
         <Input
           {...field}
+          {...props}
           label={label}
           placeholder={placeholder}
           type={type}
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           helperText={helperText}
-          error={error?.message}
+          error={error || fieldError?.message}
           disabled={disabled}
           required={required}
           className={className}
           inputClassName={inputClassName}
+          labelClassName={labelClassName}
+          showRequired={showRequired}
+          autoComplete={autoComplete}
+          value={value}
+          onInput={onInput}
+          onChange={(e) => {
+            field.onChange(e);
+            onChange?.(e);
+          }}
+          onBlur={onBlur}
+          onFocus={onFocus}
         />
       )}
     />

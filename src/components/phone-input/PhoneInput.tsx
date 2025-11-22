@@ -41,10 +41,10 @@ export default function PhoneInput({
 
   return (
     <div className={className}>
-      <Heading size="sm" className="mb-[0.8rem]">
+      <Heading size="sm" className="mb-[0.4rem]">
         Phone number
       </Heading>
-      <div className="flex items-center gap-0 rounded-[0.8rem] border border-border overflow-hidden focus-within:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]">
+      <div className="flex items-center gap-[1rem] rounded-[0.8rem] bg-primary border border-border overflow-hidden focus-within:border-brand-primary focus-within:border-(--primary-90) focus-within:ring-4 focus-within:ring-(--focus-ring) focus-within:outline-none">
         <CountrySelector
           selectedCountry={selectedCountry}
           onCountrySelect={handleCountrySelect}

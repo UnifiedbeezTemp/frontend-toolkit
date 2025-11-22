@@ -63,8 +63,10 @@ interface InputProps
   name?: string;
   className?: string;
   inputClassName?: string;
+  labelClassName?: string;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  showRequired?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -84,6 +86,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       name,
       className = "",
       inputClassName = "",
+      labelClassName = "",
+      showRequired = false,
       onBlur,
       onFocus,
       ...rest
@@ -101,10 +105,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-text-secondary text-[1.6rem] font-normal mb-2"
+            className={cn("block text-text-secondary text-[1.6rem] font-[700] mb-2 flex", labelClassName)}
           >
             {label}
-            {/* {required && <span className="text-destructive ml-1">*</span>} */}
+            {showRequired && <span className="text-destructive text-[1.3rem]">*</span>}
           </label>
         )}
 
@@ -135,7 +139,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               error ? errorId : helperText ? helperId : undefined
             }
             className={cn(
-              "w-full  rounded-lg py-[0.8rem] px-[0.8rem]",
+              "w-full  rounded-[0.8rem] py-[0.8rem] px-[1rem]",
               "border border-(--input-stroke) bg-primary",
               "focus:border-(--primary-90) focus:ring-4 focus:ring-(--focus-ring) focus:outline-none",
               "shadow-xs",
@@ -144,7 +148,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               "autofill:bg-primary autofill:text-text-primary",
               "[-webkit-text-fill-color:var(--text-primary)]",
               "[-webkit-box-shadow:0_0_0px_1000px_var(--primary)_inset]",
-              leftIcon && "pl-10",
+              leftIcon && "pl-[3rem]",
               rightIcon && "pr-10",
               hasError
                 ? "border-destructive focus:border-destructive"
@@ -167,7 +171,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {error && (
           <p
             id={errorId}
-            className="mt-1 text-xs text-destructive"
+            className="mt-[0.6rem] text-[1.4rem] text-destructive"
             role="alert"
           >
             {error}
@@ -175,8 +179,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
 
         {/* Helper Text */}
-        {!error && helperText && (
-          <p id={helperId} className="mt-1 ml-1 text-sm text-dark-base-40">
+        {!error && helperText &&  (
+          <p id={helperId} className="mt-[0.6rem] ml-1 text-[1.4rem] text-dark-base-40">
             {helperText}
           </p>
         )}

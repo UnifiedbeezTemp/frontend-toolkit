@@ -62,7 +62,7 @@
   --color-dark-base-40: var(--dark-base-40);
   --color-dark-base-70: var(--dark-base-70);
 
-  --color-tab-filled: var(--toggle-filled);
+  --color-toggle-filled: var(--toggle-filled);
   --color-soft-green: var(--soft-green);
 }
 
@@ -213,10 +213,8 @@ button:disabled {
 }
 
 .card-base {
-  border-radius: 24px;
-  border: 1px solid var(--input-stroke);
   background: var(--card-gradient);
-  box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  /* box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05); */
 }
 
 .tab {

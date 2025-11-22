@@ -30,13 +30,14 @@ import { cn } from "../../lib/utils";
 
 interface ButtonProps {
   onClick?: () => void;
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger" | "dangerReverse";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   loading?: boolean;
   type?: "button" | "submit" | "reset";
   className?: string;
   children: React.ReactNode;
+  loadingText?: string;
 }
 
 export default function Button({
@@ -48,9 +49,10 @@ export default function Button({
   type = "button",
   className = "",
   children,
+  loadingText,
 }: ButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none";
+    "inline-flex items-center justify-center font-medium rounded-[0.8rem] py-[1rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]";
 
   const variantClasses = {
     primary:
@@ -61,6 +63,7 @@ export default function Button({
       "bg-transparent border border-border text-brand-primary hover:bg-brand-primary hover:text-white",
     ghost: "text-text-primary",
     danger: "bg-destructive text-white hover:bg-destructive/90 hover:shadow-md",
+    dangerReverse: "border-destructive bg-white text-destructive hover:border-destructive/90 hover:shadow-md border",
   };
 
   const sizeClasses = {
@@ -92,8 +95,8 @@ export default function Button({
     >
       {loading ? (
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          {children}
+          <div className="w-[2rem] h-[2rem] border border-current border-t-transparent rounded-full animate-spin" />
+          {loadingText}
         </div>
       ) : (
         children

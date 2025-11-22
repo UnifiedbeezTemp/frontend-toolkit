@@ -1,42 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "../../lib/utils";
-
-/**
- * REUSABLE ICON LIST COMPONENT
- *
- * USAGE:
- * <IconList icons={[
- *   { icon: <WhatsAppIcon />, href: 'https://wa.me/...' },
- *   { icon: <FacebookIcon />, href: 'https://facebook.com/...' }
- * ]} />
- *
- * <IconList
- *   icons={socialIcons}
- *   layout="horizontal"
- *   size="lg"
- *   gap="md"
- * />
- *
- * PROPS:
- * - icons: Array of icon objects (required)
- *   - icon: React.ReactNode - The icon component
- *   - href?: string - Optional link
- *   - label?: string - Accessibility label
- *   - onClick?: () => void - Click handler
- * - layout: horizontal | vertical | grid (default: horizontal)
- * - size: xs | sm | md | lg | xl (default: md)
- * - gap: xs | sm | md | lg | xl (default: md)
- * - hover: boolean - Enable hover effects (default: true)
- * - rounded: boolean - Rounded icon backgrounds (default: false)
- * - background: boolean - Show background behind icons (default: false)
- * - className: string - Add custom styles
- *
- * DEFAULTS:
- * - Horizontal layout
- * - Medium size and spacing
- * - Hover scale effect
- * - Accessible with ARIA labels
- */
 
 export interface IconItem {
   icon: React.ReactNode;
@@ -47,7 +10,7 @@ export interface IconItem {
 
 interface IconListProps {
   icons: IconItem[];
-  layout?: "horizontal" | "vertical" | "grid";
+  layout?: "horizontal" | "vertical" | "grid" | "marquee";
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   gap?: "xs" | "sm" | "md" | "lg" | "xl";
   hover?: boolean;
@@ -60,6 +23,7 @@ const layoutClasses = {
   horizontal: "flex flex-row items-center",
   vertical: "flex flex-col items-center",
   grid: "grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8",
+  marquee: "flex relative",
 };
 
 const gapClasses = {
@@ -71,11 +35,11 @@ const gapClasses = {
 };
 
 const sizeClasses = {
-  xs: "w-6 h-6",
-  sm: "w-8 h-8",
-  md: "w-10 h-10",
-  lg: "w-12 h-12",
-  xl: "w-16 h-16",
+  xs: "w-[1rem] h-[1rem]",
+  sm: "w-[14rem] h-[14rem]",
+  md: "w-[16rem] h-[16rem]",
+  lg: "w-[10rem] h-[10rem]",
+  xl: "w-[10rem] h-[10rem]",
 };
 
 export default function IconList({
@@ -88,6 +52,23 @@ export default function IconList({
   background = false,
   className = "",
 }: IconListProps) {
+  const [popIndex, setPopIndex] = useState(-1);
+
+  // Random pop animation for icons
+  useEffect(() => {
+    if (layout !== "marquee") return;
+
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * icons.length);
+      setPopIndex(randomIndex);
+      
+      // Reset after animation
+      setTimeout(() => setPopIndex(-1), 600);
+    }, 3000); // Pop every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [icons.length, layout]);
+
   const handleIconClick = (iconItem: IconItem, e: React.MouseEvent) => {
     if (iconItem.onClick) {
       e.preventDefault();
@@ -95,7 +76,9 @@ export default function IconList({
     }
   };
 
-  const renderIcon = (iconItem: IconItem, index: number) => {
+  const renderIcon = (iconItem: IconItem, index: number, originalIndex?: number) => {
+    const isPopping = originalIndex !== undefined && originalIndex === popIndex;
+    
     const iconContent = (
       <div
         className={cn(
@@ -104,7 +87,8 @@ export default function IconList({
           hover && "hover:scale-110 active:scale-95 cursor-pointer",
           rounded && "rounded-full",
           background && "bg-primary border border-border shadow-sm",
-          background && rounded && "p-2"
+          background && rounded && "p-2",
+          isPopping && "animate-pop"
         )}
         aria-label={iconItem.label || `Icon ${index + 1}`}
       >
@@ -141,6 +125,44 @@ export default function IconList({
 
     return <div key={index}>{iconContent}</div>;
   };
+
+  if (layout === "marquee") {
+    const marqueeIcons = [...icons, ...icons, ...icons];
+    
+    return (
+      <div className={cn("pb-[1.4rem]", className)}>
+        <div 
+          className={cn(
+            "flex items-center animate-marquee",
+            gapClasses[gap]
+          )}
+          style={{ animationDuration: `${icons.length * 2}s` }}
+        >
+          {marqueeIcons.map((iconItem, index) => 
+            renderIcon(iconItem, index, index % icons.length)
+          )}
+        </div>
+        
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+          }
+          .animate-marquee {
+            animation: marquee linear infinite;
+          }
+          .animate-pop {
+            animation: pop 0.6s ease-in-out;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   return (
     <div

@@ -14,7 +14,7 @@ export default function CountrySearch({ value, onChange }: CountrySearchProps) {
           placeholder="Search countries..."
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full pl-10 pr-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-none text-[1.6rem] text-text-primary focus:shadow-[0_0_0_5px_rgba(5,61,39,0.1)] text-[1.4rem]"
+          className="w-full pl-10 pr-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-none text-[1.6rem] text-text-primary focus-within:border-brand-primary focus-within:border-(--primary-90) focus-within:ring-4 focus-within:ring-(--focus-ring) focus-within:outline-non text-[1.4rem]"
           autoFocus
         />
       </div>
