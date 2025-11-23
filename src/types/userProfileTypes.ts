@@ -6,3 +6,15 @@ export interface UserProfile {
   profilePhoto: string | null;
   phoneVerified: boolean;
 }
+
+export const createEmptyUser = () => {
+  return {
+    id: "",
+    email: "",
+    fullName: "",
+    phone: "",
+    phoneVerified: false,
+    profilePhoto: "",
+    isVerified: false,
+  };
+};
