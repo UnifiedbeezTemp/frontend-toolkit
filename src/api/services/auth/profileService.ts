@@ -1,4 +1,4 @@
-import { UserProfile } from "../../../types/userProfileTypes";
+import { createEmptyUser, UserProfile } from "../../../types/userProfileTypes";
 import { authBaseUrl } from "../../rootUrls";
 import { AuthError } from "./error";
 import { AuthResponse } from "./types";
@@ -16,18 +16,11 @@ export const profileService = {
     try {
       responseData = JSON.parse(responseText);
     } catch (parseError) {
-      responseData = {
-        id: "",
-        email: "",
-        isVerified: false,
-      };
+      responseData = createEmptyUser();
     }
 
     if (!response.ok) {
-      throw new AuthError(
-        "Failed to fetch user profile",
-        response.status,
-      );
+      throw new AuthError("Failed to fetch user profile", response.status);
     }
 
     return {
