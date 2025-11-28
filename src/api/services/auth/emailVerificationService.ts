@@ -1,5 +1,6 @@
+import { UserProfile } from "../../../types/userProfileTypes";
 import { authBaseUrl } from "../../rootUrls";
-import { OTPPayload, AuthResponse, AuthError } from "./authServices";
+import { OTPPayload, AuthResponse, AuthError } from ".";
 import { VerificationResponseData } from "./types";
 
 export const emailVerificationService = {
@@ -23,17 +24,15 @@ export const emailVerificationService = {
     } catch (parseError) {
       responseData = {
         message: responseText || "Unknown error occurred",
-        user: {} as any,
+        user: {} as UserProfile,
       };
     }
 
-    console.log(responseData)
+    console.log(responseData);
 
     if (!response.ok) {
       const errorMessage =
-        (responseData as any)?.message?.message ||
-        (responseData as any)?.message ||
-        (responseData as any)?.error ||
+        (responseData as VerificationResponseData)?.message ||
         "Verification failed";
       throw new AuthError(errorMessage, response.status, responseData);
     }
@@ -64,15 +63,13 @@ export const emailVerificationService = {
     } catch (parseError) {
       responseData = {
         message: responseText || "Unknown error occurred",
-        user: {} as any,
+        user: {} as UserProfile,
       };
     }
 
     if (!response.ok) {
       const errorMessage =
-        (responseData as any)?.message?.message ||
-        (responseData as any)?.message ||
-        (responseData as any)?.error ||
+        (responseData as VerificationResponseData)?.message ||
         "Failed to resend code";
       throw new AuthError(errorMessage, response.status, responseData);
     }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plan } from "../../../data/plansData";
+import { Plan } from "../../../api/services/plan/types";
 
 export const usePlanCard = (plan: Plan, isYearly: boolean) => {
   const [showFeatures, setShowFeatures] = useState(false);

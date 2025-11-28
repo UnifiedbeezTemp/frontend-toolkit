@@ -1,16 +1,18 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { getPlanById } from "../../../data/plansData";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import { OriginalPlan } from "../../../api/services/plan/types";
+import { getPlanByType } from "../../../data/plansData";
 
-export const useCheckoutPlan = () => {
+export const useCheckoutPlan = ({
+  backendPlan,
+  isYearly,
+}: {
+  backendPlan: OriginalPlan | null;
+  isYearly: boolean;
+}) => {
   const icons = useSupabaseIcons();
-  const searchParams = useSearchParams();
-  const planId = searchParams.get("plan");
-  const isYearly = searchParams.get("isYearly") === "true";
-
-  const plan = planId ? getPlanById(icons, planId) : null;
+  const plan = backendPlan ? getPlanByType(backendPlan, icons) : null;
 
   const calculatePrice = (monthlyPrice: number) => {
     return isYearly ? Math.floor(monthlyPrice * 12 * 0.85) : monthlyPrice;

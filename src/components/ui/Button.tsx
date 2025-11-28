@@ -30,7 +30,13 @@ import { cn } from "../../lib/utils";
 
 interface ButtonProps {
   onClick?: () => void;
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger" | "dangerReverse";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "outline"
+    | "ghost"
+    | "danger"
+    | "dangerReverse";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   loading?: boolean;
@@ -38,6 +44,7 @@ interface ButtonProps {
   className?: string;
   children: React.ReactNode;
   loadingText?: string;
+  ref?: React.RefObject<HTMLButtonElement | null>;
 }
 
 export default function Button({
@@ -50,20 +57,23 @@ export default function Button({
   className = "",
   children,
   loadingText,
+  ref,
+  ...props
 }: ButtonProps) {
   const baseClasses =
     "inline-flex items-center justify-center font-medium rounded-[0.8rem] py-[1rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]";
 
   const variantClasses = {
     primary:
-      "bg-brand-primary text-white border border-brand-primary hover:bg-primary hover:text-brand-primary hover:scale-105 hover:border-brand-primary hover:shadow-md",
+      "bg-brand-primary text-white border border-brand-primary hover:bg-primary hover:text-brand-primary hover:border-brand-primary hover:shadow-md",
     secondary:
       "border bg-primary border-border text-text-primary hover:shadow-md",
     outline:
       "bg-transparent border border-border text-brand-primary hover:bg-brand-primary hover:text-white",
     ghost: "text-text-primary",
     danger: "bg-destructive text-white hover:bg-destructive/90 hover:shadow-md",
-    dangerReverse: "border-destructive bg-white text-destructive hover:border-destructive/90 hover:shadow-md border",
+    dangerReverse:
+      "border-destructive bg-white text-destructive hover:border-destructive/90 hover:shadow-md border",
   };
 
   const sizeClasses = {
@@ -79,6 +89,7 @@ export default function Button({
 
   return (
     <motion.button
+      {...props}
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
@@ -92,6 +103,7 @@ export default function Button({
         className
       )}
       whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
+      ref={ref}
     >
       {loading ? (
         <div className="flex items-center gap-2">

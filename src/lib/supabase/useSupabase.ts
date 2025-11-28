@@ -71,6 +71,7 @@ export const useSupabaseIcons = () => {
       userGroup3: getAssetUrl(SUPABASE_ICONS.userGroup3),
       dataFlow: getAssetUrl(SUPABASE_ICONS.dataFlow),
       beeGreenRight: getAssetUrl(SUPABASE_ICONS.beeGreenRight),
+      beeWhiteLeft: getAssetUrl(SUPABASE_ICONS.beeWhiteLeft),
       beeYellowRight: getAssetUrl(SUPABASE_ICONS.beeYellowRight),
       warning: getAssetUrl(SUPABASE_ICONS.warning),
       check: getAssetUrl(SUPABASE_ICONS.check),
@@ -145,6 +146,7 @@ export const useSupabaseIcons = () => {
       linkExternal2: getAssetUrl(SUPABASE_ICONS.linkExternal2),
       checkboxBase2: getAssetUrl(SUPABASE_ICONS.checkboxBase2),
       chevronDown: getAssetUrl(SUPABASE_ICONS.chevronDown),
+      chevronRightGreen: getAssetUrl(SUPABASE_ICONS.chevronRightGreen),
       fileActive: getAssetUrl(SUPABASE_ICONS.fileActive),
       fileInactive: getAssetUrl(SUPABASE_ICONS.fileInactive),
       websiteInactive: getAssetUrl(SUPABASE_ICONS.websiteInactive),
@@ -161,6 +163,7 @@ export const useSupabaseIcons = () => {
       arrowLeft1: getAssetUrl(SUPABASE_ICONS.arrowLeft1),
       arrowRight1: getAssetUrl(SUPABASE_ICONS.arrowRight1),
       editPen: getAssetUrl(SUPABASE_ICONS.editPen),
+      playGreen: getAssetUrl(SUPABASE_ICONS.playGreen),
       playGreen1: getAssetUrl(SUPABASE_ICONS.playGreen1),
       eyeOn: getAssetUrl(SUPABASE_ICONS.eyeOn),
       eyeOff: getAssetUrl(SUPABASE_ICONS.eyeOff),
@@ -172,7 +175,7 @@ export const useSupabaseIcons = () => {
       stripeIconCircle: getAssetUrl(SUPABASE_ICONS.stripeIconCircle),
       greenCaretRight: getAssetUrl(SUPABASE_ICONS.greenCaretRight),
       mastercard: getAssetUrl(SUPABASE_ICONS.mastercard),
-      
+
       seatsIcon: getAssetUrl(SUPABASE_ICONS.seatsIcon),
       usersCheck: getAssetUrl(SUPABASE_ICONS.usersCheck),
       riWhatsappLine: getAssetUrl(SUPABASE_ICONS.riWhatsappLine),
@@ -188,6 +191,9 @@ export const useSupabaseIcons = () => {
       minusRed: getAssetUrl(SUPABASE_ICONS.minusRed),
       infoGreen: getAssetUrl(SUPABASE_ICONS.infoGreen),
       infoRed: getAssetUrl(SUPABASE_ICONS.infoRed),
+      phoneIcon: getAssetUrl(SUPABASE_ICONS.phoneIcon),
+      textOutdent: getAssetUrl(SUPABASE_ICONS.textOutdent),
+      texIntdent: getAssetUrl(SUPABASE_ICONS.texIntdent),
     }),
     []
   );

@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { authService } from "../api/services/auth/authServices";
+import { authService } from "../api/services/auth";
 import { getDeviceInfo } from "../utils/deviceInfo";
 import { UserProfile } from "../types/userProfileTypes";
 
@@ -33,7 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const data = await authService.getProfile();
       setUser(data.data);
     } catch (error) {
-      console.log(error);
       setUser(null);
     } finally {
       setIsLoading(false);

@@ -96,6 +96,15 @@ export default function ImageUploadSection({
     handleSelectImage(file);
   };
 
+  // Fix camera capture to actually open camera
+  const handleCameraCapture = () => {
+    if (captureRef.current) {
+      // Clear any previous value to ensure change event fires
+      captureRef.current.value = '';
+      captureRef.current.click();
+    }
+  };
+
   const renderImagePreview = () => {
     if (previewUrl) {
       return (
@@ -164,7 +173,13 @@ export default function ImageUploadSection({
     onImageSelect(null as any);
     setPreviewUrl(null);
     setFileError(null);
+    
+    // Clear file inputs
+    if (uploadRef.current) uploadRef.current.value = '';
+    if (captureRef.current) captureRef.current.value = '';
   };
+
+  const hasImage = previewUrl || image;
 
   if (!isEditing) {
     return (
@@ -192,12 +207,25 @@ export default function ImageUploadSection({
         >
           {renderImagePreview()}
 
-          <button
-            onClick={handleUploadClick}
-            className="absolute bottom-[1px] right-[-5px] border-border p-[2px] rounded-full border-[1px] bg-primary hidden sm:block"
-          >
-            <ImageComponent alt="" src={icons.upload} width={15} height={15} />
-          </button>
+          {/* Remove Image Button (X) - Only show when there's an image */}
+          {selectedFile && (
+            <button
+              onClick={handleRemoveImage}
+              className="absolute bottom-[1px] right-[0px] w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-red-600 transition-colors z-10"
+              type="button"
+            >
+              ×
+            </button>
+          )}
+
+          {!hasImage && (
+            <button
+              onClick={handleUploadClick}
+              className="absolute bottom-[1px] right-[-5px] border-border p-[2px] rounded-full border-[1px] bg-primary hidden sm:block"
+            >
+              <ImageComponent alt="" src={icons.upload} width={15} height={15} />
+            </button>
+          )}
         </div>
 
         <div className="flex-1">
@@ -232,12 +260,12 @@ export default function ImageUploadSection({
                 width={16}
                 height={16}
               />
-              {previewUrl || image ? "Change photo" : "Upload photo"}
+              {hasImage ? "Change photo" : "Upload photo"}
             </Button>
 
             <Button
               variant="secondary"
-              onClick={handleCaptureClick}
+              onClick={handleCameraCapture}
               className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
             >
               <ImageComponent
@@ -258,11 +286,12 @@ export default function ImageUploadSection({
             onChange={(e) => handleFileSelect(e.target.files?.[0])}
           />
 
+          {/* Camera input with capture attribute */}
           <input
             ref={captureRef}
             type="file"
-            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/bmp,image/tiff"
-            capture="user"
+            accept="image/*"
+            capture="environment" 
             className="hidden"
             onChange={(e) => handleFileSelect(e.target.files?.[0])}
           />
@@ -281,12 +310,12 @@ export default function ImageUploadSection({
             width={16}
             height={16}
           />
-          {previewUrl || image ? "Change photo" : "Upload photo"}
+          {hasImage ? "Change photo" : "Upload photo"}
         </Button>
 
         <Button
           variant="secondary"
-          onClick={handleCaptureClick}
+          onClick={handleCameraCapture}
           className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
         >
           <ImageComponent
@@ -297,6 +326,7 @@ export default function ImageUploadSection({
           />
           Take photo
         </Button>
+
       </div>
     </div>
   );

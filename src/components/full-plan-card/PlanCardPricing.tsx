@@ -1,4 +1,4 @@
-import { Plan } from "../../data/plansData";
+import { Plan } from "../../api/services/plan/types";
 import Text from "../ui/Text";
 
 interface PlanCardPricingProps {

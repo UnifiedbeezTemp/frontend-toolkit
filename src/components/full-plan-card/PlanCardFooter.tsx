@@ -1,7 +1,7 @@
 import ImageComponent from "next/image";
-import { Plan } from "../../data/plansData";
 import Button from "../ui/Button";
 import { cn } from "../../lib/utils";
+import { Plan } from "../../api/services/plan/types";
 
 interface PlanCardFooterProps {
   plan: Plan;
@@ -19,12 +19,8 @@ export default function PlanCardFooter({
       <Button
         className={cn(
           "w-full mb-[1.8rem] border",
-          plan.buttonVariant === "primary"
-            ? "text-white"
-            : "text-brand-primary border-brand-primary",
-          isSelected && "text-white"
         )}
-        variant={isSelected ? "primary" : plan.buttonVariant}
+        variant={isSelected ? "primary" : "secondary"}
         onClick={() => onSelect(plan.id)}
       >
         {plan.ctaText}

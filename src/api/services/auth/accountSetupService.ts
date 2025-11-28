@@ -1,5 +1,6 @@
 import { authBaseUrl } from "../../rootUrls";
-import { AuthResponse, AuthError, AccountSetupFormData, PhoneVerificationResponse, PhotoUploadResponse, ProfileSetupResponse } from "./authServices";
+import { AuthResponse, AuthError, AccountSetupFormData, PhoneVerificationResponse, PhotoUploadResponse, ProfileSetupResponse } from ".";
+import { createEmptyUser } from "../../../types/userProfileTypes";
 
 export const accountSetupService = {
   async setupProfile(
@@ -65,6 +66,8 @@ export const accountSetupService = {
     const responseText = await response.text();
     const responseData = this.parsePhoneResponse(responseText);
 
+    // console.log(responseData)
+
     if (!response.ok) {
       throw new AuthError(
         this.getErrorMessage(responseData),
@@ -80,12 +83,12 @@ export const accountSetupService = {
     try {
       const data = JSON.parse(responseText);
       return {
-        user: data.user || this.createEmptyUser(),
+        user: data.user || createEmptyUser(),
         message: data.message,
       };
     } catch {
       return {
-        user: this.createEmptyUser(),
+        user: createEmptyUser(),
         message: responseText || "Unknown error occurred",
       };
     }
@@ -96,13 +99,13 @@ export const accountSetupService = {
       const data = JSON.parse(responseText);
       return {
         photoUrl: data.photoUrl || "",
-        user: data.user || this.createEmptyUser(),
+        user: data.user || createEmptyUser(),
         message: data.message,
       };
     } catch {
       return {
         photoUrl: "",
-        user: this.createEmptyUser(),
+        user: createEmptyUser(),
         message: responseText || "Unknown error occurred",
       };
     }
@@ -123,18 +126,8 @@ export const accountSetupService = {
     }
   },
 
-  createEmptyUser() {
-    return {
-      id: "",
-      email: "",
-      fullName: "",
-      phone: "",
-      phoneVerified: false,
-      profilePhoto: "",
-      isVerified: false,
-    };
-  },
 
+  //any coz the response can come in any of these three formats coz this is serving all the requests
   getErrorMessage(responseData: any): string {
     return (
       responseData?.message?.message ||
