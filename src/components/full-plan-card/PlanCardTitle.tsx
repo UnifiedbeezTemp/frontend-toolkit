@@ -1,4 +1,4 @@
-import { Plan } from "../../data/plansData";
+import { Plan } from "../../api/services/plan/types";
 import Heading from "../ui/Heading";
 import Text from "../ui/Text";
 

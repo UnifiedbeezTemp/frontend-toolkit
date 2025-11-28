@@ -39,6 +39,7 @@ export const SUPABASE_ICONS = {
   linkExternal: "icons/link-external.svg",
   beeZoraWelcome: "icons/beeZoraWelcome.svg",
   beeGreyLeft: "icons/bee-grey-left.svg",
+  beeWhiteLeft: "icons/bee-white-left.svg",
   beeYellowRight: "icons/bee-yellow-right.svg",
   mingcuteTimeLine: "icons/mingcute_time-line.svg",
   hiveOutlineRounded: "icons/material-symbols_hive-outline-rounded.svg",
@@ -146,6 +147,7 @@ export const SUPABASE_ICONS = {
   linkExternal2: "icons/link-external-01.svg",
   checkboxBase2: "icons/checkbox-base-2.svg",
   chevronDown: "icons/chevron-down-grey.svg",
+  chevronRightGreen: "icons/chevron-right-green.svg",
   fileActive: "icons/file-active.svg",
   fileInactive: "icons/file-inactive.svg",
   websiteInactive: "icons/website-inactive.svg",
@@ -161,6 +163,7 @@ export const SUPABASE_ICONS = {
   logout: "icons/material-symbols_logout.svg",
   logoutRed: "icons/material-symbols_logout_red.svg",
   editPen: "icons/edit-01.svg",
+  playGreen: "icons/play-green.svg",
   playGreen1: "icons/play-green1.svg",
   eyeOn: "icons/eye-on.svg",
   eyeOff: "icons/eye-off.svg",
@@ -188,6 +191,9 @@ export const SUPABASE_ICONS = {
   minusRed: "icons/minus-error.svg",
   infoGreen: "icons/info-green.svg",
   infoRed: "icons/info-red.svg",
+  phoneIcon: "icons/phone.svg",
+  textOutdent: "icons/textOutdent.svg",
+  texIntdent: "icons/textIndent.svg",
 };
 
 export const SUPABASE_GIFS = {

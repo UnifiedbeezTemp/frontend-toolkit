@@ -18,6 +18,11 @@ export interface OTPPayload {
   code: string;
 }
 
+export interface PhoneOTPPayload {
+  phone: string;
+  code: string;
+}
+
 export interface ResetPasswordPayload {
   email: string;
 }
@@ -32,6 +37,7 @@ export interface LoginResponseData {
   token: string;
   user: UserProfile | null;
   refreshToken?: string;
+  message: string;
 }
 
 export interface SignupResponseData {
@@ -75,3 +81,57 @@ export interface AccountSetupFormData {
   lastName: string;
   phone: string;
 }
+
+export interface StartTrialPayload {
+  planType?: string;
+}
+
+export interface TrialResponseData {
+  message: string;
+  trialEndsAt: string;
+  clientSecret: string;
+  customerId: string;
+}
+
+export interface AttachPaymentMethodPayload {
+  payment_method_id: string;
+}
+
+export interface AttachPaymentMethodResponse {
+  success: boolean;
+  message: string;
+}
+export interface TrialPayload {
+  planType?: string;
+  paymentMethod: {
+    cardHolderName: string;
+    cardNumber: string;
+    expiryDate: string;
+    cvc: string;
+    address: string;
+    city: string;
+    state: string;
+    postalCode: string;
+  };
+}
+
+export interface TrialResponseData {
+  message: string;
+}
+
+export interface AuthResponseData {
+  token?: string;
+  user: UserProfile | null;
+  refreshToken?: string;
+  message: string;
+}
+
+export interface SocialAuthPayload {
+  provider: "google" | "apple" | "microsoft";
+  auth_code: string;
+  device_info: DeviceInfo;
+  remember_me?: boolean;
+  code_verifier?: string;
+}
+
+export interface SocialAuthResponse<T = unknown> extends AuthResponse<T> {}

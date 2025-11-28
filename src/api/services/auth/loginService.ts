@@ -1,13 +1,13 @@
 import { authBaseUrl } from "../../rootUrls";
-import { AuthPayload, AuthResponse, AuthError } from "./authServices";
+import { AuthPayload, AuthResponse, AuthError } from ".";
 import { LoginResponseData } from "./types";
 
 export const loginService = {
   async signIn(payload: AuthPayload): Promise<AuthResponse<LoginResponseData>> {
-    // const response = await fetch(`${authBaseUrl}/test/delete-user`, {
-    const response = await fetch(`${authBaseUrl}/login`, {
-      // method: "DELETE",
-      method: "POST",
+    const response = await fetch(`${authBaseUrl}/test/delete-user`, {
+    // const response = await fetch(`${authBaseUrl}/login`, {
+      method: "DELETE",
+      // method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -24,16 +24,14 @@ export const loginService = {
       responseData = {
         token: "",
         user: null,
+        message: "",
       };
     }
 
-    console.log(responseData);
 
     if (!response.ok) {
       const errorMessage =
-        (responseData as any)?.message?.message ||
-        (responseData as any)?.message ||
-        (responseData as any)?.error ||
+        (responseData as LoginResponseData)?.message ||
         "Sign in failed";
       throw new AuthError(errorMessage, response.status);
     }

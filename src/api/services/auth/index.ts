@@ -7,11 +7,16 @@ import { loginService } from "./loginService";
 import { passwordService } from "./passwordService";
 import { profileService } from "./profileService";
 import { accountSetupService } from "./accountSetupService";
+import { phoneVerificationService } from "./phoneVerificationService";
+import { trialService } from "./trialService";
+import { socialAuthService } from "./socialAuthService";
 
 export const authService = {
   signup: signupService.signup,
   verifyEmail: emailVerificationService.verifyEmail,
   resendOTP: emailVerificationService.resendOTP,
+  verifyPhone: phoneVerificationService.verifyPhone,
+  resendPhoneOTP: phoneVerificationService.resendPhoneOTP,
   signIn: loginService.signIn,
   requestPasswordReset: passwordService.requestPasswordReset,
   confirmPasswordReset: passwordService.confirmPasswordReset,
@@ -19,5 +24,9 @@ export const authService = {
   setupProfile: accountSetupService.setupProfile,
   uploadProfilePhoto: accountSetupService.uploadProfilePhoto,
   initiatePhoneVerification: accountSetupService.initiatePhoneVerification,
+  confirmTrialStart: trialService.confirmTrialStart,
+  attachPaymentMethod: trialService.attachPaymentMethod,
   logout: profileService.logout,
+  socialSignIn: socialAuthService.signIn,
+  socialSignUp: socialAuthService.signUp,
 };

@@ -1,3 +1,4 @@
+import { UserProfile } from "../../../types/userProfileTypes";
 import { authBaseUrl } from "../../rootUrls";
 import { AuthError } from "./error";
 import { AuthPayload, AuthResponse, SignupResponseData } from "./types";
@@ -22,16 +23,13 @@ export const signupService = {
     } catch (parseError) {
       responseData = {
         message: responseText || "Unknown error occurred",
-        user: {} as any,
+        user: {} as UserProfile,
       };
     }
 
     if (!response.ok) {
       const errorMessage =
-        (responseData as any)?.message?.message ||
-        (responseData as any)?.message ||
-        (responseData as any)?.error ||
-        "Signup failed";
+        (responseData as SignupResponseData)?.message || "Signup failed";
       throw new AuthError(errorMessage, response.status, responseData);
     }
 

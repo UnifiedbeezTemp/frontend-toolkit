@@ -1,7 +1,7 @@
 import ImageComponent from "next/image";
-import { Plan } from "../../data/plansData";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Text from "../ui/Text";
+import { Plan } from "../../api/services/plan/types";
 
 interface PlanCardFeaturesProps {
   plan: Plan;

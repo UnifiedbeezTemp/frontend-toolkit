@@ -5,6 +5,9 @@ export interface UserProfile {
   isVerified: boolean;
   profilePhoto: string | null;
   phoneVerified: boolean;
+  phone: string;
+  plan: string;
+  businessName: string;
 }
 
 export const createEmptyUser = () => {
@@ -16,5 +19,7 @@ export const createEmptyUser = () => {
     phoneVerified: false,
     profilePhoto: "",
     isVerified: false,
+    plan: "",
+    businessName: "",
   };
 };

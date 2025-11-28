@@ -1,6 +1,5 @@
 "use client";
 
-import { Plan } from "../../data/plansData";
 import Card from "../ui/Card";
 import { usePlanCard } from "./hooks/usePlanCard";
 import PlanCardHeader from "./PlanCardHeader";
@@ -8,6 +7,7 @@ import PlanCardTitle from "./PlanCardTitle";
 import PlanCardPricing from "./PlanCardPricing";
 import PlanCardFeatures from "./PlanCardFeatures";
 import PlanCardFooter from "./PlanCardFooter";
+import { Plan } from "../../api/services/plan/types";
 
 interface PlanCardProps {
   plan: Plan;
