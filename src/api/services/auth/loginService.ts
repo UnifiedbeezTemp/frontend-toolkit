@@ -4,10 +4,10 @@ import { LoginResponseData } from "./types";
 
 export const loginService = {
   async signIn(payload: AuthPayload): Promise<AuthResponse<LoginResponseData>> {
-    const response = await fetch(`${authBaseUrl}/test/delete-user`, {
-    // const response = await fetch(`${authBaseUrl}/login`, {
-      method: "DELETE",
-      // method: "POST",
+    // const response = await fetch(`${authBaseUrl}/test/delete-user`, {
+    const response = await fetch(`${authBaseUrl}/login`, {
+      // method: "DELETE",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
