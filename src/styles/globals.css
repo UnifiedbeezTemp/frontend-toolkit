@@ -400,6 +400,12 @@ div[data-google-button] {
 }
 
 @layer components{
+  .bg-brand-gradient-1 {
+    @apply bg-[linear-gradient(180deg,#053d27_0%,#fab403_100%)];
+  }
+  .bg-brand-gradient-2 {
+    @apply bg-[linear-gradient(143deg,#053D27_21.47%,#FAB403_289.64%)];
+  }
   .bg-gradient-yellow-1 {
     @apply bg-[linear-gradient(149deg,#FFFFFF_18.59%,#FCEDC6_143.2%)];
   }
