@@ -10,6 +10,7 @@ export const useSupabaseImages = () => {
   return useMemo(
     () => ({
       websiteWebChat: getAssetUrl(SUPABASE_IMAGES.websiteWebChat),
+      chatBg: getAssetUrl(SUPABASE_IMAGES.chatBg),
       avatar: getAssetUrl(SUPABASE_IMAGES.avatar),
       investorXWebsiteImage: getAssetUrl(SUPABASE_IMAGES.investorXWebsiteImage),
       beehiveImg: getAssetUrl(SUPABASE_IMAGES.beehiveImg),
@@ -40,6 +41,7 @@ export const useSupabaseImages = () => {
 export const useSupabaseIcons = () => {
   return useMemo(
     () => ({
+      pencil: getAssetUrl(SUPABASE_ICONS.pencil),
       searchSmIcon: getAssetUrl(SUPABASE_ICONS.searchSmIcon),
       searchIg: getAssetUrl(SUPABASE_ICONS.searchIg),
       lucideSearch: getAssetUrl(SUPABASE_ICONS.lucideSearch),

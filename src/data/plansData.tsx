@@ -27,7 +27,6 @@ export const transformOriginalPlan = (
     if (plan.maxWhatsappChannels > 0) channels.push("WhatsApp");
     return channels.join(", ");
   };
-
   const planConfigs = {
     individual: {
       tag: <></>,

@@ -59,11 +59,66 @@
   --color-destructive: var(--destructive);
   --color-success: var(--success);
 
-  --color-dark-base-40: var(--dark-base-40);
-  --color-dark-base-70: var(--dark-base-70);
-
   --color-toggle-filled: var(--toggle-filled);
   --color-soft-green: var(--soft-green);
+
+  --breakpoint-md: 58.25rem;
+  --breakpoint-lg: 64rem;
+  --inset-shadow-md: 2px 0 0 0 #053d27 inset;
+  --color-fresh-green: var(--fresh-green);
+  --color-dark-base-100: var(--black-100);
+  --color-dark-base-90: var(--black-90);
+  --color-dark-base-80: var(--black-80);
+  --color-dark-base-70: var(--black-70);
+  --color-dark-base-60: var(--black-60);
+  --color-dark-base-50: var(--black-50);
+  --color-dark-base-40: var(--black-40);
+  --color-dark-base-30: var(--black-30);
+  --color-dark-base-20: var(--black-20);
+  --color-dark-base-10: var(--black-10);
+  --color-neutral-100: var(--neutral-10);
+  --color-primary-100: var(--green-100);
+  --color-primary-90: var(--green-90);
+  --color-primary-80: var(--green-80);
+  --color-primary-70: var(--green-70);
+  --color-primary-60: var(--green-60);
+  --color-primary-50: var(--green-50);
+  --color-primary-40: var(--green-40);
+  --color-primary-30: var(--green-30);
+  --color-primary-20: var(--green-20);
+  --color-primary-10: var(--green-10);
+  --color-secondary-100: var(--yellow-100);
+  --color-secondary-90: var(--yellow-90);
+  --color-secondary-80: var(--yellow-80);
+  --color-secondary-70: var(--yellow-70);
+  --color-secondary-60: var(--yellow-60);
+  --color-secondary-50: var(--yellow-50);
+  --color-secondary-40: var(--yellow-40);
+  --color-secondary-30: var(--yellow-30);
+  --color-secondary-20: var(--yellow-20);
+  --color-secondary-10: var(--yellow-10);
+  --color-secondary-green-100: var(--leaf-green-100);
+  --color-danger-100: var(--red-100);
+  --color-gray-35: var(--gray-35);
+  --color-gray-30: var(--gray-30);
+  --color-gray-25: var(--gray-25);
+  --color-gray-20: var(--gray-20);
+  --text-xs: 1rem;
+  --text-sm: 1.2rem;
+  --text-md: 1.4rem;
+  --text-base: 1.6rem;
+  --text-lg: 2rem;
+  --text-xl: 2.4rem;
+  --text-2xl: 3.2rem;
+  --text-3xl: 4rem;
+  --text-4xl: 4.8rem;
+  --spacing: 0.4rem;
+  --leading-base: 140%;
+  --radius: 0.4rem;
+  --radius-sm: 0.6rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1rem;
+  --shadow-sm: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
 }
 
 :root {
@@ -112,6 +167,48 @@
   --soft-green: #f7fffc;
 
   --card-gradient: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
+
+  --black-110: #1b1b1b;
+  --black-100: #0b1012;
+  --black-90: #23282a;
+  --black-80: #3c4041;
+  --black-70: #545859;
+  --black-60: #6d7071;
+  --black-50: #858788;
+  --black-40: #9d9fa0;
+  --black-30: #b6b7b8;
+  --black-20: #cecfd0;
+  --black-10: #e7e7e7;
+  --green-100: #053d27;
+  --green-90: #1e503d;
+  --green-80: #376452;
+  --green-70: #507768;
+  --green-60: #698b7d;
+  --green-50: #829e93;
+  --green-40: #9bb1a9;
+  --green-30: #b4c5be;
+  --green-20: #cdd8d4;
+  --green-10: #e6ece9;
+  --yellow-100: #fab403;
+  --yellow-90: #fbbc1c;
+  --yellow-80: #fbc335;
+  --yellow-70: #fccb4f;
+  --yellow-60: #fcd268;
+  --yellow-50: #fdd981;
+  --yellow-40: #fde19a;
+  --yellow-30: #fde9b3;
+  --yellow-20: #fef0cd;
+  --yellow-10: #fef7e6;
+  --leaf-green-100: #29953e;
+  --red-100: #cc0e11;
+  --gray-35: #c5c6c9;
+  --gray-30: #d0d5dd;
+  --gray-25: #f8f8f8;
+  --gray-20: #f6f6f6;
+}
+
+html {
+  font-size: 10px;
 }
 
 * {
@@ -300,4 +397,19 @@ div[data-google-button] {
   height: 100% !important;
   cursor: pointer !important;
   z-index: 10 !important;
+}
+
+@layer components{
+  .bg-gradient-yellow-1 {
+    @apply bg-[linear-gradient(149deg,#FFFFFF_18.59%,#FCEDC6_143.2%)];
+  }
+  .section-heading {
+    @apply text-xl font-bold leading-[120%];
+  }
+  .icon-list-item{
+    @apply flex items-center gap-1.5 text-dark-base-70 font-bold leading-base;
+  }
+  .text-btn {
+    @apply text-md underline leading-base font-normal cursor-pointer;
+  }
 }
