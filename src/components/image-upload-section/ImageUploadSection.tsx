@@ -1,4 +1,4 @@
-import ImageComponent from "next/image";
+
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Button from "../ui/Button";
 import { useImageUpload } from "./hooks/useImageUpload";
@@ -7,6 +7,7 @@ import Text from "../ui/Text";
 import { ImageUploadSectionProps } from "./types";
 import Heading from "../ui/Heading";
 import { useEffect, useState } from "react";
+import ImageComponent from "../ui/ImageComponent";
 
 const sizeClasses = {
   sm: "w-[6rem] h-[6rem]",

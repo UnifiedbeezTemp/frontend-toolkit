@@ -1,5 +1,6 @@
-import ImageComponent from "next/image"
+
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase"
+import ImageComponent from "../ui/ImageComponent"
 
 export function CheckboxVisual({ selected }: { selected: boolean }) {
   const { check } = useSupabaseIcons()
