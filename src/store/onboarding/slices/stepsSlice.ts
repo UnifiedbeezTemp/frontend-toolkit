@@ -79,7 +79,7 @@ const stepsSlice = createSlice({
           type: 'navigateToStep',
         });
       }
-    },
+    }, 
 
     // Go to previous sub-step within current step
     goToPreviousSubStep: (state) => {

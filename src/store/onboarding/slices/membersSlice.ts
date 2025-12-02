@@ -1,14 +1,6 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../..';
-
-export interface TeamMember {
-  id: string;
-  email: string;
-  avatar: string;
-  role: string;
-  status: 'active' | 'pending' | 'denied';
-  isSelected?: boolean;
-}
+import { TeamMember } from '../types/memberTypes';
 
 export interface MembersState {
   members: TeamMember[];
