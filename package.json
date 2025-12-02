@@ -1,5 +1,5 @@
 {
-  "name": "@your-org/shared",
+  "name": "@unifiedbeez/shared",
   "version": "1.0.0",
   "scripts": {
     "type-check": "tsc --noEmit",
@@ -11,9 +11,9 @@
   "types": "dist/index.d.ts",
   "files": ["dist"],
   "peerDependencies": {
-    "next": "^14.0.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "next": "^16.0.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
