@@ -21,7 +21,7 @@ export default function PlanSummaryCTATop({
           <div className="flex flex-col mr-auto">
             <div className="flex flex-wrap items-center gap-2.5">
                 <PlanIcon
-                  planTier={plan.planType}
+                  planType={plan.planType}
                   className="-mt-2 -ml-1.5 w-max scale-[0.6666]"
                 />
                 <div className="flex items-center gap-4.5 -mt-1.5">

@@ -4,18 +4,18 @@ import BadgeIcon from "../../ui/BadgeIcon"
 import usePlanIcons, { usePlanBgColorClassNames } from "../hooks/usePlanStyling"
 
 export default function PlanIcon({
-  planTier,
+  planType,
   className,
 }: {
-  planTier: OriginalPlan["planType"]
+  planType: OriginalPlan["planType"]
   className?: string
 }) {
   const getPlanIcon = usePlanIcons()
   const getPlanBgColorClassName = usePlanBgColorClassNames()
   return (
     <BadgeIcon
-      icon={getPlanIcon(planTier) || ""}
-      className={`${className} ${getPlanBgColorClassName(planTier)}`}
+      icon={getPlanIcon(planType) || ""}
+      className={`${className} ${getPlanBgColorClassName(planType)}`}
       hasPattern
     />
   )
