@@ -1,6 +1,6 @@
 import { OriginalPlan } from "../api/services/plan/types";
-import { Addon } from "../store/onboarding/slices/addonSlice";
 import { useSupabaseIcons } from "../lib/supabase/useSupabase";
+import { Addon } from "../store/onboarding/types/addonTypes";
 
 export const transformPlanToAddons = (
   plan: OriginalPlan,

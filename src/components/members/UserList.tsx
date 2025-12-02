@@ -1,7 +1,7 @@
 "use client";
 
-import { TeamMember } from "../../store/onboarding/slices/membersSlice";
-import UserItem from "./UserItem";
+import { TeamMember } from "../../store/onboarding/types/memberTypes";
+import UserItem from "./user-item/UserItem";
 
 interface UserListProps {
   users: TeamMember[];

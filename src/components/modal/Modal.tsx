@@ -8,6 +8,7 @@ import { cn } from "../../lib/utils";
 import ModalPortal from "./ModalPortal";
 import { contentTransition } from "./utils/animations";
 import { useModalStack } from "./hooks/useModalStack";
+import { bottomSheetVariants, regularModalVariants } from "./utils/modalVariants";
 
 interface ModalProps {
   isOpen: boolean;
@@ -50,39 +51,6 @@ export default function Modal({
 
   const { getZIndex } = useModalStack(isOpen, priority);
 
-  const bottomSheetVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: "100%",
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-    },
-    exit: { 
-      opacity: 0, 
-      y: "100%",
-    }
-  };
-
-  const regularModalVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.9, 
-      y: 20 
-    },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      y: 0 
-    },
-    exit: { 
-      opacity: 0, 
-      scale: 0.9, 
-      y: 20 
-    }
-  };
-
   const modalContent = (
     <AnimatePresence>
       {isOpen && (
@@ -111,6 +79,7 @@ export default function Modal({
             ref={modalRef}
             className={cn(
               "outline-none ring-none relative bg-primary shadow-xl overflow-auto",
+             bottomSheet && maxHeight ? `max-h-[${maxHeight}]` : "",
               bottomSheet 
                 ? "w-full sm:w-auto" 
                 : "rounded-xl m-4",
@@ -120,11 +89,6 @@ export default function Modal({
               size === "fullscreen" && "rounded-none",
               className 
             )}
-            style={{
-              ...(bottomSheet && { 
-                maxHeight: maxHeight 
-              })
-            }}
             variants={bottomSheet ? bottomSheetVariants : regularModalVariants}
             initial="hidden"
             animate="visible"
