@@ -98,7 +98,9 @@
   --color-secondary-20: var(--yellow-20);
   --color-secondary-10: var(--yellow-10);
   --color-secondary-green-100: var(--leaf-green-100);
+  --color-green-10: var(--green-10);
   --color-danger-100: var(--red-100);
+  --color-gray-200: var(--gray-200);
   --color-gray-35: var(--gray-35);
   --color-gray-30: var(--gray-30);
   --color-gray-25: var(--gray-25);
@@ -201,6 +203,7 @@
   --yellow-10: #fef7e6;
   --leaf-green-100: #29953e;
   --red-100: #cc0e11;
+  --gray-200: #eaecfo;
   --gray-35: #c5c6c9;
   --gray-30: #d0d5dd;
   --gray-25: #f8f8f8;

@@ -12,6 +12,7 @@ const sizeClasses = {
   sm: "w-[6rem] h-[6rem]",
   md: "w-[8.6rem] h-[8.6rem]",
   lg: "w-[12rem] h-[12rem]",
+  xs: "w-[6rem] h-[6rem]"
 };
 
 const ALLOWED_IMAGE_TYPES = [
@@ -191,7 +192,7 @@ export default function ImageUploadSection({
         </div>
         <div className="flex-1">
           <Heading size="sm">{title}</Heading>
-          <Text className="mt-[.6rem]" size="sm">
+          <Text className="mt-[.6rem]" size={size}>
             {description}
           </Text>
         </div>
@@ -201,7 +202,7 @@ export default function ImageUploadSection({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center gap-[2rem]">
+      <div className="flex items-center gap-5">
         <div
           className={`${sizeClasses[size]} border border-border bg-border/20 rounded-full relative`}
         >
@@ -298,11 +299,11 @@ export default function ImageUploadSection({
         </div>
       </div>
 
-      <div className="mt-[2.9rem] flex sm:hidden gap-3">
+      <div className="mt-[2.9rem] flex sm:hidden gap-1 md:gap-3">
         <Button
           variant="secondary"
           onClick={handleUploadClick}
-          className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
+          className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-bold text-xs sm:text-md"
         >
           <ImageComponent
             src={icons.uploadCloud}
@@ -316,7 +317,7 @@ export default function ImageUploadSection({
         <Button
           variant="secondary"
           onClick={handleCameraCapture}
-          className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
+          className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-bold text-xs sm:text-md"
         >
           <ImageComponent
             src={icons.camera}
