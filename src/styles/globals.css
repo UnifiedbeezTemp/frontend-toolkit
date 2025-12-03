@@ -98,9 +98,11 @@
   --color-secondary-20: var(--yellow-20);
   --color-secondary-10: var(--yellow-10);
   --color-secondary-green-100: var(--leaf-green-100);
+  --color-light-green: var(--light-green);
   --color-green-10: var(--green-10);
   --color-danger-100: var(--red-100);
   --color-gray-200: var(--gray-200);
+  --color-gray-40: var(--gray-40);
   --color-gray-35: var(--gray-35);
   --color-gray-30: var(--gray-30);
   --color-gray-25: var(--gray-25);
@@ -167,7 +169,7 @@
   --shadow-ring: 0 1px 2px rgba(16, 24, 40, 0.05);
   --soft-green: #f7fffc;
   --soft-green: #f7fffc;
-
+  --light-green: #E9F7F2;
   --card-gradient: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
 
   --black-110: #1b1b1b;
@@ -204,6 +206,7 @@
   --leaf-green-100: #29953e;
   --red-100: #cc0e11;
   --gray-200: #eaecfo;
+  --gray-40: #919191;
   --gray-35: #c5c6c9;
   --gray-30: #d0d5dd;
   --gray-25: #f8f8f8;
