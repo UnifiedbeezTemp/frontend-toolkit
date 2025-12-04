@@ -13,3 +13,14 @@ export function compareValues(a: unknown, b: unknown): boolean {
   }
   return String(a).toLowerCase() === String(b).toLowerCase();
 }
+
+export function filterDuplicateStrings(stringList: string[]) {
+    const uniqueStringsSet = new Set();
+    for (const item of stringList) {
+        if (typeof item === 'string') {
+            const normalizedString = item.trim().toLowerCase();
+            uniqueStringsSet.add(normalizedString);
+        }
+    }
+    return Array.from(uniqueStringsSet);
+}
