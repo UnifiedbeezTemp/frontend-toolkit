@@ -58,6 +58,11 @@ export const useSupabaseGifs = () => {
       celebrationPopup: getAssetUrl(SUPABASE_GIFS.celebrationPopup),
       lightMode: getAssetUrl(SUPABASE_GIFS.lightMode),
       darkMode: getAssetUrl(SUPABASE_GIFS.darkMode),
+      copilotSidebarOne: getAssetUrl(SUPABASE_GIFS.copilotSidebarOne),
+      copilotSidebarTwo: getAssetUrl(SUPABASE_GIFS.copilotSidebarTwo),
+      copilotSidebarThree: getAssetUrl(SUPABASE_GIFS.copilotSidebarThree),
+      copilotSidebarFour: getAssetUrl(SUPABASE_GIFS.copilotSidebarFour),
+      copilotSidebarFive: getAssetUrl(SUPABASE_GIFS.copilotSidebarFive),
     }),
     []
   );

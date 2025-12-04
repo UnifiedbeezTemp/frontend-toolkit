@@ -207,4 +207,9 @@ export const SUPABASE_GIFS = {
   celebrationPopup: "/celebration-v3.gif",
   lightMode: "gifs/light-mode.gif",
   darkMode: "gifs/dark-mode.gif",
+  copilotSidebarOne: "copilot/copilotSidebarOne.gif",
+  copilotSidebarTwo: "copilot/copilotSidebarTwo.gif",
+  copilotSidebarThree: "copilot/copilotSidebarThree.gif",
+  copilotSidebarFour: "copilot/copilotSidebarFour.gif",
+  copilotSidebarFive: "copilot/copilotSidebarFive.gif",
 } as const;
