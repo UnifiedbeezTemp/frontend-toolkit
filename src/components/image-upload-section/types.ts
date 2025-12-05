@@ -8,5 +8,5 @@ export interface ImageUploadSectionProps {
   isEditing: boolean;
   type?: "profile" | "logo" | "banner";
   optional?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xs";
 }

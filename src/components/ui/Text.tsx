@@ -27,7 +27,7 @@ import { cn } from "../../lib/utils";
 
 interface TextProps {
   as?: "p" | "span" | "div";
-  size?: "xs" | "sm" | "base" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "base" | "lg" | "xl";
   weight?: "normal" | "medium" | "semibold" | "bold";
   color?: "primary" | "muted" | "brand";
   align?: "left" | "center" | "right";
@@ -37,6 +37,7 @@ interface TextProps {
 }
 
 const sizeClasses = {
+  md: "text-md",
   xs: "text-[1.2rem]",
   sm: "text-[1.4rem]",
   base: "text-[1.6rem]",
