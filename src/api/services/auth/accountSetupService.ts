@@ -83,7 +83,7 @@ export const accountSetupService = {
     try {
       const data = JSON.parse(responseText);
       return {
-        user: data.user || createEmptyUser(),
+        user: data || createEmptyUser(),
         message: data.message,
       };
     } catch {

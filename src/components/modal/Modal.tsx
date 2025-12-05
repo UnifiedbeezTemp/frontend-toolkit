@@ -25,6 +25,7 @@ interface ModalProps {
   isBlur?: boolean;
   bottomSheet?: boolean;
   maxHeight?: string;
+  overflow?:boolean;
 }
 
 export default function Modal({
@@ -39,7 +40,8 @@ export default function Modal({
   priority = 0,
   isBlur = false,
   bottomSheet = false,
-  maxHeight = "90vh", 
+  maxHeight = "90vh",
+  overflow = true 
 }: ModalProps) {
   const { modalRef, handleOverlayClick } = useModal({
     isOpen,
@@ -78,7 +80,8 @@ export default function Modal({
           <motion.div
             ref={modalRef}
             className={cn(
-              "outline-none ring-none relative bg-primary shadow-xl overflow-auto",
+              "outline-none ring-none relative bg-primary shadow-xl",
+              overflow && "overflow-auto",
              bottomSheet && maxHeight ? `max-h-[${maxHeight}]` : "",
               bottomSheet 
                 ? "w-full sm:w-auto" 

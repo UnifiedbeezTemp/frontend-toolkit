@@ -1,6 +1,4 @@
-interface MobileRoleBadgeProps {
-  role: string;
-}
+import { MobileRoleBadgeProps } from "./types";
 
 export default function MobileRoleBadge({ role }: MobileRoleBadgeProps) {
   return (

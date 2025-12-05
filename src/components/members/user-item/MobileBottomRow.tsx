@@ -3,14 +3,7 @@ import RoleDropdown from "../RoleDropdown";
 import Button from "../../ui/Button";
 import StatusBadge from "./StatusBadge";
 import RemoveButton from "./RemoveButton";
-
-interface MobileBottomRowProps {
-  user: TeamMember;
-  type: "invited" | "members";
-  onRoleChange: (role: string) => void;
-  onRemove: () => void;
-  getStatusStyles: (status: string) => string;
-}
+import { MobileBottomRowProps } from "./types";
 
 export default function MobileBottomRow({
   user,

@@ -16,3 +16,12 @@ export const getDateAfter30Days = () => {
     day: "numeric",
   });
 };
+
+export const getUserNameParts = (fullName: string) => {
+  if (!fullName) return { firstName: "", lastName: "" };
+  const nameParts = fullName.split(" ");
+  return {
+    firstName: nameParts[0] || "",
+    lastName: nameParts.slice(1).join(" ") || "",
+  };
+};

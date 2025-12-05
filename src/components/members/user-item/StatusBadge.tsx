@@ -1,7 +1,4 @@
-interface StatusBadgeProps {
-  status: string;
-  getStatusStyles: (status: string) => string;
-}
+import { StatusBadgeProps } from "./types";
 
 export default function StatusBadge({
   status,

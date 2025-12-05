@@ -4,16 +4,7 @@ import RoleDropdown from "../RoleDropdown";
 import CheckboxButton from "./CheckboxButton";
 import StatusBadge from "./StatusBadge";
 import RemoveButton from "./RemoveButton";
-
-interface DesktopSectionProps {
-  user: TeamMember;
-  type: "invited" | "members";
-  onRoleChange: (role: string) => void;
-  onRemove: () => void;
-  onToggle: () => void;
-  getStatusStyles: (status: string) => string;
-  supabaseIcons: any;
-}
+import { DesktopSectionProps } from "./types";
 
 export default function DesktopSection({
   user,

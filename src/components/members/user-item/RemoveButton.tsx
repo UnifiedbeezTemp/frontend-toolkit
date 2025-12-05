@@ -1,11 +1,5 @@
 import Button from "../../ui/Button";
-
-interface RemoveButtonProps {
-  type: "invited" | "members";
-  status: string;
-  onRemove: () => void;
-  mobile?: boolean;
-}
+import { RemoveButtonProps } from "./types";
 
 export default function RemoveButton({
   type,

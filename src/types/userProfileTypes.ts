@@ -8,6 +8,8 @@ export interface UserProfile {
   phone: string;
   plan: string;
   businessName: string;
+  onboardingStep: number;
+  planFeatures: { maxAiAssistants: number };
 }
 
 export const createEmptyUser = () => {
@@ -21,5 +23,6 @@ export const createEmptyUser = () => {
     isVerified: false,
     plan: "",
     businessName: "",
+    onboardingStep: 0,
   };
 };

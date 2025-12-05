@@ -1,12 +1,7 @@
 import Image from "next/image";
 import { TeamMember } from "../../../store/onboarding/types/memberTypes";
 import CheckboxButton from "./CheckboxButton";
-
-interface MobileTopRowProps {
-  user: Pick<TeamMember, "avatar" | "email" | "isSelected">;
-  onToggle: () => void;
-  supabaseIcons: any;
-}
+import { MobileTopRowProps } from "./types";
 
 export default function MobileTopRow({ user, onToggle, supabaseIcons }: MobileTopRowProps) {
   return (

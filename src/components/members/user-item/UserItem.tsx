@@ -6,11 +6,7 @@ import { useUserItem } from "./hooks/useUserItem";
 import MobileBottomRow from "./MobileBottomRow";
 import MobileRoleBadge from "./MobileRoleBadge";
 import MobileTopRow from "./MobileTopRow";
-
-interface UserItemProps {
-  user: TeamMember;
-  type: "invited" | "members";
-}
+import { UserItemProps } from "./types";
 
 export default function UserItem({ user, type }: UserItemProps) {
   const {
@@ -29,9 +25,9 @@ export default function UserItem({ user, type }: UserItemProps) {
           onToggle={handleToggle}
           supabaseIcons={supabaseIcons}
         />
-        
+
         <MobileRoleBadge role={user.role} />
-        
+
         <MobileBottomRow
           user={user}
           type={type}

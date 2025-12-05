@@ -3,7 +3,7 @@ import Image from "next/image";
 interface CheckboxButtonProps {
   isSelected?: boolean;
   onToggle: () => void;
-  supabaseIcons: any;
+  supabaseIcons: { checkbox: string };
 }
 
 export default function CheckboxButton({

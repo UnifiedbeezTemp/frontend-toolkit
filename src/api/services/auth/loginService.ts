@@ -1,6 +1,6 @@
 import { authBaseUrl } from "../../rootUrls";
-import { AuthPayload, AuthResponse, AuthError } from ".";
-import { LoginResponseData } from "./types";
+import { AuthError } from "./error";
+import { AuthPayload, AuthResponse, LoginResponseData } from "./types";
 
 export const loginService = {
   async signIn(payload: AuthPayload): Promise<AuthResponse<LoginResponseData>> {

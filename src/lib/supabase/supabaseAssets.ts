@@ -59,6 +59,7 @@ export const SUPABASE_ICONS = {
   data: "icons/data.svg",
   dataGreen: "icons/data-green.svg",
   settings: "icons/settings-active.svg",
+  settingsInactive: "icons/settings-inactive.svg",
   settingsGreen: "icons/settings-green.svg",
   threeDot: "icons/dots-vertical.svg",
   checkbox: "icons/Checkbox.svg",

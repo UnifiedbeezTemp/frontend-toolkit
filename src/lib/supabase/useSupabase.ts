@@ -65,6 +65,7 @@ export const useSupabaseIcons = () => {
       data: getAssetUrl(SUPABASE_ICONS.data),
       dataGreen: getAssetUrl(SUPABASE_ICONS.dataGreen),
       settings: getAssetUrl(SUPABASE_ICONS.settings),
+      settingsInactive: getAssetUrl(SUPABASE_ICONS.settingsInactive),
       settingsGreen: getAssetUrl(SUPABASE_ICONS.settingsGreen),
       pattern: getAssetUrl(SUPABASE_ICONS.pattern),
       messagingTextSquare: getAssetUrl(SUPABASE_ICONS.messagingTextSquare),
