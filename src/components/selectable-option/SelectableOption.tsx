@@ -1,4 +1,6 @@
+import clsx from "clsx"
 import { CheckboxVisual, RadioVisual } from "./SelectedVisual"
+import { twMerge } from "tailwind-merge"
 
 interface SelectableOptionProps {
   label: React.ReactNode
@@ -8,7 +10,8 @@ interface SelectableOptionProps {
   variant?: "check" | "radio"
   className?: string
   hideIndicator?: boolean
-  disabled?: boolean
+  disabled?: boolean,
+  selectedBgClassName?: string
 }
 
 export default function SelectableOption({
@@ -18,7 +21,8 @@ export default function SelectableOption({
   variant = "radio",
   className = "",
   hideIndicator = false,
-  disabled
+  disabled,
+  selectedBgClassName
 }: SelectableOptionProps) {
   return (
     <button
@@ -26,8 +30,9 @@ export default function SelectableOption({
       onClick={onSelect}
       className={`
         w-full flex items-center justify-between rounded-2xl border px-2 py-2.75 transition relative text-dark-base-100 gap-2 text-md md:text-base 
-        ${selected ? "border-primary-100 bg-gradient-yellow-1 font-bold" : "bg-white border-input-stroke font-normal"}
+        ${selected ? "border-primary-100 font-bold" : "border-input-stroke font-normal"}
         ${variant === "check" ? "flex-col items-start px-4.25 py-2.5" : "flex-row"}
+        ${selected ? selectedBgClassName ? `${selectedBgClassName} bg-white` : "bg-gradient-yellow-1": "bg-white"}
         ${className}
       `}
     >
