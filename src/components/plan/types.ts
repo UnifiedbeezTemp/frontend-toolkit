@@ -1,6 +1,8 @@
+import { PLAN_TYPES } from "./hooks/usePlanStyling";
+
 export interface OriginalPlan {
   id: number;
-  planType: string;
+  planType: "individual" | "premium" | "business" | "organization";
   maxSeats: number | null;
   maxAiAssistants: number | null;
   maxWhatsappChannels: number;
@@ -29,7 +31,7 @@ export interface OriginalPlan {
   createdAt: string;
   updatedAt: string;
   name: string;
-  addons: []
+  addons: Addon[]
 }
 
 export interface Plan {
@@ -47,3 +49,31 @@ export interface Plan {
   footerIcon: string;
   originalPlan: OriginalPlan;
 }
+
+export type Pricing = {
+  amount: number
+  currency: string
+  interval: "month" | "year"
+}
+
+export type FeatureInfo = {
+  highlight: string
+  compareUrl: string
+}
+
+export type Addon = {
+  id: string
+  name: string
+  quantity: number
+  pricePerUnit: number
+}
+
+
+export interface PlanSummaryCardProps {
+  plan: OriginalPlan
+  className?: string
+  isOwnPlan?: boolean
+  showHighlightOfPlan?: boolean
+}
+
+

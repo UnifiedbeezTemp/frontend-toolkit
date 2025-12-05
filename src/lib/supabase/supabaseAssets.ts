@@ -5,6 +5,7 @@ export const getAssetUrl = (path: string): string => {
 };
 
 export const SUPABASE_IMAGES = {
+  chatBg: "images/chat-bg.svg",
   websiteWebChat: "images/website-webchat.png",
   avatar: "images/avatar.png",
   investorXWebsiteImage: "images/beehive-hero-img.png",
@@ -33,6 +34,7 @@ export const SUPABASE_IMAGES = {
 
 export const SUPABASE_ICONS = {
   searchSmIcon: "icons/search-sm.svg",
+  pencil: "icons/pencil.png",
   searchIg: "icons/search-lg.svg",
   lucideSearch: "icons/lucide_search.svg",
   filterLinesIcon: "icons/filter-lines.svg",

@@ -29,7 +29,7 @@ import { cn } from "../../lib/utils";
  * - Hover scale effect (if onClick provided)
  */
 
-interface AvatarProps {
+export interface AvatarProps {
   src?: string;
   alt: string;
   name?: string;
@@ -40,6 +40,8 @@ interface AvatarProps {
   onClick?: () => void;
   imageContainerClassName?: string;
   initialsClassName?: string;
+  hasBorder?: boolean;
+  hideOverflow?: boolean
 }
 
 const sizeClasses = {
@@ -83,6 +85,8 @@ export default function Avatar({
   className = "",
   imageContainerClassName = "",
   initialsClassName= "",
+  hasBorder = true,
+  hideOverflow = true,
   onClick,
 }: AvatarProps) {
   const hasImage = !!src;
@@ -91,7 +95,7 @@ export default function Avatar({
   return (
     <div
       className={cn(
-        "relative inline-flex items-center justify-center flex-shrink-0",
+        "relative inline-flex items-center justify-center shrink-0",
         onClick && "cursor-pointer",
         className
       )}
@@ -99,9 +103,11 @@ export default function Avatar({
     >
       <div
         className={cn(
-          "rounded-full overflow-hidden border border-border bg-primary transition-all duration-200",
+          "rounded-full bg-primary transition-all duration-200",
           sizeClasses[size],
           onClick && "hover:scale-105 active:scale-95",
+          hasBorder && "border-border border",
+          hideOverflow && "overflow-hidden",
           imageContainerClassName
         )}
       >
