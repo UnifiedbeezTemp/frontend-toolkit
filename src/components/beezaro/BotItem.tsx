@@ -25,7 +25,7 @@ export default function BotItem({
     []
   )
   return (
-    <div className="relative bg-white border border-input-stroke rounded-md pl-3.5 pr-2.75 pt-2.75 pb-4 flex justify-between shadow-[0_1px_2px_0_rgba(16,24,40,0.05)]">
+    <div className="relative bg-white border border-input-stroke rounded-md pl-3.5 pr-2.75 pt-2.75 pb-4 flex justify-between shadow-[0_1px_2px_0_rgba(16,24,40,0.05)] w-full">
       <div className="flex gap-1 flex-wrap sm:flex-nowrap items-center">
         <ImageComponent
           className=" border-dark-base-5 border rounded-[.35rem] p-[.35rem]"
