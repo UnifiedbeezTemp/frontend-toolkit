@@ -8,14 +8,30 @@ import MobileRoleBadge from "./MobileRoleBadge";
 import MobileTopRow from "./MobileTopRow";
 import { UserItemProps } from "./types";
 
-export default function UserItem({ user, type }: UserItemProps) {
+interface UserItemWithSendProps extends UserItemProps {
+  onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
+  isSendingInvite?: boolean;
+}
+
+export default function UserItem({ 
+  user, 
+  type, 
+  onSendInvite, 
+  isSendingInvite,
+}: UserItemWithSendProps) {
   const {
     handleRoleChange,
     handleRemove,
     handleToggle,
+    handleSendInvite,
     getStatusStyles,
     supabaseIcons,
-  } = useUserItem(type, user.id);
+    isCurrentUser,
+    isOwner,
+    isRemoving,
+    isCanceling,
+    isAssigningRole,
+  } = useUserItem(type, user.id, onSendInvite);
 
   return (
     <div className="border border-input-stroke p-[0.8rem] rounded-[0.8rem]">
@@ -26,14 +42,21 @@ export default function UserItem({ user, type }: UserItemProps) {
           supabaseIcons={supabaseIcons}
         />
 
-        <MobileRoleBadge role={user.role} />
+        {type === "invited" && user.status !== "draft" && <MobileRoleBadge role={user.role} />}
 
         <MobileBottomRow
           user={user}
           type={type}
           onRoleChange={handleRoleChange}
           onRemove={handleRemove}
+          onSendInvite={handleSendInvite}
+          isSendingInvite={isSendingInvite}
+          isRemoving={isRemoving}
+          isCanceling={isCanceling}
+          isAssigningRole={isAssigningRole}
           getStatusStyles={getStatusStyles}
+          isCurrentUser={isCurrentUser}
+          isOwner={isOwner}
         />
       </div>
 
@@ -42,9 +65,16 @@ export default function UserItem({ user, type }: UserItemProps) {
         type={type}
         onRoleChange={handleRoleChange}
         onRemove={handleRemove}
+        onSendInvite={handleSendInvite}
+        isSendingInvite={isSendingInvite}
+        isRemoving={isRemoving}
+        isCanceling={isCanceling}
+        isAssigningRole={isAssigningRole}
         onToggle={handleToggle}
         getStatusStyles={getStatusStyles}
         supabaseIcons={supabaseIcons}
+        isCurrentUser={isCurrentUser}
+        isOwner={isOwner}
       />
     </div>
   );

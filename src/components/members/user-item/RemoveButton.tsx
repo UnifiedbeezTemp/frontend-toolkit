@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/utils";
 import Button from "../../ui/Button";
 import { RemoveButtonProps } from "./types";
 
@@ -6,22 +7,31 @@ export default function RemoveButton({
   status,
   onRemove,
   mobile = false,
-}: RemoveButtonProps) {
+  disabled = false,
+  loading = false,
+}: RemoveButtonProps & { loading?: boolean }) {
   const buttonText =
     type === "members"
       ? "Remove"
       : status === "pending"
       ? mobile
-        ? "Cancel"
+        ? "Cancel invitation"
         : "Cancel invitation"
       : "Remove";
 
   const className = mobile
-    ? "text-destructive text-[1.2rem]"
-    : "text-destructive";
+    ? "text-[1.4rem]"
+    : "text-[1.4rem]";
 
   return (
-    <Button size="sm" variant="ghost" className={className} onClick={onRemove}>
+    <Button 
+      size="sm" 
+      variant="ghost" 
+      className={cn("text-destructive font-[400]", className)} 
+      onClick={onRemove}
+      disabled={disabled || loading}
+      loading={loading}
+    >
       {buttonText}
     </Button>
   );

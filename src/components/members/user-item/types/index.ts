@@ -5,7 +5,14 @@ export interface MobileBottomRowProps {
   type: "invited" | "members";
   onRoleChange: (role: string) => void;
   onRemove: () => void;
+  onSendInvite?: () => void;
+  isSendingInvite?: boolean;
+  isRemoving?: boolean;
+  isCanceling?: boolean;
+  isAssigningRole?: boolean;
   getStatusStyles: (status: string) => string;
+  isCurrentUser?: boolean;
+  isOwner?: boolean;
 }
 
 export interface DesktopSectionProps {
@@ -13,9 +20,16 @@ export interface DesktopSectionProps {
   type: "invited" | "members";
   onRoleChange: (role: string) => void;
   onRemove: () => void;
+  onSendInvite?: () => void;
+  isSendingInvite?: boolean;
+  isRemoving?: boolean;
+  isCanceling?: boolean;
+  isAssigningRole?: boolean;
   onToggle: () => void;
   getStatusStyles: (status: string) => string;
   supabaseIcons: { checkbox: string };
+  isCurrentUser?: boolean;
+  isOwner?: boolean;
 }
 
 export interface MobileRoleBadgeProps {
@@ -33,6 +47,7 @@ export interface RemoveButtonProps {
   status: string;
   onRemove: () => void;
   mobile?: boolean;
+  disabled?: boolean;
 }
 
 export interface StatusBadgeProps {

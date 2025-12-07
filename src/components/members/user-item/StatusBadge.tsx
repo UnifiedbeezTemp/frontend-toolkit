@@ -6,7 +6,7 @@ export default function StatusBadge({
 }: StatusBadgeProps) {
   return (
     <p
-      className={`text-[1.5rem] border rounded-[0.4rem] py-[0.4rem] font-[400] px-[0.8rem] text-[1.2rem] ${getStatusStyles(
+      className={`text-[1.2rem] border-[1.5px] rounded-[0.4rem] py-[0.4rem] font-[700] px-[0.8rem] text-[1.2rem] ${getStatusStyles(
         status
       )}`}
     >

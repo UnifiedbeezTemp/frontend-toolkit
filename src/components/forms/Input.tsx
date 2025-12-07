@@ -148,7 +148,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               "autofill:bg-primary autofill:text-text-primary",
               "[-webkit-text-fill-color:var(--text-primary)]",
               "[-webkit-box-shadow:0_0_0px_1000px_var(--primary)_inset]",
-              leftIcon && "pl-[3rem]",
+              leftIcon && "pl-[4rem]",
               rightIcon && "pr-10",
               hasError
                 ? "border-destructive focus:border-destructive"

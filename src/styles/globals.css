@@ -62,8 +62,8 @@
   --color-toggle-filled: var(--toggle-filled);
   --color-soft-green: var(--soft-green);
 
-  --breakpoint-md: 58.25rem;
-  --breakpoint-lg: 64rem;
+  /* --breakpoint-md: 58.25rem;
+  --breakpoint-lg: 64rem; */
   --inset-shadow-md: 2px 0 0 0 #053d27 inset;
   --color-fresh-green: var(--fresh-green);
   --color-dark-base-100: var(--black-100);
