@@ -12,7 +12,7 @@ export default function CloseModalButton({ onClick, className }: Props) {
   const icons = useSupabaseIcons();
   return (
     <Button
-      className={cn("p-[0.6rem] rounded-[0.8rem]", className)}
+      className={cn("p-[0.6rem] rounded-md", className)}
       variant="secondary"
       onClick={onClick}
     >
