@@ -445,4 +445,7 @@ div[data-google-button] {
   .pill{
     @apply flex justify-center items-center font-normal px-2.5 py-1.5 text-sm leading-base bg-soft-green border-solid-green border rounded-[8rem];
   }
+  .badge{
+    @apply max-w-fit px-1.5 py-1.25 text-[1rem] font-bold mix-blend-multiply rounded;
+  }
 }

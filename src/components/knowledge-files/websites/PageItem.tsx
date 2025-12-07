@@ -1,5 +1,5 @@
 import DotsMenu from "./DotsMenu";
-import ToggleSwitch from "./ToggleSwitch";
+import ToggleSwitch from "../../ui/ToggleSwitch";
 import { WebsitePage } from "./utils/types";
 
 interface PageItemProps {
