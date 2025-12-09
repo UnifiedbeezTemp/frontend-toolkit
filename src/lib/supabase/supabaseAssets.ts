@@ -202,6 +202,13 @@ export const SUPABASE_ICONS = {
   phoneIcon: "icons/phone.svg",
   textOutdent: "icons/textOutdent.svg",
   texIntdent: "icons/textIndent.svg",
+  twilloSms: "icons/twilio-sms.svg",
+  twilloPhone: "icons/twilio-phone.svg",
+  emailRed: "icons/email-red.svg",
+  google: "icons/google.svg",
+  microsoft: "icons/microsoft.svg",
+  smileEmoji: "icons/mingcute_emoji-line.svg",
+  stars: "icons/star-06.svg",
 };
 
 export const SUPABASE_GIFS = {

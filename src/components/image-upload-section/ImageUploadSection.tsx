@@ -102,7 +102,7 @@ export default function ImageUploadSection({
   const handleCameraCapture = () => {
     if (captureRef.current) {
       // Clear any previous value to ensure change event fires
-      captureRef.current.value = '';
+      captureRef.current.value = "";
       captureRef.current.click();
     }
   };
@@ -175,10 +175,10 @@ export default function ImageUploadSection({
     onImageSelect(null as any);
     setPreviewUrl(null);
     setFileError(null);
-    
+
     // Clear file inputs
-    if (uploadRef.current) uploadRef.current.value = '';
-    if (captureRef.current) captureRef.current.value = '';
+    if (uploadRef.current) uploadRef.current.value = "";
+    if (captureRef.current) captureRef.current.value = "";
   };
 
   const hasImage = previewUrl || image;
@@ -212,9 +212,9 @@ export default function ImageUploadSection({
           {/* Remove Image Button (X) - Only show when there's an image */}
           {selectedFile && (
             <button
+              type="button"
               onClick={handleRemoveImage}
               className="absolute bottom-[1px] right-[0px] w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-red-600 transition-colors z-10"
-              type="button"
             >
               ×
             </button>
@@ -222,10 +222,16 @@ export default function ImageUploadSection({
 
           {!hasImage && (
             <button
+              type="button"
               onClick={handleUploadClick}
               className="absolute bottom-[1px] right-[-5px] border-border p-[2px] rounded-full border-[1px] bg-primary hidden sm:block"
             >
-              <ImageComponent alt="" src={icons.upload} width={15} height={15} />
+              <ImageComponent
+                alt=""
+                src={icons.upload}
+                width={15}
+                height={15}
+              />
             </button>
           )}
         </div>
@@ -240,7 +246,7 @@ export default function ImageUploadSection({
               </span>
             )}
           </Heading>
-          <Text className="mt-[.6rem]" size="sm">
+          <Text className="lg:mt-[.6rem]" size="sm">
             {description}
           </Text>
 
@@ -252,6 +258,7 @@ export default function ImageUploadSection({
 
           <div className="mt-[1.6rem] flex gap-3 hidden sm:flex">
             <Button
+              type="button"
               variant="secondary"
               onClick={handleUploadClick}
               className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
@@ -266,6 +273,7 @@ export default function ImageUploadSection({
             </Button>
 
             <Button
+              type="button"
               variant="secondary"
               onClick={handleCameraCapture}
               className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-[700] text-[1.4rem]"
@@ -293,15 +301,16 @@ export default function ImageUploadSection({
             ref={captureRef}
             type="file"
             accept="image/*"
-            capture="environment" 
+            capture="environment"
             className="hidden"
             onChange={(e) => handleFileSelect(e.target.files?.[0])}
           />
         </div>
       </div>
 
-      <div className="mt-[2.9rem] flex sm:hidden gap-1 md:gap-3">
+      <div className="mt-[1rem] lg:mt-[2.9rem] flex sm:hidden gap-3">
         <Button
+          type="button"
           variant="secondary"
           onClick={handleUploadClick}
           className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-bold text-xs sm:text-md"
@@ -316,6 +325,7 @@ export default function ImageUploadSection({
         </Button>
 
         <Button
+          type="button"
           variant="secondary"
           onClick={handleCameraCapture}
           className="flex items-center gap-2 py-[.3rem] px-[0.62rem] rounded-[0.62rem] font-bold text-xs sm:text-md"
@@ -328,7 +338,6 @@ export default function ImageUploadSection({
           />
           Take photo
         </Button>
-
       </div>
     </div>
   );
