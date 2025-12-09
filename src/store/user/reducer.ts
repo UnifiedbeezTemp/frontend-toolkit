@@ -2,8 +2,8 @@ import { PayloadAction } from "@reduxjs/toolkit"
 import { UserProfile } from "./types"
 
 const userReducers = {
-  setUserProfile: (_state: UserProfile, action: PayloadAction<UserProfile>) => {
-    return action.payload
+  setUserProfile: (state: UserProfile, action: PayloadAction<Partial<UserProfile>>) => {
+    return {...state, ...action.payload}
   }
 }
 
