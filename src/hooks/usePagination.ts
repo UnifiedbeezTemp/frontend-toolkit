@@ -1,22 +1,5 @@
 import { useState, useEffect } from "react";
-
-interface UsePaginationProps {
-  totalItems: number;
-  itemsPerPage?: number;
-  initialPage?: number;
-}
-
-interface UsePaginationReturn {
-  currentPage: number;
-  totalPages: number;
-  startIndex: number;
-  endIndex: number;
-  setCurrentPage: (page: number) => void;
-  handlePrevious: () => void;
-  handleNext: () => void;
-  handlePageChange: (page: number | string) => void;
-  getPageNumbers: () => (number | string)[];
-}
+import { UsePaginationProps, UsePaginationReturn } from "./types";
 
 export function usePagination({
   totalItems,
