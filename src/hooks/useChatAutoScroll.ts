@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-
-interface UseChatAutoScrollOptions {
-  behavior?: ScrollBehavior;
-  bottomOffset?: number;
-}
+import { UseChatAutoScrollOptions } from "./types";
 
 export default function useChatAutoScroll<T extends HTMLElement>(
   messages: any[],
