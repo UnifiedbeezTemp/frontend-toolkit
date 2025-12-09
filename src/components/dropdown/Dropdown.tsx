@@ -45,18 +45,18 @@ export default function Dropdown({
       <button
         onClick={toggleDropdown}
         className={`
-          group flex items-center justify-between w-full p-[8px] rounded-[0.8rem] border transition-all text-[1.6rem] duration-300 font-medium
+          group flex items-center justify-between w-full p-[0.65rem] rounded-[0.8rem] border transition-all text-[1.6rem] duration-300 font-medium
           ${
             value
-              ? "text-text-primary border-border bg-primary"
-              : "bg-primary text-text-primary border-border hover:shadow-md"
+              ? "text-text-primary border-input-stroke bg-primary"
+              : "bg-primary text-text-primary border-input-stroke hover:shadow-md"
           }
           hover:scale-105 active:scale-95
         `}
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span className="min-w-[120px] text-left">{getCurrentLabel()}</span>
+          <span className="min-w-[120px] text-left hidden lg:block">{getCurrentLabel()}</span>
         </div>
 
         <ImageComponent
@@ -64,14 +64,14 @@ export default function Dropdown({
           src={icons.chevronDown}
           width={25}
           height={25}
-          className={`object-cover transition-transform ${
+          className={`object-cover transition-transform hidden lg:block  ${
             isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-[25rem] bg-primary border border-border rounded-[0.8rem] shadow-lg z-[10] overflow-hidden">
+        <div className="absolute top-full right-0 mt-2 w-[25rem] bg-primary border border-input-stroke rounded-[0.8rem] shadow-lg z-[10] overflow-hidden">
           {options.map((option) => (
             <button
               key={option.value}
@@ -102,7 +102,7 @@ export default function Dropdown({
           {value && (
             <button
               onClick={handleReset}
-              className="w-full px-4 py-3 text-left text-[1.4rem] text-destructive border-t border-border hover:bg-destructive/10 transition-all duration-200 flex items-center justify-between"
+              className="w-full px-4 py-3 text-left text-[1.4rem] text-destructive border-t border-input-stroke hover:bg-destructive/10 transition-all duration-200 flex items-center justify-between"
             >
               Reset
             </button>

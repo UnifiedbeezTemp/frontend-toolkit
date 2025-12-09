@@ -17,6 +17,15 @@ export const getDateAfter30Days = () => {
   });
 };
 
+export const getUserNameParts = (fullName: string) => {
+  if (!fullName) return { firstName: "", lastName: "" };
+  const nameParts = fullName.split(" ");
+  return {
+    firstName: nameParts[0] || "",
+    lastName: nameParts.slice(1).join(" ") || "",
+  };
+};
+
 export function getCurrencySymbol(currencyCode: string): string {
   try {
     return (0)

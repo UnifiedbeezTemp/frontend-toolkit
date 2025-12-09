@@ -34,7 +34,7 @@ export default function Checkbox({
         "rounded-[0.5rem] border flex items-center justify-center transition-all duration-200",
         checked
           ? "bg-brand-primary border-brand-primary"
-          : "border-border bg-primary hover:border-brand-primary/50",
+          : "border-input-stroke bg-primary hover:border-brand-primary/50",
         disabled && "opacity-50 cursor-not-allowed",
         sizeClasses[size],
         className

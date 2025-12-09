@@ -8,6 +8,7 @@ import { cn } from "../../lib/utils";
 import ModalPortal from "./ModalPortal";
 import { contentTransition } from "./utils/animations";
 import { useModalStack } from "./hooks/useModalStack";
+import { bottomSheetVariants, regularModalVariants } from "./utils/modalVariants";
 
 interface ModalProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ interface ModalProps {
   isBlur?: boolean;
   bottomSheet?: boolean;
   maxHeight?: string;
+  overflow?:boolean;
 }
 
 export default function Modal({
@@ -38,7 +40,8 @@ export default function Modal({
   priority = 0,
   isBlur = false,
   bottomSheet = false,
-  maxHeight = "90vh", 
+  maxHeight = "90vh",
+  overflow = true 
 }: ModalProps) {
   const { modalRef, handleOverlayClick } = useModal({
     isOpen,
@@ -49,39 +52,6 @@ export default function Modal({
   });
 
   const { getZIndex } = useModalStack(isOpen, priority);
-
-  const bottomSheetVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: "100%",
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-    },
-    exit: { 
-      opacity: 0, 
-      y: "100%",
-    }
-  };
-
-  const regularModalVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.9, 
-      y: 20 
-    },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      y: 0 
-    },
-    exit: { 
-      opacity: 0, 
-      scale: 0.9, 
-      y: 20 
-    }
-  };
 
   const modalContent = (
     <AnimatePresence>
@@ -110,7 +80,9 @@ export default function Modal({
           <motion.div
             ref={modalRef}
             className={cn(
-              "outline-none ring-none relative bg-primary shadow-xl overflow-auto",
+              "outline-none ring-none relative bg-primary shadow-xl",
+              overflow && "overflow-auto",
+             bottomSheet && maxHeight ? `max-h-[${maxHeight}]` : "",
               bottomSheet 
                 ? "w-full sm:w-auto" 
                 : "rounded-xl m-4",
@@ -120,11 +92,6 @@ export default function Modal({
               size === "fullscreen" && "rounded-none",
               className 
             )}
-            style={{
-              ...(bottomSheet && { 
-                maxHeight: maxHeight 
-              })
-            }}
             variants={bottomSheet ? bottomSheetVariants : regularModalVariants}
             initial="hidden"
             animate="visible"

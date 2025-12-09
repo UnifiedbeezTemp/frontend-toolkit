@@ -36,7 +36,7 @@ export default function BusinessDescriptionEditor({
   }, [description, isTyping, typedText]);
 
   return (
-    <div className="border-border border p-[1.6rem] rounded-[1.6rem] focus-within:shadow-[0_0_0_5px_rgba(5,61,39,0.1)] transition-shadow bg-primary">
+    <div className="border-border border p-[1.6rem] rounded-[1.6rem] focus-within:shadow-[0_0_0_5px_rgba(5,61,39,0.1)] transition-shadow bg-primary focus-within:border-brand-primary">
       <div className="flex items-center justify-between">
         <span className="text-[1.6rem] font-[700] text-brand-primary">
           Business overview
@@ -71,10 +71,9 @@ export default function BusinessDescriptionEditor({
       <textarea
         value={displayText}
         onChange={(e) => onDescriptionChange(e.target.value)}
-        className="focus:ring-0 focus:outline-0 border-0 mt-[1.4rem] text-text-primary block w-full text-[1.6rem] min-h-[8rem] resize-none placeholder-text-primary/50 min-h-[30rem] sm:min-h-[12.8rem]"
+        className="focus:ring-0 focus:outline-0 border-0 mt-[1.4rem] text-text-primary block w-full text-[1.6rem] min-h-[8rem] resize-none placeholder-text-primary/50 min-h-[30rem] sm:min-h-[12.8rem] md:min-h-auto"
         placeholder="Enter business description"
         disabled={isTyping}
-        rows={6}
       />
 
       <div className="flex justify-between sm:justify-end items-center mt-2">
