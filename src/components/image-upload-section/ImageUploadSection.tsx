@@ -308,7 +308,7 @@ export default function ImageUploadSection({
         </div>
       </div>
 
-      <div className="mt-[1rem] lg:mt-[2.9rem] flex sm:hidden gap-3">
+      <div className="pt-4 mt-2.5 lg:mt-[2.9rem] flex sm:hidden gap-3">
         <Button
           type="button"
           variant="secondary"
