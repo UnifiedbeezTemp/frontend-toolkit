@@ -1,13 +1,13 @@
 import { authBaseUrl } from "../../rootUrls";
-import { AuthPayload, AuthResponse, AuthError } from ".";
-import { LoginResponseData } from "./types";
+import { AuthError } from "./error";
+import { AuthPayload, AuthResponse, LoginResponseData } from "./types";
 
 export const loginService = {
   async signIn(payload: AuthPayload): Promise<AuthResponse<LoginResponseData>> {
-    const response = await fetch(`${authBaseUrl}/test/delete-user`, {
-    // const response = await fetch(`${authBaseUrl}/login`, {
-      method: "DELETE",
-      // method: "POST",
+    // const response = await fetch(`${authBaseUrl}/test/delete-user`, {
+    const response = await fetch(`${authBaseUrl}/login`, {
+      // method: "DELETE",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

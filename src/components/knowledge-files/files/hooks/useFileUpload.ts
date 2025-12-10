@@ -17,9 +17,11 @@ export const useFileUpload = ({
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
+      if (e.target.files && e.target.files.length > 0) {
         onFileUpload(e.target.files);
         onDragOverChange(false);
+        // Clear the input value to prevent duplicate triggers
+        e.target.value = '';
       }
     },
     [onFileUpload, onDragOverChange]

@@ -9,10 +9,10 @@ import { useCheckoutPlan } from "./hooks/useCheckoutPlan";
 import Heading from "../ui/Heading";
 import Text from "../ui/Text";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Addon } from "../../store/onboarding/slices/addonSlice";
 import { usePlan } from "../../api/services/plan/hooks/usePlan";
 import PlanCardPreviewSkeleton from "./PlanCardPreviewSkeleton";
 import { cn } from "../../lib/utils";
+import { Addon } from "../../store/onboarding/types/addonTypes";
 
 interface Props {
   isAddons: boolean;

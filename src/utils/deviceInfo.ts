@@ -1,16 +1,15 @@
+import { ipifyUrl } from "../api/rootUrls";
 import { DeviceInfo } from "../types/deviceInfoTypes";
 
 export const getDeviceInfo = async (): Promise<DeviceInfo> => {
   let ipAddress = "unknown";
 
   try {
-    const ipResponse = await fetch("https://api.ipify.org?format=json");
+    const ipResponse = await fetch(ipifyUrl);
     const ipData = await ipResponse.json();
     ipAddress = ipData.ip;
-  } catch (error) {
-    console.log("Could not fetch IP:", error);
-  }
-
+  } catch (error) {}
+  
   return {
     device_type: "web",
     device_name: navigator.platform,

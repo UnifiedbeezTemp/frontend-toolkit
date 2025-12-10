@@ -1,7 +1,8 @@
 import axios from "axios";
+import { apiBaseUrl } from "./rootUrls";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: apiBaseUrl,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -10,6 +11,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
+    }
+
     const token =
       typeof window !== "undefined"
         ? localStorage.getItem("access_token")
@@ -19,11 +24,13 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   (error) => {
     const status = error.response?.status ?? 500;
     return Promise.reject({
@@ -34,7 +41,7 @@ axiosInstance.interceptors.response.use(
         "Something went wrong",
       details: error.response?.data || null,
     });
-  },
+  }
 );
 
 export default axiosInstance;

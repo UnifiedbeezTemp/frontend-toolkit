@@ -65,8 +65,8 @@
   --color-mid-green: var(--mid-green);
   --color-solid-green: var(--solid-green);
 
-  --breakpoint-md: 58.25rem;
-  --breakpoint-lg: 64rem;
+  /* --breakpoint-md: 58.25rem;
+  --breakpoint-lg: 64rem; */
   --inset-shadow-md: 2px 0 0 0 #053d27 inset;
   --color-fresh-green: var(--fresh-green);
   --color-dark-base-100: var(--black-100);
@@ -184,6 +184,7 @@
   --focus-ring: rgba(5, 61, 39, 0.2);
   --shadow-ring: 0 1px 2px rgba(16, 24, 40, 0.05);
   --soft-green: #f7fffc;
+
   --mid-green: #E8FFF6;
   --light-green: #E9F7F2;
   --solid-green: #219165;
@@ -351,84 +352,8 @@ button:disabled {
   opacity: 0.8;
 }
 
-
-/* NUCLEAR OPTION: Completely override Google Sign-In button styles */
-
-/* Target the Google button iframe and hide it completely */
-iframe[src*="accounts.google.com"] {
-  opacity: 0 !important;
-  position: absolute !important;
-  z-index: 1 !important;
-  width: 100% !important;
-  height: 100% !important;
-  cursor: pointer !important;
-}
-
-/* The container that holds Google's button */
-div[data-google-button] {
-  position: relative !important;
-  width: 100% !important;
-  height: 4.8rem !important; /* Match your button height */
-}
-
-/* Create a custom overlay that matches your design */
-.google-button-custom-overlay {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  background: var(--primary) !important;
-  border: 1px solid var(--input-stroke) !important;
-  border-radius: 0.8rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.8rem !important;
-  padding: 1rem 1.4rem !important;
-  font-size: 1.4rem !important;
-  color: var(--text-secondary) !important;
-  cursor: pointer !important;
-  z-index: 0 !important;
-  pointer-events: none !important; /* Let clicks pass through to Google's iframe */
-}
-
-.google-button-custom-overlay:hover {
-  background: var(--soft-green) !important;
-  border-color: var(--brand-primary) !important;
-}
-
-/* Ensure the Google iframe is clickable */
-.google-button-wrapper {
-  position: relative;
-  width: 100%;
-  height: 4.8rem;
-}
-
-.google-button-wrapper:hover .google-button-custom-overlay {
-  background: var(--soft-green) !important;
-  border-color: var(--brand-primary) !important;
-}
-
-/* Google Button Styling Override */
-div[data-google-button] iframe {
-  opacity: 0 !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  cursor: pointer !important;
-  z-index: 10 !important;
-}
-
-/* Make sure the Google button container is clickable */
-div[data-google-button] {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  cursor: pointer !important;
-  z-index: 10 !important;
+.gradient-button-secondary-primary {
+  background: linear-gradient(267deg, var(--brand-primary) -12.17%, var(--brand-secondary) 125.17%)
 }
 
 @layer components{

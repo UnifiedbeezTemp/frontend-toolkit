@@ -1,3 +1,7 @@
+import { BusinessObjective } from "./businessObjectiveTypes";
+import { BusinessGoal } from "./businessGoalTypes";
+import { UserWebsite } from "./websiteTypes";
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -8,9 +12,17 @@ export interface UserProfile {
   phone: string;
   plan: string;
   businessName: string;
+  onboardingStep: number;
+  planFeatures: { maxAiAssistants: number; maxSeats?: number };
+  industry: string;
+  businessObjectives?: BusinessObjective[];
+  businessGoals?: BusinessGoal[];
+  websites?: UserWebsite[];
+  businessOverview?: string;
+  businessLogo?: string;
 }
 
-export const createEmptyUser = () => {
+export const createEmptyUser = (): UserProfile => {
   return {
     id: "",
     email: "",
@@ -21,5 +33,8 @@ export const createEmptyUser = () => {
     isVerified: false,
     plan: "",
     businessName: "",
+    onboardingStep: 0,
+    planFeatures: { maxAiAssistants: 0, maxSeats: 0 },
+    industry: ""
   };
 };

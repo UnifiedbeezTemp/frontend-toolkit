@@ -1,7 +1,7 @@
-import { UserProfile } from "../../../types/userProfileTypes";
 import { authBaseUrl } from "../../rootUrls";
-import { OTPPayload, AuthResponse, AuthError } from ".";
-import { VerificationResponseData } from "./types";
+import { AuthResponse, OTPPayload, VerificationResponseData } from "./types";
+import { UserProfile } from "../../../types/userProfileTypes";
+import { AuthError } from "./error";
 
 export const emailVerificationService = {
   async verifyEmail(

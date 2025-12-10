@@ -61,6 +61,7 @@ export const SUPABASE_ICONS = {
   data: "icons/data.svg",
   dataGreen: "icons/data-green.svg",
   settings: "icons/settings-active.svg",
+  settingsInactive: "icons/settings-inactive.svg",
   settingsGreen: "icons/settings-green.svg",
   threeDot: "icons/dots-vertical.svg",
   checkbox: "icons/Checkbox.svg",
@@ -201,6 +202,13 @@ export const SUPABASE_ICONS = {
   phoneIcon: "icons/phone.svg",
   textOutdent: "icons/textOutdent.svg",
   texIntdent: "icons/textIndent.svg",
+  twilloSms: "icons/twilio-sms.svg",
+  twilloPhone: "icons/twilio-phone.svg",
+  emailRed: "icons/email-red.svg",
+  google: "icons/google.svg",
+  microsoft: "icons/microsoft.svg",
+  smileEmoji: "icons/mingcute_emoji-line.svg",
+  stars: "icons/star-06.svg",
 };
 
 export const SUPABASE_GIFS = {

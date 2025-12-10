@@ -1,9 +1,8 @@
-
-import { useSupabaseIcons } from "../../lib/supabase/useSupabase"
 import ImageComponent from "../ui/ImageComponent"
+import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 
 export function CheckboxVisual({ selected }: { selected: boolean }) {
-  const { check } = useSupabaseIcons()
+  const { check } = useSupabaseIcons();
   return (
     <div
       className={`w-5 h-5 flex items-center justify-center rounded-full border absolute right-3.25 top-3.25 shrink-0 ${
@@ -12,10 +11,10 @@ export function CheckboxVisual({ selected }: { selected: boolean }) {
     >
       {selected && <ImageComponent src={check} alt="" width={26} height={26} />}
     </div>
-  )
+  );
 }
 
-export function RadioVisual({ selected}: {selected: boolean}){
+export function RadioVisual({ selected }: { selected: boolean }) {
   return (
     <div
       className={`
@@ -25,5 +24,5 @@ export function RadioVisual({ selected}: {selected: boolean}){
     >
       {selected && <div className="w-2 h-2 rounded-full bg-brand-primary" />}
     </div>
-  )
+  );
 }

@@ -61,7 +61,7 @@ const indicatorSizeClasses = {
 };
 
 const statusColors = {
-  online: "bg-[#10b981]",
+  online: "bg-input-stroke",
   offline: "bg-muted",
   away: "bg-warning",
 };
