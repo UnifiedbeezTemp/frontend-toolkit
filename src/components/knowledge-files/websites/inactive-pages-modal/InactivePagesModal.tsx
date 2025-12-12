@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
 import InactivePagesModalHeader from "./InactivePagesModalHeader";
 import InactivePagesSearch from "./InactivePagesSearch";
 import InactivePagesList from "./InactivePagesList";
 import InactivePagesModalActions from "./InactivePagesModalActions";
 import { WebsitePage } from "../utils/types";
 import Modal from "../../../modal/Modal";
+import { useInactivePagesModal } from "./hooks/useInactivePagesModal";
 
 interface InactivePagesModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (selectedUrls: string[]) => void;
   pages: WebsitePage[];
+  isLoading?: boolean;
 }
 
 export default function InactivePagesModal({
@@ -18,55 +19,37 @@ export default function InactivePagesModal({
   onClose,
   onSave,
   pages,
+  isLoading = false,
 }: InactivePagesModalProps) {
-  const [selectedUrls, setSelectedUrls] = useState<Set<string>>(new Set());
-  const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    if (isOpen) {
-      const activePageUrls = pages
-        .filter(page => page.status === "active")
-        .map(page => page.url);
-      setSelectedUrls(new Set(activePageUrls));
-    }
-  }, [isOpen, pages]);
-
-  const filteredPages = pages.filter(page =>
-    page.url.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const togglePageSelection = (pageUrl: string) => {
-    setSelectedUrls(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(pageUrl)) {
-        newSet.delete(pageUrl);
-      } else {
-        newSet.add(pageUrl);
-      }
-      return newSet;
-    });
-  };
-
-  const toggleAllPages = () => {
-    if (selectedUrls.size === filteredPages.length) {
-      setSelectedUrls(new Set());
-    } else {
-      setSelectedUrls(new Set(filteredPages.map(page => page.url)));
-    }
-  };
-
-  const handleSave = () => {
-    onSave(Array.from(selectedUrls));
-    onClose();
-  };
-
-  const isAllSelected = selectedUrls.size === filteredPages.length && filteredPages.length > 0;
+  const {
+    selectedUrls,
+    searchQuery,
+    filteredPages,
+    isAllSelected,
+    setSearchQuery,
+    togglePageSelection,
+    toggleAllPages,
+    handleSave,
+  } = useInactivePagesModal({
+    isOpen,
+    pages,
+    onSave,
+    onClose,
+  });
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="w-full max-w-[37.4rem] sm:max-w-[57.4rem] lg:max-w-[69.6rem] overflow-y-scroll max-h-[98vh] rounded-[2.4rem] sm:rounded-[0.8rem]">
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      className="w-full max-w-[37.4rem] sm:max-w-[57.4rem] lg:max-w-[69.6rem] rounded-[2.4rem] sm:rounded-[0.8rem] flex flex-col max-h-[98vh]"
+      overflow={false}
+    >
+      <div className="flex-shrink-0">
       <InactivePagesModalHeader onClose={onClose} />
+      </div>
       
-      <div className="pt-[1.6rem] sm:pt-[2rem] pb-[1.4rem] sm:pb-[2.4rem] px-[2rem] sm:px-[1.5rem] lg:px-[4rem]">
+      <div className="flex-1 overflow-y-auto px-[2rem] sm:px-[1.5rem] lg:px-[4rem] max-h-[70rem] pb-[15rem]">
+        <div className="pt-[1.6rem] sm:pt-[2rem]">
         <InactivePagesSearch 
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
@@ -79,10 +62,14 @@ export default function InactivePagesModal({
           isAllSelected={isAllSelected}
           onToggleAll={toggleAllPages}
         />
+        </div>
+      </div>
 
+        <div className="flex-shrink-0 sm:pb-[2.4rem] px-[2rem] sm:px-[1.5rem] lg:px-[4rem] pt-[1.5rem] sticky bottom-0 bg-primary rounded-[0.8rem]">
         <InactivePagesModalActions 
           onClose={onClose}
           onSave={handleSave}
+          isLoading={isLoading}
         />
       </div>
     </Modal>

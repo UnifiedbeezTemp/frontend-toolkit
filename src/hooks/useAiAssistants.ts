@@ -88,10 +88,10 @@ export function useAiAssistants(options: { autoFetch?: boolean } = {}) {
   }, [assistantsQuery.data, dispatch]);
 
   const createAssistantMutation = useAppMutation<
-    void,
+    { name?: string; useProfileMapping?: boolean } | undefined,
     CreateAiAssistantResponse,
     ApiError
-  >(() => createAiAssistant(), {
+  >((payload) => createAiAssistant(payload), {
     onSuccess: (data) => {
       const normalized = normalizeAssistant(data.ai);
       dispatch(addAssistant(normalized));
@@ -179,7 +179,8 @@ export function useAiAssistants(options: { autoFetch?: boolean } = {}) {
     isFetching: assistantsQuery.isFetching,
     error: assistantsQuery.error,
     refetch: assistantsQuery.refetch,
-    createAssistant: () => createAssistantMutation.mutateAsync(),
+    createAssistant: (payload?: { name?: string; useProfileMapping?: boolean }) =>
+      createAssistantMutation.mutateAsync(payload),
     updateAssistantName: (payload: { id: string; name: string }) =>
       updateAssistantMutation.mutateAsync(payload),
     deleteAssistant: (id: string) => deleteAssistantMutation.mutateAsync(id),

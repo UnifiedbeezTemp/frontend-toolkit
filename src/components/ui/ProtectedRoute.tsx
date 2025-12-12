@@ -2,6 +2,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useAuth } from '../../contexts/authContext';
+import Loader from './Loader';
+import Player from "lottie-react";
+import animationData from "../../animations/Preloader.json";
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading, isInitialized } = useAuth();
@@ -15,8 +18,13 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
   if (!isInitialized || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div>Loading......</div>
+      <div className="min-h-screen flex items-center justify-center layout- body">
+        <Player
+          autoplay
+          loop
+          animationData={animationData}
+          style={{ height: 300 }}
+        />
       </div>
     );
   }

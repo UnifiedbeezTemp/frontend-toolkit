@@ -40,10 +40,16 @@ export function useWebsites(initialWebsites: Website[] = []) {
 
     const cleanUrl = newWebsiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     
+    const crawlType = selectedOption === "Entire website"
+      ? "SPECIFIC_PAGES"
+      : selectedOption === "Specific pages"
+      ? "SPECIFIC_PAGES"
+      : "JUST_THIS_PAGE";
+
     const newWebsite: Website = {
       url: cleanUrl,
-      allPages: selectedOption === "Page with all subpages",
-      pages: selectedOption === "Page with all subpages" 
+      allPages: crawlType !== "JUST_THIS_PAGE",
+      pages: crawlType === "SPECIFIC_PAGES" 
         ? generateDummyPages(cleanUrl)
         : []
     };

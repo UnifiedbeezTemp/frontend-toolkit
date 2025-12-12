@@ -16,6 +16,7 @@ interface AddNewPageModalProps {
   onOptionChange: (option: PageOption) => void;
   onAdd: () => void;
   urlError: string;
+  isLoading?: boolean;
 }
 
 export default function AddNewPageModal({
@@ -27,6 +28,7 @@ export default function AddNewPageModal({
   onOptionChange,
   onAdd,
   urlError,
+  isLoading = false,
 }: AddNewPageModalProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -55,7 +57,7 @@ export default function AddNewPageModal({
             triggerRef={triggerRef}
           />
 
-          <AddNewPageModalActions onClose={handleClose} onAdd={onAdd} />
+          <AddNewPageModalActions onClose={handleClose} onAdd={onAdd} isLoading={isLoading} />
         </div>
       </Modal>
 

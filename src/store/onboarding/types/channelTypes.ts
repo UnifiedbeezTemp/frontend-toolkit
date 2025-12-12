@@ -1,5 +1,5 @@
 export interface Channel {
-  id: string;
+  id: string; // we keep string for redux key; value is availableChannelId as string
   name: string;
   description: string;
   info: string;
@@ -8,4 +8,6 @@ export interface Channel {
   hasBorder?: boolean;
   type: string;
   tags?: ["popular"];
+  availableChannelId?: number;
+  availableChannelName?: string;
 }

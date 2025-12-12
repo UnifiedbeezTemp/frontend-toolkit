@@ -1,48 +1,32 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/useRedux";
-import { setSearchQueryMembers, setSearchQueryInvited } from "../../store/onboarding/slices/membersSlice";
 import Input from "../forms/Input";
 import Button from "../ui/Button";
 import FilterDropdown from "./FilterDropdown";
+import { useSearchAndFilter } from "./hooks/useSearchAndFilter";
 
 interface SearchAndFilterProps {
   section: "invited" | "members";
 }
 
 export default function SearchAndFilter({ section }: SearchAndFilterProps) {
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const dispatch = useAppDispatch();
-  const { searchQueryMembers, searchQueryInvited, roleFilterMembers, statusFilterInvited } = useAppSelector(
-    (state) => state.members
-  );
-  const supabaseIcons = useSupabaseIcons();
-
-  const searchQuery =
-    section === "members" ? searchQueryMembers : searchQueryInvited;
-  
-  const hasActiveFilter = section === "members" 
-    ? roleFilterMembers !== null 
-    : statusFilterInvited !== null;
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (section === "members") {
-      dispatch(setSearchQueryMembers(value));
-    } else {
-      dispatch(setSearchQueryInvited(value));
-    }
-  };
+  const {
+    supabaseIcons,
+    searchQuery,
+    hasActiveFilter,
+    showFilterDropdown,
+    handleSearchChange,
+    toggleFilterDropdown,
+    closeFilterDropdown,
+  } = useSearchAndFilter(section);
 
   return (
     <div className="flex items-center gap-[1.6rem] my-[1.6rem]">
       <div className="w-full relative">
         <Input
           value={searchQuery}
-          onChange={handleSearchChange}
+          onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Search"
           leftIcon={
             <Image
@@ -58,10 +42,10 @@ export default function SearchAndFilter({ section }: SearchAndFilterProps) {
       </div>
 
       <div className="relative">
-        <Button 
-          variant="secondary" 
+        <Button
+          variant="secondary"
           size="sm"
-          onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+          onClick={toggleFilterDropdown}
           className={hasActiveFilter ? "border-brand-primary border-2" : ""}
         >
           <Image
@@ -73,10 +57,7 @@ export default function SearchAndFilter({ section }: SearchAndFilterProps) {
           />
         </Button>
         {showFilterDropdown && (
-          <FilterDropdown
-            section={section}
-            onClose={() => setShowFilterDropdown(false)}
-          />
+          <FilterDropdown section={section} onClose={closeFilterDropdown} />
         )}
       </div>
     </div>

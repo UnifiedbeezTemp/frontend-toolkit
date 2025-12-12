@@ -21,7 +21,11 @@ export default function DropdownOptions({
   onOptionChange,
 }: DropdownOptionsProps) {
   const icons = useSupabaseIcons();
-  const options: PageOption[] = ["Page with all subpages", "Just this page"];
+  const options: PageOption[] = [
+    "Just this page",
+    "Entire website",
+    "Specific pages",
+  ];
 
   return (
     <SmartDropdown

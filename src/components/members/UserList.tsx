@@ -8,6 +8,7 @@ interface UserListProps {
   type: "invited" | "members";
   onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
   isSendingInvite?: (invitationId: string) => boolean;
+  allowSelection?: boolean;
 }
 
 export default function UserList({ 
@@ -15,6 +16,7 @@ export default function UserList({
   type, 
   onSendInvite, 
   isSendingInvite,
+  allowSelection = true,
 }: UserListProps) {
   if (users.length === 0) {
     return (
@@ -33,6 +35,7 @@ export default function UserList({
           type={type}
           onSendInvite={onSendInvite}
           isSendingInvite={isSendingInvite?.(user.id)}
+          allowSelection={allowSelection}
         />
       ))}
     </>
