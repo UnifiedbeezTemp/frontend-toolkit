@@ -85,6 +85,4 @@ export const deleteAssistantFile = (aiId: string, fileId: number) => {
   return api.delete<{ message?: string }>(`/ai/${aiId}/knowledge/files/${fileId}`);
 };
 
-// Website-related exports are now in shared/src/api/websites.ts
-// These are kept for backward compatibility but should use the shared functions
-export { fetchWebsites as fetchAssistantWebsites, addWebsite as addAssistantWebsite, CreateWebsitePayload } from "./websites";
+export { fetchWebsites as fetchAssistantWebsites, addWebsite as addAssistantWebsite } from "./websites";

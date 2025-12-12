@@ -1,19 +1,14 @@
 import { useState } from "react";
-import { WebsitePage, Website, PageOption } from "../utils/types";
+import { WebsitePage, Website, PageOption, CrawlType } from "@/shared/src/types/websiteTypes";
 
 const generateDummyPages = (baseUrl: string): WebsitePage[] => {
   const subpages = ["/about", "/contact", "/faq", "/services", "/pricing"];
   return subpages.map(subpage => ({
+    id: Math.random().toString(36).substring(2, 15),
     url: `${baseUrl}${subpage}`,
     status: "active" as const,
     characters: Math.floor(Math.random() * 90000000 + 10000000).toString(),
-    updatedAt: new Date().toLocaleString('en-US', { 
-      month: '2-digit', 
-      day: '2-digit', 
-      year: 'numeric', 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    })
+    updatedAt: new Date().toISOString(),
   }));
 };
 
@@ -40,13 +35,14 @@ export function useWebsites(initialWebsites: Website[] = []) {
 
     const cleanUrl = newWebsiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     
-    const crawlType = selectedOption === "Entire website"
+    const crawlType: CrawlType = selectedOption === "Entire website"
       ? "SPECIFIC_PAGES"
       : selectedOption === "Specific pages"
       ? "SPECIFIC_PAGES"
       : "JUST_THIS_PAGE";
 
     const newWebsite: Website = {
+      id: Math.floor(Math.random() * 1000000) as number,
       url: cleanUrl,
       allPages: crawlType !== "JUST_THIS_PAGE",
       pages: crawlType === "SPECIFIC_PAGES" 
