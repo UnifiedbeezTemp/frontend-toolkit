@@ -32,7 +32,11 @@ const channelsSlice = createSlice({
         channel.isSelected = !channel.isSelected;
 
         if (channel.isSelected) {
-          state.selectedChannels.push(channel);
+          // ensure no duplicates
+          state.selectedChannels = [
+            ...state.selectedChannels.filter((c) => c.id !== channel.id),
+            channel,
+          ];
         } else {
           state.selectedChannels = state.selectedChannels.filter(
             (c) => c.id !== action.payload

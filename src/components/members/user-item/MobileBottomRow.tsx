@@ -23,6 +23,7 @@ export default function MobileBottomRow({
   const isDraft = user.status === "draft";
   const canChangeRole = !(isCurrentUser && isOwner);
   const isLoading = isRemoving || isCanceling || isAssigningRole;
+  const hideOwnerControls = type === "members" && isCurrentUser && isOwner;
   
   return (
     <div className="flex items-center justify-between">
@@ -31,28 +32,33 @@ export default function MobileBottomRow({
       ): <div></div>}
 
         <div className="flex items-center gap-[0.5rem]">
-        {(isDraft || type === "members") &&  <RoleDropdown
-          currentRole={user.role}
-          onRoleChange={onRoleChange}
-          disabled={user.status === "denied" || isSendingInvite || !canChangeRole || isLoading}
-          loading={isAssigningRole}
-        />}
-        {isDraft ? (
-          <SendInviteButton
-            onClick={onSendInvite || (() => {})}
-            loading={isSendingInvite}
-            mobile
-          />
-        ) : (
-          <RemoveButton
-            type={type}
-            status={user.status}
-            onRemove={onRemove}
-            mobile
-            disabled={isCurrentUser}
-            loading={isLoading}
+        {!hideOwnerControls && (isDraft || type === "members") && (
+          <RoleDropdown
+            currentRole={user.role}
+            onRoleChange={onRoleChange}
+            disabled={
+              user.status === "denied" || isSendingInvite || !canChangeRole || isLoading
+            }
+            loading={isAssigningRole}
           />
         )}
+        {!hideOwnerControls &&
+          (isDraft ? (
+            <SendInviteButton
+              onClick={onSendInvite || (() => {})}
+              loading={isSendingInvite}
+              mobile
+            />
+          ) : (
+            <RemoveButton
+              type={type}
+              status={user.status}
+              onRemove={onRemove}
+              mobile
+              disabled={isCurrentUser}
+              loading={isLoading}
+            />
+          ))}
       </div>
     </div>
   );

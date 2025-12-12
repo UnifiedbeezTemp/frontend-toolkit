@@ -1,13 +1,20 @@
 "use client";
 
 import { useAppSelector } from "../../store/hooks/useRedux";
-import { selectFilteredInvitedUsers, selectTotalInvitedUsers } from "../../store/onboarding/slices/membersSlice";
+import {
+  selectFilteredInvitedUsers,
+  selectTotalInvitedUsers,
+  selectSelectedInvitedCount,
+} from "../../store/onboarding/slices/membersSlice";
 import Heading from "../ui/Heading";
 import SearchAndFilter from "./SearchAndFilter";
 import UserList from "./UserList";
 import MembersSkeleton from "./MembersSkeleton";
 import ErrorState from "./ErrorState";
 import EmptyState from "./EmptyState";
+import { useInvitedBulkActions } from "./hooks/useInvitedBulkActions";
+import { InvitedBulkActions } from "./components/InvitedBulkActions";
+import { ApiRole } from "../../types/api/memberTypes";
 
 interface InvitedUsersSectionProps {
   isLoading?: boolean;
@@ -15,6 +22,7 @@ interface InvitedUsersSectionProps {
   onRetry?: () => void;
   onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
   isSendingInvite?: (invitationId: string) => boolean;
+  roles?: ApiRole[];
 }
 
 export default function InvitedUsersSection({
@@ -23,12 +31,25 @@ export default function InvitedUsersSection({
   onRetry,
   onSendInvite,
   isSendingInvite,
+  roles = [],
 }: InvitedUsersSectionProps) {
   const invitedUsers = useAppSelector(selectFilteredInvitedUsers);
   const totalInvitedUsers = useAppSelector(selectTotalInvitedUsers);
+  const selectedCount = useAppSelector(selectSelectedInvitedCount);
+  const hasFilter = useAppSelector((state) => state.members.statusFilterInvited !== null);
+  const isDraftFilter = useAppSelector(
+    (state) => state.members.statusFilterInvited === "draft"
+  );
+  const {
+    selectAll,
+    clearSelection,
+    assignRole,
+    bulkSend,
+    isSending,
+  } = useInvitedBulkActions({ roles, enable: isDraftFilter });
 
   return (
-    <div className="border-border pb-[2.4rem] borde">
+    <div className="border-border pb-[2.4rem] border-b">
       <Heading>
         Invited users
       </Heading>
@@ -36,6 +57,17 @@ export default function InvitedUsersSection({
       <SearchAndFilter section="invited" />
 
       <div className="space-y-[1.6rem]">
+        <InvitedBulkActions
+          selectedCount={selectedCount}
+          total={invitedUsers.length}
+          hasFilter={isDraftFilter}
+          onSelectAll={selectAll}
+          onClear={clearSelection}
+          onAssignRole={assignRole}
+          onBulkSend={bulkSend}
+          isSending={isSending}
+        />
+
         {isLoading ? (
           <MembersSkeleton />
         ) : error ? (
@@ -52,6 +84,7 @@ export default function InvitedUsersSection({
             type="invited"
             onSendInvite={onSendInvite}
             isSendingInvite={isSendingInvite}
+            allowSelection={isDraftFilter}
           />
         )}
       </div>

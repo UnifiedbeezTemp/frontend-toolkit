@@ -86,12 +86,40 @@ const membersSlice = createSlice({
         user.roleId = action.payload.roleId;
       }
     },
-    markInvitationAsSent: (state, action: PayloadAction<{ id: string; apiInvitationId: number }>) => {
+    markInvitationAsSent: (
+      state,
+      action: PayloadAction<{ id: string; apiInvitationId: string | number }>
+    ) => {
       const user = state.invitedUsers.find(u => u.id === action.payload.id);
       if (user) {
         user.id = action.payload.apiInvitationId.toString();
         user.status = "pending";
       }
+    },
+    setInvitedSelection: (
+      state,
+      action: PayloadAction<{ ids: string[]; selected: boolean }>
+    ) => {
+      state.invitedUsers = state.invitedUsers.map((u) =>
+        action.payload.ids.includes(u.id)
+          ? { ...u, isSelected: action.payload.selected }
+          : u
+      );
+    },
+    updateInvitedUserRoleBulk: (
+      state,
+      action: PayloadAction<{ ids: string[]; role: string; roleId: number }>
+    ) => {
+      state.invitedUsers = state.invitedUsers.map((u) =>
+        action.payload.ids.includes(u.id)
+          ? { ...u, role: action.payload.role, roleId: action.payload.roleId }
+          : u
+      );
+    },
+    markInvitationsPendingBulk: (state, action: PayloadAction<{ ids: string[] }>) => {
+      state.invitedUsers = state.invitedUsers.map((u) =>
+        action.payload.ids.includes(u.id) ? { ...u, status: "pending", isSelected: false } : u
+      );
     },
     toggleMemberSelection: (state, action: PayloadAction<string>) => {
       const member = state.members.find(m => m.id === action.payload) ||  state.invitedUsers.find(m => m.id === action.payload);
@@ -138,6 +166,16 @@ export const selectFilteredInvitedUsers = createSelector(
   }
 );
 
+export const selectSelectedInvitedUsers = createSelector(
+  [(state: RootState) => state.members.invitedUsers],
+  (invitedUsers) => invitedUsers.filter((u) => u.isSelected)
+);
+
+export const selectSelectedInvitedCount = createSelector(
+  selectSelectedInvitedUsers,
+  (selected) => selected.length
+);
+
 export const selectTotalMembers = (state: RootState) => state.members.members.length;
 export const selectSelectedMembersCount = (state: RootState) => 
   state.members.members.filter(member => member.isSelected).length;
@@ -160,6 +198,9 @@ export const {
   updateInvitedUserRole,
   updateInvitedUserRoleId,
   markInvitationAsSent,
+  setInvitedSelection,
+  updateInvitedUserRoleBulk,
+  markInvitationsPendingBulk,
   toggleMemberSelection,
   selectAllMembers,
 } = membersSlice.actions;

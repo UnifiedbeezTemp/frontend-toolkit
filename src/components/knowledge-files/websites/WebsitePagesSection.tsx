@@ -13,6 +13,8 @@ interface WebsitePagesSectionProps {
   showAllButton?: boolean;
   onShowAll?: () => void;
   isEditing?: boolean;
+  isTogglingAll?: boolean;
+  forceMobileStyle?: boolean;
 }
 
 export default function WebsitePagesSection({
@@ -25,6 +27,8 @@ export default function WebsitePagesSection({
   showAllButton = false,
   onShowAll,
   isEditing = false,
+  isTogglingAll = false,
+  forceMobileStyle = false,
 }: WebsitePagesSectionProps) {
   if (pages.length === 0) return null;
 
@@ -33,26 +37,37 @@ export default function WebsitePagesSection({
       <div className="flex items-center justify-between mb-[1.6rem] lg:mb-4">
         <Heading  className="text-[1.4rem]">{title}</Heading>
         {!isEditing && (isActive ? (
-          <Button variant="secondary" className="rounded-[0.8rem] p-[0.8rem] text-[1.4rem]" onClick={onToggleAll}>
+          <Button 
+            variant="secondary" 
+            className="rounded-[0.8rem] p-[0.8rem] text-[1.4rem]" 
+            onClick={onToggleAll}
+            loading={isTogglingAll}
+            disabled={isTogglingAll}
+          >
             Deactivate all
           </Button>
         ) : showAllButton && (
-          <Button variant="secondary" className="rounded-[0.8rem] p-[0.8rem] text-[1.4rem]" onClick={onShowAll}>
+          <Button 
+            variant="secondary" 
+            className="rounded-[0.8rem] p-[0.8rem] text-[1.4rem]" 
+            onClick={onShowAll}
+          >
             Show all
           </Button>
         ))}
       </div>
 
-      <div className="space-y-2 sm:space-y-[20rem]">
+      <div className="max-h-[40rem] overflow-y-auto space-y-2 sm:space-y-[2rem] pr-[0.4rem]">
         {pages.map((page, pageIndex) => (
           <PageItem
-            key={`${websiteIndex}-${page.url}`}
+            key={page.id}
             page={page}
             websiteIndex={websiteIndex}
             isActive={isActive}
             onToggleStatus={onTogglePageStatus}
             showBorder={pageIndex < pages.length - 1}
             isEditing={isEditing}
+            forceMobileStyle={forceMobileStyle}
           />
         ))}
       </div>

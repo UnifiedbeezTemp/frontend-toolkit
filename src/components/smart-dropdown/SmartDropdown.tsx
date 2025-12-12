@@ -137,7 +137,7 @@ export default function SmartDropdown({
             top: calculatedPosition.top,
             left: calculatedPosition.left,
             maxHeight,
-            ...(!className.includes("w-full") && triggerWidth && { width: triggerWidth }),
+            ...(!className.includes("w-full") && !className.includes("!w-") && triggerWidth && { width: triggerWidth }),
           }}
           initial={{ opacity: 0, scale: 0.95, y: -5 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}

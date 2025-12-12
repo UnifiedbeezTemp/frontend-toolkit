@@ -18,6 +18,7 @@ export default function UserItem({
   type, 
   onSendInvite, 
   isSendingInvite,
+  allowSelection = true,
 }: UserItemWithSendProps) {
   const {
     handleRoleChange,
@@ -40,6 +41,7 @@ export default function UserItem({
           user={user}
           onToggle={handleToggle}
           supabaseIcons={supabaseIcons}
+          allowSelection={allowSelection}
         />
 
         {type === "invited" && user.status !== "draft" && <MobileRoleBadge role={user.role} />}
@@ -75,6 +77,7 @@ export default function UserItem({
         supabaseIcons={supabaseIcons}
         isCurrentUser={isCurrentUser}
         isOwner={isOwner}
+        allowSelection={allowSelection}
       />
     </div>
   );

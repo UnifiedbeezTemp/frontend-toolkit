@@ -5,6 +5,7 @@ import membersReducer from "./onboarding/slices/membersSlice";
 import channelsReducer from "./onboarding/slices/channelsSlice";
 import channelConnectionsReducer from "./onboarding/slices/channelConnectionsSlice";
 import aiAssistantsReducer from "./onboarding/slices/aiAssistantsSlice";
+import step6ChannelConfigReducer from "./onboarding/slices/step6ChannelConfigSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     channels: channelsReducer,
     channelConnections: channelConnectionsReducer,
     aiAssistants: aiAssistantsReducer,
+    step6ChannelConfig: step6ChannelConfigReducer,
   },
 });
 

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { TeamMember } from "../../../store/onboarding/types/memberTypes";
 import RoleDropdown from "../RoleDropdown";
 import CheckboxButton from "./CheckboxButton";
 import StatusBadge from "./StatusBadge";
@@ -24,19 +23,23 @@ export default function DesktopSection({
   supabaseIcons,
   isCurrentUser,
   isOwner,
+  allowSelection = true,
 }: DesktopSectionProps) {
   const isDraft = user.status === "draft";
   const canChangeRole = !(isCurrentUser && isOwner);
   const isLoading = isRemoving || isCanceling || isAssigningRole;
+  const hideOwnerControls = type === "members" && isCurrentUser && isOwner;
 
   return (
     <div className="hidden lg:flex items-center justify-between">
       <div className="flex items-center gap-[1rem]">
-        <CheckboxButton
-          isSelected={user.isSelected}
-          onToggle={onToggle}
-          supabaseIcons={supabaseIcons}
-        />
+        {allowSelection && (
+          <CheckboxButton
+            isSelected={user.isSelected}
+            onToggle={onToggle}
+            supabaseIcons={supabaseIcons}
+          />
+        )}
 
         <div className="flex items-center gap-[0.7rem]">
           <Image
@@ -59,27 +62,32 @@ export default function DesktopSection({
         </div>
       </div>
 
-       <div className="flex items-center gap-[1rem]">
-        {(type === "members" || isDraft) && <RoleDropdown
-          currentRole={user.role}
-          onRoleChange={onRoleChange}
-          disabled={user.status === "denied" || isSendingInvite || !canChangeRole || isLoading}
-          loading={isAssigningRole}
-        />}
-        {isDraft ? (
-          <SendInviteButton
-            onClick={onSendInvite || (() => {})}
-            loading={isSendingInvite}
-          />
-        ) : (
-          <RemoveButton 
-            type={type} 
-            status={user.status} 
-            onRemove={onRemove}
-            disabled={isCurrentUser}
-            loading={isLoading}
+      <div className="flex items-center gap-[1rem]">
+        {!hideOwnerControls && (type === "members" || isDraft) && (
+          <RoleDropdown
+            currentRole={user.role}
+            onRoleChange={onRoleChange}
+            disabled={
+              user.status === "denied" || isSendingInvite || !canChangeRole || isLoading
+            }
+            loading={isAssigningRole}
           />
         )}
+        {!hideOwnerControls &&
+          (isDraft ? (
+            <SendInviteButton
+              onClick={onSendInvite || (() => {})}
+              loading={isSendingInvite}
+            />
+          ) : (
+            <RemoveButton
+              type={type}
+              status={user.status}
+              onRemove={onRemove}
+              disabled={isCurrentUser}
+              loading={isLoading}
+            />
+          ))}
       </div>
     </div>
   );
