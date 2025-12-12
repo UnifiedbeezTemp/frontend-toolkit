@@ -9,6 +9,15 @@ import {
   reactivatePage,
   deactivatePage,
 } from "@/shared/src/api/websites";
+import type {
+  DeleteWebsiteParams,
+  DeactivateAllPagesParams,
+  TogglePageStatusParams,
+  BulkUpdatePagesParams,
+  ReactivatePageParams,
+  DeactivatePageParams,
+  WebsiteErrorResponse,
+} from "@/shared/src/types/websiteTypes";
 
 interface UseWebsiteOperationsParams {
   onSuccess?: () => void;
@@ -17,7 +26,7 @@ interface UseWebsiteOperationsParams {
 export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams = {}) {
   const { showToast } = useToast();
 
-  const deleteWebsiteMutation = useAppMutation<{ websiteId: number }, { message?: string }, unknown>(
+  const deleteWebsiteMutation = useAppMutation<DeleteWebsiteParams, { message?: string }, WebsiteErrorResponse>(
     async ({ websiteId }) => {
       return deleteWebsite(websiteId);
     },
@@ -31,13 +40,23 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
         onSuccess?.();
       },
       onError: (error) => {
-        const message =
-          (typeof error === "object" &&
-            error !== null &&
-            "message" in error &&
-            typeof (error as { message?: unknown }).message === "string"
-            ? (error as { message: string }).message
-            : "Failed to delete website. Please try again.") || "Failed to delete website. Please try again.";
+        const getErrorMessage = (err: WebsiteErrorResponse): string => {
+          if (typeof err === "object" && err !== null && "message" in err) {
+            const message = err.message;
+            if (typeof message === "string") {
+              return message;
+            }
+            if (typeof message === "object" && message !== null && "message" in message) {
+              const nestedMessage = (message as { message?: string }).message;
+              if (typeof nestedMessage === "string") {
+                return nestedMessage;
+              }
+            }
+          }
+          return "Failed to delete website. Please try again.";
+        };
+
+        const message = getErrorMessage(error);
 
         showToast({
           variant: "error",
@@ -49,9 +68,9 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
   );
 
   const deactivateAllPagesMutation = useAppMutation<
-    { websiteId: number },
+    DeactivateAllPagesParams,
     { message?: string },
-    unknown
+    WebsiteErrorResponse
   >(
     async ({ websiteId }) => {
       return deactivateAllPages(websiteId);
@@ -66,13 +85,23 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
         onSuccess?.();
       },
       onError: (error) => {
-        const message =
-          (typeof error === "object" &&
-            error !== null &&
-            "message" in error &&
-            typeof (error as { message?: unknown }).message === "string"
-            ? (error as { message: string }).message
-            : "Failed to deactivate pages. Please try again.") || "Failed to deactivate pages. Please try again.";
+        const getErrorMessage = (err: WebsiteErrorResponse): string => {
+          if (typeof err === "object" && err !== null && "message" in err) {
+            const message = err.message;
+            if (typeof message === "string") {
+              return message;
+            }
+            if (typeof message === "object" && message !== null && "message" in message) {
+              const nestedMessage = (message as { message?: string }).message;
+              if (typeof nestedMessage === "string") {
+                return nestedMessage;
+              }
+            }
+          }
+          return "Failed to deactivate pages. Please try again.";
+        };
+
+        const message = getErrorMessage(error);
 
         showToast({
           variant: "error",
@@ -84,9 +113,9 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
   );
 
   const togglePageStatusMutation = useAppMutation<
-    { pageId: number; isActive: boolean },
+    TogglePageStatusParams,
     { message?: string },
-    unknown
+    WebsiteErrorResponse
   >(
     async ({ pageId, isActive }) => {
       return togglePageStatus(pageId, { isActive });
@@ -101,13 +130,23 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
         onSuccess?.();
       },
       onError: (error) => {
-        const message =
-          (typeof error === "object" &&
-            error !== null &&
-            "message" in error &&
-            typeof (error as { message?: unknown }).message === "string"
-            ? (error as { message: string }).message
-            : "Failed to update page. Please try again.") || "Failed to update page. Please try again.";
+        const getErrorMessage = (err: WebsiteErrorResponse): string => {
+          if (typeof err === "object" && err !== null && "message" in err) {
+            const message = err.message;
+            if (typeof message === "string") {
+              return message;
+            }
+            if (typeof message === "object" && message !== null && "message" in message) {
+              const nestedMessage = (message as { message?: string }).message;
+              if (typeof nestedMessage === "string") {
+                return nestedMessage;
+              }
+            }
+          }
+          return "Failed to update page. Please try again.";
+        };
+
+        const message = getErrorMessage(error);
 
         showToast({
           variant: "error",
@@ -119,9 +158,9 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
   );
 
   const bulkUpdatePagesMutation = useAppMutation<
-    { websiteId: number; pageIds: number[]; isActive: boolean },
+    BulkUpdatePagesParams,
     { message?: string },
-    unknown
+    WebsiteErrorResponse
   >(
     async ({ websiteId, pageIds, isActive }) => {
       return bulkUpdatePages(websiteId, { pageIds, isActive });
@@ -136,13 +175,23 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
         onSuccess?.();
       },
       onError: (error) => {
-        const message =
-          (typeof error === "object" &&
-            error !== null &&
-            "message" in error &&
-            typeof (error as { message?: unknown }).message === "string"
-            ? (error as { message: string }).message
-            : "Failed to update pages. Please try again.") || "Failed to update pages. Please try again.";
+        const getErrorMessage = (err: WebsiteErrorResponse): string => {
+          if (typeof err === "object" && err !== null && "message" in err) {
+            const message = err.message;
+            if (typeof message === "string") {
+              return message;
+            }
+            if (typeof message === "object" && message !== null && "message" in message) {
+              const nestedMessage = (message as { message?: string }).message;
+              if (typeof nestedMessage === "string") {
+                return nestedMessage;
+              }
+            }
+          }
+          return "Failed to update pages. Please try again.";
+        };
+
+        const message = getErrorMessage(error);
 
         showToast({
           variant: "error",
@@ -154,9 +203,9 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
   );
 
   const reactivatePageMutation = useAppMutation<
-    { websiteId: number; pageId: number },
+    ReactivatePageParams,
     { message?: string },
-    unknown
+    WebsiteErrorResponse
   >(
     async ({ websiteId, pageId }) => {
       return reactivatePage(websiteId, pageId);
@@ -171,13 +220,23 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
         onSuccess?.();
       },
       onError: (error) => {
-        const message =
-          (typeof error === "object" &&
-            error !== null &&
-            "message" in error &&
-            typeof (error as { message?: unknown }).message === "string"
-            ? (error as { message: string }).message
-            : "Failed to reactivate page. Please try again.") || "Failed to reactivate page. Please try again.";
+        const getErrorMessage = (err: WebsiteErrorResponse): string => {
+          if (typeof err === "object" && err !== null && "message" in err) {
+            const message = err.message;
+            if (typeof message === "string") {
+              return message;
+            }
+            if (typeof message === "object" && message !== null && "message" in message) {
+              const nestedMessage = (message as { message?: string }).message;
+              if (typeof nestedMessage === "string") {
+                return nestedMessage;
+              }
+            }
+          }
+          return "Failed to reactivate page. Please try again.";
+        };
+
+        const message = getErrorMessage(error);
 
         showToast({
           variant: "error",
@@ -189,9 +248,9 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
   );
 
   const deactivatePageMutation = useAppMutation<
-    { websiteId: number; pageId: number },
+    DeactivatePageParams,
     { message?: string },
-    unknown
+    WebsiteErrorResponse
   >(
     async ({ websiteId, pageId }) => {
       return deactivatePage(websiteId, pageId);
@@ -206,13 +265,23 @@ export function useWebsiteOperations({ onSuccess }: UseWebsiteOperationsParams =
         onSuccess?.();
       },
       onError: (error) => {
-        const message =
-          (typeof error === "object" &&
-            error !== null &&
-            "message" in error &&
-            typeof (error as { message?: unknown }).message === "string"
-            ? (error as { message: string }).message
-            : "Failed to deactivate page. Please try again.") || "Failed to deactivate page. Please try again.";
+        const getErrorMessage = (err: WebsiteErrorResponse): string => {
+          if (typeof err === "object" && err !== null && "message" in err) {
+            const message = err.message;
+            if (typeof message === "string") {
+              return message;
+            }
+            if (typeof message === "object" && message !== null && "message" in message) {
+              const nestedMessage = (message as { message?: string }).message;
+              if (typeof nestedMessage === "string") {
+                return nestedMessage;
+              }
+            }
+          }
+          return "Failed to deactivate page. Please try again.";
+        };
+
+        const message = getErrorMessage(error);
 
         showToast({
           variant: "error",

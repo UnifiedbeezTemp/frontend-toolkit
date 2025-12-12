@@ -1,20 +1,13 @@
 import { Website, WebsitePage } from "./types";
-import { Website as ApiWebsite } from "@/shared/src/api/websites";
+import type { ApiWebsite, ApiWebsitePage } from "../../../../types/websiteTypes";
 
-export const mapApiPageToUiPage = (apiPage: {
-  id: number;
-  websiteId: number;
-  url: string;
-  isActive: boolean;
-  characterCount: number;
-  updatedAt: string;
-}): WebsitePage => {
+export const mapApiPageToUiPage = (apiPage: ApiWebsitePage): WebsitePage => {
   return {
-    id: apiPage.id,
+    id: apiPage.id.toString(),
     url: apiPage.url,
     status: apiPage.isActive ? "active" : "inactive",
     characters: apiPage.characterCount?.toString() || "0",
-    updatedAt: apiPage.updatedAt 
+    updatedAt: apiPage.updatedAt
       ? new Date(apiPage.updatedAt).toLocaleString("en-US", {
           month: "2-digit",
           day: "2-digit",
@@ -34,15 +27,16 @@ export const mapApiPageToUiPage = (apiPage: {
 
 export const mapApiWebsiteToUiWebsite = (apiWebsite: ApiWebsite): Website => {
   const pages: WebsitePage[] = (apiWebsite.pages || []).map(mapApiPageToUiPage);
-  
+
   return {
     id: apiWebsite.id,
     url: apiWebsite.baseUrl.replace(/^https?:\/\//, "").replace(/\/$/, ""),
     displayName: apiWebsite.displayName,
-    allPages: apiWebsite.crawlType === "SPECIFIC_PAGES" || apiWebsite.crawlType === "ENTIRE_SITE",
+    allPages:
+      apiWebsite.crawlType === "SPECIFIC_PAGES" ||
+      apiWebsite.crawlType === "ENTIRE_SITE",
     crawlType: apiWebsite.crawlType,
     discoveryStatus: apiWebsite.discoveryStatus,
     pages,
   };
 };
-
