@@ -67,8 +67,11 @@ export const SUPABASE_ICONS = {
   checkbox: "icons/Checkbox.svg",
   configure: "icons/configure.png",
   websiteGreenWithBg: "icons/website-green-with-bg.png",
-  orangeChainWithBg:
-    "icons/orange-chain-with-bg.png",
+  orangeChainWithBg: "icons/orange-chain-with-bg.png",
+  chatBubble: "icons/chat-bubble.svg",
+  arrowRight: "icons/arrow-right.svg",
+  dragVertical:
+    "icons/drag-vertical.png",
 
   redTag: "icons/red-tag.svg",
   copy: "icons/copy.svg",
@@ -138,6 +141,7 @@ export const SUPABASE_ICONS = {
   twitterIcon: "icons/bi_twitter-x.svg",
   linkedinIcon: "icons/devicon_linkedin.svg",
   monitor: "icons/monitor.svg",
+  monitor1: "icons/monitor-1.svg",
 
   profileActive: "icons/profile-active.svg",
   profileInactive: "icons/profile-inactive.svg",
