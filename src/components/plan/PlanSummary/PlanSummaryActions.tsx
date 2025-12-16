@@ -19,7 +19,7 @@ export default function PlanSummaryActions({ plan }: { plan: OriginalPlan }) {
           Upgrade Plan
         </Button>
         <Button variant="secondary" className="p-2">
-          <ImageComponent width={20} height={20} src={threeDot} alt="more" />
+          <ImageComponent width={20} height={20} src={threeDot} alt="more" className="rotate-90" />
         </Button>
       </div>
     </div>

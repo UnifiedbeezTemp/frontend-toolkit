@@ -100,11 +100,20 @@
   --color-secondary-40: var(--yellow-40);
   --color-secondary-30: var(--yellow-30);
   --color-secondary-20: var(--yellow-20);
+  --color-secondary-15: var(--yellow-15);
   --color-secondary-10: var(--yellow-10);
+  --color-secondary-5: var(--yellow-5);
+  --color-secondary-green-110: var(--leaf-green-110);
+  --color-secondary-green-105: var(--leaf-green-105);
   --color-secondary-green-100: var(--leaf-green-100);
+  --color-secondary-green-5: var(--leaf-green-5);
   --color-light-green: var(--light-green);
   --color-green-10: var(--green-10);
   --color-danger-100: var(--red-100);
+  --color-danger-10: var(--red-10);
+  --color-danger-5: var(--red-5);
+  --color-gray-900: var(--gray-900);
+  --color-gray-600: var(--gray-600);
   --color-gray-200: var(--gray-200);
   --color-gray-50: var(--gray-50);
   --color-gray-40: var(--gray-40);
@@ -112,6 +121,7 @@
   --color-gray-30: var(--gray-30);
   --color-gray-25: var(--gray-25);
   --color-gray-20: var(--gray-20);
+  --color-gray-15: var(--gray-15);
   --color-primary-blue: var(--primary-blue);
   --text-xs: 1rem;
   --text-sm: 1.2rem;
@@ -129,6 +139,8 @@
   --radius-md: 0.8rem;
   --radius-lg: 1rem;
   --shadow-sm: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  --shadow-card: 0 20px 24px -4px rgba(16, 24, 40, 0.08),
+                 0 8px 8px -4px rgba(16, 24, 40, 0.03);
 }
 
 :root {
@@ -179,7 +191,7 @@
   --mid-green: #E8FFF6;
   --light-green: #E9F7F2;
   --solid-green: #219165;
-  --card-gradient: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
+  --card-gradient: 165deg, #e6faf2 -11.22%, #e3cf9b 219.35%;
 
   --black-110: #1b1b1b;
   --black-100: #0b1012;
@@ -213,8 +225,17 @@
   --yellow-30: #fde9b3;
   --yellow-20: #fef0cd;
   --yellow-10: #fef7e6;
+  --yellow-15: #FEF0C7;
+  --yellow-5: #FFFAEB;
+  --leaf-green-110: #0B6341;
+  --leaf-green-105: #005D38;
   --leaf-green-100: #29953e;
+  --leaf-green-5: #D5EAE2;
   --red-100: #cc0e11;
+  --red-10: #FEE4E2;
+  --red-5: #FEF3F2;
+  --gray-900: #101828;
+  --gray-600: #475467;
   --gray-200: #eaecfo;
   --gray-50: #F9FAFB;
   --gray-40: #919191;
@@ -222,6 +243,7 @@
   --gray-30: #d0d5dd;
   --gray-25: #f8f8f8;
   --gray-20: #f6f6f6;
+  --gray-15: #E4E4E4;
 }
 
 html {
@@ -361,5 +383,8 @@ button:disabled {
   }
   .pill{
     @apply flex justify-center items-center font-normal px-2.5 py-1.5 text-sm leading-base bg-soft-green border-solid-green border rounded-[8rem];
+  }
+  .badge{
+    @apply max-w-fit px-1.5 py-1.25 text-[1rem] font-bold mix-blend-multiply rounded;
   }
 }

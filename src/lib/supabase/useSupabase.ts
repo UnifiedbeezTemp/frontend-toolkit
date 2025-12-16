@@ -63,6 +63,8 @@ export const useSupabaseGifs = () => {
       copilotSidebarThree: getAssetUrl(SUPABASE_GIFS.copilotSidebarThree),
       copilotSidebarFour: getAssetUrl(SUPABASE_GIFS.copilotSidebarFour),
       copilotSidebarFive: getAssetUrl(SUPABASE_GIFS.copilotSidebarFive),
+      copilotSidebarSix: getAssetUrl(SUPABASE_GIFS.copilotSidebarSix),
+      copilotSidebarBg: getAssetUrl(SUPABASE_GIFS.copilotSidebarBg),
     }),
     []
   );
