@@ -115,6 +115,7 @@
   --color-gray-900: var(--gray-900);
   --color-gray-600: var(--gray-600);
   --color-gray-200: var(--gray-200);
+  --color-gray-60: var(--gray-60);
   --color-gray-50: var(--gray-50);
   --color-gray-40: var(--gray-40);
   --color-gray-35: var(--gray-35);
@@ -237,6 +238,7 @@
   --gray-900: #101828;
   --gray-600: #475467;
   --gray-200: #eaecfo;
+  --gray-60: #E4E4E4;
   --gray-50: #F9FAFB;
   --gray-40: #919191;
   --gray-35: #c5c6c9;
