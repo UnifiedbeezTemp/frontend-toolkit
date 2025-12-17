@@ -15,7 +15,7 @@ export interface Step7WebchatState {
 const initialState: Step7WebchatState = {
   webchatUrls: [
     { id: "1", url: "https://unifiedbeez.com", isSelected: false },
-    { id: "2", url: "https://unifiedbeez.com", isSelected: true },
+    { id: "2", url: "https://unifiedbeez.com", isSelected: false },
     { id: "3", url: "https://unifiedbeez.com", isSelected: false },
   ],
   selectedWebchatId: "",
