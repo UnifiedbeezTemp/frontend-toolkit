@@ -75,7 +75,10 @@ const step7ChannelIntegrationSlice = createSlice({
     // Add a new channel label
     addChannelLabel: (
       state,
-      action: PayloadAction<{ webchatId: string; label: Omit<ChannelLabel, "id"> }>
+      action: PayloadAction<{
+        webchatId: string
+        label: Omit<ChannelLabel, "id">
+      }>
     ) => {
       const { webchatId, label } = action.payload
       if (state[webchatId]) {
@@ -98,7 +101,9 @@ const step7ChannelIntegrationSlice = createSlice({
     ) => {
       const { webchatId, labelId, updates } = action.payload
       if (state[webchatId]) {
-        const label = state[webchatId].channelLabels.find((l) => l.id === labelId)
+        const label = state[webchatId].channelLabels.find(
+          (l) => l.id === labelId
+        )
         if (label) {
           Object.assign(label, updates)
         }
@@ -129,7 +134,9 @@ const step7ChannelIntegrationSlice = createSlice({
     ) => {
       const { webchatId, labelId, channelOrLink } = action.payload
       if (state[webchatId]) {
-        const label = state[webchatId].channelLabels.find((l) => l.id === labelId)
+        const label = state[webchatId].channelLabels.find(
+          (l) => l.id === labelId
+        )
         if (label) {
           label.channelsAndLinks.push(channelOrLink)
         }
@@ -147,7 +154,9 @@ const step7ChannelIntegrationSlice = createSlice({
     ) => {
       const { webchatId, labelId, channelOrLinkId } = action.payload
       if (state[webchatId]) {
-        const label = state[webchatId].channelLabels.find((l) => l.id === labelId)
+        const label = state[webchatId].channelLabels.find(
+          (l) => l.id === labelId
+        )
         if (label) {
           label.channelsAndLinks = label.channelsAndLinks.filter(
             (item) => item.id !== channelOrLinkId
@@ -168,7 +177,9 @@ const step7ChannelIntegrationSlice = createSlice({
     ) => {
       const { webchatId, labelId, enabled, value } = action.payload
       if (state[webchatId]) {
-        const label = state[webchatId].channelLabels.find((l) => l.id === labelId)
+        const label = state[webchatId].channelLabels.find(
+          (l) => l.id === labelId
+        )
         if (label) {
           label.ctaButton = { enabled, value }
         }
@@ -187,9 +198,35 @@ const step7ChannelIntegrationSlice = createSlice({
     ) => {
       const { webchatId, labelId, enabled, value } = action.payload
       if (state[webchatId]) {
-        const label = state[webchatId].channelLabels.find((l) => l.id === labelId)
+        const label = state[webchatId].channelLabels.find(
+          (l) => l.id === labelId
+        )
         if (label) {
           label.ctaLink = { enabled, value }
+        }
+      }
+    },
+
+    // Reorder channels and links within a label
+    reorderChannelsAndLinks: (
+      state,
+      action: PayloadAction<{
+        webchatId: string
+        labelId: string
+        startIndex: number
+        endIndex: number
+      }>
+    ) => {
+      const { webchatId, labelId, startIndex, endIndex } = action.payload
+      if (state[webchatId]) {
+        const label = state[webchatId].channelLabels.find(
+          (l) => l.id === labelId
+        )
+        if (label && label.channelsAndLinks) {
+          const items = [...label.channelsAndLinks]
+          const [removed] = items.splice(startIndex, 1)
+          items.splice(endIndex, 0, removed)
+          label.channelsAndLinks = items
         }
       }
     },
@@ -250,6 +287,7 @@ export const {
   removeChannelOrLinkFromLabel,
   updateLabelCtaButton,
   updateLabelCtaLink,
+  reorderChannelsAndLinks,
   moveChannelLabelUp,
   moveChannelLabelDown,
   removeWebchatIntegration,
