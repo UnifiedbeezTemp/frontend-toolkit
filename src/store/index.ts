@@ -7,6 +7,7 @@ import channelConnectionsReducer from "./onboarding/slices/channelConnectionsSli
 import aiAssistantsReducer from "./onboarding/slices/aiAssistantsSlice";
 import step6ChannelConfigReducer from "./onboarding/slices/step6ChannelConfigSlice";
 import step7WebchatReducer from "./onboarding/slices/step7WebchatSlice"
+import step7ChannelIntegrationReducer from "./onboarding/slices/step7ChannelIntegrationSlice"
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     aiAssistants: aiAssistantsReducer,
     step6ChannelConfig: step6ChannelConfigReducer,
     step7Webchat: step7WebchatReducer,
+    step7ChannelIntegration: step7ChannelIntegrationReducer,
   },
 })
 

@@ -71,8 +71,8 @@ export const SUPABASE_ICONS = {
   chatBubble: "icons/chat-bubble.svg",
   arrowRight: "icons/arrow-right.svg",
   dragVertical: "icons/drag-vertical.png",
-  email1: "icons/email-1.svg",
-  phone1: "icons/phone-1.svg",
+  email1: "icons/email-with-bg-1.svg",
+  phone1: "icons/phone-with-bg.svg",
 
   redTag: "icons/red-tag.svg",
   copy: "icons/copy.svg",
