@@ -1,7 +1,7 @@
 interface ToggleSwitchProps {
-  isActive: boolean;
-  onToggle: () => void;
-  disabled?: boolean;
+  isActive: boolean
+  onToggle: () => void
+  disabled?: boolean
 }
 
 export default function ToggleSwitch({
@@ -14,7 +14,7 @@ export default function ToggleSwitch({
       onClick={onToggle}
       type="button"
       disabled={disabled}
-      className={`rounded-full w-7 h-4 p-[.21rem] transition-all duration-300 ${
+      className={`rounded-full w-7 h-5 p-[.21rem] transition-all duration-300 ${
         isActive ? "bg-brand-primary" : "bg-inactive-color"
       }`}
     >
@@ -24,5 +24,5 @@ export default function ToggleSwitch({
         }`}
       />
     </button>
-  );
+  )
 }
