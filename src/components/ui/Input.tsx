@@ -27,7 +27,7 @@ import { cn } from '../../lib/utils';
  * - Full width container
  */
 
-interface InputProps {
+export interface InputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;

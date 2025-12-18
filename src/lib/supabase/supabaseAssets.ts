@@ -1,8 +1,8 @@
-const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`;
+const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`
 
 export const getAssetUrl = (path: string): string => {
-  return `${CDN_BASE_URL}/${path}`;
-};
+  return `${CDN_BASE_URL}/${path}`
+}
 
 export const SUPABASE_IMAGES = {
   chatBg: "images/chat-bg.svg",
@@ -30,7 +30,7 @@ export const SUPABASE_IMAGES = {
   authSlide3: "images/welcome/slide3.png",
   authSlide4: "images/welcome/slide4.png",
   authLogo: "images/welcome/welcomeLogo.png",
-} as const;
+} as const
 
 export const SUPABASE_ICONS = {
   searchSmIcon: "icons/search-sm.svg",
@@ -65,6 +65,10 @@ export const SUPABASE_ICONS = {
   settingsGreen: "icons/settings-green.svg",
   threeDot: "icons/dots-vertical.svg",
   checkbox: "icons/Checkbox.svg",
+  configure: "icons/configure.png",
+  websiteGreenWithBg: "icons/website-green-with-bg.png",
+  orangeChainWithBg:
+    "icons/orange-chain-with-bg.png",
 
   redTag: "icons/red-tag.svg",
   copy: "icons/copy.svg",
@@ -209,7 +213,7 @@ export const SUPABASE_ICONS = {
   microsoft: "icons/microsoft.svg",
   smileEmoji: "icons/mingcute_emoji-line.svg",
   stars: "icons/star-06.svg",
-};
+}
 
 export const SUPABASE_GIFS = {
   celebrationPopup: "/celebration-v3.gif",
@@ -222,4 +226,4 @@ export const SUPABASE_GIFS = {
   copilotSidebarFive: "copilot/copilotSidebarFive.gif",
   copilotSidebarSix: "copilot/copilotSidebarSix.gif",
   copilotSidebarBg: "copilot/copilotSidebarBg.svg",
-} as const;
+} as const
