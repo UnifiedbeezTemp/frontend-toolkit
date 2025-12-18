@@ -18,17 +18,19 @@ export const validateUrl = (
   // Try to validate as URL
   try {
     // Add protocol if missing
-    const urlWithProtocol = url.startsWith("http://") || url.startsWith("https://")
-      ? url
-      : `https://${url}`
+    const urlWithProtocol =
+      url.startsWith("http://") || url.startsWith("https://")
+        ? url
+        : `https://${url}`
 
     const urlObj = new URL(urlWithProtocol)
-    
+
     // Check if hostname contains a dot (basic domain validation)
     if (!urlObj.hostname.includes(".")) {
       return {
         isValid: false,
-        error: "Please enter a valid URL (e.g., example.com or https://example.com)",
+        error:
+          "Please enter a valid URL (e.g., example.com or https://example.com)",
       }
     }
 
@@ -36,7 +38,8 @@ export const validateUrl = (
   } catch {
     return {
       isValid: false,
-      error: "Please enter a valid URL (e.g., example.com or https://example.com)",
+      error:
+        "Please enter a valid URL (e.g., example.com or https://example.com)",
     }
   }
 }

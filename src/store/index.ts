@@ -8,6 +8,8 @@ import aiAssistantsReducer from "./onboarding/slices/aiAssistantsSlice";
 import step6ChannelConfigReducer from "./onboarding/slices/step6ChannelConfigSlice";
 import step7WebchatReducer from "./onboarding/slices/step7WebchatSlice"
 import step7ChannelIntegrationReducer from "./onboarding/slices/step7ChannelIntegrationSlice"
+import step7CustomizationReducer from "./onboarding/slices/step7CustomizationSlice"
+import step7ContentAndLanguageReducer from "./onboarding/slices/step7ContentAndLanguageSlice"
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +22,8 @@ export const store = configureStore({
     step6ChannelConfig: step6ChannelConfigReducer,
     step7Webchat: step7WebchatReducer,
     step7ChannelIntegration: step7ChannelIntegrationReducer,
+    step7Customization: step7CustomizationReducer,
+    step7ContentAndLanguage: step7ContentAndLanguageReducer,
   },
 })
 

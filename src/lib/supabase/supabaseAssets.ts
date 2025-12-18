@@ -73,6 +73,13 @@ export const SUPABASE_ICONS = {
   dragVertical: "icons/drag-vertical.png",
   email1: "icons/email-with-bg-1.svg",
   phone1: "icons/phone-with-bg.svg",
+  colorPalette1: "icons/color-palette-with-bg.svg",
+  languages1: "icons/language-with-bg.svg",
+  chatBubble1: "icons/chat-bubble-with-bg.svg",
+  download1: "icons/download-with-bg.svg",
+  code: "icons/code-with-green-bg.svg",
+  copy3: "icons/copy-3.svg",
+  loading: "icons/loading.svg",
 
   redTag: "icons/red-tag.svg",
   copy: "icons/copy.svg",

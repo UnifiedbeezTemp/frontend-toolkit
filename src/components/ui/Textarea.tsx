@@ -118,7 +118,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               error ? errorId : helperText ? helperId : undefined
             }
             className={cn(
-              "w-full rounded-md py-[0.8rem] px-[1rem]",
+              "w-full rounded-md py-2 px-2.5",
               "border border-input-stroke bg-primary",
               "focus:border-brand-primary focus:ring-4 focus:ring-[rgba(5,61,39,0.1)] focus:outline-none",
               "shadow-xs",
@@ -139,7 +139,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {error && (
           <p
             id={errorId}
-            className="mt-[0.6rem] text-[1.4rem] text-destructive"
+            className="mt-[0.6rem] text-md text-destructive"
             role="alert"
           >
             {error}
@@ -150,7 +150,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {!error && helperText && (
           <p
             id={helperId}
-            className="mt-[0.6rem] ml-1 text-[1.4rem] text-dark-base-40"
+            className="mt-[0.6rem] ml-1 text-md text-dark-base-40"
           >
             {helperText}
           </p>

@@ -31,6 +31,8 @@ export interface ChannelLabel {
 export interface WebchatChannelIntegration {
   websiteUrl: string
   channelLabels: ChannelLabel[]
+  installationMethod?: "self" | "instructions" | null
+  websiteUrlConfirmed?: boolean
 }
 
 export interface Step7ChannelIntegrationState {
@@ -272,6 +274,31 @@ const step7ChannelIntegrationSlice = createSlice({
       delete state[action.payload]
     },
 
+    // Update installation method
+    updateInstallationMethod: (
+      state,
+      action: PayloadAction<{
+        webchatId: string
+        installationMethod: "self" | "instructions" | null
+      }>
+    ) => {
+      const { webchatId, installationMethod } = action.payload
+      if (state[webchatId]) {
+        state[webchatId].installationMethod = installationMethod
+      }
+    },
+
+    // Confirm website URL
+    confirmWebsiteUrl: (
+      state,
+      action: PayloadAction<{ webchatId: string; confirmed: boolean }>
+    ) => {
+      const { webchatId, confirmed } = action.payload
+      if (state[webchatId]) {
+        state[webchatId].websiteUrlConfirmed = confirmed
+      }
+    },
+
     // Reset all integrations
     resetAllIntegrations: () => initialState,
   },
@@ -290,6 +317,8 @@ export const {
   reorderChannelsAndLinks,
   moveChannelLabelUp,
   moveChannelLabelDown,
+  updateInstallationMethod,
+  confirmWebsiteUrl,
   removeWebchatIntegration,
   resetAllIntegrations,
 } = step7ChannelIntegrationSlice.actions

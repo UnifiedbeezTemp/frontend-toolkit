@@ -4,6 +4,7 @@ export interface WebchatUrl {
   id: string
   url: string
   isSelected?: boolean
+  isConfigured?: boolean // True when configuration is complete (substeps 1-5)
 }
 
 export interface Step7WebchatState {
@@ -83,6 +84,22 @@ const step7WebchatSlice = createSlice({
     },
 
     resetWebchatState: () => initialState,
+
+    // Mark webchat as configured (completed through substeps 1-5)
+    markWebchatAsConfigured: (state, action: PayloadAction<string>) => {
+      const webchat = state.webchatUrls.find((w) => w.id === action.payload)
+      if (webchat) {
+        webchat.isConfigured = true
+      }
+    },
+
+    // Mark webchat as not configured (when editing)
+    markWebchatAsNotConfigured: (state, action: PayloadAction<string>) => {
+      const webchat = state.webchatUrls.find((w) => w.id === action.payload)
+      if (webchat) {
+        webchat.isConfigured = false
+      }
+    },
   },
 })
 
@@ -95,6 +112,8 @@ export const {
   setSearchQuery,
   clearSearchQuery,
   resetWebchatState,
+  markWebchatAsConfigured,
+  markWebchatAsNotConfigured,
 } = step7WebchatSlice.actions
 
 export default step7WebchatSlice.reducer
