@@ -8,6 +8,6 @@ export interface BotItemProps{
   botPersonalityTheme?: BotPersonalityTheme
   showEditButton?: boolean
   showDeleteButton?: boolean
-  onEdit: () => void
-  onDelete: () => void
+  onEdit?: () => void
+  onDelete?: () => void
 }

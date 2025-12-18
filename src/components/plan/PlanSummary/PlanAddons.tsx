@@ -8,7 +8,7 @@ export default function PlanAddOns({ plan }: { plan: OriginalPlan }) {
   const { checkMark } = useSupabaseIcons()
   return (
     <div className="flex flex-wrap gap-2 text-sm text-gray-700">
-      {plan.addons.map((addon) => (
+      {plan.addons?.map((addon) => (
         <div key={addon.id} className="icon-list-item">
           <span className="bg-secondary-green-100 w-3 h-3 flex justify-center items-center rounded-full">
             <ImageComponent

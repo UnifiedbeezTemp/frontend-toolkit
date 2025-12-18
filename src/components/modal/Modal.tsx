@@ -102,9 +102,7 @@ export default function Modal({
             transition={contentTransition}
             tabIndex={-1}
           >
-            <div className="w-full">
-              {children}
-            </div>
+            {children}
           </motion.div>
         </motion.div>
       )}

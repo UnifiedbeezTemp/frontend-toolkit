@@ -1,8 +1,8 @@
-const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`;
+const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`
 
 export const getAssetUrl = (path: string): string => {
-  return `${CDN_BASE_URL}/${path}`;
-};
+  return `${CDN_BASE_URL}/${path}`
+}
 
 export const SUPABASE_IMAGES = {
   chatBg: "images/chat-bg.svg",
@@ -30,7 +30,7 @@ export const SUPABASE_IMAGES = {
   authSlide3: "images/welcome/slide3.png",
   authSlide4: "images/welcome/slide4.png",
   authLogo: "images/welcome/welcomeLogo.png",
-} as const;
+} as const
 
 export const SUPABASE_ICONS = {
   searchSmIcon: "icons/search-sm.svg",
@@ -65,6 +65,21 @@ export const SUPABASE_ICONS = {
   settingsGreen: "icons/settings-green.svg",
   threeDot: "icons/dots-vertical.svg",
   checkbox: "icons/Checkbox.svg",
+  configure: "icons/configure.png",
+  websiteGreenWithBg: "icons/website-green-with-bg.png",
+  orangeChainWithBg: "icons/orange-chain-with-bg.png",
+  chatBubble: "icons/chat-bubble.svg",
+  arrowRight: "icons/arrow-right.svg",
+  dragVertical: "icons/drag-vertical.png",
+  email1: "icons/email-with-bg-1.svg",
+  phone1: "icons/phone-with-bg.svg",
+  colorPalette1: "icons/color-palette-with-bg.svg",
+  languages1: "icons/language-with-bg.svg",
+  chatBubble1: "icons/chat-bubble-with-bg.svg",
+  download1: "icons/download-with-bg.svg",
+  code: "icons/code-with-green-bg.svg",
+  copy3: "icons/copy-3.svg",
+  loading: "icons/loading.svg",
 
   redTag: "icons/red-tag.svg",
   copy: "icons/copy.svg",
@@ -134,6 +149,7 @@ export const SUPABASE_ICONS = {
   twitterIcon: "icons/bi_twitter-x.svg",
   linkedinIcon: "icons/devicon_linkedin.svg",
   monitor: "icons/monitor.svg",
+  monitor1: "icons/monitor-1.svg",
 
   profileActive: "icons/profile-active.svg",
   profileInactive: "icons/profile-inactive.svg",
@@ -209,7 +225,7 @@ export const SUPABASE_ICONS = {
   microsoft: "icons/microsoft.svg",
   smileEmoji: "icons/mingcute_emoji-line.svg",
   stars: "icons/star-06.svg",
-};
+}
 
 export const SUPABASE_GIFS = {
   celebrationPopup: "/celebration-v3.gif",
@@ -220,4 +236,6 @@ export const SUPABASE_GIFS = {
   copilotSidebarThree: "copilot/copilotSidebarThree.gif",
   copilotSidebarFour: "copilot/copilotSidebarFour.gif",
   copilotSidebarFive: "copilot/copilotSidebarFive.gif",
-} as const;
+  copilotSidebarSix: "copilot/copilotSidebarSix.gif",
+  copilotSidebarBg: "copilot/copilotSidebarBg.svg",
+} as const
