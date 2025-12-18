@@ -12,7 +12,7 @@ export interface UserProfile {
   phone: string;
   plan: string;
   businessName: string;
-  onboardingStep: number;
+  completedOnboardingSteps: number[];
   planFeatures: { maxAiAssistants: number; maxSeats?: number };
   industry: string;
   businessObjectives?: BusinessObjective[];
@@ -33,7 +33,7 @@ export const createEmptyUser = (): UserProfile => {
     isVerified: false,
     plan: "",
     businessName: "",
-    onboardingStep: 0,
+    completedOnboardingSteps: [],
     planFeatures: { maxAiAssistants: 0, maxSeats: 0 },
     industry: ""
   };

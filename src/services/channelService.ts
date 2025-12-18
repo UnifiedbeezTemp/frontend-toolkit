@@ -36,7 +36,7 @@ export const unselectChannel = async (
   }
   
   return api.post<UnselectChannelRequest, SelectChannelResponse>(
-    "/channels/unselect?availableChannelId=${channelId}",
+    `/channels/unselect?availableChannelId=${availableChannelId}`,
     body
   );
 };
