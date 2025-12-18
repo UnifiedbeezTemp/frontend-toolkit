@@ -10,8 +10,9 @@ interface Props {
   uploadingFiles: UploadedFile[];
   completedFiles: UploadedFile[];
   setDragOver: (isOver: boolean) => void;
-  removeFile: (id: string) => void;
+  removeFile: (id: string, documentId?: number) => void;
   cancelUpload: (id: string) => void;
+  deletingFileId?: string | null;
 }
 
 export default function FilesCard({
@@ -22,6 +23,7 @@ export default function FilesCard({
   setDragOver,
   removeFile,
   cancelUpload,
+  deletingFileId,
 }: Props) {
   return (
     <div className="rounded-[0.8rem] p-0 mt-[1.6rem] bg-primary">
@@ -44,15 +46,17 @@ export default function FilesCard({
               file={file}
               onRemove={removeFile}
               onCancel={cancelUpload}
+              isDeleting={deletingFileId === file.id}
             />
           ))}
 
-          {completedFiles.map((file, idx) => (
+          {completedFiles.map((file) => (
             <FileItem
-              key={idx}
+              key={file.id}
               file={file}
               onRemove={removeFile}
               onCancel={cancelUpload}
+              isDeleting={deletingFileId === file.id}
             />
           ))}
         </div>

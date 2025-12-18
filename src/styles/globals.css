@@ -49,6 +49,7 @@
   --color-background-gradient: var(--background-gradient);
 
   --color-border: var(--border);
+  --color-border-10: var(--border-10);
   --color-steps-bg: var(--steps-bg);
   --color-input-filled: var(--input-filled);
   --color-input-stroke: var(--input-stroke);
@@ -112,9 +113,15 @@
   --color-danger-100: var(--red-100);
   --color-danger-10: var(--red-10);
   --color-danger-5: var(--red-5);
+  --color-danger-110: var(--red-110);
+  --color-danger-5: var(--red-5);
+  --color-purple-100: var(--purple-100);
+  --color-yellow-100-alt: var(--yellow-100-alt);
   --color-gray-900: var(--gray-900);
   --color-gray-600: var(--gray-600);
   --color-gray-200: var(--gray-200);
+  --color-gray-60: var(--gray-60);
+  --color-gray-50: var(--gray-50);
   --color-gray-40: var(--gray-40);
   --color-gray-35: var(--gray-35);
   --color-gray-30: var(--gray-30);
@@ -165,6 +172,7 @@
   );
 
   --border: #d0d5dd80;
+  --border-10: #ddd;
   --steps-bg: #fab40333;
   --input-filled: #f8f8f8;
   --inactive-color: #c5c6c9;
@@ -236,6 +244,16 @@
   --gray-900: #101828;
   --gray-600: #475467;
   --gray-200: #eaecfo;
+  --red-110: #6d0606;
+  --red-10: #FEE4E2;
+  --red-5: #FEF3F2;
+  --purple-100: #d946ef;
+  --yellow-100-alt: #facc15;
+  --gray-900: #101828;
+  --gray-600: #475467;
+  --gray-200: #eaecf0;
+  --gray-60: #E4E4E4;
+  --gray-50: #F9FAFB;
   --gray-40: #919191;
   --gray-35: #c5c6c9;
   --gray-30: #d0d5dd;
@@ -347,7 +365,7 @@ button:disabled {
 }
 
 .card-base {
-  background: var(--card-gradient);
+  background: linear-gradient(var(--card-gradient));
   /* box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05); */
 }
 

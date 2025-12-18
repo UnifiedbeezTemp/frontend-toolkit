@@ -3,14 +3,24 @@ import {
   CreateAiAssistantResponse,
   DeleteAiAssistantResponse,
   AIAssistant,
+  WebsitesResponse,
+  AddWebsiteResponse,
 } from "../types/aiAssistantTypes";
 import { api } from ".";
 
 export const fetchAiAssistants = () =>
   api.get<AiAssistantsResponse>("/ai");
 
-export const createAiAssistant = () =>
-  api.post<undefined, CreateAiAssistantResponse>("/ai");
+export interface CreateAiAssistantPayload {
+  name?: string;
+  useProfileMapping?: boolean;
+}
+
+export const createAiAssistant = (payload?: CreateAiAssistantPayload) =>
+  api.post<CreateAiAssistantPayload | undefined, CreateAiAssistantResponse>(
+    "/ai",
+    payload
+  );
 
 export const updateAiAssistantName = (payload: {
   id: string;
@@ -50,20 +60,29 @@ export const updateAiAssistantKnowledge = (payload: {
   knowledgeFiles: FormData;
 }) => {
   const formData = new FormData();
-  
-  payload.websiteUrls.forEach((url) => {
-    formData.append("websiteUrls", JSON.stringify(url));
-  });
-  
+ 
   const files = payload.knowledgeFiles.getAll("knowledgeFiles");
   files.forEach((file) => {
     if (file instanceof File) {
-      formData.append("knowledgeFiles", file);
+      formData.append("files", file);
     }
   });
   
-  return api.patch<FormData, AIAssistant>(`/ai/${payload.id}`, formData);
+  return api.post<FormData, AIAssistant>(`/ai/${payload.id}/knowledge/files`, formData);
+};
+
+export const uploadAssistantFiles = (id: string, files: FormData) => {
+  return api.post<FormData, import("../types/aiAssistantTypes").FileUploadResponse>(
+    `/ai/${id}/knowledge/files`,
+    files
+  );
 };
 
 export const deleteAiAssistant = (id: string) =>
   api.delete<DeleteAiAssistantResponse>(`/ai/${id}`);
+
+export const deleteAssistantFile = (aiId: string, fileId: number) => {
+  return api.delete<{ message?: string }>(`/ai/${aiId}/knowledge/files/${fileId}`);
+};
+
+export { fetchWebsites as fetchAssistantWebsites, addWebsite as addAssistantWebsite } from "./websites";

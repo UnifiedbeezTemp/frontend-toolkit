@@ -16,14 +16,14 @@ export default function ExpandableCard({
 
   return (
     <div className={cn("flex flex-col gap-5.5 pb-5.5", containerClassName)}>
-      <button
+      <div
         onClick={toggleExpanded}
         className={cn("w-full flex items-center justify-between px-3 hover:bg-soft-green/30 transition-colors", summaryClassName)}
         aria-expanded={isExpanded}
         aria-label={`${isExpanded ? "Collapse" : "Expand"} ${title}`}
       >
         {summary}
-      </button>
+      </div>
       <AnimatePresence initial={false}>
         {isExpanded && (
           <motion.div

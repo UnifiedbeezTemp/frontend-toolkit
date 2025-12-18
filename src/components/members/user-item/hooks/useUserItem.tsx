@@ -26,12 +26,14 @@ export const useUserItem = (
   const invitedUsers = useAppSelector((state) => state.members.invitedUsers);
   const members = useAppSelector((state) => state.members.members);
   const roles = useAppSelector((state) => state.members.roles);
+  const invitedStatusFilter = useAppSelector((state) => state.members.statusFilterInvited);
   
   const queryClient = useQueryClient();
   
-  const currentMember = type === "members" 
-    ? members.find((m) => m.id === userId)
-    : invitedUsers.find((u) => u.id === userId);
+  const currentMember =
+    type === "members"
+      ? members.find((m) => m.id === userId)
+      : invitedUsers.find((u) => u.id === userId);
   
   const isCurrentUser = currentMember?.email === currentUser?.email;
   const isOwner = currentMember?.role === "OWNER" || currentMember?.isOwner;
@@ -126,8 +128,11 @@ export const useUserItem = (
   }, [type, userId, isCurrentUser, removeMemberMutation, cancelInvitationMutation]);
 
   const handleToggle = useCallback(() => {
+    if (type === "invited" && invitedStatusFilter !== "draft") {
+      return;
+    }
     dispatch(toggleMemberSelection(userId));
-  }, [userId, dispatch]);
+  }, [type, invitedStatusFilter, userId, dispatch]);
 
   const handleSendInvite = useCallback(() => {
     const user = invitedUsers.find((u) => u.id === userId);

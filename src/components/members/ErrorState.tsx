@@ -15,10 +15,10 @@ export default function ErrorState({
   return (
     <div className="flex flex-col items-center justify-center py-[4rem] text-center">
       <div className="mb-[1.6rem]">
-        <Text size="base" className="text-destructive mb-[0.8rem]">
+        <Text size="base" className="text-destructive mb-[0.8rem] text-center">
           {message}
         </Text>
-        <Text size="sm" className="text-secondary">
+        <Text size="sm" className="text-secondary text-center">
           Unable to load {type === "members" ? "team members" : "invitations"}.
           Please try again.
         </Text>
