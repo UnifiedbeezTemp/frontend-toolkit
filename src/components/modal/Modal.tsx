@@ -17,6 +17,7 @@ interface ModalProps {
   children: React.ReactNode;
   size?: "sm" | "md" | "lg" | "xl" | "xxl" | "fullscreen";
   closeOnOverlayClick?: boolean;
+  closeOnEsc?: boolean;
   showCloseButton?: boolean;
   className?: string;
   preventScroll?: boolean;
@@ -34,6 +35,7 @@ export default function Modal({
   children,
   size = "md",
   closeOnOverlayClick = true,
+  closeOnEsc = true,
   className = "",
   preventScroll = true,
   initialFocusRef,
@@ -47,6 +49,7 @@ export default function Modal({
     isOpen,
     onClose,
     closeOnOverlayClick,
+    closeOnEsc,
     preventScroll,
     initialFocusRef,
   });

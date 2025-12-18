@@ -1,13 +1,16 @@
 import { UserProfile } from "../types/userProfileTypes";
+import { getSetupRoute } from "./setupRoutes";
+import { getNextStepAfterHighest } from "./completedOnboardingSteps";
 
 export function getOnboardingRedirect(user: UserProfile | null) {
   if (!user) return "/auth/signin";
 
-  const step = user.onboardingStep ?? 0;
+  const completedSteps = user.completedOnboardingSteps || [];
 
-  if (step === 0) {
+  if (completedSteps.length === 0) {
     return "/account-setup";
   }
 
-  return `/setup?step=${step}`;
+  const nextStep = getNextStepAfterHighest(completedSteps);
+  return getSetupRoute(nextStep);
 }

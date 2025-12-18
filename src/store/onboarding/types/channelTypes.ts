@@ -1,13 +1,21 @@
-export interface Channel {
-  id: string; // we keep string for redux key; value is availableChannelId as string
+import { SelectedChannel, BackendChannel } from "@/shared/src/types/channelApiTypes";
+
+export interface Channel extends Omit<SelectedChannel, 'id' | 'availableChannel'> {
   name: string;
+  isSelected: any;
   description: string;
-  info: string;
+  // Override id to be string for Redux compatibility
+  id: string; // Converted from SelectedChannel.id (number) to string
+  // UI-specific fields
   icon: string;
-  isSelected: boolean;
   hasBorder?: boolean;
   type: string;
   tags?: ["popular"];
-  availableChannelId?: number;
-  availableChannelName?: string;
+  info: string;
+  // Keep all backend fields from SelectedChannel
+  // userId, availableChannelId, channelName, isActive, isConnected, credentials, etc.
+  // Also keep availableChannel as nested object
+  availableChannel: BackendChannel & {
+    icon?: string; // Add icon to availableChannel too
+  };
 }
