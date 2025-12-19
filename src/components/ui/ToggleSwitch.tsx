@@ -14,12 +14,12 @@ export default function ToggleSwitch({
       onClick={onToggle}
       type="button"
       disabled={disabled}
-      className={`rounded-full w-7 h-5 p-[.21rem] transition-all duration-300 ${
+      className={`rounded-full w-8 h-5 p-[.21rem] transition-all duration-300 ${
         isActive ? "bg-brand-primary" : "bg-inactive-color"
       }`}
     >
       <div
-        className={`bg-white rounded-full w-[1.24rem] h-[1.24rem] transition-all duration-300 ${
+        className={`bg-white rounded-full w-[1.4rem] h-[1.4rem] transition-all duration-300 ${
           isActive ? "translate-x-full" : "translate-x-0"
         }`}
       />

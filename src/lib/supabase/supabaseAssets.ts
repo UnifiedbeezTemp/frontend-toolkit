@@ -30,6 +30,7 @@ export const SUPABASE_IMAGES = {
   authSlide3: "images/welcome/slide3.png",
   authSlide4: "images/welcome/slide4.png",
   authLogo: "images/welcome/welcomeLogo.png",
+  videoThumbnail: "images/videoThumbnail.jpeg",
 } as const
 
 export const SUPABASE_ICONS = {
