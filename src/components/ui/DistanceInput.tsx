@@ -7,6 +7,7 @@ import { cn } from "../../lib/utils"
 export interface DistanceInputProps {
   value: number
   onChange: (value: number) => void
+  onBlur?: (value: number) => void
   label?: string
   min?: number
   max?: number
@@ -17,6 +18,7 @@ export interface DistanceInputProps {
 export default function DistanceInput({
   value,
   onChange,
+  onBlur,
   label,
   min = 0,
   max,
@@ -84,6 +86,7 @@ export default function DistanceInput({
           type="number"
           value={value.toString()}
           onChange={handleInputChange}
+          onBlur={() => onBlur?.(value)}
           disabled={disabled}
           className={cn(
             "text-center border-0 rounded-none focus:outline-none focus:ring-0 focus:shadow-none",

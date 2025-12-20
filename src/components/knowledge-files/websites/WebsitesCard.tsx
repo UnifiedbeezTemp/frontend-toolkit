@@ -4,7 +4,7 @@ import AddNewPageModal from "./add-new-page/AddNewPageModal";
 import WebsiteCard from "./WebsiteCard";
 import InactivePagesModal from "./inactive-pages-modal/InactivePagesModal";
 import ConfirmActionModal from "../../modal/ConfirmActionModal";
-import { PageOption, Website } from "./utils/types";
+import { PageOption, Website, WebsitePage } from "./utils/types";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import Heading from "../../ui/Heading";
 import Text from "../../ui/Text";
@@ -17,7 +17,7 @@ interface WebsitesCardProps {
   newWebsiteUrl: string;
   selectedOption: PageOption;
   urlError: string;
-  inactivePages: any[];
+  inactivePages: WebsitePage[];
   currentWebsiteIndex: number | null;
   deleteConfirmOpen: boolean;
   websiteToDelete: number | null;
