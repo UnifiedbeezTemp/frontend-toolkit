@@ -164,3 +164,15 @@ export interface SendInstructionsByEmailPayload {
 export interface SendInstructionsToTeamPayload {
   teamMemberIds: number[]
 }
+
+export interface CreateLanguagePayload {
+  languageCode: string
+  languageName: string
+  displayOrder: number
+}
+
+export interface CreateLocalizationPayload {
+  languageCode: string
+  title: string
+  body: string
+}
