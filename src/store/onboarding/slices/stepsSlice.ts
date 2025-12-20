@@ -14,54 +14,73 @@ const stepsSlice = createSlice({
   initialState,
   reducers: {
     // Initialize steps with the structure from SetupPage
-    setSteps: (state, action: PayloadAction<Step[]>) => {
-      state.steps = action.payload
-
-      // Initialize visited steps with the first step
-      if (action.payload.length > 0 && action.payload[0].subSteps.length > 0) {
-        const firstStep = action.payload[0]
-        const firstSubStep = firstStep.subSteps[0]
-        state.visitedSteps = [
-          { stepId: firstStep.id, subStepId: firstSubStep.id },
-        ]
+    setSteps: (state, action: PayloadAction<{ steps: Step[]; initialVisitedStep?: { stepId: number; subStepId: string | number } }>) => {
+      const { steps, initialVisitedStep } = action.payload;
+      state.steps = steps;
+      
+      if (state.visitedSteps.length === 0) {
+        if (initialVisitedStep) {
+          state.visitedSteps = [initialVisitedStep];
+          state.currentStepId = initialVisitedStep.stepId;
+          state.currentSubStepId = initialVisitedStep.subStepId;
+        } else if (steps.length > 0 && steps[0].subSteps.length > 0) {
+          const firstStep = steps[0];
+          const firstSubStep = firstStep.subSteps[0];
+          const initialStep = { stepId: firstStep.id, subStepId: firstSubStep.id };
+          state.visitedSteps = [initialStep];
+          state.currentStepId = firstStep.id;
+          state.currentSubStepId = firstSubStep.id;
+        }
+      } else if (initialVisitedStep) {
+        const existsIndex = state.visitedSteps.findIndex(
+          v => v.stepId === initialVisitedStep.stepId && v.subStepId === initialVisitedStep.subStepId
+        );
+        if (existsIndex === -1) {
+          state.visitedSteps.push(initialVisitedStep);
+        } else {
+          const existing = state.visitedSteps[existsIndex];
+          state.visitedSteps.splice(existsIndex, 1);
+          state.visitedSteps.push(existing);
+        }
+        state.currentStepId = initialVisitedStep.stepId;
+        state.currentSubStepId = initialVisitedStep.subStepId;
       }
     },
 
-    // Navigate to a specific step and sub-step
-    navigateToStep: (
-      state,
-      action: PayloadAction<{ stepId: number; subStepId: string | number }>
-    ) => {
-      const { stepId, subStepId } = action.payload
+    navigateToStep: (state, action: PayloadAction<{ stepId: number; subStepId: string | number; skipValidation?: boolean }>) => {
+      const { stepId, subStepId, skipValidation = false } = action.payload;
+      
+      const targetStep = state.steps.find(step => step.id === stepId);
+      const targetSubStep = targetStep?.subSteps.find(sub => sub.id === subStepId);
+      
+      if (!targetStep || !targetSubStep) return;
 
-      // Check if navigation is allowed
-      const targetStep = state.steps.find((step) => step.id === stepId)
-      const targetSubStep = targetStep?.subSteps.find(
-        (sub) => sub.id === subStepId
-      )
-
-      if (!targetStep || !targetSubStep) return
-
-      // Check if previous steps are completed
-      const canNavigate = canNavigateToStep(state.steps, stepId, subStepId)
-      if (!canNavigate) return
+      if (!skipValidation) {
+        const canNavigate = canNavigateToStep(state.steps, stepId, subStepId);
+        if (!canNavigate) return;
+      }
 
       // Update current step and sub-step
       state.currentStepId = stepId
       state.currentSubStepId = subStepId
 
-      // Add to visited steps if not already there
+      // Add to visited steps - always update to track progression
       const visitedIndex = state.visitedSteps.findIndex(
         (visited) =>
           visited.stepId === stepId && visited.subStepId === subStepId
       )
 
       if (visitedIndex === -1) {
-        state.visitedSteps.push({ stepId, subStepId })
+        // Add new visited step
+        state.visitedSteps.push({ stepId, subStepId });
+      } else {
+        // If already visited, move to end to maintain latest step tracking
+        const existing = state.visitedSteps[visitedIndex];
+        state.visitedSteps.splice(visitedIndex, 1);
+        state.visitedSteps.push(existing);
       }
 
-      // Update step active states
-      state.steps = state.steps.map((step) => ({
+      state.steps = state.steps.map(step => ({
         ...step,
         isActive: step.id === stepId,
         subSteps: step.subSteps.map((subStep) => ({
@@ -71,7 +90,6 @@ const stepsSlice = createSlice({
       }))
     },
 
-    // Go to next sub-step within current step
     goToNextSubStep: (state) => {
       const currentStep = state.steps.find(
         (step) => step.id === state.currentStepId
@@ -91,7 +109,6 @@ const stepsSlice = createSlice({
       }
     },
 
-    // Go to previous sub-step within current step
     goToPreviousSubStep: (state) => {
       const currentStep = state.steps.find(
         (step) => step.id === state.currentStepId
@@ -111,7 +128,6 @@ const stepsSlice = createSlice({
       }
     },
 
-    // Go to next step (first sub-step of next step)
     goToNextStep: (state) => {
       const currentStepIndex = state.steps.findIndex(
         (step) => step.id === state.currentStepId
@@ -127,7 +143,6 @@ const stepsSlice = createSlice({
       }
     },
 
-    // Go to previous step (last sub-step of previous step)
     goToPreviousStep: (state) => {
       const currentStepIndex = state.steps.findIndex(
         (step) => step.id === state.currentStepId
@@ -154,6 +169,7 @@ const stepsSlice = createSlice({
 
       if (!currentStep || !currentSubStep) return
 
+      // Find the index of current substep
       // Mark current sub-step as completed
       state.steps = state.steps.map((step) =>
         step.id === state.currentStepId
@@ -185,12 +201,30 @@ const stepsSlice = createSlice({
         (sub) => sub.id === state.currentSubStepId
       )
 
-      if (currentSubStepIndex < currentStep.subSteps.length - 1) {
-        // Go to next sub-step in current step
-        stepsSlice.caseReducers.goToNextSubStep(state)
-      } else if (currentSubStepIndex === currentStep.subSteps.length - 1) {
-        // Go to next step
-        stepsSlice.caseReducers.goToNextStep(state)
+      state.steps = state.steps.map(step => 
+        step.id === state.currentStepId
+          ? {
+              ...step,
+              subSteps: step.subSteps.map((subStep, index) => {
+                if (index <= currentSubStepIndex) {
+                  return { ...subStep, isCompleted: true };
+                }
+                return subStep;
+              }),
+            }
+          : step
+      );
+
+      const updatedStep = state.steps.find(step => step.id === state.currentStepId);
+      if (updatedStep) {
+        const allSubStepsCompleted = updatedStep.subSteps.every(sub => sub.isCompleted);
+        if (allSubStepsCompleted) {
+          state.steps = state.steps.map(step =>
+            step.id === state.currentStepId
+              ? { ...step, isCompleted: true }
+              : step
+          );
+        }
       }
     },
 
@@ -283,7 +317,6 @@ const canNavigateToStep = (steps: Step[], stepId: number, subStepId: string | nu
   const targetStepIndex = steps.findIndex(step => step.id === stepId);
   if (targetStepIndex === -1) return false;
 
-  // Check if all previous steps are completed
   for (let i = 0; i < targetStepIndex; i++) {
     if (!steps[i].isCompleted) return false;
   }

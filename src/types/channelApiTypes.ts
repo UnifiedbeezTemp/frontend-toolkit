@@ -61,6 +61,12 @@ export interface SelectedChannel {
   provider: string | null;
   sharedCredentialId: number | null;
   availableChannel: BackendChannel;
+  whatsappAccounts: unknown[];
+  facebookAccounts: unknown[];
+  emailAccounts: unknown[];
+  smsAccounts: unknown[];
+  calendarAccounts: unknown[];
+  webchatConfigs: unknown[];
 }
 
 export interface SelectedChannelsResponse {

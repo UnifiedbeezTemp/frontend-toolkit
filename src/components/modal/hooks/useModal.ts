@@ -4,6 +4,7 @@ interface UseModalProps {
   isOpen: boolean;
   onClose: () => void;
   closeOnOverlayClick: boolean;
+  closeOnEsc?: boolean;
   preventScroll: boolean;
   initialFocusRef?: React.RefObject<HTMLElement>;
 }
@@ -12,6 +13,7 @@ export function useModal({
   isOpen,
   onClose,
   closeOnOverlayClick,
+  closeOnEsc = true,
   preventScroll,
   initialFocusRef,
 }: UseModalProps) {
@@ -19,25 +21,29 @@ export function useModal({
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && closeOnEsc) {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
+      if (closeOnEsc) {
+        document.addEventListener("keydown", handleEscape);
+      }
       if (preventScroll) {
         document.body.style.overflow = "hidden";
       }
     }
 
     return () => {
-      document.removeEventListener("keydown", handleEscape);
+      if (closeOnEsc) {
+        document.removeEventListener("keydown", handleEscape);
+      }
       if (preventScroll) {
         document.body.style.overflow = "unset";
       }
     };
-  }, [isOpen, onClose, preventScroll]);
+  }, [isOpen, onClose, closeOnEsc, preventScroll]);
 
   useEffect(() => {
     if (isOpen) {

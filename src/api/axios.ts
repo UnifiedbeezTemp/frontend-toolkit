@@ -15,13 +15,6 @@ axiosInstance.interceptors.request.use(
       delete config.headers["Content-Type"];
     }
 
-    const token =
-      typeof window !== "undefined"
-        ? localStorage.getItem("access_token")
-        : null;
-
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-
     return config;
   },
   (error) => Promise.reject(error)
