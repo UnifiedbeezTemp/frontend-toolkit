@@ -238,4 +238,5 @@ export const SUPABASE_GIFS = {
   copilotSidebarFive: "copilot/copilotSidebarFive.gif",
   copilotSidebarSix: "copilot/copilotSidebarSix.gif",
   copilotSidebarBg: "copilot/copilotSidebarBg.svg",
-} as const
+} as const;
+
