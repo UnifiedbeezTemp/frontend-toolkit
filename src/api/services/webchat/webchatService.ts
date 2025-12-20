@@ -143,4 +143,24 @@ export const webchatService = {
       void
     >(`/webchat/${webchatId}/send-instructions-to-team`, payload)
   },
+
+  async createLanguage(
+    webchatId: string | number,
+    payload: import("../../../types/webchatApiTypes").CreateLanguagePayload
+  ): Promise<unknown> {
+    return api.post<
+      import("../../../types/webchatApiTypes").CreateLanguagePayload,
+      unknown
+    >(`/webchat/${webchatId}/languages`, payload)
+  },
+
+  async createLocalization(
+    webchatId: string | number,
+    payload: import("../../../types/webchatApiTypes").CreateLocalizationPayload
+  ): Promise<unknown> {
+    return api.post<
+      import("../../../types/webchatApiTypes").CreateLocalizationPayload,
+      unknown
+    >(`/webchat/${webchatId}/localizations`, payload)
+  },
 }
