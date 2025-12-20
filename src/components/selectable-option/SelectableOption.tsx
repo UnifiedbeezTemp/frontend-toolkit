@@ -1,4 +1,3 @@
-import clsx from "clsx"
 import { CheckboxVisual, RadioVisual } from "./SelectedVisual"
 import { cn } from "../../lib/utils"
 
