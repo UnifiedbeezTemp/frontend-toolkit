@@ -17,17 +17,26 @@ export const getDateAfter30Days = () => {
   });
 };
 
+export const getUserNameParts = (fullName: string) => {
+  if (!fullName) return { firstName: "", lastName: "" };
+  const nameParts = fullName.split(" ");
+  return {
+    firstName: nameParts[0] || "",
+    lastName: nameParts.slice(1).join(" ") || "",
+  };
+};
+
 export function getCurrencySymbol(currencyCode: string): string {
   try {
-    return (0)
-      .toLocaleString("en", {
-        style: "currency",
-        currency: currencyCode,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })
-      .replace(/\d/g, "")
-      .trim();
+    const formatter = new Intl.NumberFormat("en", {
+      style: "currency",
+      currency: currencyCode,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+    const parts = formatter.formatToParts(0);
+    const symbol = parts.find(p => p.type === "currency")?.value;
+    return symbol ?? currencyCode;
   } catch {
     return currencyCode;
   }

@@ -4,6 +4,10 @@ export interface UploadedFile {
   type: string;
   size: number;
   progress: number;
-  status: "uploading" | "completed" | "error";
+  status: "pending" | "error" | "saved";
   url?: string;
+  filePath?: string;
+  error?: string;
+  isFromBackend?: boolean;
+  documentId?: number;
 }

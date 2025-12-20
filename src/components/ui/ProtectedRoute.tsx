@@ -2,9 +2,10 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useAuth } from '../../contexts/authContext';
+import PreLoader from './PreLoader';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading, isInitialized } = useAuth();
+  const { isAuthenticated, isLoading, isInitialized, user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -14,11 +15,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }, [isAuthenticated, isLoading, isInitialized, router]);
 
   if (!isInitialized || isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div>Loading......</div>
-      </div>
-    );
+    return <PreLoader />;
   }
 
   if (!isAuthenticated) {

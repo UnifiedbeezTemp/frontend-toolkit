@@ -49,6 +49,7 @@
   --color-background-gradient: var(--background-gradient);
 
   --color-border: var(--border);
+  --color-border-10: var(--border-10);
   --color-steps-bg: var(--steps-bg);
   --color-input-filled: var(--input-filled);
   --color-input-stroke: var(--input-stroke);
@@ -65,8 +66,8 @@
   --color-mid-green: var(--mid-green);
   --color-solid-green: var(--solid-green);
 
-  --breakpoint-md: 58.25rem;
-  --breakpoint-lg: 64rem;
+  /* --breakpoint-md: 58.25rem;
+  --breakpoint-lg: 64rem; */
   --inset-shadow-md: 2px 0 0 0 #053d27 inset;
   --color-fresh-green: var(--fresh-green);
   --color-dark-base-100: var(--black-100);
@@ -100,17 +101,33 @@
   --color-secondary-40: var(--yellow-40);
   --color-secondary-30: var(--yellow-30);
   --color-secondary-20: var(--yellow-20);
+  --color-secondary-15: var(--yellow-15);
   --color-secondary-10: var(--yellow-10);
+  --color-secondary-5: var(--yellow-5);
+  --color-secondary-green-110: var(--leaf-green-110);
+  --color-secondary-green-105: var(--leaf-green-105);
   --color-secondary-green-100: var(--leaf-green-100);
+  --color-secondary-green-5: var(--leaf-green-5);
   --color-light-green: var(--light-green);
   --color-green-10: var(--green-10);
   --color-danger-100: var(--red-100);
+  --color-danger-10: var(--red-10);
+  --color-danger-5: var(--red-5);
+  --color-danger-110: var(--red-110);
+  --color-danger-5: var(--red-5);
+  --color-purple-100: var(--purple-100);
+  --color-yellow-100-alt: var(--yellow-100-alt);
+  --color-gray-900: var(--gray-900);
+  --color-gray-600: var(--gray-600);
   --color-gray-200: var(--gray-200);
+  --color-gray-60: var(--gray-60);
+  --color-gray-50: var(--gray-50);
   --color-gray-40: var(--gray-40);
   --color-gray-35: var(--gray-35);
   --color-gray-30: var(--gray-30);
   --color-gray-25: var(--gray-25);
   --color-gray-20: var(--gray-20);
+  --color-gray-15: var(--gray-15);
   --color-primary-blue: var(--primary-blue);
   --text-xs: 1rem;
   --text-sm: 1.2rem;
@@ -128,6 +145,8 @@
   --radius-md: 0.8rem;
   --radius-lg: 1rem;
   --shadow-sm: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  --shadow-card: 0 20px 24px -4px rgba(16, 24, 40, 0.08),
+                 0 8px 8px -4px rgba(16, 24, 40, 0.03);
 }
 
 :root {
@@ -153,6 +172,7 @@
   );
 
   --border: #d0d5dd80;
+  --border-10: #ddd;
   --steps-bg: #fab40333;
   --input-filled: #f8f8f8;
   --inactive-color: #c5c6c9;
@@ -174,10 +194,11 @@
   --focus-ring: rgba(5, 61, 39, 0.2);
   --shadow-ring: 0 1px 2px rgba(16, 24, 40, 0.05);
   --soft-green: #f7fffc;
+
   --mid-green: #E8FFF6;
   --light-green: #E9F7F2;
   --solid-green: #219165;
-  --card-gradient: linear-gradient(165deg, #e6faf2 -11.22%, #e3cf9b 219.35%);
+  --card-gradient: 165deg, #e6faf2 -11.22%, #e3cf9b 219.35%;
 
   --black-110: #1b1b1b;
   --black-100: #0b1012;
@@ -211,14 +232,34 @@
   --yellow-30: #fde9b3;
   --yellow-20: #fef0cd;
   --yellow-10: #fef7e6;
+  --yellow-15: #FEF0C7;
+  --yellow-5: #FFFAEB;
+  --leaf-green-110: #0B6341;
+  --leaf-green-105: #005D38;
   --leaf-green-100: #29953e;
+  --leaf-green-5: #D5EAE2;
   --red-100: #cc0e11;
+  --red-10: #FEE4E2;
+  --red-5: #FEF3F2;
+  --gray-900: #101828;
+  --gray-600: #475467;
   --gray-200: #eaecfo;
+  --red-110: #6d0606;
+  --red-10: #FEE4E2;
+  --red-5: #FEF3F2;
+  --purple-100: #d946ef;
+  --yellow-100-alt: #facc15;
+  --gray-900: #101828;
+  --gray-600: #475467;
+  --gray-200: #eaecf0;
+  --gray-60: #E4E4E4;
+  --gray-50: #F9FAFB;
   --gray-40: #919191;
   --gray-35: #c5c6c9;
   --gray-30: #d0d5dd;
   --gray-25: #f8f8f8;
   --gray-20: #f6f6f6;
+  --gray-15: #E4E4E4;
 }
 
 html {
@@ -324,7 +365,7 @@ button:disabled {
 }
 
 .card-base {
-  background: var(--card-gradient);
+  background: linear-gradient(var(--card-gradient));
   /* box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05); */
 }
 
@@ -333,84 +374,8 @@ button:disabled {
   opacity: 0.8;
 }
 
-
-/* NUCLEAR OPTION: Completely override Google Sign-In button styles */
-
-/* Target the Google button iframe and hide it completely */
-iframe[src*="accounts.google.com"] {
-  opacity: 0 !important;
-  position: absolute !important;
-  z-index: 1 !important;
-  width: 100% !important;
-  height: 100% !important;
-  cursor: pointer !important;
-}
-
-/* The container that holds Google's button */
-div[data-google-button] {
-  position: relative !important;
-  width: 100% !important;
-  height: 4.8rem !important; /* Match your button height */
-}
-
-/* Create a custom overlay that matches your design */
-.google-button-custom-overlay {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  background: var(--primary) !important;
-  border: 1px solid var(--input-stroke) !important;
-  border-radius: 0.8rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.8rem !important;
-  padding: 1rem 1.4rem !important;
-  font-size: 1.4rem !important;
-  color: var(--text-secondary) !important;
-  cursor: pointer !important;
-  z-index: 0 !important;
-  pointer-events: none !important; /* Let clicks pass through to Google's iframe */
-}
-
-.google-button-custom-overlay:hover {
-  background: var(--soft-green) !important;
-  border-color: var(--brand-primary) !important;
-}
-
-/* Ensure the Google iframe is clickable */
-.google-button-wrapper {
-  position: relative;
-  width: 100%;
-  height: 4.8rem;
-}
-
-.google-button-wrapper:hover .google-button-custom-overlay {
-  background: var(--soft-green) !important;
-  border-color: var(--brand-primary) !important;
-}
-
-/* Google Button Styling Override */
-div[data-google-button] iframe {
-  opacity: 0 !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  cursor: pointer !important;
-  z-index: 10 !important;
-}
-
-/* Make sure the Google button container is clickable */
-div[data-google-button] {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  cursor: pointer !important;
-  z-index: 10 !important;
+.gradient-button-secondary-primary {
+  background: linear-gradient(267deg, var(--brand-primary) -12.17%, var(--brand-secondary) 125.17%)
 }
 
 @layer components{
@@ -434,5 +399,8 @@ div[data-google-button] {
   }
   .pill{
     @apply flex justify-center items-center font-normal px-2.5 py-1.5 text-sm leading-base bg-soft-green border-solid-green border rounded-[8rem];
+  }
+  .badge{
+    @apply max-w-fit px-1.5 py-1.25 text-[1rem] font-bold mix-blend-multiply rounded;
   }
 }

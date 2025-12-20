@@ -28,7 +28,7 @@ export default function FileUploadArea({
       className={`rounded-[1.2rem] border-2 border-dotted h-[18.7rem] cursor-pointer transition-all duration-200 ${
         isDragOver
           ? "border-brand-primary bg-brand-primary/5 scale-[1.02] shadow-lg"
-          : "border-border bg-[#F9FAFB]"
+          : "border-border bg-gray-50"
       }`}
       onClick={handleClick}
       onDrop={handleDrop}

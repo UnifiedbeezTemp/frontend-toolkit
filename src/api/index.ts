@@ -14,13 +14,20 @@ export const api = {
     const res = await axiosInstance.post(url, data, config);
     return res.data;
   },
-
   put: async <TData, TResult>(
     url: string,
     data?: TData,
     config?: object,
   ): Promise<TResult> => {
     const res = await axiosInstance.put(url, data, config);
+    return res.data;
+  },
+  patch: async <TData, TResult>(
+    url: string,
+    data?: TData,
+    config?: object,
+  ): Promise<TResult> => {
+    const res = await axiosInstance.patch(url, data, config);
     return res.data;
   },
 

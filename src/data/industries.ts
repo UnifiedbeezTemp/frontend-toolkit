@@ -1,22 +1,35 @@
 export interface Industry {
-  name: string;
+  value: string;
+  label: string;
+}
+
+export interface FormattedIndustry{
+  value: string;
+  label: string;
   icon: string;
 }
 
-export const industries = [
-  { name: "E-commerce / Retail", icon: "🛍️" },
-  {
-    name: "Real Estate",
-    icon: "🏠",
-  },
-  { name: "Healthcare / Clinics", icon: "🏥" },
-  { name: "Education / Online Courses", icon: "🎓" },
-  { name: "Finance / Accounting", icon: "🛍️" },
-  { name: "Legal Services", icon: "💼" },
-  { name: "Events & Bookings", icon: "🎤" },
-  { name: "Hospitality", icon: "🏨" },
-  { name: "Beauty / Wellness", icon: "✨" },
-  { name: "Tech Support / SaaS", icon: "💻" },
-  { name: "Automotive Services", icon: "🛞" },
-  { name: "Property Management", icon: "🏠️" },
-];
+const industryIcons: Record<string, string> = {
+  ECOMMERCE_RETAIL: "🛍️",
+  REAL_ESTATE: "🏠",
+  HEALTHCARE_CLINICS: "🏥",
+  EDUCATION: "🎓",
+  FINANCE_ACCOUNTING: "💰",
+  LEGAL: "⚖️",
+  EVENTS_BOOKINGS: "🎤",
+  HOSPITALITY: "🏨",
+  BEAUTY_WELLNESS: "✨",
+  TECH_SUPPORT_SAAS: "💻",
+  AUTOMOTIVE: "🚗",
+  PROPERTY_MANAGEMENT: "🏢",
+  DEFAULT: "🏢",
+};
+
+export function mapIndustriesWithIcons(
+  industries: Industry[]
+): FormattedIndustry[] {
+  return industries.map((industry) => ({
+    ...industry,
+    icon: industryIcons[industry.value] || industryIcons.DEFAULT,
+  }));
+}

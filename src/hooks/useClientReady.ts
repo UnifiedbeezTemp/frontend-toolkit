@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { isUndefined } from "@app/utils/is";
+import { isUndefined } from "../utils/is";
 
 export function useClientReady() {
   const [ready, setReady] = useState(false);

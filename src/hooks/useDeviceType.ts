@@ -31,7 +31,7 @@ export function useDeviceType() {
       desktop.removeEventListener("change", update);
     };
   }, []);
-
+  
   const isDeviceType = useMemo(
     () => ({
       isMobile: device === "mobile",

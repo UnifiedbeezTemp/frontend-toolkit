@@ -1,4 +1,4 @@
-import { TeamMember } from "../../../store/onboarding/slices/membersSlice";
+import { TeamMember } from "../../../store/onboarding/types/memberTypes";
 
 export const getInitialMembers = (getAvatar: () => string): TeamMember[] => [
   {
