@@ -4,7 +4,7 @@ export interface SubStep {
   isCompleted: boolean;
   isActive: boolean;
   videoUrl?: string;
-  formData?: any;
+  formData?: Record<string, unknown>;
 }
 
 export interface Step {
