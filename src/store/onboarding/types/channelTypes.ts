@@ -2,7 +2,7 @@ import { SelectedChannel, BackendChannel } from "@/shared/src/types/channelApiTy
 
 export interface Channel extends Omit<SelectedChannel, 'id' | 'availableChannel'> {
   name: string;
-  isSelected: any;
+  isSelected: boolean;
   description: string;
   // Override id to be string for Redux compatibility
   id: string; // Converted from SelectedChannel.id (number) to string

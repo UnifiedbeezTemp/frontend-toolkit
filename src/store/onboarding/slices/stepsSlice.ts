@@ -231,7 +231,7 @@ const stepsSlice = createSlice({
     // Update form data for current sub-step
     updateSubStepFormData: (
       state,
-      action: PayloadAction<{ formData: any }>
+      action: PayloadAction<{ formData: Record<string, unknown> | undefined }>
     ) => {
       state.steps = state.steps.map((step) =>
         step.id === state.currentStepId

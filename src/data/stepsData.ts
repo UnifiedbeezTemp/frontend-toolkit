@@ -296,13 +296,6 @@ export const initialStepsData: Step[] = [
         isActive: false,
         videoUrl: "/videos/template-library.mp4",
       },
-      {
-        name: "Automation Template Customisation",
-        id: 3,
-        isCompleted: false,
-        isActive: false,
-        videoUrl: "/videos/template-customization.mp4",
-      },
     ],
   },
 ];
