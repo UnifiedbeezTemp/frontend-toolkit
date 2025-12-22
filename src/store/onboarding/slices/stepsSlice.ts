@@ -60,6 +60,31 @@ const stepsSlice = createSlice({
         if (!canNavigate) return;
       }
 
+      // Mark previous steps and substeps as completed
+      const targetStepIndex = state.steps.findIndex(step => step.id === stepId);
+      const targetSubStepIndex = targetStep.subSteps.findIndex(sub => sub.id === subStepId);
+
+      state.steps = state.steps.map((step, sIdx) => {
+        const isPastStep = sIdx < targetStepIndex;
+        const isCurrentStep = sIdx === targetStepIndex;
+
+        return {
+          ...step,
+          isActive: isCurrentStep,
+          isCompleted: isPastStep ? true : step.isCompleted,
+          subSteps: step.subSteps.map((subStep, ssIdx) => {
+            const isPastSubStep = isPastStep || (isCurrentStep && ssIdx < targetSubStepIndex);
+            const isTargetSubStep = isCurrentStep && ssIdx === targetSubStepIndex;
+
+            return {
+              ...subStep,
+              isActive: isTargetSubStep,
+              isCompleted: isPastSubStep ? true : subStep.isCompleted,
+            };
+          }),
+        };
+      });
+
       // Update current step and sub-step
       state.currentStepId = stepId
       state.currentSubStepId = subStepId
@@ -79,15 +104,6 @@ const stepsSlice = createSlice({
         state.visitedSteps.splice(visitedIndex, 1);
         state.visitedSteps.push(existing);
       }
-
-      state.steps = state.steps.map(step => ({
-        ...step,
-        isActive: step.id === stepId,
-        subSteps: step.subSteps.map((subStep) => ({
-          ...subStep,
-          isActive: step.id === stepId && subStep.id === subStepId,
-        })),
-      }))
     },
 
     goToNextSubStep: (state) => {
@@ -281,6 +297,20 @@ const stepsSlice = createSlice({
       }
     },
 
+    // Mark an entire step as completed
+    markStepAsCompleted: (state, action: PayloadAction<number>) => {
+      const stepId = action.payload;
+      state.steps = state.steps.map(step => 
+        step.id === stepId 
+          ? {
+              ...step,
+              isCompleted: true,
+              subSteps: step.subSteps.map(sub => ({ ...sub, isCompleted: true }))
+            }
+          : step
+      );
+    },
+
     // Toggle navigation panel
     toggleNavigation: (state) => {
       state.isNavigationOpen = !state.isNavigationOpen
@@ -342,6 +372,7 @@ export const {
   completeCurrentSubStep,
   updateSubStepFormData,
   markSubStepAsCompleted,
+  markStepAsCompleted,
   toggleNavigation,
   closeNavigation,
   openNavigation,
