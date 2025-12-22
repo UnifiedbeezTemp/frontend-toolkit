@@ -28,6 +28,8 @@ const getChannelIconKey = (channelName: string): string => {
     zoom: "zoomLogo",
     microsoft_calendar: "microsoft",
     google_calendar: "google",
+    twilio_sms: "twilioSmsIcon",
+    twilio_voice: "twilioPhoneIcon"
   };
 
   return iconMap[channelName.toLowerCase()] || "linkExternal";
