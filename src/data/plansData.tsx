@@ -90,28 +90,21 @@ export const transformOriginalPlan = (
   const availableFeatures = [
     formatSeats(originalPlan.maxSeats),
     formatAiAssistants(originalPlan.maxAiAssistants),
-    `Channels: ${getChannels(originalPlan)}`,
-    `Support: ${originalPlan.supportLevel.replace("_", " ").toLowerCase()}`,
-    ...(originalPlan.maxWhatsappChannels > 0
-      ? [
-          `${originalPlan.maxWhatsappChannels} WhatsApp Channel${
-            originalPlan.maxWhatsappChannels !== 1 ? "s" : ""
-          } Included`,
-        ]
-      : []),
+    getChannels(originalPlan),
+    originalPlan.supportLevel.replace("_", " "),
     ...(originalPlan.hasCrmCalendarSync
-      ? ["CRM / Calendar Sync: Included"]
+      ? ["CRM/Calendar\nIncluded"]
       : []),
-    ...(originalPlan.hasEcommercePack ? ["Ecommerce Pack: Included"] : []),
-    ...(originalPlan.canPurchaseAddons ? ["Add-Ons: Allowed"] : []),
+    ...(originalPlan.hasEcommercePack ? ["E-commerce Pack\nIncluded"] : []),
+    ...(originalPlan.canPurchaseAddons ? ["Add-ons allowed"] : []),
   ];
 
   const unAvailableFeatures = [
-    ...(!originalPlan.hasCrmCalendarSync ? ["CRM/Calendar Sync"] : []),
+    ...(!originalPlan.hasCrmCalendarSync ? ["CRM/Calendar\nNot Included"] : []),
     ...(!originalPlan.hasEcommercePack
-      ? ["E-commerce Pack: Not Included"]
+      ? ["E-commerce Pack\nNot Included"]
       : []),
-    ...(!originalPlan.canPurchaseAddons ? ["Add-Ons: No access"] : []),
+    ...(!originalPlan.canPurchaseAddons ? ["No Add-ons"] : []),
   ];
 
   return {

@@ -5,8 +5,9 @@ import {
   UseMutationOptions,
   QueryKey,
 } from "@tanstack/react-query";
+import { APIError } from "./types";
 
-export function useAppQuery<TData, TError = unknown>(
+export function useAppQuery<TData, TError = APIError>(
   key: QueryKey,
   fn: () => Promise<TData>,
   options?: Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn">,

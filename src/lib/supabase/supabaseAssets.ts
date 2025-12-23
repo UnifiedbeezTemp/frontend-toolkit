@@ -81,6 +81,7 @@ export const SUPABASE_ICONS = {
   code: "icons/code-with-green-bg.svg",
   copy3: "icons/copy-3.svg",
   loading: "icons/loading.svg",
+  chatBot: "icons/chatbot.svg",
 
   redTag: "icons/red-tag.svg",
   copy: "icons/copy.svg",

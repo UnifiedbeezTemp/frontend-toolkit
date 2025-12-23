@@ -41,7 +41,7 @@ export default function ErrorDisplay({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         className={cn(
-          "border border-border rounded-md flex flex-col items-center justify-center py-8 px-4 md:px-8 text-center",
+          "border border-border rounded-md flex flex-col items-center justify-center py-8 px-4 md:px-8 text-center bg-primary",
           className
         )}
       >

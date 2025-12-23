@@ -1,38 +1,4 @@
-import { PLAN_TYPES } from "./hooks/usePlanStyling";
-
-export interface OriginalPlan {
-  id: number;
-  planType: "individual" | "premium" | "business" | "organization";
-  maxSeats: number | null;
-  maxAiAssistants: number | null;
-  maxWhatsappChannels: number;
-  supportLevel: string;
-  priceEur: number;
-  hasFacebookMessenger: boolean;
-  hasLinkedinMessenger: boolean;
-  hasTelegram: boolean;
-  hasWebchat: boolean;
-  hasCrmCalendarSync: boolean;
-  hasEcommercePack: boolean;
-  hasZoomCalendly: boolean;
-  canPurchaseAddons: boolean;
-  maxCrmCalendarSync: number | null;
-  maxEcommercePack: number | null;
-  maxTwilioVoicePack: number | null;
-  maxMultiLanguageAi: number | null;
-  maxPrioritySupport: number;
-  maxWhiteLabelPortal: number | null;
-  maxTwilioMessagePack: number | null;
-  maxResellerAgencyPortal: number;
-  whatsappMessagesIncluded: number;
-  whatsappMessagesHardLimit: number;
-  maxVoiceNumbers: number;
-  aiRepliesIncluded: number;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  addons: Addon[]
-}
+import { OriginalPlan } from "../../api/services/plan/types";
 
 export interface Plan {
   id: string;
@@ -74,6 +40,7 @@ export interface PlanSummaryCardProps {
   className?: string
   isOwnPlan?: boolean
   showHighlightOfPlan?: boolean
+  isLoading?: boolean
 }
 
 
