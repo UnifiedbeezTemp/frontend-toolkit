@@ -1,6 +1,6 @@
 import { OriginalPlan as _OriginalPlan } from "../../api/services/plan/types";
 
-export type OriginalPlan = OriginalPlan
+export type OriginalPlan = _OriginalPlan
 export interface Plan {
   id: string;
   title: string;
