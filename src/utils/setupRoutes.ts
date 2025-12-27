@@ -1,6 +1,6 @@
 /**
  * Utility functions for managing setup routes
- * Routes format: /setup/[step]?subStep=substep
+ * Routes format: /setup/[step]?substep=substep
  */
 
 /**
@@ -12,7 +12,7 @@
 export function getSetupRoute(stepId: number, subStepId?: string | number | null): string {
   const baseRoute = `/setup/${stepId}`;
   if (subStepId !== undefined && subStepId !== null) {
-    return `${baseRoute}?subStep=${subStepId}`;
+    return `${baseRoute}?substep=${subStepId}`;
   }
   return baseRoute;
 }
@@ -20,7 +20,7 @@ export function getSetupRoute(stepId: number, subStepId?: string | number | null
 /**
  * Parse setup route to extract step and substep
  * @param pathname - The pathname (e.g., "/setup/2")
- * @param searchParams - URL search params (e.g., "?subStep=3")
+ * @param searchParams - URL search params (e.g., "?substep=3")
  * @returns Object with stepId and subStepId, or null if invalid
  */
 export function parseSetupRoute(
@@ -44,7 +44,7 @@ export function parseSetupRoute(
     const params = typeof searchParams === 'string' 
       ? new URLSearchParams(searchParams) 
       : searchParams;
-    const subStepParam = params.get('subStep');
+    const subStepParam = params.get('substep');
     if (subStepParam) {
       // Try to parse as number, otherwise keep as string
       const parsed = parseInt(subStepParam, 10);

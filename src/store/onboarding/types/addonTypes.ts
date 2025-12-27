@@ -6,5 +6,6 @@ export interface Addon {
   limit: number;
   limitText: string;
   icon: string;
+  addonType: string;
   used?: number;
 }
