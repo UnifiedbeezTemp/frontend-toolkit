@@ -11,6 +11,7 @@ export interface Step {
   id: number;
   step: string;
   title: string;
+  description: string;
   isCompleted: boolean;
   isActive: boolean;
   subSteps: SubStep[];

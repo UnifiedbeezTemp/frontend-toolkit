@@ -1,3 +1,4 @@
+import React from "react";
 import ImageComponent from "next/image";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Button from "../ui/Button";
@@ -5,9 +6,15 @@ import { Plan } from "../../api/services/plan/types";
 
 interface PlanCardHeaderProps {
   plan: Plan;
+  isSelected?: boolean;
+  onAddonsClick?: () => void;
 }
 
-export default function PlanCardHeader({ plan }: PlanCardHeaderProps) {
+export default function PlanCardHeader({
+  plan,
+  isSelected,
+  onAddonsClick,
+}: PlanCardHeaderProps) {
   const icons = useSupabaseIcons();
 
   return (
@@ -18,6 +25,9 @@ export default function PlanCardHeader({ plan }: PlanCardHeaderProps) {
           <Button
             variant="secondary"
             className="underline flex items-center gap-[0.5rem] text-brand-primary p-[0.8rem] text-[1.4rem]"
+            onClick={() => {
+              onAddonsClick?.();
+            }}
           >
             Add-on available
             <ImageComponent
@@ -30,7 +40,7 @@ export default function PlanCardHeader({ plan }: PlanCardHeaderProps) {
         ) : (
           <Button
             variant="secondary"
-            className="text-brand-primary p-[0.8rem] text-[1.4rem] text-inactive-color bg-input-filled"
+            className="text-brand-primary p-[0.8rem] text-[1.4rem] text-inactive-color bg-input-filled cursor-default"
           >
             Add-on not available
           </Button>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { cn } from "../../lib/utils";
+import { motion } from "framer-motion";
 
 /**
  * REUSABLE TABS COMPONENT
@@ -71,8 +72,14 @@ export default function Tabs({
   fullWidth = true,
   className = "",
 }: TabsProps) {
-  const normalizedTabs: Tab[] = tabs.map((tab) =>
-    typeof tab === "string" ? { label: tab, value: tab, disabled: false } : tab
+  const normalizedTabs: Tab[] = React.useMemo(
+    () =>
+      tabs.map((tab) =>
+        typeof tab === "string"
+          ? { label: tab, value: tab, disabled: false }
+          : tab
+      ),
+    [tabs]
   );
 
   const initialTab =
@@ -82,8 +89,23 @@ export default function Tabs({
     initialTab
   );
 
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
   const activeTab =
     controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
+
+  useEffect(() => {
+    const activeIndex = normalizedTabs.findIndex(
+      (tab) => tab.value === activeTab
+    );
+    const activeTabElement = tabRefs.current[activeIndex];
+
+    if (activeTabElement && variant === "default") {
+      const { offsetLeft, offsetWidth } = activeTabElement;
+      setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
+    }
+  }, [activeTab, variant]);
 
   const handleTabChange = (value: string | number) => {
     if (controlledActiveTab === undefined) {
@@ -120,7 +142,6 @@ export default function Tabs({
     }
   };
 
-  // Variant-specific container styles
   const containerVariants = {
     default:
       "bg-toggle-filled border-[2px] border-input-stroke rounded-[0.8rem] p-[0.8rem]",
@@ -128,11 +149,10 @@ export default function Tabs({
     underline: "border-b border-border",
   };
 
-  // Variant-specific tab styles
   const getTabVariantClasses = (isActive: boolean) => {
     const variants = {
       default: isActive
-        ? "bg-primary text-text-primary shadow-sm"
+        ? "text-text-primary relative z-10"
         : "bg-transparent text-muted hover:text-text-secondary",
       pills: isActive
         ? "bg-brand-primary text-white"
@@ -147,7 +167,7 @@ export default function Tabs({
   return (
     <div
       className={cn(
-        "inline-flex items-center",
+        "inline-flex items-center relative",
         "rounded-[0.8rem] p-[0.8rem] shadow-xs gap-2",
         containerVariants[variant],
         fullWidth && "w-full",
@@ -155,12 +175,28 @@ export default function Tabs({
       )}
       role="tablist"
     >
+      {variant === "default" && (
+        <motion.div
+          className="absolute bg-primary shadow-sm rounded-[0.8rem] h-[calc(100%-1.6rem)] top-[0.8rem]"
+          initial={false}
+          animate={{
+            left: indicatorStyle.left,
+            width: indicatorStyle.width,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 30,
+          }}
+        />
+      )}
       {normalizedTabs.map((tab, index) => {
         const isActive = activeTab === tab.value;
 
         return (
           <button
             key={tab.value}
+            ref={(el) => (tabRefs.current[index] = el)}
             type="button"
             role="tab"
             aria-selected={isActive}
@@ -170,7 +206,7 @@ export default function Tabs({
             onClick={() => !tab.disabled && handleTabChange(tab.value)}
             onKeyDown={(e) => !tab.disabled && handleKeyDown(e, index)}
             className={cn(
-              "font-bold rounded-[0.8rem] transition-all duration-200 ",
+              "font-bold rounded-[0.8rem] transition-all duration-200",
               "capitalize",
               sizeClasses[size],
               fullWidth && "flex-1",

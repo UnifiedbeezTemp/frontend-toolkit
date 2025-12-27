@@ -14,6 +14,11 @@ interface PlanCardProps {
   isYearly: boolean;
   isSelected: boolean;
   onSelect: (planId: string) => void;
+  className?: string;
+  ctaText?: string;
+  onClose?: () => void;
+  isCompact?: boolean;
+  onAddonsClick?: () => void;
 }
 
 export default function PlanCard({
@@ -21,6 +26,11 @@ export default function PlanCard({
   isYearly,
   isSelected,
   onSelect,
+  className,
+  ctaText,
+  onClose,
+  isCompact,
+  onAddonsClick,
 }: PlanCardProps) {
   const { showFeatures, displayPrice, toggleFeatures } = usePlanCard(
     plan,
@@ -31,10 +41,14 @@ export default function PlanCard({
     <Card
       className={`p-[1.6rem] rounded-[1.1rem] w-full transition-all duration-300 sm:flex flex-col gap-[8rem] ${
         isSelected ? "ring-1 ring-brand-primary" : ""
-      }`}
+      } ${className}`}
     >
       <div>
-        <PlanCardHeader plan={plan} />
+        <PlanCardHeader
+          plan={plan}
+          isSelected={isSelected}
+          onAddonsClick={onAddonsClick}
+        />
         <PlanCardTitle plan={plan} />
         <PlanCardPricing
           plan={plan}
@@ -48,7 +62,14 @@ export default function PlanCard({
         />
       </div>
 
-      <PlanCardFooter plan={plan} isSelected={isSelected} onSelect={onSelect} />
+      <PlanCardFooter
+        plan={plan}
+        isSelected={isSelected}
+        onSelect={onSelect}
+        ctaText={ctaText}
+        onClose={onClose}
+        isCompact={isCompact}
+      />
     </Card>
   );
 }

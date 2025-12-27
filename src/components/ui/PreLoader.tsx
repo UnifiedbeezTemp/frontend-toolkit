@@ -6,11 +6,12 @@ import animationData from "../../animations/Preloader.json";
 interface PreLoaderProps {
   className?: string;
   height?: number;
+  isPage?: boolean
 }
 
-export default function PreLoader({ className = "", height = 300 }: PreLoaderProps) {
+export default function PreLoader({ className = "", height = 300, isPage = true }: PreLoaderProps) {
   return (
-    <div className={`min-h-screen flex items-center justify-center ${className}`}>
+    <div className={`flex items-center justify-center ${isPage ? "min-h-screen" : ""} ${className}`}>
       <Player
         autoplay
         loop

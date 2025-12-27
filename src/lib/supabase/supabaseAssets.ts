@@ -216,6 +216,7 @@ export const SUPABASE_ICONS = {
   minusRed: "icons/minus-error.svg",
   infoGreen: "icons/info-green.svg",
   infoRed: "icons/info-red.svg",
+  infoCircle2: "icons/info-circle-2.svg",
   phoneIcon: "icons/phone.svg",
   textOutdent: "icons/textOutdent.svg",
   texIntdent: "icons/textIndent.svg",
@@ -224,8 +225,12 @@ export const SUPABASE_ICONS = {
   emailRed: "icons/email-red.svg",
   google: "icons/google.svg",
   microsoft: "icons/microsoft.svg",
+  microsoftCalendar: "icons/microsoft-calendar.svg",
   smileEmoji: "icons/mingcute_emoji-line.svg",
   stars: "icons/star-06.svg",
+  googleCalendar: "icons/google-calendar.svg",
+  gridDropdown: "icons/gridicons_dropdown.svg",
+  expand: "icons/akar-icons_enlarge.svg",
 }
 
 export const SUPABASE_GIFS = {

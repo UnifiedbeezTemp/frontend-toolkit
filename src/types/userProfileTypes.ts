@@ -20,6 +20,15 @@ export interface UserProfile {
   websites?: UserWebsite[];
   businessOverview?: string;
   businessLogo?: string;
+  billing_cycle?: string;
+  businessFiles?: Array<{
+    id: number;
+    originalName: string;
+    fileType: string;
+    fileSize: number;
+    filePath: string;
+    processingStatus: string;
+  }>;
 }
 
 export const createEmptyUser = (): UserProfile => {
@@ -35,6 +44,6 @@ export const createEmptyUser = (): UserProfile => {
     businessName: "",
     completedOnboardingSteps: [],
     planFeatures: { maxAiAssistants: 0, maxSeats: 0 },
-    industry: ""
+    industry: "",
   };
 };
