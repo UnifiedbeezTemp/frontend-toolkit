@@ -55,21 +55,26 @@ export interface SelectedChannelsResponse {
 export const selectMessengerChannel = async (
   availableChannelId: number
 ): Promise<SelectChannelResponse> => {
-  return api.post<SelectChannelRequest, SelectChannelResponse>("/channels/select", {
-    availableChannelId,
-  });
+  return api.post<SelectChannelRequest, SelectChannelResponse>(
+    "/channels/select",
+    {
+      availableChannelId,
+    }
+  );
 };
 
 /**
  * Get connected Facebook Messenger channels
  */
-export const getConnectedMessengerChannels = async (): Promise<MessengerChannel[]> => {
-  const response = await api.get<SelectedChannelsResponse>("/channels/selected");
-  
+export const getConnectedMessengerChannels = async (): Promise<
+  MessengerChannel[]
+> => {
+  const response = await api.get<SelectedChannelsResponse>(
+    "/channels/selected"
+  );
+
   return response.channels
-    .filter(
-      (ch) => ch.availableChannel.channelType === "FACEBOOK_MESSENGER"
-    )
+    .filter((ch) => ch.availableChannel.channelType === "FACEBOOK_MESSENGER")
     .map((ch) => ({
       id: ch.id,
       channelName: ch.channelName,
@@ -94,6 +99,15 @@ export const getFacebookConnectUrl = (): string => {
 };
 
 /**
+ * Disconnect a Facebook Messenger connection from the backend
+ */
+export const disconnectFacebookMessenger = async (
+  connectionId: number
+): Promise<void> => {
+  return api.delete(`/auth/facebook/disconnect/${connectionId}`);
+};
+
+/**
  * Disconnect a Facebook Messenger channel
  */
 export const disconnectMessengerChannel = async (
@@ -101,4 +115,3 @@ export const disconnectMessengerChannel = async (
 ): Promise<void> => {
   return api.delete(`/channels/unselect/${channelId}`);
 };
-

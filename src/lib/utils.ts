@@ -35,9 +35,19 @@ export function getCurrencySymbol(currencyCode: string): string {
       maximumFractionDigits: 0,
     });
     const parts = formatter.formatToParts(0);
-    const symbol = parts.find(p => p.type === "currency")?.value;
+    const symbol = parts.find((p) => p.type === "currency")?.value;
     return symbol ?? currencyCode;
   } catch {
     return currencyCode;
   }
+}
+export function formatPrice(
+  amount: number,
+  currency: string = "GBP",
+  locale: string = "en-GB"
+): string {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(amount);
 }

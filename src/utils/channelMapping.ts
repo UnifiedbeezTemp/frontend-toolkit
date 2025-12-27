@@ -14,7 +14,7 @@ const getChannelIconKey = (channelName: string): string => {
     telegram: "telegramLogo",
     linkedin_messenger: "linkedinLogo",
     gmail: "google",
-    outlook: "microsoft",
+    outlook: "microsoftCalendar",
     custom_email: "emailRed",
     hubspot: "hubspotLogo",
     pipedrive: "pipedriveLogo",
@@ -26,8 +26,8 @@ const getChannelIconKey = (channelName: string): string => {
     paypal: "paypalLogo",
     calendly: "calendyLogo",
     zoom: "zoomLogo",
-    microsoft_calendar: "microsoft",
-    google_calendar: "google",
+    microsoft_calendar: "microsoftCalendar",
+    google_calendar: "googleCalendar",
     twilio_sms: "twilioSmsIcon",
     twilio_voice: "twilioPhoneIcon"
   };
