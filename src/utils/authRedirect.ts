@@ -1,24 +1,26 @@
 import { UserProfile } from "../types/userProfileTypes";
 import { getSetupRoute } from "./setupRoutes";
 import {
+  getHighestCompletedStep,
   getNextStepAfterHighest,
-  isAllOnboardingCompleted,
+  TOTAL_ONBOARDING_STEPS,
 } from "./completedOnboardingSteps";
 
 export function getOnboardingRedirect(user: UserProfile | null) {
   if (!user) return "/auth/signin";
 
   const completedSteps = user.completedOnboardingSteps || [];
+  const highest = getHighestCompletedStep(completedSteps);
+  const nextStep = getNextStepAfterHighest(completedSteps);
 
-  if (isAllOnboardingCompleted(completedSteps)) {
+  if (highest >= TOTAL_ONBOARDING_STEPS || nextStep > TOTAL_ONBOARDING_STEPS) {
     const beehiveUrl = process.env.NEXT_PUBLIC_BEEHIVE_URL;
-    return `${beehiveUrl}/get-started` || "/";
+    return beehiveUrl ? `${beehiveUrl}/get-started` : "/";
   }
 
   if (completedSteps.length === 0) {
     return "/account-setup";
   }
 
-  const nextStep = getNextStepAfterHighest(completedSteps);
   return getSetupRoute(nextStep);
 }
