@@ -6,13 +6,16 @@ import PlanIcon from "./PlanIcon"
 import PlanPricingAndInterval from "./PlanPricingAndInterval"
 import PlanSummaryActions from "./PlanSummaryActions"
 import PlanSummaryContainer from "./PlanSummaryContainer"
+import PlanSummarySkeleton from "./PlanSummarySkeleton"
 import PlanTag from "./PlanTag"
 
 export default function PlanSummaryCTATop({
   plan,
   isOwnPlan,
   className,
+  isLoading
 }: PlanSummaryCardProps) {
+  if(isLoading) return <PlanSummarySkeleton />
   return (
     <PlanSummaryContainer className={className}>
       <div className="flex flex-wrap justify-between w-full gap-8">
@@ -29,7 +32,7 @@ export default function PlanSummaryCTATop({
                     as="h4"
                     className="capitalize text-[1.8rem] text-dark-base-100"
                   >
-                    {plan.planType} Plan
+                    {plan.name} Plan
                   </Heading>
                   <PlanTag plan={plan} isOwnPlan={isOwnPlan} />
                 </div>
@@ -42,13 +45,17 @@ export default function PlanSummaryCTATop({
           </div>
 
           <div>
-            <Button
-              variant="secondary"
-              className="bg-white text-[1rem] font-bold leading-base py-1.5 px-2.25 mt-auto mb-2"
-            >
-              Add-ons
-            </Button>
-            <PlanAddOns plan={plan} />
+           {plan.addons && plan.addons.length > 0 &&
+              <>
+                <Button
+                  variant="secondary"
+                  className="bg-white text-[1rem] font-bold leading-base py-1.5 px-2.25 mt-auto mb-2"
+                >
+                  Add-ons
+                </Button>
+                <PlanAddOns plan={plan} />
+              </>
+            }
           </div>
            <div className="block md:hidden w-full">
               <PlanSummaryActions plan={plan} />

@@ -25,7 +25,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   const showToast = useCallback(
     (payload: ToastPayload) => {
-      const id = payload.id ?? crypto.randomUUID();
+      const id = payload.id ?? Math.random().toString();
       const toast: ToastItem = {
         id,
         title: formatToastText(payload.title),

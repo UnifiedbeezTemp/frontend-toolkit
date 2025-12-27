@@ -263,7 +263,25 @@
 }
 
 html {
-  font-size: 10px;
+  font-size: 62.5%;
+}
+
+@media screen and (min-width: 1536px){
+  html{
+    font-size: 75%;
+  }
+}
+
+@media screen and (min-width: 1800px){
+  html{
+    font-size: 100%;
+  }
+}
+
+@media screen and (min-width: 2560px){
+  html{
+    font-size: 140%;
+  }
 }
 
 * {
@@ -291,10 +309,6 @@ button {
 
 *::-webkit-scrollbar {
   display: none !important;
-}
-
-html {
-  font-size: 62.5%;
 }
 
 body {
