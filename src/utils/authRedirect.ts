@@ -6,8 +6,31 @@ import {
   TOTAL_ONBOARDING_STEPS,
 } from "./completedOnboardingSteps";
 
+function getReturnToUrl(): string | null {
+  if (typeof window === "undefined") return null;
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const returnTo = searchParams.get("returnTo");
+
+  if (!returnTo) return null;
+
+  try {
+    const decodedUrl = decodeURIComponent(returnTo);
+
+    return decodedUrl;
+  } catch (error) {
+    console.error("Invalid returnTo URL:", error);
+    return null;
+  }
+}
+
 export function getOnboardingRedirect(user: UserProfile | null) {
   if (!user) return "/auth/signin";
+
+  const returnToUrl = getReturnToUrl();
+  if (returnToUrl) {
+    return returnToUrl;
+  }
 
   const completedSteps = user.completedOnboardingSteps || [];
   const highest = getHighestCompletedStep(completedSteps);
