@@ -69,6 +69,9 @@ const addonSlice = createSlice({
     closeCheckoutModal: (state) => {
       state.isCheckoutModalOpen = false;
     },
+    hydrateAddons: (state, action: PayloadAction<Addon[]>) => {
+      state.selectedAddons = action.payload;
+    },
   },
 });
 
@@ -81,6 +84,7 @@ export const {
   updateAddonQuantity,
   openCheckoutModal,
   closeCheckoutModal,
+  hydrateAddons,
 } = addonSlice.actions;
 
 export default addonSlice.reducer;

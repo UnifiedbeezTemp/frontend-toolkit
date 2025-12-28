@@ -2,6 +2,8 @@
  * Utility functions for managing completed onboarding steps
  */
 
+export const TOTAL_ONBOARDING_STEPS = 8;
+
 /**
  * Get the highest completed step ID
  * @param completedSteps - Array of completed step IDs
@@ -30,7 +32,10 @@ export function getNextStepAfterHighest(completedSteps: number[]): number {
  * @param completedSteps - Array of completed step IDs
  * @returns true if step is completed, false otherwise
  */
-export function isStepCompleted(stepId: number, completedSteps: number[]): boolean {
+export function isStepCompleted(
+  stepId: number,
+  completedSteps: number[]
+): boolean {
   if (!completedSteps || completedSteps.length === 0) {
     return false;
   }
@@ -44,7 +49,23 @@ export function isStepCompleted(stepId: number, completedSteps: number[]): boole
  * @param completedSteps - Current array of completed step IDs
  * @returns true if step should be added (not already completed), false otherwise
  */
-export function shouldMarkStepAsCompleted(stepId: number, completedSteps: number[]): boolean {
+export function shouldMarkStepAsCompleted(
+  stepId: number,
+  completedSteps: number[]
+): boolean {
   return !isStepCompleted(stepId, completedSteps);
 }
 
+/**
+ * Check if ALL onboarding steps are completed
+ * @param completedSteps - Array of completed step IDs
+ * @returns true if all steps are completed
+ */
+export function isAllOnboardingCompleted(completedSteps: number[]): boolean {
+  if (!completedSteps || completedSteps.length === 0) {
+    return false;
+  }
+  // Check if we have at least TOTAL_ONBOARDING_STEPS unique steps completed
+  // Or if the highest step reached is the total steps (assuming they are sequential)
+  return getHighestCompletedStep(completedSteps) >= TOTAL_ONBOARDING_STEPS;
+}

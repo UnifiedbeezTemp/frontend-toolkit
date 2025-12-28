@@ -1,5 +1,12 @@
 import { authBaseUrl } from "../../rootUrls";
-import { AuthResponse, AuthError, AccountSetupFormData, PhoneVerificationResponse, PhotoUploadResponse, ProfileSetupResponse } from ".";
+import {
+  AuthResponse,
+  AuthError,
+  AccountSetupFormData,
+  PhoneVerificationResponse,
+  PhotoUploadResponse,
+  ProfileSetupResponse,
+} from ".";
 import { createEmptyUser } from "../../../types/userProfileTypes";
 
 export const accountSetupService = {
@@ -19,7 +26,7 @@ export const accountSetupService = {
     if (!response.ok) {
       throw new AuthError(
         this.getErrorMessage(responseData),
-        response.status,
+        response.status
         // responseData
       );
     }
@@ -45,7 +52,7 @@ export const accountSetupService = {
     if (!response.ok) {
       throw new AuthError(
         this.getErrorMessage(responseData),
-        response.status,
+        response.status
         // responseData
       );
     }
@@ -74,6 +81,26 @@ export const accountSetupService = {
         response.status,
         responseData
       );
+    }
+
+    return this.createAuthResponse(responseData, response);
+  },
+
+  async selectPlan(
+    planType: string
+  ): Promise<AuthResponse<ProfileSetupResponse>> {
+    const response = await fetch(`${authBaseUrl}/setup/plan`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ planType: planType.toUpperCase() }),
+    });
+
+    const responseText = await response.text();
+    const responseData = this.parseProfileResponse(responseText);
+
+    if (!response.ok) {
+      throw new AuthError(this.getErrorMessage(responseData), response.status);
     }
 
     return this.createAuthResponse(responseData, response);
@@ -126,15 +153,27 @@ export const accountSetupService = {
     }
   },
 
+  getErrorMessage(
+    responseData:
+      | ProfileSetupResponse
+      | PhotoUploadResponse
+      | PhoneVerificationResponse
+      | { message?: string | { message?: string }; error?: string }
+  ): string {
+    const data = responseData as {
+      message?: string | { message?: string };
+      error?: string;
+    };
 
-  //any coz the response can come in any of these three formats coz this is serving all the requests
-  getErrorMessage(responseData: any): string {
-    return (
-      responseData?.message?.message ||
-      responseData?.message ||
-      responseData?.error ||
-      "Request failed"
-    );
+    if (typeof data.message === "object" && data.message?.message) {
+      return data.message.message;
+    }
+
+    if (typeof data.message === "string") {
+      return data.message;
+    }
+
+    return data.error || "Request failed";
   },
 
   createAuthResponse<T>(data: T, response: Response): AuthResponse<T> {

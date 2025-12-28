@@ -28,7 +28,7 @@ export const emailVerificationService = {
       };
     }
 
-    console.log(responseData);
+    // console.log(responseData);
 
     if (!response.ok) {
       const errorMessage =
