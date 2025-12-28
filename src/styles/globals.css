@@ -268,19 +268,31 @@ html {
 
 @media screen and (min-width: 1536px){
   html{
-    font-size: 75%;
+    font-size: 68%;
   }
 }
 
 @media screen and (min-width: 1800px){
   html{
-    font-size: 100%;
+    font-size: 80%;
+  }
+}
+
+@media screen and (min-width: 2200px){
+  html{
+    font-size: 90%;
   }
 }
 
 @media screen and (min-width: 2560px){
   html{
-    font-size: 140%;
+    font-size: 160%;
+  }
+}
+
+@media screen and (min-width: 3500px){
+  html{
+    font-size: 200%;
   }
 }
 
