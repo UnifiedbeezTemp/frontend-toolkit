@@ -26,7 +26,7 @@ export default function ChannelTypeSection({
       <Heading size="md" className="mb-[1.4rem] text-[1.8rem]">
         {type}
       </Heading>
-      <div className="mt-[10px] grid grid-cols-2 sm:grid-cols-4 md:grid-cols-3 gap-[.5rem] lg:gap-[1.6rem]">
+      <div className="mt-[10px] grid grid-cols-2 md:grid-cols-3 gap-[.5rem] lg:gap-[1.6rem]">
         {channels.map((channel) => (
           <ChannelCard
             key={channel.id}

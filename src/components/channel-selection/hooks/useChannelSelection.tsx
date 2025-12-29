@@ -3,20 +3,28 @@ import { useChannels } from "./useChannels";
 import { useChannelsData } from "./useChannelsData";
 import { useChannelFilters } from "./useChannelsFilters";
 import { useChannelSelectionApi } from "./useChannelSelectionApi";
-import { ChannelsApiResponse, SelectedChannelsResponse } from "../../../types/channelApiTypes";
+import {
+  ChannelsApiResponse,
+  SelectedChannelsResponse,
+} from "../../../types/channelApiTypes";
 
 interface UseChannelSelectionProps {
   backendData?: ChannelsApiResponse | null;
   selectedChannels?: SelectedChannelsResponse | null;
+  searchQuery?: string;
+  filter?: string;
+  setSearchQuery?: (query: string) => void;
+  setFilter?: (filter: string) => void;
 }
 
 export function useChannelSelection({
   backendData,
   selectedChannels,
+  searchQuery = "",
+  filter = "",
+  setSearchQuery,
+  setFilter,
 }: UseChannelSelectionProps = {}) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("");
-
   const { assets, channelsToUse } = useChannelsData(
     backendData,
     selectedChannels
