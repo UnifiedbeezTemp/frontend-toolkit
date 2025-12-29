@@ -33,7 +33,7 @@ export default function ModalHeader({
       <div className="flex items-center gap-[1.5rem]">
         {leftContent}
         <div className=" ">
-          <Heading className="text-[1.8rem] lg:text-[2.4rem]">{text}</Heading>
+          <Heading className="text-[1.8rem] sm:text-[2rem] lg:text-[2.4rem]">{text}</Heading>
           <Text className="line-height-[1.9rem] text-[1.4rem]">
             {description}
           </Text>
