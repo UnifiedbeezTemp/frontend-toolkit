@@ -13,7 +13,6 @@ export default function ModalPortal({ children, isOpen }: ModalPortalProps) {
 
   useEffect(() => {
     setMounted(true);
-    return () => setMounted(false);
   }, []);
 
   if (!mounted || !isOpen) return null;
