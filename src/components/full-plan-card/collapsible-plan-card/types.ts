@@ -9,4 +9,5 @@ export interface CollapsiblePlanCardProps {
   onSelect: (planId: string) => void;
   defaultExpanded?: boolean;
   className?: string;
+  isSelectionDisabled?: boolean
 }
