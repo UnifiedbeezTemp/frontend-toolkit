@@ -71,6 +71,7 @@
   --inset-shadow-md: 2px 0 0 0 #053d27 inset;
   --color-fresh-green: var(--fresh-green);
   --color-dark-base-100: var(--black-100);
+  --color-dark-base-95: var(--black-95);
   --color-dark-base-90: var(--black-90);
   --color-dark-base-80: var(--black-80);
   --color-dark-base-70: var(--black-70);
@@ -202,6 +203,7 @@
 
   --black-110: #1b1b1b;
   --black-100: #0b1012;
+  --black-95: #323233;
   --black-90: #23282a;
   --black-80: #3c4041;
   --black-70: #545859;
@@ -268,7 +270,7 @@ html {
 
 @media screen and (min-width: 1536px){
   html{
-    font-size: 68%;
+    font-size: 64%;
   }
 }
 
