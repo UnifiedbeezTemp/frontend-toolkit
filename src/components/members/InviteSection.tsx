@@ -1,94 +1,69 @@
-"use client";
-
-import { Link } from "lucide-react";
-import { useState } from "react";
-import { useSupabaseImages } from "../../lib/supabase/useSupabase";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/useRedux";
-import { addInvitedUser, setEmailInput } from "../../store/onboarding/slices/membersSlice";
+import Link from "next/link";
+import useSession from "../../providers/hooks/useSession";
+import { useAppSelector } from "../../store/hooks/useRedux";
+import { selectTotalMembers } from "../../store/onboarding/slices/membersSlice";
 import Input from "../forms/Input";
 import Button from "../ui/Button";
 import Text from "../ui/Text";
 
-export default function InviteSection() {
-  const dispatch = useAppDispatch();
-  const { emailInput, selectedRole } = useAppSelector((state) => state.members);
-  const supabaseImages = useSupabaseImages();
-  const [error, setError] = useState("");
+interface InviteSectionProps {
+  emailInput: string;
+  error: string;
+  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onAddInvite: () => void;
+}
 
-  const handleAddInvite = () => {
-    if (!emailInput.trim()) {
-      setError("Please enter email addresses");
-      return;
-    }
-
-    const emails = emailInput.split(',').map(email => email.trim()).filter(email => email);
-    
-    if (emails.length === 0) {
-      setError("Please enter valid email addresses");
-      return;
-    }
-
-    const invalidEmails = emails.filter(email => !validateEmail(email));
-    
-    if (invalidEmails.length > 0) {
-      setError(`Invalid email addresses: ${invalidEmails.join(', ')}`);
-      return;
-    }
-
-    emails.forEach(email => {
-      const newUser = {
-        id: `inv-${Date.now()}-${email}`,
-        email: email,
-        avatar: supabaseImages.avatar,
-        role: selectedRole,
-        status: "pending" as const,
-      };
-      dispatch(addInvitedUser(newUser));
-    });
-
-    dispatch(setEmailInput(""));
-    setError("");
-  };
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setEmailInput(e.target.value));
-    if (error) setError("");
-  };
+export const InviteSection = ({
+  emailInput,
+  error,
+  onEmailChange,
+  onAddInvite,
+}: InviteSectionProps) => {
+  const { data } = useSession();
+  const totalMembers = useAppSelector(selectTotalMembers);
+  const maxSeats = data?.planFeatures?.maxSeats;
+  const isUnlimited = maxSeats === null;
+  const seatsLeft = isUnlimited
+    ? "Unlimited"
+    : Math.max(0, (maxSeats || 0) - totalMembers);
 
   return (
-    <div className="py-[2.4rem]">
-      <div className="flex items-center gap-[1rem] mb-[0.8rem]">
+    <div className="mt-[4rem] sm:mt-[3rem] lg:mt-[2.4rem] w-full">
+      <div className="flex items-center gap-[1rem] mb-[0.8rem] w-full">
         <Input
           value={emailInput}
-          onChange={handleEmailChange}
+          onChange={onEmailChange}
           placeholder="Emails, comma separated"
           type="text"
+          className="w-full text-[1.4rem] lg:text-[1.6rem]"
         />
 
-        <Button className="w-[20%] font-[700] text-[1.6rem] rounded-[0.8rem]" onClick={handleAddInvite}>
+        <Button
+          className="w-[10rem] font-[700] text-[1.6rem] rounded-[0.8rem] lg:min-w-[12.8rem]"
+          onClick={onAddInvite}
+        >
           Add
         </Button>
       </div>
 
       {error && <p className="text-destructive text-[14px] mt-2">{error}</p>}
 
-      <div className="flex items-center gap-[3px] mt-[4px] leading-[2.07rem]">
-        <div className="text-secondary text-[14px]">
-          <Text size="sm" className="font-[700] inline">2 seats left.</Text> Need more users?
+      <div className="flex flex-col lg:flex-row items-start lg:items-center gap-[0.3rem] mt-[0.4rem] sm:mt-[2.4rem] lg:mt-[0.8rem] leading-[2.07rem]">
+        <Text size="sm" className="font-[700] inline">
+          {seatsLeft} seats left.
+        </Text>{" "}
+        <div className="flex">
+          <div className="text-secondary text-[14px]">
+            Need more users?{" "}
+            <Link
+              href={"#"}
+              className="text-brand-primary text-[14px] font-[700] underline"
+            >
+              Add seats from the pricing tab
+            </Link>
+          </div>
         </div>
-
-        <Link
-          href={"#"}
-          className="text-brand-primary text-[14px] font-[700] underline"
-        >
-          Add seats from the pricing tab
-        </Link>
       </div>
     </div>
   );
-}
+};
