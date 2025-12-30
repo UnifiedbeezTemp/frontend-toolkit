@@ -49,6 +49,7 @@ export const SUPABASE_ICONS = {
   hiveOutlineRounded: "icons/material-symbols_hive-outline-rounded.svg",
   fluentPeople: "icons/fluent_people-team-24-regular.svg",
   users: "icons/users-02.svg",
+  user2: "icons/User-2.svg",
   userWhite: "icons/user-01.svg",
   userGreen: "icons/user.svg",
   usersGreen: "icons/users-green.svg",
@@ -89,6 +90,7 @@ export const SUPABASE_ICONS = {
   cart: "icons/tdesign_cart.svg",
   net: "icons/net.svg",
   envelope: "icons/envelope.svg",
+  envelope2: "icons/envelope-2.svg",
   box: "icons/box.svg",
   usersPlus: "icons/users-plus.svg",
 
@@ -234,6 +236,7 @@ export const SUPABASE_ICONS = {
   googleCalendar: "icons/google-calendar.svg",
   gridDropdown: "icons/gridicons_dropdown.svg",
   expand: "icons/akar-icons_enlarge.svg",
+  arrowClockwise: "icons/ArrowsClockwise.svg",
 }
 
 export const SUPABASE_GIFS = {

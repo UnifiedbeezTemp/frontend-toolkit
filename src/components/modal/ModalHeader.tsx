@@ -45,7 +45,7 @@ export default function ModalHeader({
           </div>
           {action}
         </div>
-        <Text className="line-height-[1.9rem] text-[1.4rem] lg:hidden block mt-[1rem]  w-[80%]">
+        <Text className="line-height-[1.9rem] text-[1.4rem] lg:hidden block mt -[1rem]  w-[80%]">
           {description}
         </Text>
       </div>
