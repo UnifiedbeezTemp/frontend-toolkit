@@ -29,6 +29,12 @@ export interface UserProfile {
     filePath: string;
     processingStatus: string;
   }>;
+  trialInfo?: {
+    planType: string;
+    trialEnds: string;
+    trialStarted: string;
+    setupRequired: boolean;
+  };
 }
 
 export const createEmptyUser = (): UserProfile => {

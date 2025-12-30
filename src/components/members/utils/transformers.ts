@@ -1,7 +1,10 @@
 import { TeamMember } from "../../../store/onboarding/types/memberTypes";
-import { ApiInvitation, ApiMember, ApiRole } from "../../../types/api/memberTypes";
+import {
+  ApiInvitation,
+  ApiMember,
+  ApiRole,
+} from "../../../types/api/memberTypes";
 import { generateAvatarFromEmail } from "./avatarUtils";
-
 
 export const transformApiMemberToTeamMember = (
   apiMember: ApiMember
@@ -48,9 +51,9 @@ export const transformApiInvitationToTeamMember = (
 };
 
 export const transformApiRolesToOptions = (
-  apiRoles: ApiRole[]
+  apiRoles: ApiRole[] = []
 ): Array<{ label: string; value: string }> => {
-  return apiRoles
+  return (apiRoles || [])
     .filter((role) => role.isActive)
     .map((role) => ({
       label: role.name,
@@ -65,9 +68,11 @@ export const transformApiRolesToOptions = (
 
 export const getRoleName = (
   roleType: string,
-  apiRoles: ApiRole[]
+  apiRoles: ApiRole[] = []
 ): string => {
-  const role = apiRoles.find((r) => r.type === roleType);
-  return role?.name || roleType.charAt(0).toUpperCase() + roleType.slice(1).toLowerCase();
+  const role = apiRoles?.find((r) => r.type === roleType);
+  return (
+    role?.name ||
+    roleType.charAt(0).toUpperCase() + roleType.slice(1).toLowerCase()
+  );
 };
-

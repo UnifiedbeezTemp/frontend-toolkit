@@ -7,6 +7,8 @@ export const initialStepsData: Step[] = [
     title: "Account Summary & Plan",
     description:
       "Choose your preferred login method and plan to begin setting up your UnifiedBeez experience.",
+    summary:
+      "This step is an overview of your account summary and to confirm your selected account plan.",
     isCompleted: true,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
@@ -25,6 +27,8 @@ export const initialStepsData: Step[] = [
     step: "Step 02",
     title: "User Type Detection & Info",
     description:
+      "We'll customize your setup based on your plan—just fill in a few business or organizational details if required.",
+    summary:
       "We'll customize your setup based on your plan—just fill in a few business or organizational details if required.",
     isCompleted: true,
     isActive: true,
@@ -79,6 +83,8 @@ export const initialStepsData: Step[] = [
     step: "Step 03",
     title: "Team & Role Setup",
     description: "Get started now - it's free. No credit card required",
+    summary:
+      "Invite your team and assign roles to ensure the right people have the right access from the start.",
     isCompleted: false,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
@@ -98,6 +104,8 @@ export const initialStepsData: Step[] = [
     title: "AI Assistant Creation",
     description:
       "Connect your communication platforms and preview how UnifiedBeez will interact with each one.",
+    summary:
+      "Create your AI assistant's tone and personality—then watch a live preview of how it responds.",
     isCompleted: false,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
@@ -138,6 +146,8 @@ export const initialStepsData: Step[] = [
     title: "Channel Integration",
     description:
       "Connect your communication platforms and preview how UnifiedBeez will interact with each one.",
+    summary:
+      "Connect your communication platforms and preview how UnifiedBeez will interact with each one.",
     isCompleted: false,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
@@ -171,6 +181,8 @@ export const initialStepsData: Step[] = [
     title: "Per-Channel AI Configuration",
     description:
       "We'll customise your AI and automation flows based on your industry. You can change this anytime.",
+    summary:
+      "Tailor your AI assistant's behavior per channel, set fallback rules, and simulate real-time interactions.",
     isCompleted: false,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
@@ -239,6 +251,8 @@ export const initialStepsData: Step[] = [
     title: "Web Chat Connection",
     description:
       "We'll customise your AI and automation flows based on your industry. You can change this anytime.",
+    summary:
+      "Seamlessly connect with a UnifiedBeez support agent or business representative in real time.",
     isCompleted: false,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
@@ -293,6 +307,8 @@ export const initialStepsData: Step[] = [
     title: "Smart Automations - UnifiedBeez Automation Template Library",
     description:
       "Connect your communication platforms and preview how UnifiedBeez will interact with each one.",
+    summary:
+      "Curated collection of ready-to-use workflow templates designed to help you automate key business processes with minimal setup.",
     isCompleted: false,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",

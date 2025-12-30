@@ -219,6 +219,7 @@ export const SUPABASE_ICONS = {
   infoGreen: "icons/info-green.svg",
   infoRed: "icons/info-red.svg",
   infoCircle2: "icons/info-circle-2.svg",
+  infoOutline: "icons/info-outline.svg",
   phoneIcon: "icons/phone.svg",
   textOutdent: "icons/textOutdent.svg",
   texIntdent: "icons/textIndent.svg",
