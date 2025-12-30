@@ -51,3 +51,16 @@ export function formatPrice(
     currency: currency,
   }).format(amount);
 }
+
+export function calculateDaysLeft(endDate: string | Date): number {
+  const end = new Date(endDate);
+  const now = new Date();
+
+  end.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
+
+  const diffTime = end.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays > 0 ? diffDays : 0;
+}

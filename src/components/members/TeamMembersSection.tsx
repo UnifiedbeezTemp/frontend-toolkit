@@ -35,7 +35,7 @@ export default function TeamMembersSection({
   const isAllSelected = selectedCount === totalMembers && totalMembers > 0;
 
   return (
-    <div className="py-[20px]">
+    <div className="py-[2rem]">
       <Heading>Team members</Heading>
 
       <SearchAndFilter section="members" />

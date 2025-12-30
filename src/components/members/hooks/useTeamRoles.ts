@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
-import {
-  setRoles,
-  setSelectedRole,
-} from "../../../store/onboarding/slices/membersSlice";
+
 import { api, useAppQuery } from "../../../api";
 import { ApiRole } from "../../../types/api/memberTypes";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
+import { setRoles, setSelectedRole } from "../../../store/onboarding/slices/membersSlice";
 
 export const useTeamRoles = () => {
   const dispatch = useAppDispatch();

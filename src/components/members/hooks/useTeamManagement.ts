@@ -53,7 +53,9 @@ export const useTeamManagement = () => {
       return;
     }
 
-    const defaultRole = roles.find((r) => r.type === selectedRole) || roles[0];
+    const safeRoles = roles || [];
+    const defaultRole =
+      safeRoles.find((r) => r.type === selectedRole) || safeRoles[0];
     const defaultRoleId = defaultRole?.id || 0;
 
     emails.forEach((email) => {
