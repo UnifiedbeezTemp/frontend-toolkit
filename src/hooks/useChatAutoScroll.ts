@@ -10,6 +10,7 @@ export default function useChatAutoScroll<T extends HTMLElement>(
 
   const [isAtBottom, setIsAtBottom] = useState(true);
 
+  const hasMounted = useRef(false);
   const prevMsgCount = useRef(messages.length);
 
   const handleScroll = useCallback(() => {
@@ -19,8 +20,8 @@ export default function useChatAutoScroll<T extends HTMLElement>(
     const distanceFromBottom =
       el.scrollHeight - el.scrollTop - el.clientHeight;
 
-    setIsAtBottom(distanceFromBottom < bottomOffset);
-  }, [containerRef, bottomOffset]);
+    setIsAtBottom(distanceFromBottom <= bottomOffset);
+  }, [bottomOffset, containerRef]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -28,18 +29,19 @@ export default function useChatAutoScroll<T extends HTMLElement>(
 
     el.addEventListener("scroll", handleScroll);
     return () => el.removeEventListener("scroll", handleScroll);
-  }, [containerRef, handleScroll]);
+  }, [handleScroll, containerRef]);
 
   useEffect(() => {
-    const el = containerRef.current;
+    const isFirstLoad = !hasMounted.current;
     const isNewMessage = messages.length > prevMsgCount.current;
 
-    if (isNewMessage && isAtBottom) {
+    if (isFirstLoad || (isNewMessage && isAtBottom)) {
       bottomRef.current?.scrollIntoView({ behavior, block: "end" });
     }
 
+    hasMounted.current = true;
     prevMsgCount.current = messages.length;
-  }, [messages, isAtBottom, behavior, containerRef]);
+  }, [messages.length, isAtBottom, behavior]);
 
   return { bottomRef };
 }
