@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Plan } from "../../../api/services/plan/types";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
+import { usePurchasedAddons } from "./usePurchasedAddons";
 
 interface UsePlanCardPreviewProps {
   plan: Plan | null;
@@ -22,6 +23,11 @@ export const usePlanCardPreview = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddonsModalOpen, setIsAddonsModalOpen] = useState(false);
+
+  const { purchasedAddons, isLoading: isPurchasedAddonsLoading } =
+    usePurchasedAddons();
+
+  const addonsToUse = selectedAddons || purchasedAddons;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,11 +66,11 @@ export const usePlanCardPreview = ({
   };
 
   const addonsTotal = useMemo(() => {
-    if (!selectedAddons || selectedAddons.length === 0) return 0;
-    return selectedAddons.reduce((total, addon) => {
+    if (!addonsToUse || addonsToUse.length === 0) return 0;
+    return addonsToUse.reduce((total, addon) => {
       return total + addon.price * (addon.used || 1);
     }, 0);
-  }, [selectedAddons]);
+  }, [addonsToUse]);
 
   const totalPrice = displayPrice + addonsTotal;
 
@@ -83,5 +89,7 @@ export const usePlanCardPreview = ({
     addonsTotal,
     totalPrice,
     router,
+    addonsToUse,
+    isPurchasedAddonsLoading,
   };
 };

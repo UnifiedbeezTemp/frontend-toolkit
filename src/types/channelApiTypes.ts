@@ -106,5 +106,13 @@ export interface WabaChannel {
 
 export interface WabaCallbackResponse {
   success: boolean;
-  channel: WabaChannel;
+  channelId?: number;
+  wabaData?: {
+    phoneNumber: string;
+    verifiedName: string;
+    wabaId: string;
+    businessId: string;
+  };
+  channel?: WabaChannel;
+  message?: string;
 }
