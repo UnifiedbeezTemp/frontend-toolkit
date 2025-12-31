@@ -16,6 +16,5 @@ export const getInstagramConnectUrl = (): string => {
 
 export const initiateInstagramAuth = (): void => {
   const authUrl = getInstagramConnectUrl();
-  window.open(authUrl, "_blank", "noopener,noreferrer,width=600,height=700");
+  window.location.href = authUrl;
 };
-
