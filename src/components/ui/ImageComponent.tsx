@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Image, { ImageProps } from "next/image";
 import { cn } from "../../lib/utils";
 
@@ -13,6 +13,16 @@ interface ImageComponentProps
   onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
 
+const isExternalUrl = (src: ImageProps["src"]): boolean => {
+  if (typeof src !== "string") return false;
+  try {
+    const url = new URL(src);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 export default function ImageComponent({
   className,
   containerClassName,
@@ -24,6 +34,11 @@ export default function ImageComponent({
 }: ImageComponentProps) {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const shouldUseUnoptimized = useMemo(
+    () => isExternalUrl(props.src),
+    [props.src]
+  );
 
   useEffect(() => {
     setHasError(false);
@@ -45,6 +60,7 @@ export default function ImageComponent({
         {...props}
         src={hasError ? fallbackSrc : props.src}
         loading={loading}
+        unoptimized={shouldUseUnoptimized}
         onError={handleError}
         onLoad={handleLoad}
         className={cn(
