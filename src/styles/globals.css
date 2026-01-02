@@ -270,36 +270,6 @@ html {
   font-size: 62.5%;
 }
 
-@media screen and (min-width: 1536px){
-  html{
-    font-size: 64%;
-  }
-}
-
-@media screen and (min-width: 1800px){
-  html{
-    font-size: 80%;
-  }
-}
-
-@media screen and (min-width: 2200px){
-  html{
-    font-size: 90%;
-  }
-}
-
-@media screen and (min-width: 2560px){
-  html{
-    font-size: 160%;
-  }
-}
-
-@media screen and (min-width: 3500px){
-  html{
-    font-size: 200%;
-  }
-}
-
 * {
   box-sizing: border-box;
   font-family: "SK Modernist", sans-serif;
