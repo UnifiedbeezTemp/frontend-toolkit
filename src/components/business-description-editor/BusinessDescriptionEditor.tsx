@@ -71,9 +71,9 @@ export default function BusinessDescriptionEditor({
       <textarea
         value={displayText}
         onChange={(e) => onDescriptionChange(e.target.value)}
-        className="focus:ring-0 focus:outline-0 border-0 mt-[1.4rem] text-text-primary block w-full text-[1.6rem] min-h-[20rem] resize-none placeholder-text-primary/50 sm:min-h-[16rem] md:min-h-[18rem]"
+        className="focus:ring-0 focus:outline-0 border-0 mt-[1.4rem] text-text-primary block w-full text-[1.6rem] min-h-[20rem] resize-none placeholder-text-primary/50 sm:min-h-[16rem] md:min-h-[18rem] disabled:cursor-not-allowed"
         placeholder="Enter business description"
-        disabled={isTyping}
+        disabled={isTyping || isEnhancing}
       />
 
       <div className="flex justify-between sm:justify-end items-center mt-2">

@@ -41,7 +41,7 @@ export interface AvatarProps {
   imageContainerClassName?: string;
   initialsClassName?: string;
   hasBorder?: boolean;
-  hideOverflow?: boolean
+  hideOverflow?: boolean;
 }
 
 const sizeClasses = {
@@ -84,11 +84,12 @@ export default function Avatar({
   onlineStatus = "online",
   className = "",
   imageContainerClassName = "",
-  initialsClassName= "",
+  initialsClassName = "",
   hasBorder = true,
   hideOverflow = true,
   onClick,
-}: AvatarProps) {
+  onLoad,
+}: AvatarProps & { onLoad?: () => void }) {
   const hasImage = !!src;
   const initials = name ? getInitials(name) : alt.charAt(0).toUpperCase();
 
@@ -118,9 +119,15 @@ export default function Avatar({
             fill
             className="object-cover"
             containerClassName="w-full h-full"
+            onLoad={onLoad}
           />
         ) : (
-          <div className={cn("w-full h-full flex items-center justify-center bg-brand-primary text-white font-bold", initialsClassName)}>
+          <div
+            className={cn(
+              "w-full h-full flex items-center justify-center bg-brand-primary text-white font-bold",
+              initialsClassName
+            )}
+          >
             {initials}
           </div>
         )}

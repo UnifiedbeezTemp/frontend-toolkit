@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client"
+
+import React, { useEffect, useState } from "react";
 import Image, { ImageProps } from "next/image";
 import { cn } from "../../lib/utils";
 
@@ -22,6 +24,11 @@ export default function ImageComponent({
 }: ImageComponentProps) {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setHasError(false);
+    setIsLoading(true);
+  }, [props.src]);
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     setHasError(true);

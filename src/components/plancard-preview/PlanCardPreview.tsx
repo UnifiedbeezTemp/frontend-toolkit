@@ -45,6 +45,7 @@ export default function PlanCardPreview({
     handleSeeDetailsClick,
     addonsTotal,
     totalPrice,
+    addonsToUse,
   } = usePlanCardPreview({
     plan,
     selectedAddons,
@@ -168,7 +169,7 @@ export default function PlanCardPreview({
             isAddons={isAddons}
             planType={planType}
             addonsTotal={addonsTotal}
-            selectedAddons={selectedAddons}
+            selectedAddons={addonsToUse}
             onAddonsClick={handleAddonsClick}
           />
         </div>
