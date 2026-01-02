@@ -7,8 +7,8 @@ type Env = {
   NEXT_PUBLIC_USE_ONBOARDING_BACKEND?: string
   NEXT_PUBLIC_SUPABASE_URL_TEST?: string
   NEXT_PUBLIC_AUTH_BASE?: string
-  MANUAL_ONBOARDING_BASE_URL: string
-  BEEHIVE_BASE_URL: string
+  NEXT_PUBLIC_MANUAL_ONBOARDING_BASE_URL?: string
+  NEXT_PUBLIC_BEEHIVE_BASE_URL?: string
 };
 
 const EnvContext = createContext<Env | null>(null);
