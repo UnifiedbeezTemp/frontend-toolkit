@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef, useCallback, startTransition, memo } from "react";
 import Image, { ImageProps } from "next/image";
 import { cn } from "../../lib/utils";
 
@@ -23,7 +23,7 @@ const isExternalUrl = (src: ImageProps["src"]): boolean => {
   }
 };
 
-export default function ImageComponent({
+function ImageComponent({
   className,
   containerClassName,
   fallbackSrc = "/images/fallback.jpg",
@@ -34,6 +34,7 @@ export default function ImageComponent({
 }: ImageComponentProps) {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const isMountedRef = useRef(false);
 
   const shouldUseUnoptimized = useMemo(
     () => isExternalUrl(props.src),
@@ -41,18 +42,51 @@ export default function ImageComponent({
   );
 
   useEffect(() => {
-    setHasError(false);
-    setIsLoading(true);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isMountedRef.current) return;
+    
+    const timer = setTimeout(() => {
+      if (isMountedRef.current) {
+        startTransition(() => {
+          setHasError(false);
+          setIsLoading(true);
+        });
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [props.src]);
 
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    setHasError(true);
+  const handleError = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    if (isMountedRef.current) {
+      requestAnimationFrame(() => {
+        if (isMountedRef.current) {
+          startTransition(() => {
+            setHasError(true);
+          });
+        }
+      });
+    }
     onError?.(e);
-  };
+  }, [onError]);
 
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
+  const handleLoad = useCallback(() => {
+    if (isMountedRef.current) {
+      requestAnimationFrame(() => {
+        if (isMountedRef.current) {
+          startTransition(() => {
+            setIsLoading(false);
+          });
+        }
+      });
+    }
+  }, []);
 
   return (
     <div className={cn("relative", containerClassName)}>
@@ -77,3 +111,5 @@ export default function ImageComponent({
     </div>
   );
 }
+
+export default memo(ImageComponent);
