@@ -8,9 +8,9 @@ import {
   startTransition,
   memo,
 } from "react"
-import { cn } from "@lib/utils"
-import { analyzeImageLuminance } from "@utils/imageLuminance"
 
+import { cn } from "../../lib/utils"
+import { analyzeImageLuminance } from "../../utils/imageLuminance"
 interface SafeExternalImageProps {
   src: string | null | undefined
   alt: string
