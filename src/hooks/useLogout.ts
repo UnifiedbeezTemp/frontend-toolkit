@@ -14,7 +14,7 @@ export const useLogout = () => {
           title: "Logged out successfully",
           variant: "success",
         });
-        const authBase = process.env.NEXT_PUBLIC_AUTH_BASE || "";
+        const authBase = process.env.NEXT_PUBLIC_BASE || "";
         router.push(`${authBase}/auth/signin`);
         router.refresh();
       },

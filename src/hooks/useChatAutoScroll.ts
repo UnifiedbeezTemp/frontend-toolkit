@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { UseChatAutoScrollOptions } from "./types";
 
-export default function useChatAutoScroll<T extends HTMLElement>(
-  messages: any[],
+export default function useChatAutoScroll<
+  T extends HTMLElement,
+  TMsg = unknown
+>(
+  messages: TMsg[],
   containerRef: React.RefObject<T | null>,
   { behavior = "smooth", bottomOffset = 30 }: UseChatAutoScrollOptions = {}
 ) {
@@ -16,8 +19,7 @@ export default function useChatAutoScroll<T extends HTMLElement>(
     const el = containerRef.current;
     if (!el) return;
 
-    const distanceFromBottom =
-      el.scrollHeight - el.scrollTop - el.clientHeight;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
 
     setIsAtBottom(distanceFromBottom < bottomOffset);
   }, [containerRef, bottomOffset]);
