@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { authService } from "../api/services/auth";
+import { authService, LoginResponseData } from "../api/services/auth";
 import { getDeviceInfo } from "../utils/deviceInfo";
 import { UserProfile } from "../types/userProfileTypes";
 
@@ -9,13 +9,13 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   isInitialized: boolean;
-  login: (email: string, password: string) => Promise<any>;
+  login: (email: string, password: string) => Promise<LoginResponseData>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   updateUser: (updates: Partial<UserProfile>) => void;
   updateUserAsync: (updates: Partial<UserProfile>) => Promise<void>;
   refreshUser: () => Promise<void>;
-  setUser: (user: UserProfile | null) => void; 
+  setUser: (user: UserProfile | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setIsLoading(true);
       const data = await authService.getProfile();
-      setUser(data.data);
+      setUser(data);
     } catch (error) {
       setUser(null);
     } finally {
@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(true);
     try {
       const device_info = await getDeviceInfo();
-      const { data } = await authService.signIn({
+      const data = await authService.signIn({
         email,
         password,
         device_info,
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const refreshUser = async () => {
     try {
       const data = await authService.getProfile();
-      setUser(data.data);
+      setUser(data);
     } catch (error) {
       console.error("Failed to refresh user:", error);
       throw error;

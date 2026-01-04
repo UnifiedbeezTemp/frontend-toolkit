@@ -24,7 +24,7 @@ export default function useSession(){
   const redirectToLogin = useCallback(() => {
     const currentUrl = window.location.href
     const encoded = encodeURIComponent(currentUrl)
-    window.location.replace(`${process.env.NEXT_PUBLIC_AUTH_BASE}/auth/signin?returnTo=${encoded}`)
+    window.location.replace(`${process.env.NEXT_PUBLIC_BASE}/auth/signin?returnTo=${encoded}`)
   }, [])
 
   useEffect(() => {
