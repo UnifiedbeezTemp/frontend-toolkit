@@ -29,13 +29,13 @@ export function getSetupRoute(
   stepId: number,
   subStepId?: string | number | null
 ): string {
-  const baseRoute = `/setup/${stepId}`;
+  const baseRoute = `/${stepId}`;
   const routeWithSubstep =
     subStepId !== undefined && subStepId !== null
       ? `${baseRoute}?substep=${subStepId}`
       : baseRoute;
 
-  return getManualOnboardingUrl(routeWithSubstep);
+  return routeWithSubstep;
 }
 
 /**
@@ -48,8 +48,8 @@ export function parseSetupRoute(
   pathname: string,
   searchParams: URLSearchParams | string | null
 ): { stepId: number; subStepId: string | number | null } | null {
-  // Match /setup/[stepId] pattern
-  const match = pathname.match(/^\/setup\/(\d+)$/);
+  // Match /[stepId] pattern (e.g., /1, /2)
+  const match = pathname.match(/^\/(\d+)$/);
   if (!match) {
     return null;
   }
