@@ -43,5 +43,9 @@ export default function useChatAutoScroll<T extends HTMLElement>(
     prevMsgCount.current = messages.length;
   }, [messages.length, isAtBottom, behavior]);
 
-  return { bottomRef };
+  const scrollToBottom = useCallback(() => {
+    bottomRef.current?.scrollIntoView({ behavior, block: "end" });
+  }, [behavior]);
+
+  return { bottomRef, scrollToBottom };
 }
