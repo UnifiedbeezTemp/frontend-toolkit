@@ -6,16 +6,7 @@ import CollapsiblePlanCardFooter from "./CollapsiblePlanCardFooter";
 import { Plan } from "../../../api/services/plan/types";
 import { cn } from "../../../lib/utils";
 import ImageComponent from "../../ui/ImageComponent";
-
-interface CollapsiblePlanCardProps {
-  plan: Plan;
-  isYearly: boolean;
-  isSelected: boolean;
-  isLowerThanCurrentPlan?: boolean;
-  onSelect: (planId: string) => void;
-  defaultExpanded?: boolean;
-  className?: string;
-}
+import { CollapsiblePlanCardProps } from "./types";
 
 export default function ExpandedPlanCard({
   plan,
@@ -24,6 +15,7 @@ export default function ExpandedPlanCard({
   isLowerThanCurrentPlan = false,
   onSelect,
   className,
+  isSelectionDisabled
 }: CollapsiblePlanCardProps) {
   const { displayPrice } = useCollapsiblePlanCard(plan, isYearly);
 
@@ -57,6 +49,7 @@ export default function ExpandedPlanCard({
         isSelected={isSelected}
         isLowerThanCurrentPlan={isLowerThanCurrentPlan}
         onSelect={onSelect}
+        isSelectionDisabled={isSelectionDisabled}
       />
 
       <div className="flex justify-center items-center text-xs gap-1 text-dark-base-70 mt-4">

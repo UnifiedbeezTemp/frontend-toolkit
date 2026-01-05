@@ -42,6 +42,8 @@ export interface PlanSummaryCardProps {
   isOwnPlan?: boolean
   showHighlightOfPlan?: boolean
   isLoading?: boolean
+  onUpgradePlan?: () => void
+  isUpgradePlanDisabled: boolean
 }
 
 

@@ -19,6 +19,7 @@ export default function CollapsiblePlanCard({
   onSelect,
   defaultExpanded = false,
   className,
+  isSelectionDisabled
 }: CollapsiblePlanCardProps) {
   const { displayPrice } = useCollapsiblePlanCard(plan, isYearly);
   const { value: expanded, toggle: toggleExpanded } = useToggle(defaultExpanded)
@@ -55,6 +56,7 @@ export default function CollapsiblePlanCard({
             isSelected={isSelected}
             isLowerThanCurrentPlan={isLowerThanCurrentPlan}
             onSelect={onSelect}
+            isSelectionDisabled={isSelectionDisabled}
           />
         </div>
       </ExpandableCard>
