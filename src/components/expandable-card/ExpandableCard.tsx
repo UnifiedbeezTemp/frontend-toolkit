@@ -1,7 +1,7 @@
-"use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "../../lib/utils";
-import { ExpandableCardProps } from "./types";
+"use client"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "../../lib/utils"
+import { ExpandableCardProps } from "./types"
 
 export default function ExpandableCard({
   title,
@@ -11,14 +11,17 @@ export default function ExpandableCard({
   summary,
   summaryClassName,
   detailsClassName,
+  useDefaultDetailsStyling = true,
   containerClassName,
 }: ExpandableCardProps) {
-
   return (
     <div className={cn("flex flex-col gap-5.5 pb-5.5", containerClassName)}>
       <div
         onClick={toggleExpanded}
-        className={cn("w-full flex items-center justify-between px-3 hover:bg-soft-green/30 transition-colors", summaryClassName)}
+        className={cn(
+          "w-full flex items-center justify-between px-3 hover:bg-soft-green/30 transition-colors",
+          summaryClassName
+        )}
         aria-expanded={isExpanded}
         aria-label={`${isExpanded ? "Collapse" : "Expand"} ${title}`}
       >
@@ -33,13 +36,18 @@ export default function ExpandableCard({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className={cn("overflow-hidden bg-gray-25 border-input-stroke border rounded-md pt-2.5 pb-4.5 px-2.75 md:p-4", detailsClassName)}>
+            <div
+              className={cn(
+                useDefaultDetailsStyling &&
+                  "overflow-hidden bg-gray-25 border-input-stroke border rounded-md pt-2.5 pb-4.5 px-2.75 md:p-4",
+                detailsClassName
+              )}
+            >
               {children}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
-  );
+  )
 }
-
