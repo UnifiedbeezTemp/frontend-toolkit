@@ -1,3 +1,4 @@
+"use client";
 import { PropsWithChildren } from "react";
 import PreLoader from "../components/ui/PreLoader";
 import useSession from "./hooks/useSession";
@@ -9,7 +10,7 @@ import { error } from "console";
 export default function SessionProvider({ children }: PropsWithChildren) {
   const { isPending, isError, data, authStatus, refetch, error } = useSession();
 
-  if (isPending || authStatus === "unauthenticated") return <PreLoader />;
+  if (isPending) return <PreLoader />;
 
   if (isError)
     return (
