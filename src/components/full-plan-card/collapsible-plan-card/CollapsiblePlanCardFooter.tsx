@@ -7,6 +7,7 @@ interface CollapsiblePlanCardFooterProps {
   isSelected: boolean;
   isLowerThanCurrentPlan?: boolean;
   onSelect: (planId: string) => void;
+  isSelectionDisabled?: boolean
 }
 
 export default function CollapsiblePlanCardFooter({
@@ -14,6 +15,7 @@ export default function CollapsiblePlanCardFooter({
   isSelected,
   isLowerThanCurrentPlan = false,
   onSelect,
+  isSelectionDisabled
 }: CollapsiblePlanCardFooterProps) {
   const getButtonVariant = () => {
     if (isSelected) return "secondary";
@@ -30,7 +32,7 @@ export default function CollapsiblePlanCardFooter({
           isLowerThanCurrentPlan && "border-input-stroke text-text-secondary"
         )}
         variant={getButtonVariant()}
-        disabled={isSelected}
+        disabled={isSelected || isSelectionDisabled}
         onClick={() => onSelect(plan.id)}
       >
         {isLowerThanCurrentPlan ? "Downgrade" :plan.ctaText}

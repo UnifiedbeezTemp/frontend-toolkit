@@ -4,6 +4,7 @@ export const PLAN_TYPES = [
   "individual",
   "business",
   "premium",
+  "organisation",
   "organization",
 ] as const
 
@@ -21,6 +22,7 @@ export default function usePlanIcons() {
     individual: userWhite,
     business: luggage,
     premium: gem,
+    organisation: userGroup3,
     organization: userGroup3,
   }
 
@@ -35,8 +37,10 @@ export function usePlanBgColorClassNames() {
     individual: "bg-brand-primary",
     business: "bg-text-secondary",
     premium: "bg-warning",
+    organisation:
+    "bg-[linear-gradient(165deg,#e6faf2_-11.22%,#e3cf9b_219.35%)]",
     organization:
-      "bg-[linear-gradient(165deg,#e6faf2_-11.22%,#e3cf9b_219.35%)]",
+    "bg-[linear-gradient(165deg,#e6faf2_-11.22%,#e3cf9b_219.35%)]",
   }
 
   return (planType: string) => {
