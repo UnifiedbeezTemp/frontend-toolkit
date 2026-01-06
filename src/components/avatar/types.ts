@@ -19,4 +19,5 @@ export interface AvatarGroupProps {
   overlap?: number
   onItemClick?: (item: AvatarItem) => void
   overlapDirection?: "left" | "right"
+  count?: number
 }

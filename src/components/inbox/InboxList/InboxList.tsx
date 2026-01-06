@@ -1,3 +1,4 @@
+import { InboxSearchAndFilters } from "./FilterComponents"
 import { InboxListTopToolBar } from "./InboxListTopToolBar"
 import { GeneralInboxConversationItem } from "../GeneralInboxConversationItem"
 import { TeamInboxConversationItem } from "../TeamInboxConversationItem"
@@ -45,11 +46,14 @@ export default function InboxList({
       <InboxListContainer
         className="grow"
         header={
-          <InboxListTopToolBar
-            onLeftClick={isSideDrawerOpen ? closeSideDrawer : openSideDrawer}
-            title={"General Inbox"}
-            leftIcon={undefined}
-          />
+          <div className="flex flex-col">
+            <InboxListTopToolBar
+              onLeftClick={isSideDrawerOpen ? closeSideDrawer : openSideDrawer}
+              title={"General Inbox"}
+              leftIcon={undefined}
+            />
+            <InboxSearchAndFilters />
+          </div>
         }
         body={
           <div>

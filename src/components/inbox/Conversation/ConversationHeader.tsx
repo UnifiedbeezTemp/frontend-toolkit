@@ -1,6 +1,5 @@
 import { ReactNode, useRef } from "react"
 import { cn } from "../../../lib/utils"
-import { TagPill } from "../TagPill"
 import {
   ConversationHeaderAction,
   ConversationHeaderActions,
@@ -10,6 +9,8 @@ import { SmartDropdown } from "../../smart-dropdown"
 import IconButton from "../../ui/IconButton"
 import MoreHorizontalIcon from "../../../assets/icons/MoreHorizontalIcon"
 import { useToggle } from "../../../hooks/useToggle"
+import { TagPill } from "../components/TagPill"
+import Attributes from "../components/attributes/Attributes"
 
 export function ConversationHeader({
   platformIcon,
@@ -41,6 +42,12 @@ export function ConversationHeader({
   } = useToggle()
 
   const actionsRef = useRef<HTMLButtonElement | null>(null)
+  const attributesTriggerRef = useRef<HTMLButtonElement | null>(null)
+  const {
+    value: showAttributes,
+    setTrue: openAttributes,
+    setFalse: closeAttributes,
+  } = useToggle()
 
   return (
     <header className={cn("w-full p-4 md:py-3 lg:py-4", className)}>
@@ -64,6 +71,8 @@ export function ConversationHeader({
           </div>
           {showChevron ? (
             <button
+              ref={attributesTriggerRef}
+              onClick={openAttributes}
               type="button"
               className="shrink-0 rounded-md px-1.25 py-1.75 text-dark-base-70"
               aria-label="Open conversation menu"
@@ -71,6 +80,16 @@ export function ConversationHeader({
               <ChevronDownIcon className="h-5 w-5" />
             </button>
           ) : null}
+          <SmartDropdown
+            isOpen={showAttributes}
+            onClose={closeAttributes}
+            triggerRef={attributesTriggerRef}
+            maxHeight="66rem"
+            className="w-full max-w-[75dvw] md:max-w-122.5 shadow-sm bg-primary rounded-[1.4rem] border border-input-stroke"
+            placement="bottom-end"
+          >
+            <Attributes onCancel={closeAttributes} />
+          </SmartDropdown>
         </div>
 
         {actions ? (
@@ -94,7 +113,10 @@ export function ConversationHeader({
               className="md:hidden w-auto!"
               maxHeight="none"
             >
-              <ConversationHeaderActions actions={actions} className="flex-col p-2 rounded-md" />
+              <ConversationHeaderActions
+                actions={actions}
+                className="flex-col p-2 rounded-md"
+              />
             </SmartDropdown>
           </div>
         ) : null}

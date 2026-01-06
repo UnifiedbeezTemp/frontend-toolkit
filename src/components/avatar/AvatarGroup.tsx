@@ -1,6 +1,6 @@
-import Image from "next/image"
 import { AvatarGroupProps } from "./types"
 import { isFunction } from "../../utils/is"
+import SafeExternalImage from "../ui/SafeExternalImage"
 
 export function AvatarGroup({
   items,
@@ -40,7 +40,7 @@ export function AvatarGroup({
           }}
         >
           {item.type === "image" ? (
-            <Image
+            <SafeExternalImage
               src={item.src}
               alt={item.alt}
               width={size}

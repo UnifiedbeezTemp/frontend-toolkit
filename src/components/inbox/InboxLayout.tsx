@@ -19,7 +19,7 @@ export default function InboxPageLayout({
   return (
     <div
       className={cn(
-        "mt-14.25 grid grid-cols-[39%_1fr] xl:grid-cols-[40%_1fr]",
+        "mt-14.25 grid grid-cols-[38%_1fr] xl:grid-cols-[35%_1fr]",
         containerClassNames
       )}
     >

@@ -16,5 +16,5 @@
     "types": ["react", "react-dom"],
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "src/assets/icons/SmileIcon.tsx"]
+  "include": ["src", "src/assets/icons/SmileIcon.tsx", "src/assets/icons/BadgeCheckIcon.tsx"]
 }

@@ -1,7 +1,8 @@
-import { cn } from "../../lib/utils"
-import TagIcon from "../../assets/icons/TagIcon"
-import { TagPillProps } from "./types"
-import { ConversationTagNameToColorMappings } from "./constants"
+import TagIcon from "../../../assets/icons/TagIcon";
+import { cn } from "../../../lib/utils";
+import { ConversationTagNameToColorMappings } from "../constants";
+import { TagPillProps } from "../types";
+
 
 export function TagPill({
   label = "Wishlist-users",

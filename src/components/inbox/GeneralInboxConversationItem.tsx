@@ -1,9 +1,9 @@
 import { ReactNode } from "react"
 import { cn } from "../../lib/utils"
-import { TagPill } from "./TagPill"
 import { isString } from "../../utils/is"
 import Heading from "../ui/Heading"
 import Text from "../ui/Text"
+import { TagPill } from "./components/TagPill"
 
 export function GeneralInboxConversationItem({
   leading,
