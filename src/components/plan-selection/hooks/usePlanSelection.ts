@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../contexts/authContext";
 import { useToast } from "../../../components/ui/toast/useToast";
 import { usePlans } from "../../../api/services/plan/hooks/usePlans";
 import { accountSetupService } from "../../../api/services/auth/accountSetupService";
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
+import { useUser } from "../../../contexts/UserContext";
 
 export const usePlanSelection = () => {
   const [isYearly, setIsYearly] = useState(false);
@@ -12,7 +12,7 @@ export const usePlanSelection = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [isSelecting, setIsSelecting] = useState(false);
 
-  const { user, refreshUser } = useAuth();
+  const { user, refetch } = useUser();
   const { showToast } = useToast();
   const { plans: backendPlans, loading, error, retry } = usePlans();
 
@@ -32,7 +32,7 @@ export const usePlanSelection = () => {
 
     try {
       await accountSetupService.selectPlan(selectedPlan);
-      await refreshUser();
+      refetch();
 
       const hasPlanChanged =
         user?.plan?.toLowerCase() !== selectedPlan.toLowerCase();
