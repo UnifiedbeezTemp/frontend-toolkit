@@ -16,7 +16,7 @@ import { Addon } from "../../store/onboarding/types/addonTypes";
 
 import { usePlanCardPreview } from "./hooks/usePlanCardPreview";
 import { PlanCardPreviewProps } from "./types";
-import PlanSelectionRequiredModal from "../modal/PlanSelectionRequiredModal";
+import PlanSelectionRequiredModal from "../plan-selection/modals/PlanSelectionRequiredModal";
 import PlanPreviewModal from "./components/PlanPreviewModal";
 import PlanPreviewAddons from "./components/PlanPreviewAddons";
 import PlanPreviewPricing from "./components/PlanPreviewPricing";
