@@ -5,7 +5,7 @@ import {
   useSupabaseIcons,
   useSupabaseImages,
 } from "../../lib/supabase/useSupabase";
-import { ChatMessage } from "./hooks/useChat";
+import { ChatMessage } from "./types";
 import { cn } from "../../lib/utils";
 import { useUser } from "../../contexts/UserContext";
 
