@@ -1,4 +1,3 @@
-
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Button from "../ui/Button";
 import { useImageUpload } from "./hooks/useImageUpload";
@@ -13,7 +12,7 @@ const sizeClasses = {
   sm: "w-[6rem] h-[6rem]",
   md: "w-[8.6rem] h-[8.6rem]",
   lg: "w-[12rem] h-[12rem]",
-  xs: "w-[6rem] h-[6rem]"
+  xs: "w-[6rem] h-[6rem]",
 };
 
 const ALLOWED_IMAGE_TYPES = [
@@ -172,7 +171,7 @@ export default function ImageUploadSection({
   };
 
   const handleRemoveImage = () => {
-    onImageSelect(null as any);
+    onImageSelect(null as unknown as File);
     setPreviewUrl(null);
     setFileError(null);
 

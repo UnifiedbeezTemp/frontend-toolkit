@@ -120,10 +120,11 @@ export interface TrialResponseData {
 }
 
 export interface AuthResponseData {
-  token?: string;
-  user: UserProfile | null;
-  refreshToken?: string;
-  message: string;
+  session_id: string;
+  remember_me: boolean;
+  user: UserProfile;
+  timestamp: string;
+  verified: boolean;
 }
 
 export interface SocialAuthPayload {
@@ -134,4 +135,11 @@ export interface SocialAuthPayload {
   code_verifier?: string;
 }
 
-export interface SocialAuthResponse<T = unknown> extends AuthResponse<T> {}
+export interface UpdateOnboardingMethodPayload {
+  method: "copilot" | "manual";
+}
+
+export interface UpdateOnboardingMethodResponse {
+  message: string;
+  user: UserProfile;
+}

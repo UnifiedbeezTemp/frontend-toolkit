@@ -304,7 +304,7 @@ export const initialStepsData: Step[] = [
   {
     id: 8,
     step: "Step 08",
-    title: "Smart Automations - UnifiedBeez Automation Template Library",
+    title: "Automation Template Library",
     description:
       "Connect your communication platforms and preview how UnifiedBeez will interact with each one.",
     summary:

@@ -4,17 +4,40 @@
  */
 
 /**
+ * Generate an absolute URL for the manual onboarding project
+ * @param path - The relative path (e.g., "/setup/1" or "/auth/account-setup")
+ * @returns The absolute URL string
+ */
+export function getManualOnboardingUrl(path: string): string {
+  const manualOnboardingBase =
+    process.env.NEXT_PUBLIC_MANUAL_ONBOARDING_BASE || "";
+  const base = manualOnboardingBase.endsWith("/")
+    ? manualOnboardingBase.slice(0, -1)
+    : manualOnboardingBase;
+
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${cleanPath}`;
+}
+
+/**
  * Generate a setup route URL
  * @param stepId - The main step ID (1-8)
  * @param subStepId - Optional substep ID for query param
  * @returns The route URL string
  */
-export function getSetupRoute(stepId: number, subStepId?: string | number | null): string {
-  const baseRoute = `/setup/${stepId}`;
-  if (subStepId !== undefined && subStepId !== null) {
-    return `${baseRoute}?substep=${subStepId}`;
-  }
-  return baseRoute;
+export function getSetupRoute(
+  stepId: number,
+  subStepId?: string | number | null
+): string {
+  const manualOnboardingUrl =
+    process.env.NEXT_PUBLIC_MANUAL_ONBOARDING_URL || "";
+  const baseRoute = `${manualOnboardingUrl}/${stepId}`;
+  const routeWithSubstep =
+    subStepId !== undefined && subStepId !== null
+      ? `${baseRoute}?substep=${subStepId}`
+      : baseRoute;
+
+  return routeWithSubstep;
 }
 
 /**
@@ -27,8 +50,8 @@ export function parseSetupRoute(
   pathname: string,
   searchParams: URLSearchParams | string | null
 ): { stepId: number; subStepId: string | number | null } | null {
-  // Match /setup/[stepId] pattern
-  const match = pathname.match(/^\/setup\/(\d+)$/);
+  // Match /[stepId] pattern (e.g., /1, /2)
+  const match = pathname.match(/^\/(\d+)$/);
   if (!match) {
     return null;
   }
@@ -41,10 +64,11 @@ export function parseSetupRoute(
   // Parse substep from search params
   let subStepId: string | number | null = null;
   if (searchParams) {
-    const params = typeof searchParams === 'string' 
-      ? new URLSearchParams(searchParams) 
-      : searchParams;
-    const subStepParam = params.get('substep');
+    const params =
+      typeof searchParams === "string"
+        ? new URLSearchParams(searchParams)
+        : searchParams;
+    const subStepParam = params.get("substep");
     if (subStepParam) {
       // Try to parse as number, otherwise keep as string
       const parsed = parseInt(subStepParam, 10);
@@ -61,4 +85,3 @@ export function parseSetupRoute(
 export function isValidStepId(stepId: number): boolean {
   return Number.isInteger(stepId) && stepId >= 1 && stepId <= 8;
 }
-
