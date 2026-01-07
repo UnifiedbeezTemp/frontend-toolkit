@@ -29,4 +29,5 @@ export const authService = {
   logout: profileService.logout,
   socialSignIn: socialAuthService.signIn,
   socialSignUp: socialAuthService.signUp,
+  updateOnboardingMethod: accountSetupService.updateOnboardingMethod,
 };
