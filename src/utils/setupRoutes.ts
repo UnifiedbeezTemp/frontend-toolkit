@@ -29,7 +29,9 @@ export function getSetupRoute(
   stepId: number,
   subStepId?: string | number | null
 ): string {
-  const baseRoute = `/${stepId}`;
+  const manualOnboardingUrl =
+    process.env.NEXT_PUBLIC_MANUAL_ONBOARDING_URL || "";
+  const baseRoute = `${manualOnboardingUrl}/${stepId}`;
   const routeWithSubstep =
     subStepId !== undefined && subStepId !== null
       ? `${baseRoute}?substep=${subStepId}`
