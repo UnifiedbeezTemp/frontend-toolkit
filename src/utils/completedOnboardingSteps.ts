@@ -9,19 +9,34 @@ export const TOTAL_ONBOARDING_STEPS = 8;
  * @param completedSteps - Array of completed step IDs
  * @returns Highest step ID or 0 if array is empty
  */
-export function getHighestCompletedStep(completedSteps: number[]): number {
+/**
+ * Get the highest completed step ID
+ * @param completedSteps - Array of completed step objects
+ * @returns Highest step ID or 0 if array is empty
+ */
+export function getHighestCompletedStep(
+  completedSteps: { step: number; status: string }[]
+): number {
   if (!completedSteps || completedSteps.length === 0) {
     return 0;
   }
-  return Math.max(...completedSteps);
+  const steps = completedSteps
+    .filter((s) => s.status === "complete" || s.status === "completed")
+    .map((s) => s.step);
+
+  if (steps.length === 0) return 0;
+
+  return Math.max(...steps);
 }
 
 /**
  * Get the next step after the highest completed step
- * @param completedSteps - Array of completed step IDs
+ * @param completedSteps - Array of completed step objects
  * @returns Next step ID (highest + 1) or 1 if no steps completed
  */
-export function getNextStepAfterHighest(completedSteps: number[]): number {
+export function getNextStepAfterHighest(
+  completedSteps: { step: number; status: string }[]
+): number {
   const highest = getHighestCompletedStep(completedSteps);
   return highest + 1;
 }
@@ -29,39 +44,44 @@ export function getNextStepAfterHighest(completedSteps: number[]): number {
 /**
  * Check if a step is completed
  * @param stepId - Step ID to check
- * @param completedSteps - Array of completed step IDs
+ * @param completedSteps - Array of completed step objects
  * @returns true if step is completed, false otherwise
  */
 export function isStepCompleted(
   stepId: number,
-  completedSteps: number[]
+  completedSteps: { step: number; status: string }[]
 ): boolean {
   if (!completedSteps || completedSteps.length === 0) {
     return false;
   }
-  return completedSteps.includes(stepId);
+  return completedSteps.some(
+    (s) =>
+      s.step === stepId && (s.status === "complete" || s.status === "completed")
+  );
 }
 
 /**
  * Check if a step should be marked as completed
  * Only marks if not already in the array
  * @param stepId - Step ID to potentially add
- * @param completedSteps - Current array of completed step IDs
+ * @param completedSteps - Current array of completed step objects
  * @returns true if step should be added (not already completed), false otherwise
  */
 export function shouldMarkStepAsCompleted(
   stepId: number,
-  completedSteps: number[]
+  completedSteps: { step: number; status: string }[]
 ): boolean {
   return !isStepCompleted(stepId, completedSteps);
 }
 
 /**
  * Check if ALL onboarding steps are completed
- * @param completedSteps - Array of completed step IDs
+ * @param completedSteps - Array of completed step objects
  * @returns true if all steps are completed
  */
-export function isAllOnboardingCompleted(completedSteps: number[]): boolean {
+export function isAllOnboardingCompleted(
+  completedSteps: { step: number; status: string }[]
+): boolean {
   if (!completedSteps || completedSteps.length === 0) {
     return false;
   }
