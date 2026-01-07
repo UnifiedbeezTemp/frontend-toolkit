@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useRef, useCallback, startTransition, memo } from "react";
 import Image, { ImageProps } from "next/image";
 import { cn } from "../../lib/utils";
 
@@ -13,7 +13,17 @@ interface ImageComponentProps
   onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
 
-export default function ImageComponent({
+const isExternalUrl = (src: ImageProps["src"]): boolean => {
+  if (typeof src !== "string") return false;
+  try {
+    const url = new URL(src);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+function ImageComponent({
   className,
   containerClassName,
   fallbackSrc = "/images/fallback.jpg",
@@ -24,20 +34,59 @@ export default function ImageComponent({
 }: ImageComponentProps) {
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const isMountedRef = useRef(false);
+
+  const shouldUseUnoptimized = useMemo(
+    () => isExternalUrl(props.src),
+    [props.src]
+  );
 
   useEffect(() => {
-    setHasError(false);
-    setIsLoading(true);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isMountedRef.current) return;
+    
+    const timer = setTimeout(() => {
+      if (isMountedRef.current) {
+        startTransition(() => {
+          setHasError(false);
+          setIsLoading(true);
+        });
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [props.src]);
 
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    setHasError(true);
+  const handleError = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    if (isMountedRef.current) {
+      requestAnimationFrame(() => {
+        if (isMountedRef.current) {
+          startTransition(() => {
+            setHasError(true);
+          });
+        }
+      });
+    }
     onError?.(e);
-  };
+  }, [onError]);
 
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
+  const handleLoad = useCallback(() => {
+    if (isMountedRef.current) {
+      requestAnimationFrame(() => {
+        if (isMountedRef.current) {
+          startTransition(() => {
+            setIsLoading(false);
+          });
+        }
+      });
+    }
+  }, []);
 
   return (
     <div className={cn("relative", containerClassName)}>
@@ -45,6 +94,7 @@ export default function ImageComponent({
         {...props}
         src={hasError ? fallbackSrc : props.src}
         loading={loading}
+        unoptimized={shouldUseUnoptimized}
         onError={handleError}
         onLoad={handleLoad}
         className={cn(
@@ -61,3 +111,5 @@ export default function ImageComponent({
     </div>
   );
 }
+
+export default memo(ImageComponent);

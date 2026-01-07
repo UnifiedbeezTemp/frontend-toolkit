@@ -13,7 +13,9 @@ export default function PlanSummaryCTATop({
   plan,
   isOwnPlan,
   className,
-  isLoading
+  isLoading,
+  onUpgradePlan,
+  isUpgradePlanDisabled
 }: PlanSummaryCardProps) {
   if(isLoading) return <PlanSummarySkeleton />
   return (
@@ -40,7 +42,7 @@ export default function PlanSummaryCTATop({
               <PlanPricingAndInterval plan={plan} />
             </div>
             <div className="hidden md:block">
-              <PlanSummaryActions plan={plan} />
+              <PlanSummaryActions plan={plan} onUpgradePlan={onUpgradePlan} isUpgradePlanDisabled={isUpgradePlanDisabled} />
             </div>
           </div>
 
@@ -58,7 +60,7 @@ export default function PlanSummaryCTATop({
             }
           </div>
            <div className="block md:hidden w-full">
-              <PlanSummaryActions plan={plan} />
+              <PlanSummaryActions plan={plan} onUpgradePlan={onUpgradePlan} isUpgradePlanDisabled={isUpgradePlanDisabled} />
             </div>
         </div>
       </div>

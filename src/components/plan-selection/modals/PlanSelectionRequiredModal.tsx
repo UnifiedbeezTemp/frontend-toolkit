@@ -1,11 +1,11 @@
 "use client";
 
 import ImageComponent from "next/image";
-import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
-import Button from "../ui/Button";
-import Heading from "../ui/Heading";
-import Text from "../ui/Text";
-import Modal from "./Modal";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import Button from "../../ui/Button";
+import Heading from "../../ui/Heading";
+import Text from "../../ui/Text";
+import Modal from "../../modal/Modal";
 
 interface PlanSelectionRequiredModalProps {
   isOpen: boolean;
@@ -30,17 +30,15 @@ export default function PlanSelectionRequiredModal({
           />
         </div>
 
-        <Heading className="mb-[1rem] text-center">Select this Plan First</Heading>
+        <Heading className="mb-[1rem] text-center">
+          Select this Plan First
+        </Heading>
 
         <Text className="text-center mb-[3rem] text-[1.2rem]">
           You need to select this plan before you can configure add-ons for it.
         </Text>
 
-        <Button
-          variant="primary"
-          className="w-full "
-          onClick={onClose}
-        >
+        <Button variant="primary" className="w-full " onClick={onClose}>
           Got it
         </Button>
       </div>
