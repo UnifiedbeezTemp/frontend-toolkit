@@ -10,4 +10,5 @@ export interface BotItemProps{
   showDeleteButton?: boolean
   onEdit?: () => void
   onDelete?: () => void
+  isDeleting?: boolean
 }
