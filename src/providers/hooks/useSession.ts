@@ -34,6 +34,7 @@ export default function useSession() {
 
   useEffect(() => {
     if (isError && error) {
+      if (error.status === 401) redirectToLogin();
       showToast({
         id: error.details?.correlationId,
         title: error.status === 401 ? "Authentication failed" : "Error",
@@ -41,7 +42,6 @@ export default function useSession() {
         variant: "error",
       });
 
-      if (error.status === 401) redirectToLogin();
     }
   }, [isError, error, redirectToLogin, showToast]);
 

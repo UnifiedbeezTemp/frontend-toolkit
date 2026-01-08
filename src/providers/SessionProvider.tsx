@@ -2,15 +2,15 @@
 import { PropsWithChildren } from "react";
 import PreLoader from "../components/ui/PreLoader";
 import useSession from "./hooks/useSession";
-import { ToastProvider } from "../components/ui/toast/ToastProvider";
 import { UserContext } from "../contexts/UserContext";
 import ErrorDisplay from "../components/error-display/ErrorDisplay";
-import { error } from "console";
 
 export default function SessionProvider({ children }: PropsWithChildren) {
   const { isPending, isError, data, authStatus, refetch, error } = useSession();
 
   if (isPending) return <PreLoader />;
+
+  if(authStatus === "unauthenticated") return <></>
 
   if (isError)
     return (
