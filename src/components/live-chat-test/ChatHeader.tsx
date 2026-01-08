@@ -2,15 +2,20 @@
 
 import ImageComponent from "../ui/ImageComponent";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
+import Button from "../ui/Button";
 
 interface ChatHeaderProps {
   assistantName?: string;
   onRefresh: () => void;
+  onExit?: () => void;
+  showExitBtn?: boolean
 }
 
 export default function ChatHeader({
   assistantName,
   onRefresh,
+  showExitBtn = false,
+  onExit
 }: ChatHeaderProps) {
   const icons = useSupabaseIcons();
 
@@ -30,6 +35,7 @@ export default function ChatHeader({
         />
         Refresh
       </button>
+      {showExitBtn && <Button onClick={onExit} variant="secondary" className="w-8 h-8">X</Button>}
     </div>
   );
 }
