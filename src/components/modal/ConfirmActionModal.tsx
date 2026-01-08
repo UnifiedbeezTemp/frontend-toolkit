@@ -21,6 +21,7 @@ interface ConfirmActionModalProps {
   cancelLabel?: string;
   tone?: ConfirmTone;
   confirmLoading?: boolean;
+  bottomSheet?: boolean;
 }
 
 export default function ConfirmActionModal({
@@ -33,9 +34,10 @@ export default function ConfirmActionModal({
   cancelLabel = "Cancel",
   tone = "danger",
   confirmLoading = false,
+  bottomSheet = false,
 }: ConfirmActionModalProps) {
   const icons = useSupabaseIcons();
-  
+
   const toneClasses: Record<ConfirmTone, string> = {
     danger: "bg-destructive/10 text-destructive border-destructive/20",
     primary: "bg-brand-primary/10 text-brand-primary border-brand-primary/20",
@@ -46,7 +48,8 @@ export default function ConfirmActionModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="w-[90%] max-w-[36rem] rounded-[1.2rem]"
+      className="w-full sm:w-[90%] max-w-[36rem] rounded-t-[1.2rem] sm:rounded-[1.2rem]"
+      bottomSheet={bottomSheet}
     >
       <div className="p-[2.4rem]">
         <div className="flex items-center justify-between mb-[1.6rem]">
@@ -57,7 +60,12 @@ export default function ConfirmActionModal({
             )}
           >
             <div className="flex items-center justify-center rounded-full w-[3.5rem] h-[3.5rem] bg-destructive/20 text-[1.8rem] font-[700]">
-              <ImageComponent src={icons.trashRed} alt="trash" width={20} height={20} />
+              <ImageComponent
+                src={icons.trashRed}
+                alt="trash"
+                width={20}
+                height={20}
+              />
             </div>
           </div>
           <CloseModalButton
@@ -100,4 +108,3 @@ export default function ConfirmActionModal({
     </Modal>
   );
 }
-

@@ -26,8 +26,8 @@ export default function FilesCard({
   deletingFileId,
 }: Props) {
   return (
-    <div className="rounded-[0.8rem] p-0 mt-[1.6rem] bg-primary">
-      <div className="py-[1.6rem] px-[2.4rem] border-b border-border">
+    <div className="rounded-[0.8rem] p-0 mt-[1.6rem] bg-primary border border-input-stroke">
+      <div className="py-[1.6rem] px-[2.4rem] border-b border-input-stroke">
         <Heading className="text-[1.8rem] sm:text-[2rem]">Upload document</Heading>
         <Text size="sm">Choose a document to get started</Text>
       </div>

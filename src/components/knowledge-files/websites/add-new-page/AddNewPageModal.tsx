@@ -17,6 +17,7 @@ interface AddNewPageModalProps {
   onAdd: () => void;
   urlError: string;
   isLoading?: boolean;
+  bottomSheet?: boolean;
 }
 
 export default function AddNewPageModal({
@@ -29,6 +30,7 @@ export default function AddNewPageModal({
   onAdd,
   urlError,
   isLoading = false,
+  bottomSheet = false,
 }: AddNewPageModalProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -40,7 +42,8 @@ export default function AddNewPageModal({
       <Modal
         isOpen={isOpen}
         onClose={handleClose}
-        className="rounded-[2.4rem] max-w-[37.4rem] w-full sm:max-w-[48.6rem] lg:max-w-[69.5rem]"
+        className="rounded-t-[2.4rem] sm:rounded-[2.4rem] max-w-[37.4rem] w-full sm:max-w-[48.6rem] lg:max-w-[69.5rem]"
+        bottomSheet={bottomSheet}
       >
         <AddNewPageModalHeader onClose={handleClose} />
 
@@ -57,7 +60,11 @@ export default function AddNewPageModal({
             triggerRef={triggerRef}
           />
 
-          <AddNewPageModalActions onClose={handleClose} onAdd={onAdd} isLoading={isLoading} />
+          <AddNewPageModalActions
+            onClose={handleClose}
+            onAdd={onAdd}
+            isLoading={isLoading}
+          />
         </div>
       </Modal>
 
