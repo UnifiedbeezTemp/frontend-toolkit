@@ -64,7 +64,10 @@ const computeUsage = (prev: AiUsage | null, remaining?: number) => {
   };
 };
 
-export function useAiAssistants(options: { autoFetch?: boolean } = {}) {
+export function useAiAssistants(
+  options: { autoFetch?: boolean; showToasts?: boolean } = {}
+) {
+  const showToasts = options.showToasts ?? true;
   const dispatch = useAppDispatch();
   const { showToast } = useToast();
   const aiState = useAppSelector((state) => state.aiAssistants);
@@ -99,19 +102,23 @@ export function useAiAssistants(options: { autoFetch?: boolean } = {}) {
       if (nextUsage) {
         dispatch(setUsage(nextUsage));
       }
-      showToast({
-        variant: "success",
-        title: "Assistant created",
-        description: data.message || `${normalized.name} is ready.`,
-      });
+      if (showToasts) {
+        showToast({
+          variant: "success",
+          title: "Assistant created",
+          description: data.message || `${normalized.name} is ready.`,
+        });
+      }
       queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
     },
     onError: (error) => {
-      showToast({
-        variant: "error",
-        title: "Failed to create assistant",
-        description: getErrorMessage(error),
-      });
+      if (showToasts) {
+        showToast({
+          variant: "error",
+          title: "Failed to create assistant",
+          description: getErrorMessage(error),
+        });
+      }
     },
   });
 
@@ -123,21 +130,93 @@ export function useAiAssistants(options: { autoFetch?: boolean } = {}) {
     onSuccess: (data, variables) => {
       const normalized = normalizeAssistant(data);
       dispatch(updateAssistant({ id: normalized.id, data: normalized }));
-      showToast({
-        variant: "success",
-        title: "Assistant updated",
-        description: `${variables.name} saved successfully.`,
-      });
+      if (showToasts) {
+        showToast({
+          variant: "success",
+          title: "Assistant updated",
+          description: `${variables.name} saved successfully.`,
+        });
+      }
       queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
     },
     onError: (error) => {
-      showToast({
-        variant: "error",
-        title: "Update failed",
-        description: getErrorMessage(error),
-      });
+      if (showToasts) {
+        showToast({
+          variant: "error",
+          title: "Update failed",
+          description: getErrorMessage(error),
+        });
+      }
     },
   });
+
+  const updatePersonalityMutation = useAppMutation<
+    { id: string; tone: string; style: string; personalityType: string },
+    AIAssistant,
+    ApiError
+  >(
+    (payload) =>
+      import("../api/aiAssistants").then((api) =>
+        api.updateAiAssistantPersonality(payload)
+      ),
+    {
+      onSuccess: (data) => {
+        const normalized = normalizeAssistant(data);
+        dispatch(updateAssistant({ id: normalized.id, data: normalized }));
+        if (showToasts) {
+          showToast({
+            variant: "success",
+            title: "Personality updated",
+            description: "Tone and style saved successfully.",
+          });
+        }
+        queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+      },
+      onError: (error) => {
+        if (showToasts) {
+          showToast({
+            variant: "error",
+            title: "Personality update failed",
+            description: getErrorMessage(error),
+          });
+        }
+      },
+    }
+  );
+
+  const updateInstructionMutation = useAppMutation<
+    { id: string; instruction: string },
+    AIAssistant,
+    ApiError
+  >(
+    (payload) =>
+      import("../api/aiAssistants").then((api) =>
+        api.updateAiAssistantInstruction(payload)
+      ),
+    {
+      onSuccess: (data) => {
+        const normalized = normalizeAssistant(data);
+        dispatch(updateAssistant({ id: normalized.id, data: normalized }));
+        if (showToasts) {
+          showToast({
+            variant: "success",
+            title: "Instructions updated",
+            description: "Assistant instructions saved successfully.",
+          });
+        }
+        queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+      },
+      onError: (error) => {
+        if (showToasts) {
+          showToast({
+            variant: "error",
+            title: "Instruction update failed",
+            description: getErrorMessage(error),
+          });
+        }
+      },
+    }
+  );
 
   const deleteAssistantMutation = useAppMutation<
     string,
@@ -150,19 +229,23 @@ export function useAiAssistants(options: { autoFetch?: boolean } = {}) {
       if (nextUsage) {
         dispatch(setUsage(nextUsage));
       }
-      showToast({
-        variant: "success",
-        title: "Assistant removed",
-        description: "The assistant has been deleted.",
-      });
+      if (showToasts) {
+        showToast({
+          variant: "success",
+          title: "Assistant removed",
+          description: "The assistant has been deleted.",
+        });
+      }
       queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
     },
     onError: (error) => {
-      showToast({
-        variant: "error",
-        title: "Delete failed",
-        description: getErrorMessage(error),
-      });
+      if (showToasts) {
+        showToast({
+          variant: "error",
+          title: "Delete failed",
+          description: getErrorMessage(error),
+        });
+      }
     },
   });
 
@@ -179,13 +262,27 @@ export function useAiAssistants(options: { autoFetch?: boolean } = {}) {
     isFetching: assistantsQuery.isFetching,
     error: assistantsQuery.error,
     refetch: assistantsQuery.refetch,
-    createAssistant: (payload?: { name?: string; useProfileMapping?: boolean }) =>
-      createAssistantMutation.mutateAsync(payload),
+    createAssistant: (payload?: {
+      name?: string;
+      useProfileMapping?: boolean;
+    }) => createAssistantMutation.mutateAsync(payload),
     updateAssistantName: (payload: { id: string; name: string }) =>
       updateAssistantMutation.mutateAsync(payload),
+    updateAssistantPersonality: (payload: {
+      id: string;
+      tone: string;
+      style: string;
+      personalityType: string;
+    }) => updatePersonalityMutation.mutateAsync(payload),
+    updateAssistantInstruction: (payload: {
+      id: string;
+      instruction: string;
+    }) => updateInstructionMutation.mutateAsync(payload),
     deleteAssistant: (id: string) => deleteAssistantMutation.mutateAsync(id),
     isCreating: createAssistantMutation.isPending,
     isUpdating: updateAssistantMutation.isPending,
+    isUpdatingPersonality: updatePersonalityMutation.isPending,
+    isUpdatingInstruction: updateInstructionMutation.isPending,
     isDeleting: deleteAssistantMutation.isPending,
     canCreateMore,
     setAssistants: (payload: AIAssistant[]) =>

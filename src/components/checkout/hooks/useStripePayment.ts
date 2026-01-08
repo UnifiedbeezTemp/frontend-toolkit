@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
+import { StripeCardElementChangeEvent, StripeError } from "@stripe/stripe-js";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { authService } from "../../../api/services/auth";
-import { CheckoutFormData } from "./useCheckoutForm";
 
 interface UseStripePaymentProps {
-  control: any;
+  control: { _formValues: unknown }; 
   clientSecret: string;
   onPaymentMethodAttached?: () => void;
 }
@@ -21,7 +21,7 @@ export const useStripePayment = ({
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string>("");
 
-  const handleCardChange = (event: any) => {
+  const handleCardChange = (event: StripeCardElementChangeEvent) => {
     setCardComplete(event.complete);
     setError(event.error?.message || "");
   };
@@ -42,7 +42,7 @@ export const useStripePayment = ({
         throw new Error("Card element not found");
       }
 
-      const formValues = control._formValues;
+      const formValues = (control as any)._formValues; 
 
       const { error: stripeError, setupIntent } = await stripe.confirmCardSetup(
         clientSecret,
@@ -84,8 +84,12 @@ export const useStripePayment = ({
           );
           console.log("Payment method attached successfully:", attachResponse);
           onPaymentMethodAttached?.();
-        } catch (attachError: any) {
-          console.error("Failed to attach payment method:", attachError);
+        } catch (attachError) {
+          const errorMessage =
+            attachError instanceof Error
+              ? attachError.message
+              : "Unknown error";
+          console.error("Failed to attach payment method:", errorMessage);
           setError(
             "Payment method setup completed but failed to attach to account. Please contact support."
           );
@@ -93,11 +97,13 @@ export const useStripePayment = ({
       } else {
         setError("Card setup failed. Please try again.");
       }
-    } catch (error: any) {
-      console.error("Payment processing error:", error);
-      setError(
-        error.message || "An unexpected error occurred. Please try again."
-      );
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again.";
+      console.error("Payment processing error:", errorMessage);
+      setError(errorMessage);
     } finally {
       setProcessing(false);
     }
