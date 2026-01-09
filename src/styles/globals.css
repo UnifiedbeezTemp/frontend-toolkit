@@ -60,6 +60,7 @@
   --color-warning: var(--warning);
   --color-destructive: var(--destructive);
   --color-success: var(--success);
+  --color-success-500: var(--success-500);
 
   --color-toggle-filled: var(--toggle-filled);
   --color-soft-green: var(--soft-green);
@@ -105,6 +106,7 @@
   --color-secondary-15: var(--yellow-15);
   --color-secondary-10: var(--yellow-10);
   --color-secondary-5: var(--yellow-5);
+  --color-orange-100: var(--orange-100);
   --color-secondary-green-110: var(--leaf-green-110);
   --color-secondary-green-105: var(--leaf-green-105);
   --color-secondary-green-100: var(--leaf-green-100);
@@ -116,14 +118,15 @@
   --color-danger-5: var(--red-5);
   --color-danger-110: var(--red-110);
   --color-danger-5: var(--red-5);
+  --color-purple-110: var(--purple-110);
   --color-purple-100: var(--purple-100);
-  --color-purple: var(--purple);
   --color-yellow-100-alt: var(--yellow-100-alt);
   --color-gray-900: var(--gray-900);
   --color-gray-600: var(--gray-600);
   --color-gray-200: var(--gray-200);
   --color-gray-60: var(--gray-60);
   --color-gray-50: var(--gray-50);
+  --color-gray-45: var(--gray-45);
   --color-gray-40: var(--gray-40);
   --color-gray-35: var(--gray-35);
   --color-gray-30: var(--gray-30);
@@ -131,6 +134,8 @@
   --color-gray-20: var(--gray-20);
   --color-gray-15: var(--gray-15);
   --color-primary-blue: var(--primary-blue);
+  --color-primary-blue-100: var(--primary-blue-100);
+  --color-primary-blue-50: var(--primary-blue-50);
   --text-xs: 1rem;
   --text-sm: 1.2rem;
   --text-md: 1.4rem;
@@ -183,7 +188,10 @@
   --warning: #fab404;
   --destructive: #cc0e11;
   --success: #29953e;
+  --success-500: #12B76A;
   --primary-blue: #155dfc;
+  --primary-blue-100: #2186f8;
+  --primary-blue-50: #15C0E6;
 
   --input-stroke: #d0d5dd;
   --input-stroke-1: #dedede;
@@ -237,6 +245,7 @@
   --yellow-10: #fef7e6;
   --yellow-15: #fef0c7;
   --yellow-5: #fffaeb;
+  --orange-100: #f25022;
   --leaf-green-110: #0b6341;
   --leaf-green-105: #005d38;
   --leaf-green-100: #29953e;
@@ -250,15 +259,18 @@
   --red-110: #6d0606;
   --red-10: #fee4e2;
   --red-5: #fef3f2;
+  --purple-110: #7615cb;
   --purple-100: #d946ef;
   --purple: #c837ab;
   --yellow-100-alt: #facc15;
   --gray-900: #101828;
   --gray-600: #475467;
+  --gray-250: #71717A;
   --gray-200: #eaecf0;
   --gray-60: #e4e4e4;
   --gray-50: #f9fafb;
   --gray-40: #919191;
+  --gray-45: #A2A2A2;
   --gray-35: #c5c6c9;
   --gray-30: #d0d5dd;
   --gray-25: #f8f8f8;
@@ -430,5 +442,13 @@ button:disabled {
   }
   .badge {
     @apply max-w-fit px-1.5 py-1.25 text-[1rem] font-bold mix-blend-multiply rounded;
+  }
+  .tagpill {
+    background-color: color-mix(in srgb, currentColor 10%, transparent);
+  }
+  @supports (background-color: rgb(from white r g b / 0.1)) {
+    .tagpill {
+      background-color: rgb(from currentColor r g b / 0.1);
+    }
   }
 }

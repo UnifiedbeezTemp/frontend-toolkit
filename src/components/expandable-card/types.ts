@@ -1,11 +1,12 @@
 
 export interface ExpandableCardProps {
-  title: string;
-  children: React.ReactNode;
+  title: string
+  children: React.ReactNode
   summary: React.ReactNode
   summaryClassName?: string
   detailsClassName?: string
-  containerClassName?: string;
+  containerClassName?: string
   isExpanded: boolean
-  toggleExpanded:() => void
+  toggleExpanded: () => void
+  useDefaultDetailsStyling?: boolean
 }
