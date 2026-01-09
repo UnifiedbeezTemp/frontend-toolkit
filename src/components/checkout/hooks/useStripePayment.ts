@@ -4,8 +4,17 @@ import { StripeCardElementChangeEvent, StripeError } from "@stripe/stripe-js";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { authService } from "../../../api/services/auth";
 
+interface FormValues {
+  cardHolderName?: string;
+  fullName?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+}
+
 interface UseStripePaymentProps {
-  control: { _formValues: unknown }; 
+  control: { _formValues: unknown };
   clientSecret: string;
   onPaymentMethodAttached?: () => void;
 }
@@ -42,7 +51,7 @@ export const useStripePayment = ({
         throw new Error("Card element not found");
       }
 
-      const formValues = (control as any)._formValues; 
+      const formValues = control._formValues as FormValues;
 
       const { error: stripeError, setupIntent } = await stripe.confirmCardSetup(
         clientSecret,
