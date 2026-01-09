@@ -18,6 +18,7 @@ export interface QuickFilterBarProps {
   onSelect: (opt: QuickFilterOption) => void
   handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void
   selectedDropdownOptions: string[]
+  className?: string
 }
 
 export function QuickFilterBar({
@@ -26,9 +27,15 @@ export function QuickFilterBar({
   selectedDropdownOptions,
   onSelect,
   handleDropdownOptionSelect,
+  className,
 }: QuickFilterBarProps) {
   return (
-    <div className="relative overflow-auto flex gap-2 lg:gap-4 justify-between w-full bg-input-filled border border-input-stroke p-2 rounded-[.9rem]">
+    <div
+      className={cn(
+        "relative overflow-auto font-medium flex gap-2 lg:gap-4 justify-between w-full bg-input-filled border border-input-stroke p-2 rounded-[.9rem]",
+        className
+      )}
+    >
       {options.map((opt, idx) => (
         <QuickFilterOption
           selected={selectedOption.label === opt.label}
@@ -87,7 +94,7 @@ export function QuickFilterOption({
             : "bg-transparent text-inactive-color hover:text-gray-600 hover:bg-primary"
         )}
       >
-        <span className="text-sm font-medium whitespace-nowrap">{label}</span>
+        <span className="text-sm font-inherit whitespace-nowrap">{label}</span>
         <ChevronDownIcon
           width={15}
           height={7.5}

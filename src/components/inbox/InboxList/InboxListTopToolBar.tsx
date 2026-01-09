@@ -3,12 +3,13 @@ import { cn } from "../../../lib/utils"
 import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon"
 import IconButton from "../../ui/IconButton"
 import SettingsDrawerIcon from "../../../assets/icons/SettingsDrawerIcon"
-import { MoreVertical, PlusIcon } from "lucide-react"
 import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon"
 import Heading from "../../ui/Heading"
 import { SmartDropdown, DropdownItem } from "../../smart-dropdown"
 import { useToggle } from "../../../hooks/useToggle"
 import { InboxType, inboxTypeLabels } from "../utils/dummyData"
+import MoreVerticalIcon from "../../../assets/icons/MoreVerticalIcon"
+import PlusIcon from "../../../assets/icons/PlusIcon"
 
 export function InboxListTopToolBar({
   title,
@@ -138,7 +139,7 @@ export function InboxListTopToolBar({
             aria-label="Toggle Options"
             className="text-gray-45 hidden md:flex"
           >
-            <MoreVertical />
+            <MoreVerticalIcon />
           </button>
           <SmartDropdown
             isOpen={showActions}
