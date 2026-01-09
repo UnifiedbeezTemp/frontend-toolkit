@@ -110,7 +110,7 @@ export const InboxSearchAndFilters = () => {
           onSelect={() => {}}
           selectedDropdownOptions={["not_assigned"]}
           selectedOption={{
-            label: "Labels",
+            label: "All conversations",
             options: [
               {
                 label: "Assigned to me",
