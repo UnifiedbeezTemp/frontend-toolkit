@@ -278,7 +278,7 @@
   --gray-15: #e4e4e4;
 }
 
-.dark {
+/* .dark {
   --background: var(--black-100);
   --primary: var(--black-100);
   --secondary: #ffffff;
@@ -300,7 +300,7 @@
   --mid-green: #0d2b21;
   --light-green: #0a1c15;
   --inactive-color: var(--black-70);
-}
+} */
 
 html {
   font-size: 62.5%;
