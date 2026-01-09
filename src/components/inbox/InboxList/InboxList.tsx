@@ -1,3 +1,5 @@
+"use client"
+
 import { InboxSearchAndFilters } from "./FilterComponents"
 import { InboxListTopToolBar } from "./InboxListTopToolBar"
 import { GeneralInboxConversationItem } from "../GeneralInboxConversationItem"
@@ -10,20 +12,53 @@ import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon"
 import IconButton from "../../ui/IconButton"
 import Heading from "../../ui/Heading"
 import ChannelsList from "../ChannelsPanel/ChannelsList"
+import { InboxType, inboxTypeLabels, Conversation } from "../utils/dummyData"
+import { useRouter } from "next/navigation"
+import Avatar from "../../ui/Avatar"
 
 export default function InboxList({
   sideDrawerContent = <ChannelsList />,
   sideDrawerTitle = "Connect Channels",
+  generalInboxConversations,
+  teamInboxConversations,
+  selectedInboxType,
+  onInboxTypeChange,
+  selectedConversationId,
+  onConversationSelect,
 }: {
-  sideDrawerContent: ReactNode
+  sideDrawerContent?: ReactNode
   sideDrawerTitle?: string
+  generalInboxConversations: Conversation[]
+  teamInboxConversations: Conversation[]
+  selectedInboxType: InboxType
+  onInboxTypeChange: (type: InboxType) => void
+  selectedConversationId?: string | null
+  onConversationSelect?: (conversationId: string | null) => void
 }) {
+  const router = useRouter()
   const {
     setTrue: openSideDrawer,
-
     value: isSideDrawerOpen,
     setFalse: closeSideDrawer,
   } = useToggle()
+
+  const handleInboxTypeChange = (type: InboxType) => {
+    onInboxTypeChange(type)
+    // Navigate back to inbox page when switching inbox types
+    router.push("/inbox")
+  }
+
+  const handleConversationClick = (conversationId: string) => {
+    // Navigate to conversation page
+    router.push(`/inbox/${conversationId}`)
+  }
+
+  const conversations =
+    selectedInboxType === "general"
+      ? generalInboxConversations
+      : teamInboxConversations
+
+  const currentTitle = inboxTypeLabels[selectedInboxType]
   return (
     <div className="absolute flex w-full">
       <PanelShell
@@ -49,28 +84,71 @@ export default function InboxList({
           <div className="flex flex-col">
             <InboxListTopToolBar
               onLeftClick={isSideDrawerOpen ? closeSideDrawer : openSideDrawer}
-              title={"General Inbox"}
+              title={currentTitle}
               leftIcon={undefined}
+              selectedInboxType={selectedInboxType}
+              onInboxTypeChange={handleInboxTypeChange}
             />
             <InboxSearchAndFilters />
           </div>
         }
         body={
           <div>
-            <GeneralInboxConversationItem
-              leading={<div className="h-12 w-12 rounded-full bg-green-500" />}
-              name="Alice Miles"
-              tag="Wishlist-users"
-              timestamp="2 days ago"
-              preview="I want to know if the price is negotiable, i need..."
-            />
-            <TeamInboxConversationItem
-              leading={<div className="h-12 w-12 rounded-full bg-green-500" />}
-              name="Alice Miles"
-              timestamp="2 days ago"
-              unreadCount={30}
-              preview="I want to know if the price is negotiable, i need..."
-            />
+            {conversations.map((conversation) => {
+              const leading = conversation.avatarUrl ? (
+                <Avatar
+                  src={conversation.avatarUrl}
+                  alt={conversation.name}
+                  name={conversation.name}
+                  size="sm"
+                />
+              ) : (
+                <div
+                  className={`h-10 w-10 rounded-full ${conversation.avatarColor}`}
+                />
+              )
+
+              if (selectedInboxType === "general") {
+                const generalLeading = conversation.avatarUrl ? (
+                  <Avatar
+                    src={conversation.avatarUrl}
+                    alt={conversation.name}
+                    name={conversation.name}
+                    size="sm"
+                  />
+                ) : (
+                  leading
+                )
+                return (
+                  <GeneralInboxConversationItem
+                    key={conversation.id}
+                    leading={generalLeading}
+                    name={conversation.name}
+                    tag={conversation.tag}
+                    timestamp={conversation.timestamp}
+                    preview={conversation.preview}
+                    onClick={() => handleConversationClick(conversation.id)}
+                    isActive={selectedConversationId === conversation.id}
+                  />
+                )
+              } else {
+                return (
+                  <TeamInboxConversationItem
+                    key={conversation.id}
+                    leading={leading}
+                    name={conversation.name}
+                    timestamp={conversation.timestamp}
+                    unreadCount={conversation.unreadCount}
+                    preview={conversation.preview}
+                    onClick={() => handleConversationClick(conversation.id)}
+                    isActive={selectedConversationId === conversation.id}
+                    isGroup={conversation.isGroup || false}
+                    participants={conversation.participants || []}
+                    participantAvatars={conversation.participantAvatars || []}
+                  />
+                )
+              }
+            })}
           </div>
         }
       />

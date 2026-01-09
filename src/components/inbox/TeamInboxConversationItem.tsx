@@ -2,6 +2,7 @@ import { ReactNode } from "react"
 import { cn } from "../../lib/utils"
 import Heading from "../ui/Heading"
 import Text from "../ui/Text"
+import { AvatarGroup } from "../avatar/AvatarGroup"
 
 export function TeamInboxConversationItem({
   leading,
@@ -11,7 +12,10 @@ export function TeamInboxConversationItem({
   unreadCount = 0,
   className,
   onClick,
-  isActive
+  isActive,
+  isGroup = false,
+  participants = [],
+  participantAvatars = [],
 }: {
   onClick?: () => void
   className?: string
@@ -21,8 +25,10 @@ export function TeamInboxConversationItem({
   name: string
   leading: ReactNode
   isActive?: boolean
+  isGroup?: boolean
+  participants?: string[]
+  participantAvatars?: string[]
 }) {
-
   return (
     <button
       type="button"
@@ -35,8 +41,44 @@ export function TeamInboxConversationItem({
     >
       <div className="w-full">
         <div className="flex flex-wrap items-center gap-1">
-          <div className="w-full sm:w-fit lg:w-full">{leading}</div>
-          <Heading className="w-fit text-dark-base-100 text-base">{name}</Heading>
+          <div className="w-full sm:w-fit lg:w-full">
+            {isGroup && participants.length > 0 ? (
+              <AvatarGroup
+                items={participants.slice(0, 3).map((participant, idx) => {
+                  // Use participantAvatars if available, otherwise fallback to initials
+                  const avatarUrl = participantAvatars[idx]
+                  return avatarUrl
+                    ? {
+                        id: `participant-${idx}`,
+                        type: "image" as const,
+                        src: avatarUrl,
+                        alt: participant,
+                      }
+                    : {
+                        id: `participant-${idx}`,
+                        type: "initial" as const,
+                        label: participant.charAt(0).toUpperCase(),
+                        bgColor: `hsl(${(idx * 137.5) % 360}, 70%, 50%)`,
+                        textColor: "#fff",
+                      }
+                })}
+                size={40}
+                overlapDirection="left"
+              />
+            ) : (
+              leading
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Heading className="w-fit text-dark-base-100 text-base">
+              {name}
+            </Heading>
+            {isGroup && (
+              <span className="text-xs text-gray-250">
+                {participants.length} members
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex justify-between w-full mt-2">
           <Text className="truncate text-md text-gray-250 w-full">

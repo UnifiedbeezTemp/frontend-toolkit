@@ -11,6 +11,8 @@ import MoreHorizontalIcon from "../../../assets/icons/MoreHorizontalIcon"
 import { useToggle } from "../../../hooks/useToggle"
 import { TagPill } from "../components/TagPill"
 import Attributes from "../components/attributes/Attributes"
+import ImageComponent from "../../ui/ImageComponent"
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
 
 export function ConversationHeader({
   platformIcon,
@@ -20,6 +22,7 @@ export function ConversationHeader({
   showChevron = true,
   actions,
   className,
+  onBack,
 }: {
   platformIcon: ReactNode
   title: string
@@ -28,7 +31,9 @@ export function ConversationHeader({
   showChevron?: boolean
   actions?: ConversationHeaderAction[]
   className?: string
+  onBack?: () => void
 }) {
+  const { arrowLeft } = useSupabaseIcons()
   const tagNode =
     typeof tag === "string" ? (
       <TagPill className="text-gray-700" label={tag} />
@@ -53,6 +58,22 @@ export function ConversationHeader({
     <header className={cn("w-full p-4 md:py-3 lg:py-4", className)}>
       <div className="flex items-center justify-between gap-6">
         <div className="flex min-w-0 items-center gap-4">
+          {onBack && (
+            <IconButton
+              onClick={onBack}
+              variant="secondary"
+              className="md:hidden shrink-0"
+              icon={
+                <ImageComponent
+                  src={arrowLeft}
+                  alt="Back"
+                  width={20}
+                  height={20}
+                />
+              }
+              ariaLabel="Back to inbox"
+            />
+          )}
           <div className="shrink-0">{platformIcon}</div>
 
           <div className="min-w-0">
