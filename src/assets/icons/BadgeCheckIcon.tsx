@@ -1,0 +1,26 @@
+import { IconProps } from "./types"
+
+export default function BadgeCheckIcon({
+  size = 24,
+  color = "currentColor",
+  className,
+  ...props
+}: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      {...props}
+    >
+      <path
+        d="M6 23V14.775L2.75 9.5L7.375 2H16.625L21.25 9.5L18 14.775V23L12 21L6 23ZM8 20.225L12 18.9L16 20.225V17H8V20.225ZM8.5 4L5.1 9.5L8.5 15H15.5L18.9 9.5L15.5 4H8.5ZM10.95 13.575L7.4 10.05L8.825 8.625L10.95 10.75L15.175 6.5L16.6 7.9L10.95 13.575Z"
+        fill={color}
+      />
+    </svg>
+  )
+}
+
