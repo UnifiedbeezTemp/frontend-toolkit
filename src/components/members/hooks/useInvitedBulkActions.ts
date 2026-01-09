@@ -12,30 +12,60 @@ import {
 import { api } from "../../../api";
 import { ApiRole } from "../../../types/api/memberTypes";
 import { useToast } from "../../ui/toast/ToastProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
+interface BulkInvitationResponse {
+  message: string;
+  successful: Array<{
+    email: string;
+    role: string;
+    expiresAt: string;
+    userId: number;
+  }>;
+  failed: Array<{
+    email: string;
+    error: string;
+  }>;
+  summary: {
+    total: number;
+    successful: number;
+    failed: number;
+  };
+}
 
 interface UseInvitedBulkActionsParams {
   roles: ApiRole[];
   enable: boolean;
 }
 
-export function useInvitedBulkActions({ roles, enable }: UseInvitedBulkActionsParams) {
+export function useInvitedBulkActions({
+  roles,
+  enable,
+}: UseInvitedBulkActionsParams) {
   const dispatch = useAppDispatch();
   const { showToast } = useToast();
+  const queryClient = useQueryClient();
   const invited = useAppSelector(selectFilteredInvitedUsers);
   const selectedInvited = useAppSelector(selectSelectedInvitedUsers);
   const [isSending, setIsSending] = useState(false);
+  const [failedInvitations, setFailedInvitations] = useState<
+    Array<{ email: string; error: string }>
+  >([]);
 
   const defaultRole = roles.find((r) => r.isDefault) ?? roles[0];
 
   const selectAll = useCallback(() => {
     if (!enable) return;
-    dispatch(setInvitedSelection({ ids: invited.map((u) => u.id), selected: true }));
+    dispatch(
+      setInvitedSelection({ ids: invited.map((u) => u.id), selected: true })
+    );
   }, [dispatch, invited, enable]);
 
   const clearSelection = useCallback(() => {
     if (!enable) return;
-    dispatch(setInvitedSelection({ ids: invited.map((u) => u.id), selected: false }));
+    dispatch(
+      setInvitedSelection({ ids: invited.map((u) => u.id), selected: false })
+    );
   }, [dispatch, invited, enable]);
 
   const assignRole = useCallback(
@@ -59,17 +89,46 @@ export function useInvitedBulkActions({ roles, enable }: UseInvitedBulkActionsPa
     if (!enable || selectedInvited.length === 0 || isSending) return;
     try {
       setIsSending(true);
+      setFailedInvitations([]);
+
       const invitations = selectedInvited.map((inv) => {
         const roleId = inv.roleId ?? defaultRole?.id ?? roles[0]?.id ?? 0;
         return { email: inv.email, roleId };
       });
-      await api.post("/invitations/bulk", { invitations });
-      dispatch(markInvitationsPendingBulk({ ids: selectedInvited.map((u) => u.id) }));
-      showToast({
-        title: "Invitations sent",
-        description: `${selectedInvited.length} invite(s) moved to pending.`,
-        variant: "success",
-      });
+
+      const response = await api.post<
+        { invitations: Array<{ email: string; roleId: number }> },
+        BulkInvitationResponse
+      >("/invitations/bulk", { invitations });
+
+      if (response.failed && response.failed.length > 0) {
+        setFailedInvitations(response.failed);
+      }
+
+      const successfulEmails = response.successful.map((s) => s.email);
+      const successfulInvitationIds = selectedInvited
+        .filter((inv) => successfulEmails.includes(inv.email))
+        .map((inv) => inv.id);
+
+      if (successfulInvitationIds.length > 0) {
+        dispatch(markInvitationsPendingBulk({ ids: successfulInvitationIds }));
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ["invitations"] });
+
+      if (response.summary.failed > 0) {
+        showToast({
+          title: response.message,
+          description: `${response.summary.successful} sent, ${response.summary.failed} failed`,
+          variant: "warning",
+        });
+      } else {
+        showToast({
+          title: "Invitations sent",
+          description: `${response.summary.successful} invite(s) moved to pending.`,
+          variant: "success",
+        });
+      }
     } catch (error) {
       const message =
         typeof error === "object" &&
@@ -79,19 +138,17 @@ export function useInvitedBulkActions({ roles, enable }: UseInvitedBulkActionsPa
           ? (error as { message: string }).message
           : "Failed to send bulk invitations";
       let errorDescription: string = message;
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "message" in error
-      ) {
+      if (typeof error === "object" && error !== null && "message" in error) {
         const errWithMessage = error as { message?: unknown };
         if (
           typeof errWithMessage.message === "object" &&
           errWithMessage.message !== null &&
           "message" in errWithMessage.message &&
-          typeof (errWithMessage.message as { message?: unknown }).message === "string"
+          typeof (errWithMessage.message as { message?: unknown }).message ===
+            "string"
         ) {
-          errorDescription = (errWithMessage.message as { message: string }).message;
+          errorDescription = (errWithMessage.message as { message: string })
+            .message;
         } else if (typeof errWithMessage.message === "string") {
           errorDescription = errWithMessage.message;
         }
@@ -104,7 +161,16 @@ export function useInvitedBulkActions({ roles, enable }: UseInvitedBulkActionsPa
     } finally {
       setIsSending(false);
     }
-  }, [selectedInvited, defaultRole, dispatch, showToast, enable, isSending]);
+  }, [
+    selectedInvited,
+    defaultRole,
+    dispatch,
+    showToast,
+    queryClient,
+    enable,
+    isSending,
+    roles,
+  ]);
 
   return {
     invited,
@@ -115,6 +181,6 @@ export function useInvitedBulkActions({ roles, enable }: UseInvitedBulkActionsPa
     bulkSend,
     defaultRoleId: defaultRole?.id ?? 0,
     isSending,
+    failedInvitations,
   };
 }
-

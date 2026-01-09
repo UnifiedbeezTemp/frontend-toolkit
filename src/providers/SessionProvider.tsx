@@ -1,17 +1,29 @@
+"use client";
 import { PropsWithChildren } from "react";
 import PreLoader from "../components/ui/PreLoader";
 import useSession from "./hooks/useSession";
-import { ToastProvider } from "../components/ui/toast/ToastProvider";
 import { UserContext } from "../contexts/UserContext";
 import ErrorDisplay from "../components/error-display/ErrorDisplay";
-import { error } from "console";
+import SessionExpiredModal from "../components/session/SessionExpiredModal";
 
 export default function SessionProvider({ children }: PropsWithChildren) {
-  const { isPending, isError, data, authStatus, refetch, error } = useSession();
+  const {
+    isPending,
+    isError,
+    data,
+    authStatus,
+    refetch,
+    error,
+    showSessionExpired,
+  } = useSession();
 
-  if (isPending || authStatus === "unauthenticated") return <PreLoader />;
+  if (isPending) return <PreLoader />;
 
-  if (isError)
+  if (showSessionExpired) {
+    return <SessionExpiredModal isOpen={true} />;
+  }
+
+  if (isError && error?.status !== 401) {
     return (
       <div className="w-screen h-screen flex items-center justify-center">
         <ErrorDisplay
@@ -22,6 +34,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
         />
       </div>
     );
+  }
 
   return (
     <UserContext.Provider

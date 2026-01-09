@@ -4,6 +4,8 @@ import {
   PhoneVerificationResponse,
   PhotoUploadResponse,
   ProfileSetupResponse,
+  UpdateOnboardingMethodPayload,
+  UpdateOnboardingMethodResponse,
 } from ".";
 
 export const accountSetupService = {
@@ -29,5 +31,11 @@ export const accountSetupService = {
     return await api.post("/auth/setup/plan", {
       planType: planType.toUpperCase(),
     });
+  },
+
+  async updateOnboardingMethod(
+    data: UpdateOnboardingMethodPayload
+  ): Promise<UpdateOnboardingMethodResponse> {
+    return await api.patch("/auth/onboarding/method", data);
   },
 };

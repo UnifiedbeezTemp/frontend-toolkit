@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
 import {
   addInvitedUser,
@@ -13,6 +13,9 @@ import { useSendTeamInvitation } from "./useSendTeamInvitation";
 export const useTeamManagement = () => {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState<"invited" | "members">("invited");
+  const [failedInvitations, setFailedInvitations] = useState<
+    Array<{ email: string; error: string }>
+  >([]);
 
   const dispatch = useAppDispatch();
   const { emailInput, selectedRole, roles } = useAppSelector(
@@ -83,6 +86,22 @@ export const useTeamManagement = () => {
     setActiveTab(tab);
   };
 
+  const handleFailedInvitationsChange = useCallback(
+    (failures: Array<{ email: string; error: string }>) => {
+      setFailedInvitations(failures);
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (failedInvitations.length > 0) {
+      const timer = setTimeout(() => {
+        setFailedInvitations([]);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [failedInvitations]);
+
   return {
     error,
     activeTab,
@@ -101,5 +120,7 @@ export const useTeamManagement = () => {
     refetchRoles,
     handleSendInvitation,
     isSendingInvite,
+    failedInvitations,
+    handleFailedInvitationsChange,
   };
 };

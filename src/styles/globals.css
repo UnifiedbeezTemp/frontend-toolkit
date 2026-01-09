@@ -278,6 +278,30 @@
   --gray-15: #e4e4e4;
 }
 
+.dark {
+  --background: var(--black-100);
+  --primary: var(--black-100);
+  --secondary: #ffffff;
+  --text-primary: var(--black-20);
+  --text-secondary: #ffffff;
+
+  --background-gradient: linear-gradient(
+    to bottom right,
+    var(--black-100) 18.59%,
+    #1a1d1e 143.2%
+  );
+
+  --border: rgba(255, 255, 255, 0.1);
+  --input-filled: var(--black-90);
+  --toggle-filled: var(--black-95);
+  --input-stroke: var(--black-80);
+
+  --soft-green: #0a1f18;
+  --mid-green: #0d2b21;
+  --light-green: #0a1c15;
+  --inactive-color: var(--black-70);
+}
+
 html {
   font-size: 62.5%;
 }

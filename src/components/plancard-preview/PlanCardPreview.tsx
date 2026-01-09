@@ -16,7 +16,7 @@ import { Addon } from "../../store/onboarding/types/addonTypes";
 
 import { usePlanCardPreview } from "./hooks/usePlanCardPreview";
 import { PlanCardPreviewProps } from "./types";
-import PlanSelectionRequiredModal from "../modal/PlanSelectionRequiredModal";
+import PlanSelectionRequiredModal from "../plan-selection/modals/PlanSelectionRequiredModal";
 import PlanPreviewModal from "./components/PlanPreviewModal";
 import PlanPreviewAddons from "./components/PlanPreviewAddons";
 import PlanPreviewPricing from "./components/PlanPreviewPricing";
@@ -115,7 +115,7 @@ export default function PlanCardPreview({
     <>
       <div
         className={cn(
-          "border border-border p-[1rem] rounded-[1rem] mt-[2.3rem] layout-body shadow flex flex-col gap-[3.1rem]",
+          "border border-input-stroke p-[1rem] rounded-[1rem] mt-[2.3rem] layout-body shadow flex flex-col gap-[3.1rem]",
           isOneSided
             ? " sm:flex-col lg:flex-row lg:justify-between"
             : " sm:flex-row"

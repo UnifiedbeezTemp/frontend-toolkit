@@ -12,7 +12,7 @@ export interface UserProfile {
   phone: string;
   plan: string;
   businessName: string;
-  completedOnboardingSteps: number[];
+  completedOnboardingSteps: { step: number; status: string }[];
   planFeatures: { maxAiAssistants: number; maxSeats?: number };
   industry: string;
   businessObjectives?: BusinessObjective[];

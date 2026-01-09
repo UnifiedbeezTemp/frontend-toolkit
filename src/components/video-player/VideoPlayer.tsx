@@ -167,7 +167,9 @@ export default function VideoPlayer({
       )}
       style={containerStyle}
       onMouseMove={showControls}
-      onMouseLeave={() => state.isPlaying && setTimeout(() => {}, hideControlsDelay * 1000)}
+      onMouseLeave={() =>
+        state.isPlaying && setTimeout(() => {}, hideControlsDelay * 1000)
+      }
       tabIndex={0}
       role="region"
       aria-label={title || "Video player"}
@@ -186,7 +188,7 @@ export default function VideoPlayer({
           ROUNDED_CLASSES[rounded],
           state.isFullscreen && "rounded-none!"
         )}
-        {...handlers as unknown as HTMLAttributes<HTMLVideoElement>}
+        {...(handlers as unknown as HTMLAttributes<HTMLVideoElement>)}
       >
         {tracks.map((track, index) => (
           <track
@@ -210,7 +212,7 @@ export default function VideoPlayer({
             exit={{ opacity: 0 }}
           >
             <svg
-              className="w-[4rem] h-[4rem] text-red-500 mb-[1rem]"
+              className="w-[4rem] h-[4rem] text-destructive mb-[1rem]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -221,7 +223,8 @@ export default function VideoPlayer({
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <p className="text-white text-[1.4rem] text-center px-[2rem]">
-              {state.errorMessage || "An error occurred while playing the video."}
+              {state.errorMessage ||
+                "An error occurred while playing the video."}
             </p>
           </motion.div>
         )}
@@ -306,4 +309,3 @@ export default function VideoPlayer({
     </div>
   );
 }
-

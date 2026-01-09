@@ -135,4 +135,21 @@ export interface SocialAuthPayload {
   code_verifier?: string;
 }
 
-export interface SocialAuthResponse<T = unknown> extends AuthResponse<T> {}
+export interface UpdateOnboardingMethodPayload {
+  method: "copilot" | "manual";
+}
+
+export interface UpdateOnboardingMethodResponse {
+  message: string;
+  user: UserProfile;
+}
+
+export interface ChangePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ChangePasswordResponseData {
+  message: string;
+}

@@ -13,39 +13,50 @@ import { getNextStepAfterHighest } from "./completedOnboardingSteps";
 export function getAllowedStep(
   requestedStepId: number,
   requestedSubStepId: string | number | null,
-  completedSteps: number[]
+  completedSteps: { step: number; status: string }[]
 ): { stepId: number; subStepId: string | number } {
   const nextAllowedStep = getNextStepAfterHighest(completedSteps);
-  
+
   // If requested step is beyond what's allowed (user hasn't completed previous steps), redirect to the allowed step
   if (requestedStepId > nextAllowedStep) {
-    const allowedStepData = initialStepsData.find(s => s.id === nextAllowedStep);
+    const allowedStepData = initialStepsData.find(
+      (s) => s.id === nextAllowedStep
+    );
     if (allowedStepData && allowedStepData.subSteps.length > 0) {
-      return { stepId: nextAllowedStep, subStepId: allowedStepData.subSteps[0].id };
+      return {
+        stepId: nextAllowedStep,
+        subStepId: allowedStepData.subSteps[0].id,
+      };
     }
     return { stepId: 1, subStepId: 1 };
   }
-  
+
   // If step is valid, validate the substep
-  const stepData = initialStepsData.find(s => s.id === requestedStepId);
+  const stepData = initialStepsData.find((s) => s.id === requestedStepId);
   if (!stepData) {
-    const allowedStepData = initialStepsData.find(s => s.id === nextAllowedStep);
+    const allowedStepData = initialStepsData.find(
+      (s) => s.id === nextAllowedStep
+    );
     if (allowedStepData && allowedStepData.subSteps.length > 0) {
-      return { stepId: nextAllowedStep, subStepId: allowedStepData.subSteps[0].id };
+      return {
+        stepId: nextAllowedStep,
+        subStepId: allowedStepData.subSteps[0].id,
+      };
     }
     return { stepId: 1, subStepId: 1 };
   }
-  
+
   // If substep is provided, validate it exists
   if (requestedSubStepId !== null && requestedSubStepId !== undefined) {
-    const subStepExists = stepData.subSteps.some(sub => sub.id === requestedSubStepId);
+    const subStepExists = stepData.subSteps.some(
+      (sub) => sub.id === requestedSubStepId
+    );
     if (!subStepExists) {
       return { stepId: requestedStepId, subStepId: stepData.subSteps[0].id };
     }
     return { stepId: requestedStepId, subStepId: requestedSubStepId };
   }
-  
+
   // Default to first substep
   return { stepId: requestedStepId, subStepId: stepData.subSteps[0]?.id || 1 };
 }
-
