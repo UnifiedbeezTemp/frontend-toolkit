@@ -11,6 +11,7 @@ interface InviteSectionProps {
   error: string;
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onAddInvite: () => void;
+  failedInvitations?: Array<{ email: string; error: string }>;
 }
 
 export const InviteSection = ({
@@ -18,6 +19,7 @@ export const InviteSection = ({
   error,
   onEmailChange,
   onAddInvite,
+  failedInvitations = [],
 }: InviteSectionProps) => {
   const { data } = useSession();
   const totalMembers = useAppSelector(selectTotalMembers);
@@ -47,6 +49,16 @@ export const InviteSection = ({
       </div>
 
       {error && <p className="text-destructive text-[14px] mt-2">{error}</p>}
+
+      {failedInvitations.length > 0 && (
+        <div className="mt-2 space-y-1">
+          {failedInvitations.map((failed, index) => (
+            <p key={index} className="text-destructive text-[14px]">
+              <span className="font-bold">{failed.email}:</span> {failed.error}
+            </p>
+          ))}
+        </div>
+      )}
 
       <div className="flex flex-col lg:flex-row items-start lg:items-center gap-[0.3rem] mt-[0.4rem] sm:mt-[2.4rem] lg:mt-[0.8rem] leading-[2.07rem]">
         <Text size="sm" className="font-[700] inline">

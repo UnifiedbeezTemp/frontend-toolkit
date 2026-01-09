@@ -250,7 +250,7 @@ export default function ImageUploadSection({
           </Text>
 
           {fileError && (
-            <Text className="mt-2 text-red-500" size="sm">
+            <Text className="mt-2 text-destructive" size="sm">
               {fileError}
             </Text>
           )}

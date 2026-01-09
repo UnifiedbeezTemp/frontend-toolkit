@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useAppSelector } from "../../store/hooks/useRedux";
 import {
   selectFilteredInvitedUsers,
@@ -23,6 +24,9 @@ interface InvitedUsersSectionProps {
   onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
   isSendingInvite?: (invitationId: string) => boolean;
   roles?: ApiRole[];
+  onFailedInvitationsChange?: (
+    failures: Array<{ email: string; error: string }>
+  ) => void;
 }
 
 export default function InvitedUsersSection({
@@ -32,11 +36,14 @@ export default function InvitedUsersSection({
   onSendInvite,
   isSendingInvite,
   roles = [],
+  onFailedInvitationsChange,
 }: InvitedUsersSectionProps) {
   const invitedUsers = useAppSelector(selectFilteredInvitedUsers);
   const totalInvitedUsers = useAppSelector(selectTotalInvitedUsers);
   const selectedCount = useAppSelector(selectSelectedInvitedCount);
-  const hasFilter = useAppSelector((state) => state.members.statusFilterInvited !== null);
+  const hasFilter = useAppSelector(
+    (state) => state.members.statusFilterInvited !== null
+  );
   const isDraftFilter = useAppSelector(
     (state) => state.members.statusFilterInvited === "draft"
   );
@@ -46,13 +53,18 @@ export default function InvitedUsersSection({
     assignRole,
     bulkSend,
     isSending,
+    failedInvitations,
   } = useInvitedBulkActions({ roles, enable: isDraftFilter });
+
+  useEffect(() => {
+    if (onFailedInvitationsChange) {
+      onFailedInvitationsChange(failedInvitations);
+    }
+  }, [failedInvitations, onFailedInvitationsChange]);
 
   return (
     <div className="border-border pb-[2.4rem] border-b">
-      <Heading>
-        Invited users
-      </Heading>
+      <Heading>Invited users</Heading>
 
       <SearchAndFilter section="invited" />
 
@@ -73,7 +85,11 @@ export default function InvitedUsersSection({
         ) : error ? (
           <ErrorState
             type="invitations"
-            message={error instanceof Error ? error.message : "Failed to load invitations"}
+            message={
+              error instanceof Error
+                ? error.message
+                : "Failed to load invitations"
+            }
             onRetry={onRetry || (() => {})}
           />
         ) : invitedUsers.length === 0 ? (
