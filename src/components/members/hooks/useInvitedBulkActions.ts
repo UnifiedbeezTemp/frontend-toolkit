@@ -8,6 +8,7 @@ import {
   markInvitationsPendingBulk,
   selectFilteredInvitedUsers,
   selectSelectedInvitedUsers,
+  setStatusFilterInvited,
 } from "../../../store/onboarding/slices/membersSlice";
 import { api } from "../../../api";
 import { ApiRole } from "../../../types/api/memberTypes";
@@ -122,7 +123,11 @@ export function useInvitedBulkActions({
           description: `${response.summary.successful} sent, ${response.summary.failed} failed`,
           variant: "warning",
         });
+        dispatch(setStatusFilterInvited(null));
+
       } else {
+        dispatch(setStatusFilterInvited(null));
+
         showToast({
           title: "Invitations sent",
           description: `${response.summary.successful} invite(s) moved to pending.`,

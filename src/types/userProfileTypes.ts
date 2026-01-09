@@ -35,6 +35,7 @@ export interface UserProfile {
     trialStarted: string;
     setupRequired: boolean;
   };
+  twoFactorEnabled?: boolean;
 }
 
 export const createEmptyUser = (): UserProfile => {
@@ -51,5 +52,6 @@ export const createEmptyUser = (): UserProfile => {
     completedOnboardingSteps: [],
     planFeatures: { maxAiAssistants: 0, maxSeats: 0 },
     industry: "",
+    twoFactorEnabled: false,
   };
 };

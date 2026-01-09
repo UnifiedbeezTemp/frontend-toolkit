@@ -30,13 +30,3 @@ export function isUndefined(val: unknown): val is undefined {
 export function isNull(val: unknown): val is null {
   return val === null;
 }
-
-export function isValidUrl(value: string) {
-  try {
-    new URL(value);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
