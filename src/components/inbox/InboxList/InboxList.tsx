@@ -44,12 +44,10 @@ export default function InboxList({
 
   const handleInboxTypeChange = (type: InboxType) => {
     onInboxTypeChange(type)
-    // Navigate back to inbox page when switching inbox types
     router.push("/inbox")
   }
 
   const handleConversationClick = (conversationId: string) => {
-    // Navigate to conversation page
     router.push(`/inbox/${conversationId}`)
   }
 

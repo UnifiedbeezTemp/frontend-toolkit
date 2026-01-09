@@ -45,7 +45,6 @@ export function TeamInboxConversationItem({
             {isGroup && participants.length > 0 ? (
               <AvatarGroup
                 items={participants.slice(0, 3).map((participant, idx) => {
-                  // Use participantAvatars if available, otherwise fallback to initials
                   const avatarUrl = participantAvatars[idx]
                   return avatarUrl
                     ? {

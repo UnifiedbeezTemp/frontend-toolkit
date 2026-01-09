@@ -17,7 +17,6 @@ export function GroupIncomingBubble({
   className?: string
   maxWidthClass?: string
 }) {
-  // If avatar is a color class (starts with "bg-"), use it as background
   const isColorClass = avatar?.startsWith("bg-")
   const avatarSrc = isColorClass ? undefined : avatar
 
