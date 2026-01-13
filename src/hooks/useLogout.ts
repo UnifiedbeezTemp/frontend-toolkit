@@ -19,7 +19,6 @@ export const useLogout = () => {
         router.refresh();
       },
       onError: (error) => {
-        console.error("Logout failed:", error);
         showToast({
           title: "Failed to logout. Please try again.",
           variant: "error",

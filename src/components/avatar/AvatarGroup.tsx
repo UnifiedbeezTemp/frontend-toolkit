@@ -1,15 +1,23 @@
-import Image from "next/image"
 import { AvatarGroupProps } from "./types"
 import { isFunction } from "../../utils/is"
+import SafeExternalImage from "../ui/SafeExternalImage"
 
 export function AvatarGroup({
   items,
   size = 31,
   overlap = 10,
   onItemClick,
+  overlapDirection = "right",
 }: AvatarGroupProps) {
   return (
-    <div className="flex items-center" style={{ paddingLeft: overlap }}>
+    <div
+      className="flex items-center"
+      style={
+        overlapDirection === "right"
+          ? { paddingLeft: overlap }
+          : { paddingRight: overlap }
+      }
+    >
       {items.map((item, index) => (
         <div
           key={item.id}
@@ -18,15 +26,21 @@ export function AvatarGroup({
           style={{
             width: size,
             height: size,
-            marginLeft: index === 0 ? 0 : -overlap,
-            zIndex: items.length - index,
+            ...(overlapDirection === "right"
+              ? {
+                  marginLeft: index === 0 ? 0 : -overlap,
+                  zIndex: items.length - index,
+                }
+              : {
+                  marginRight: index === items.length - 1 ? 0 : -overlap,
+                }),
             background: item.type === "initial" ? item.bgColor : undefined,
             color:
               item.type === "initial" ? item.textColor ?? "#fff" : undefined,
           }}
         >
           {item.type === "image" ? (
-            <Image
+            <SafeExternalImage
               src={item.src}
               alt={item.alt}
               width={size}

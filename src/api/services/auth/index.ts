@@ -10,7 +10,6 @@ import { accountSetupService } from "./accountSetupService";
 import { phoneVerificationService } from "./phoneVerificationService";
 import { trialService } from "./trialService";
 import { socialAuthService } from "./socialAuthService";
-
 import { twoFactorService } from "./twoFactorService";
 
 export const authService = {
@@ -34,4 +33,9 @@ export const authService = {
   updateOnboardingMethod: accountSetupService.updateOnboardingMethod,
   verifyTwoFactor: twoFactorService.verify,
   request2FAEmailCode: twoFactorService.requestEmailBackupCode,
+  setup2FA: twoFactorService.setup2FA,
+  disable2FA: twoFactorService.disable2FA,
+  verify2FASetup: twoFactorService.verify2FASetup,
+  getTwoFactorStatus: twoFactorService.getTwoFactorStatus,
+  regenerateBackupCodes: twoFactorService.regenerateBackupCodes,
 };

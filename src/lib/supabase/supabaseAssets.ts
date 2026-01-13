@@ -216,6 +216,7 @@ export const SUPABASE_ICONS = {
   ecommerceApparel: "icons/streamline-ultimate_e-commerce-apparel.svg",
   xCancelRed: "icons/x.svg",
   plus: "icons/plus.svg",
+  plusWhite: "icons/ic_baseline-plus.svg",
   minus: "icons/minus.svg",
   plusRed: "icons/plus-error.svg",
   minusRed: "icons/minus-error.svg",

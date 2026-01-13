@@ -166,3 +166,44 @@ export interface UpdateOnboardingMethodResponse {
   message: string;
   user: UserProfile;
 }
+
+export interface ChangePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ChangePasswordResponseData {
+  message: string;
+}
+
+export interface TwoFactorSetupResponse {
+  qrCodeUrl: string;
+  secret: string;
+  backupCodes: string[];
+}
+
+export interface DisableTwoFactorPayload {
+  password: string;
+}
+
+export interface Verify2FASetupPayload {
+  token: string;
+  backupCodes: string[];
+}
+
+export interface Verify2FASetupResponse {
+  message: string;
+  backupCodes: string[];
+}
+
+export interface TwoFactorStatusResponse {
+  enabled: boolean;
+  setupAt: string;
+  lastUsed: string;
+  backupCodesRemaining: number;
+}
+
+export interface RegenerateBackupCodesResponse {
+  backupCodes: string[];
+}
