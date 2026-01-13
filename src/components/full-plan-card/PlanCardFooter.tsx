@@ -22,16 +22,27 @@ export default function PlanCardFooter({
 }: PlanCardFooterProps) {
   return (
     <div className="mt-auto pt-[2rem]">
-      <Button
-        className={cn(
-          "w-full mb-[1.8rem] border",
-          isCompact && "text-[1.2rem] py-[1rem]"
-        )}
-        variant={isSelected ? "primary" : "secondary"}
-        onClick={() => onSelect(plan.id)}
-      >
-        {ctaText || plan.ctaText}
-      </Button>
+      {plan.id?.toLowerCase() === "organisation" ? (
+        <div
+          className={cn(
+            "w-full mb-[1.8rem] px-[1.6rem] py-[1.2rem] bg-brand-primary text-white text-center rounded-[0.8rem] font-[700] border border-brand-primary",
+            isCompact && "text-[1.2rem] py-[1rem]"
+          )}
+        >
+          {ctaText || plan.ctaText || "Talk to Sales"}
+        </div>
+      ) : (
+        <Button
+          className={cn(
+            "w-full mb-[1.8rem] border",
+            isCompact && "text-[1.2rem] py-[1rem]"
+          )}
+          variant={isSelected ? "primary" : "secondary"}
+          onClick={() => onSelect(plan.id)}
+        >
+          {ctaText || plan.ctaText}
+        </Button>
+      )}
 
       {onClose && (
         <Button

@@ -147,6 +147,7 @@ export const SUPABASE_ICONS = {
 
   smArrowDown: "icons/smArrowDown.svg",
   trash: "icons/trash.svg",
+  trash3: "icons/trash-03.svg",
   trashRed: "icons/trash-01.svg",
   igIcon: "icons/logo_instagram.svg",
   fbIcon: "icons/logos_facebook.svg",

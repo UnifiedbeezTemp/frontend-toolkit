@@ -3,13 +3,19 @@ import { Addon } from "../../../store/onboarding/types/addonTypes";
 import Heading from "../../ui/Heading";
 import Text from "../../ui/Text";
 
+import CloseModalButton from "../../modal/CloseModalButton";
+
 interface ModalHeaderProps {
   addon: Addon | null;
+  onClose: () => void;
 }
 
-export const ModalHeader: React.FC<ModalHeaderProps> = ({ addon }) => {
+export const ModalHeader: React.FC<ModalHeaderProps> = ({ addon, onClose }) => {
   return (
     <>
+      <div className="flex justify-end w-full mb-[1rem]">
+        <CloseModalButton onClick={onClose} />
+      </div>
       <div className="hidden md:flex items-center gap-[1.4rem] lg:hidden">
         <div className="border border-border rounded-[1rem] p-[0.9rem] w-fit">
           <ImageComponent

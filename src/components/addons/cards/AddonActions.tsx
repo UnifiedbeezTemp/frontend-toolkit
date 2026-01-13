@@ -1,7 +1,8 @@
-import Button from "@/shared/src/components/ui/Button";
+import Button from "../../ui/Button";
 import ImageComponent from "next/image";
-import { useSupabaseIcons } from "@/shared/src/lib/supabase/useSupabase";
-import { Addon } from "@/shared/src/store/onboarding/types/addonTypes";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import { Addon } from "../../../store/onboarding/types/addonTypes";
+import Loader from "../../ui/Loader";
 
 interface AddonActionsProps {
   addon: Addon;
@@ -24,9 +25,9 @@ export const AddonActions: React.FC<AddonActionsProps> = ({
 
   if (variant === "add") {
     return (
-      <Button className="text-[1.4rem] mt-[2.4rem]" onClick={onAdd}>
+      <Button className="text-[1.4rem] mt-[2.4rem] font-bold" onClick={onAdd}>
         <span className="sm:hidden">Add +</span>
-        <span className="sm:block hidden">Add {addon.name}</span>
+        <span className="sm:block hidden">Add {addon.name} +</span>
       </Button>
     );
   }
@@ -35,68 +36,36 @@ export const AddonActions: React.FC<AddonActionsProps> = ({
 
   return (
     <div className="mt-[2.4rem]">
-      {!canIncrease && (
+      {!canIncrease && addon.limit !== 9999 && (
         <div className="border border-border text-[1.4rem] text-text-primary px-[0.61rem] py-[0.31rem] font-[700] bg-input-filled rounded-[0.4rem] inline-block mb-2">
           Upgrade plan for extra {addon.name}
         </div>
       )}
 
-      <div className="flex items-center justify-between mt-[1.2rem]">
+      <div className="flex items-center gap-[1rem] mt-[1.2rem]">
+        <Button
+          className="bg-brand-primary text-white text-[1.4rem] flex gap-[0.5rem] items-center px-[1.6rem] py-[0.8rem] font-[700] border-0"
+          onClick={onAdd}
+        >
+          Add {addon.name}
+        </Button>
+
         <Button
           variant="dangerReverse"
-          className="bg-input-filled text-[1.4rem] flex gap-[1rem] items-center"
+          className="bg-input-filled text-[1.4rem] flex gap-[1rem] items-center px-[1.6rem] py-[0.8rem]"
           onClick={onRemove}
           disabled={isRemoving}
         >
-          {isRemoving ? (
-            <>
-              Removing...
-              <div className="w-[1.5rem] h-[1.5rem] border-2 border-brand-red border-t-white rounded-full animate-spin" />
-            </>
-          ) : (
-            <>
-              Remove
-              <ImageComponent
-                src={icons.xCancelRed}
-                alt="Remove"
-                width={20}
-                height={20}
-              />
-            </>
+          {isRemoving ? <Loader/> : "Remove Add-on"}
+          {!isRemoving && (
+            <ImageComponent
+              src={icons.xCancelRed}
+              alt="Remove"
+              width={16}
+              height={16}
+            />
           )}
         </Button>
-
-        <div className="flex items-center gap-[1rem]">
-          <Button
-            variant="secondary"
-            className="text-[1.8rem] font-[700] p-[1.1rem]"
-            onClick={() => onQuantityChange?.((addon.used || 1) - 1)}
-            disabled={(addon.used || 1) <= 1}
-          >
-            <ImageComponent
-              src={icons.minus}
-              alt="Decrease"
-              width={20}
-              height={20}
-            />
-          </Button>
-          <span className="text-[2rem] font-[700] text-text-secondary">
-            {addon.used}
-          </span>
-          <Button
-            variant="secondary"
-            className="text-[1.8rem] font-[700] p-[1.1rem]"
-            onClick={() => onQuantityChange?.((addon.used || 1) + 1)}
-            disabled={!canIncrease}
-          >
-            <ImageComponent
-              src={icons.plus}
-              alt="Increase"
-              width={20}
-              height={20}
-            />
-          </Button>
-        </div>
       </div>
     </div>
   );

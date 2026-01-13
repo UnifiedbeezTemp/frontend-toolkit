@@ -1,5 +1,5 @@
 import React from "react";
-import Tabs from "../../ui/Tabs";
+import PlanSelectionToggle from "./PlanSelectionToggle";
 
 interface PlanSelectionTabsProps {
   isYearly: boolean;
@@ -13,11 +13,10 @@ export default function PlanSelectionTabs({
   className = "",
 }: PlanSelectionTabsProps) {
   return (
-    <Tabs
-      tabs={["Monthly", "Yearly(Save15%)"]}
-      className={`w-fit border-[1px] ${className}`}
-      activeTab={isYearly ? "Yearly(Save15%)" : "Monthly"}
-      onTabChange={(tab) => onTabChange(tab === "Yearly(Save15%)")}
+    <PlanSelectionToggle
+      isYearly={isYearly}
+      onTabChange={onTabChange}
+      className={className}
     />
   );
 }

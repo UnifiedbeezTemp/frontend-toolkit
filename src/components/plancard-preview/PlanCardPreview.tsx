@@ -29,7 +29,10 @@ export default function PlanCardPreview({
   isOneSided = false,
 }: PlanCardPreviewProps) {
   const { plan: backendPlan, loading, error, retry } = usePlan({ planType });
-  const { plan, displayPrice } = useCheckoutPlan({ backendPlan, isYearly });
+  const { plan, displayPrice, monthlyPrice } = useCheckoutPlan({
+    backendPlan,
+    isYearly,
+  });
   const icons = useSupabaseIcons();
 
   const {
@@ -49,7 +52,8 @@ export default function PlanCardPreview({
   } = usePlanCardPreview({
     plan,
     selectedAddons,
-    displayPrice,
+    monthlyPrice,
+    isYearly,
   });
 
   if (loading) {
@@ -176,7 +180,6 @@ export default function PlanCardPreview({
 
         <PlanPreviewPricing
           totalPrice={totalPrice}
-          displayPrice={displayPrice}
           addonsTotal={addonsTotal}
           isYearly={isYearly}
           isOneSided={isOneSided}
@@ -194,6 +197,7 @@ export default function PlanCardPreview({
         onClose={() => setIsModalOpen(false)}
         plan={plan}
         isYearly={isYearly}
+        totalPrice={totalPrice}
         onAddonsClick={handleAddonsClick}
         onSelect={handleUpgradeClick}
       />

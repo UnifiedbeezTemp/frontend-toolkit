@@ -31,6 +31,8 @@ export const authService = {
   socialSignIn: socialAuthService.signIn,
   socialSignUp: socialAuthService.signUp,
   updateOnboardingMethod: accountSetupService.updateOnboardingMethod,
+  verifyTwoFactor: twoFactorService.verify,
+  request2FAEmailCode: twoFactorService.requestEmailBackupCode,
   setup2FA: twoFactorService.setup2FA,
   disable2FA: twoFactorService.disable2FA,
   verify2FASetup: twoFactorService.verify2FASetup,

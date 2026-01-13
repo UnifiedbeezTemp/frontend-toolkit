@@ -144,7 +144,7 @@ export default function Tabs({
 
   const containerVariants = {
     default:
-      "bg-toggle-filled border-[2px] border-input-stroke rounded-[0.8rem] p-[0.8rem]",
+      "bg-toggle-filled border-[1px] border-input-stroke rounded-[0.8rem] p-[0.8rem]",
     pills: "bg-transparent gap-2",
     underline: "border-b border-border",
   };
@@ -152,8 +152,8 @@ export default function Tabs({
   const getTabVariantClasses = (isActive: boolean) => {
     const variants = {
       default: isActive
-        ? "text-text-primary relative z-10"
-        : "bg-transparent text-muted hover:text-text-secondary",
+        ? "text-text-primary relative z-10 border border-input-stroke"
+        : "bg-transparent text-inactive-color hover:text-text-primary",
       pills: isActive
         ? "bg-brand-primary text-white"
         : "bg-primary text-text-primary border border-border hover:bg-brand-primary/10",

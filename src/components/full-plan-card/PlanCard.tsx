@@ -19,6 +19,7 @@ interface PlanCardProps {
   onClose?: () => void;
   isCompact?: boolean;
   onAddonsClick?: () => void;
+  overridePrice?: number;
 }
 
 export default function PlanCard({
@@ -31,16 +32,18 @@ export default function PlanCard({
   onClose,
   isCompact,
   onAddonsClick,
+  overridePrice,
 }: PlanCardProps) {
   const { showFeatures, displayPrice, toggleFeatures } = usePlanCard(
     plan,
-    isYearly
+    isYearly,
+    overridePrice
   );
 
   return (
     <Card
-      className={`p-[1.6rem] rounded-[1.1rem] w-full transition-all duration-300 sm:flex flex-col gap-[8rem] ${
-        isSelected ? "ring-1 ring-brand-primary" : ""
+      className={`p-[1.6rem] rounded-[1.1rem] w-full transition-all duration-300 sm:flex flex-col gap-[8rem] border ${
+        isSelected ? "border-brand-primary" : "border-inactive-color"
       } ${className}`}
     >
       <div>

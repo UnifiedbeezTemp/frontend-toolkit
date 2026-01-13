@@ -1,14 +1,29 @@
 import { api } from "../../index";
 import {
-  TwoFactorSetupResponse,
+  TwoFactorVerifyPayload,
+  TwoFactorVerifyResponse,
+  TwoFactorEmailRequestPayload,
   DisableTwoFactorPayload,
+  RegenerateBackupCodesResponse,
+  TwoFactorSetupResponse,
+  TwoFactorStatusResponse,
   Verify2FASetupPayload,
   Verify2FASetupResponse,
-  TwoFactorStatusResponse,
-  RegenerateBackupCodesResponse,
 } from "./types";
 
 export const twoFactorService = {
+  async verify(
+    payload: TwoFactorVerifyPayload
+  ): Promise<TwoFactorVerifyResponse> {
+    return await api.post("/auth/2fa/verify", payload);
+  },
+
+  async requestEmailBackupCode(
+    payload: TwoFactorEmailRequestPayload
+  ): Promise<{ message: string }> {
+    return await api.post("/auth/2fa/backup-email", payload);
+  },
+  
   async setup2FA(): Promise<TwoFactorSetupResponse> {
     return await api.post("/auth/2fa/setup");
   },

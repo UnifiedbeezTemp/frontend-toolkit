@@ -1,6 +1,6 @@
-import Button from "@/shared/src/components/ui/Button";
 import ImageComponent from "next/image";
-import { useSupabaseIcons } from "@/shared/src/lib/supabase/useSupabase";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import Button from "../../ui/Button";
 
 interface QuantitySelectorProps {
   currentQuantity: number;
@@ -38,7 +38,7 @@ export const QuantitySelector: React.FC<QuantitySelectorProps> = ({
       <div className="flex items-center gap-[2rem] md:gap-[3rem] justify-center w-full h-full">
         <Button
           variant={isLimitReached ? "dangerReverse" : "secondary"}
-          className="text-[1.8rem] font-[700] p-[0.9rem] sm:p-[1.2rem] md:p-[1.6rem] md:min-w-[5rem]"
+          className="text-[1.8rem] font-[700] p-[0.9rem] sm:p-[1.2rem] md:p-[1.6rem] md:min-w-[5rem] border-input-stroke"
           onClick={() => onQuantityChange(currentQuantity - 1)}
           disabled={currentQuantity <= 1}
         >
@@ -59,7 +59,7 @@ export const QuantitySelector: React.FC<QuantitySelectorProps> = ({
 
         <Button
           variant={isLimitReached ? "dangerReverse" : "secondary"}
-          className="text-[1.8rem] font-[700] p-[0.9rem] sm:p-[1.2rem] md:p-[1.6rem] md:min-w-[5rem]"
+          className="text-[1.8rem] font-[700] p-[0.9rem] sm:p-[1.2rem] md:p-[1.6rem] md:min-w-[5rem] border-input-stroke"
           onClick={() => onQuantityChange(currentQuantity + 1)}
           disabled={!canAddMore}
         >
