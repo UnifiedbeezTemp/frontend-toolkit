@@ -32,13 +32,27 @@ export const BaseAddonCard: React.FC<BaseAddonCardProps> = ({
 
   return (
     <Card className={`p-[2.4rem] rounded-[1.6rem] ${className}`}>
-      <AddonHeader addon={addon} isSelected={isSelected} showCheckbox={true} />
+      <AddonHeader
+        addon={addon}
+        isSelected={isSelected}
+        showCheckbox={variant === "add"}
+        onRemove={onRemove}
+        variant={variant}
+      />
 
       {showProgress && (
-        <ProgressBar
-          progressPercentage={progressPercentage}
-          className="mt-[1.6rem] border-none shadow-none"
-        />
+        <div className="mt-[1.6rem]">
+          {addon.limit !== 9999 ? (
+            <ProgressBar
+              progressPercentage={progressPercentage}
+              className="border-none shadow-none h-[0.7rem]"
+            />
+          ) : (
+            <div className="text-[1.4rem] font-bold text-brand-primary">
+              Unlimited
+            </div>
+          )}
+        </div>
       )}
 
       <AddonInfo addon={addon} />

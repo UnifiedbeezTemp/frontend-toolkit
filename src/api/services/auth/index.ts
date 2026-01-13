@@ -11,6 +11,8 @@ import { phoneVerificationService } from "./phoneVerificationService";
 import { trialService } from "./trialService";
 import { socialAuthService } from "./socialAuthService";
 
+import { twoFactorService } from "./twoFactorService";
+
 export const authService = {
   signup: signupService.signup,
   verifyEmail: emailVerificationService.verifyEmail,
@@ -30,4 +32,6 @@ export const authService = {
   socialSignIn: socialAuthService.signIn,
   socialSignUp: socialAuthService.signUp,
   updateOnboardingMethod: accountSetupService.updateOnboardingMethod,
+  verifyTwoFactor: twoFactorService.verify,
+  request2FAEmailCode: twoFactorService.requestEmailBackupCode,
 };

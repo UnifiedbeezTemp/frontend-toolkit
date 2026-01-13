@@ -38,6 +38,8 @@ export interface LoginResponseData {
   user: UserProfile | null;
   refreshToken?: string;
   message: string;
+  requiresTwoFactor?: boolean;
+  tempToken?: string;
 }
 
 export interface SignupResponseData {
@@ -120,11 +122,32 @@ export interface TrialResponseData {
 }
 
 export interface AuthResponseData {
-  session_id: string;
-  remember_me: boolean;
+  session_id?: string;
+  remember_me?: boolean;
   user: UserProfile;
   timestamp: string;
   verified: boolean;
+  requiresTwoFactor?: boolean;
+  tempToken?: string;
+}
+
+export interface TwoFactorVerifyPayload {
+  tempToken: string;
+  token: string;
+  type: "totp" | "email" | "backup";
+  remember_me: boolean;
+  deviceInfo: DeviceInfo;
+}
+
+export interface TwoFactorEmailRequestPayload {
+  tempToken: string;
+}
+
+export interface TwoFactorVerifyResponse {
+  session_id: string;
+  user: UserProfile;
+  verified: boolean;
+  message?: string;
 }
 
 export interface SocialAuthPayload {

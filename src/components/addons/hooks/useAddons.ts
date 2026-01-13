@@ -19,7 +19,7 @@ import {
   hydrateAddons,
 } from "../../../store/onboarding/slices/addonSlice";
 
-export const useAddons = () => {
+export const useAddons = (planType?: string) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const addonState = useSelector((state: RootState) => state.addons);
@@ -29,6 +29,10 @@ export const useAddons = () => {
   const [removingId, setRemovingId] = useState<string | null>(null);
 
   const { purchasedAddons, refetch: refetchPurchased } = usePurchasedAddons();
+
+  const storageKey = planType
+    ? `selected_addons_${planType.toUpperCase()}`
+    : "selected_addons";
 
   const cancelAddonMutation = useAppMutation(
     async ({
@@ -54,6 +58,7 @@ export const useAddons = () => {
           title: "Failed to remove add-on",
           description: errorMessage,
           variant: "error",
+          duration: 3000,
         });
       },
     }
@@ -64,7 +69,7 @@ export const useAddons = () => {
 
     let initialAddons: Addon[] = [];
 
-    const savedAddons = sessionStorage.getItem("selected_addons");
+    const savedAddons = sessionStorage.getItem(storageKey);
     if (savedAddons) {
       try {
         const parsed = JSON.parse(savedAddons);
@@ -87,17 +92,17 @@ export const useAddons = () => {
     if (initialAddons.length > 0) {
       dispatch(hydrateAddons(initialAddons));
     }
-  }, [dispatch, selectedAddons.length, purchasedAddons]);
+  }, [dispatch, selectedAddons.length, purchasedAddons, storageKey]);
 
   useEffect(() => {
     if (selectedAddons.length > 0) {
-      sessionStorage.setItem("selected_addons", JSON.stringify(selectedAddons));
+      sessionStorage.setItem(storageKey, JSON.stringify(selectedAddons));
     } else {
-      if (sessionStorage.getItem("selected_addons")) {
-        sessionStorage.removeItem("selected_addons");
+      if (sessionStorage.getItem(storageKey)) {
+        sessionStorage.removeItem(storageKey);
       }
     }
-  }, [selectedAddons]);
+  }, [selectedAddons, storageKey]);
 
   const handleOpenAddModal = useCallback(
     (addon: Addon) => {

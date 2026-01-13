@@ -5,17 +5,20 @@ import { useRouter } from "next/navigation";
 import { Plan } from "../../../api/services/plan/types";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
 import { usePurchasedAddons } from "./usePurchasedAddons";
+import { calculateTotalWithAddons } from "../../../utils/priceUtils";
 
 interface UsePlanCardPreviewProps {
   plan: Plan | null;
   selectedAddons?: Addon[];
-  displayPrice: number;
+  monthlyPrice: number;
+  isYearly?: boolean;
 }
 
 export const usePlanCardPreview = ({
   plan,
   selectedAddons,
-  displayPrice,
+  monthlyPrice,
+  isYearly = false,
 }: UsePlanCardPreviewProps) => {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -46,7 +49,12 @@ export const usePlanCardPreview = ({
 
   const handleAddonsClick = () => {
     if (plan) {
-      router.push("/addons");
+      const params = new URLSearchParams();
+      if (isYearly) {
+        params.set("isYearly", "true");
+      }
+      const queryString = params.toString();
+      router.push(`/addons${queryString ? `?${queryString}` : ""}`);
     } else {
       setIsAddonsModalOpen(true);
     }
@@ -72,7 +80,14 @@ export const usePlanCardPreview = ({
     }, 0);
   }, [addonsToUse]);
 
-  const totalPrice = displayPrice + addonsTotal;
+  const totalPrice = calculateTotalWithAddons(
+    monthlyPrice,
+    addonsTotal,
+    isYearly
+  );
+  const displayPrice = isYearly
+    ? Math.floor(monthlyPrice * 12 * 0.85)
+    : monthlyPrice;
 
   return {
     isMenuOpen,

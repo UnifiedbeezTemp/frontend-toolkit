@@ -23,7 +23,7 @@ const addonSlice = createSlice({
   reducers: {
     openAddModal: (state, action: PayloadAction<Addon>) => {
       state.tempAddon = action.payload;
-      state.tempQuantity = 1;
+      state.tempQuantity = action.payload.used || 1;
       state.isAddModalOpen = true;
     },
     closeAddModal: (state) => {

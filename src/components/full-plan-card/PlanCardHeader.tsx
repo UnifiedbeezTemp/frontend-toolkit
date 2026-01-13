@@ -2,6 +2,7 @@ import React from "react";
 import ImageComponent from "next/image";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Button from "../ui/Button";
+import Tooltip from "../ui/Tooltip";
 import { Plan } from "../../api/services/plan/types";
 
 interface PlanCardHeaderProps {
@@ -38,12 +39,14 @@ export default function PlanCardHeader({
             />
           </Button>
         ) : (
-          <Button
-            variant="secondary"
-            className="text-brand-primary p-[0.8rem] text-[1.4rem] text-inactive-color bg-input-filled cursor-default"
-          >
-            Add-on not available
-          </Button>
+          <Tooltip content="Add-ons not available on this plan. Upgrade for full access.">
+            <Button
+              variant="secondary"
+              className="text-brand-primary p-[0.8rem] text-[1.4rem] text-inactive-color bg-input-filled cursor-default"
+            >
+              Add-on not available
+            </Button>
+          </Tooltip>
         )}
       </div>
     </div>

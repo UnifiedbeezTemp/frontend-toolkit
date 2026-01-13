@@ -21,7 +21,7 @@ export const useAddonsPage = () => {
     refetch,
   } = useAvailableAddons();
 
-  const addonsHook = useAddons();
+  const addonsHook = useAddons(planType);
 
   const addons = rawAddons.filter(
     (addon) =>

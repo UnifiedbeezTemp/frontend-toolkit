@@ -1,4 +1,4 @@
-import Button from "@/shared/src/components/ui/Button";
+import Button from "../../ui/Button";
 
 interface ModalActionsProps {
   onAdd: () => void;
@@ -12,7 +12,7 @@ export const ModalActions: React.FC<ModalActionsProps> = ({
   isAddDisabled,
 }) => {
   return (
-    <div className="border-t border-border py-[2.4rem] flex flex-col sm:flex-row-reverse md:flex-row gap-[1rem]">
+    <div className="border-t border-border py-[2.4rem] flex flex-col sm:flex-row-reverse md:flex-row lg:flex-row-reverse gap-[1rem]">
       <Button className="w-full" onClick={onAdd} disabled={isAddDisabled}>
         Add to plan
       </Button>
