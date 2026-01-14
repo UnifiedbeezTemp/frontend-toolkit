@@ -190,10 +190,10 @@
   --destructive: #cc0e11;
   --success: #29953e;
   --primary-blue: #155dfc;
-  --success-500: #12B76A;
+  --success-500: #12b76a;
   --primary-blue: #155dfc;
   --primary-blue-100: #2186f8;
-  --primary-blue-50: #15C0E6;
+  --primary-blue-50: #15c0e6;
 
   --input-stroke: #d0d5dd;
   --input-stroke-1: #dedede;
@@ -267,18 +267,28 @@
   --yellow-100-alt: #facc15;
   --gray-900: #101828;
   --gray-600: #475467;
-  --gray-250: #71717A;
+  --gray-250: #71717a;
   --gray-200: #eaecf0;
   --gray-60: #e4e4e4;
   --gray-50: #f9fafb;
   --gray-40: #919191;
-  --gray-45: #A2A2A2;
+  --gray-45: #a2a2a2;
   --gray-35: #c5c6c9;
   --gray-30: #d0d5dd;
   --gray-25: #f8f8f8;
   --gray-20: #f6f6f6;
   --gray-15: #e4e4e4;
   --dark-stroke: #0b1012;
+
+  /* CRM Specific Status Colors */
+  --crm-status-active-text: #027a48;
+  --crm-status-active-bg: #ecfdf3;
+  --crm-status-unconfirmed-text: #ECB22D;
+  --crm-status-unconfirmed-bg: #fffaeb;
+  --crm-status-unsubscribed-text: #CC0E11;
+  --crm-status-unsubscribed-bg: #fef3f2;
+  --crm-status-bounced-text: #9D9FA0;
+  --crm-status-bounced-bg: #f2f4f7;
 }
 
 /* .dark {
