@@ -13,6 +13,7 @@ export interface PhoneInputProps {
   isEditing: boolean;
   className?: string;
   labelClasses?: string
+  inputClasses?: string
 }
 
 export interface CountrySelectorProps {
@@ -46,4 +47,5 @@ export interface PhoneNumberInputProps {
   onChange: (value: string) => void;
   callingCode: string;
   isEditing?: boolean;
+  className?: string
 }

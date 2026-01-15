@@ -52,6 +52,7 @@ export default function Dropdown({
   return (
     <div className={cn("relative", className)} ref={dropdownRef}>
       <button
+        type="button"
         onClick={toggleDropdown}
         className={cn(
           "group flex items-center justify-between w-full h-14 p-[1.4rem] rounded-[1.2rem] border transition-all text-[1.6rem] duration-300 font-medium",
@@ -92,6 +93,7 @@ export default function Dropdown({
           {options.map((option) => (
             <button
               key={option.value}
+              type="button"
               onClick={() => handleSelect(option.value)}
               className={cn(
                 "w-full px-4 py-3 text-left text-[1.6rem] transition-all duration-200 hover:text-white flex items-center justify-between hover:bg-brand-primary",

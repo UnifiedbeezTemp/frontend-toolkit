@@ -12,7 +12,8 @@ export default function PhoneInput({
   onCountryChange,
   isEditing,
   className = "",
-  labelClasses
+  labelClasses,
+  inputClasses
 }: PhoneInputProps) {
   const {
     selectedCountry,
@@ -46,7 +47,7 @@ export default function PhoneInput({
       <Heading size={"sm"} className={cn("mb-[0.4rem]", labelClasses)}>
         Phone number
       </Heading>
-      <div className="flex items-center gap-[1rem] rounded-[0.8rem] bg-primary border border-border overflow-hidden focus-within:border-brand-primary focus-within:border-(--primary-90) focus-within:ring-4 focus-within:ring-(--focus-ring) focus-within:outline-none">
+      <div className={cn("flex items-center gap-[1rem] rounded-[0.8rem] bg-primary border border-border overflow-hidden focus-within:border-brand-primary focus-within:border-(--primary-90) focus-within:ring-4 focus-within:ring-(--focus-ring) focus-within:outline-none", inputClasses)}>
         <CountrySelector
           selectedCountry={selectedCountry}
           onCountrySelect={handleCountrySelect}
