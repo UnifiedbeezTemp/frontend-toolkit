@@ -9,12 +9,16 @@ import { cn } from "../../lib/utils";
 
 export type DropdownPlacement =
   | "top-start"
+  | "top-center"
   | "top-end"
   | "bottom-start"
+  | "bottom-center"
   | "bottom-end"
   | "left-start"
+  | "left-center"
   | "left-end"
   | "right-start"
+  | "right-center"
   | "right-end";
 
 interface SmartDropdownProps {

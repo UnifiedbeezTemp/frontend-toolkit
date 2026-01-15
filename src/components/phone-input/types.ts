@@ -12,6 +12,7 @@ export interface PhoneInputProps {
   onCountryChange: (countryCode: string) => void;
   isEditing: boolean;
   className?: string;
+  labelClasses?: string
 }
 
 export interface CountrySelectorProps {

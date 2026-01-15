@@ -4,12 +4,16 @@ import { useState, useCallback, useRef } from "react";
 
 export type DropdownPlacement =
   | "top-start"
+  | "top-center"
   | "top-end"
   | "bottom-start"
+  | "bottom-center"
   | "bottom-end"
   | "left-start"
+  | "left-center"
   | "left-end"
   | "right-start"
+  | "right-center"
   | "right-end";
 
 interface Position {
@@ -56,6 +60,25 @@ export function useDropdownPosition({
     let finalPlacement = placement;
 
     switch (placement) {
+      case "top-center":
+  top = triggerRect.top - dropdownDimensions.height - offset;
+  left = triggerRect.left + (triggerRect.width - dropdownDimensions.width) / 2;
+  break;
+
+case "bottom-center":
+  top = triggerRect.bottom + offset;
+  left = triggerRect.left + (triggerRect.width - dropdownDimensions.width) / 2;
+  break;
+
+case "left-center":
+  top = triggerRect.top + (triggerRect.height - dropdownDimensions.height) / 2;
+  left = triggerRect.left - dropdownDimensions.width - offset;
+  break;
+
+case "right-center":
+  top = triggerRect.top + (triggerRect.height - dropdownDimensions.height) / 2;
+  left = triggerRect.right + offset;
+  break;
       case "top-start":
         top = triggerRect.top - dropdownDimensions.height - offset;
         left = triggerRect.left;
