@@ -16,7 +16,7 @@ export default function InfiniteScroll({
   direction = "left",
   speed = 20,
   className,
-  gap = 22,
+  gap = 20,
 }: InfiniteScrollProps) {
   const initialX = direction === "left" ? 0 : "-50%";
   const targetX = direction === "left" ? "-50%" : 0;
