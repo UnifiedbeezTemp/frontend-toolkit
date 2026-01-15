@@ -27,11 +27,11 @@ import { cn } from '../../lib/utils';
  * - Full width container
  */
 
-export interface InputProps {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password' | 'number';
+  type?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   className?: string;
@@ -47,6 +47,7 @@ export default function Input({
   rightIcon,
   className = '',
   disabled = false,
+  ...props
 }: InputProps) {
   return (
     <div className="relative w-full">
@@ -61,6 +62,7 @@ export default function Input({
         onChange={onChange}
         disabled={disabled}
         placeholder={placeholder}
+        {...props}
         className={cn(
           "w-full border border-input-stroke rounded-[0.8rem] px-[1.4rem] py-[1rem]",
           "focus:ring-0 focus:outline-0 focus:border-brand-primary focus:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]",
