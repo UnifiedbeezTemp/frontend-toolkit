@@ -1,15 +1,15 @@
-import React from 'react';
-import { cn } from '../../lib/utils';
+import React from "react";
+import { cn } from "../../lib/utils";
 
 /**
  * REUSABLE INPUT COMPONENT
- * 
+ *
  * USAGE:
  * <Input value={value} onChange={setValue} placeholder="Enter text" />
  * <Input type="email" leftIcon={<MailIcon />} placeholder="Email" />
  * <Input type="password" rightIcon={<EyeIcon />} placeholder="Password" />
  * <Input className="custom-styles" placeholder="Custom input" />
- * 
+ *
  * PROPS:
  * - value: Input value (required)
  * - onChange: Change handler (required)
@@ -19,7 +19,7 @@ import { cn } from '../../lib/utils';
  * - rightIcon: React node for right icon
  * - className: Add custom styles (overrides defaults)
  * - disabled: Boolean for when input can be used
- * 
+ *
  * DEFAULTS:
  * - Border focus states
  * - Automatic padding for icons
@@ -36,17 +36,19 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   rightIcon?: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function Input({
   value,
   onChange,
-  placeholder = '',
-  type = 'text',
+  placeholder = "",
+  type = "text",
   leftIcon,
   rightIcon,
-  className = '',
+  className = "",
   disabled = false,
+  onKeyDown,
   ...props
 }: InputProps) {
   return (
@@ -62,6 +64,7 @@ export default function Input({
         onChange={onChange}
         disabled={disabled}
         placeholder={placeholder}
+        onKeyDown={onKeyDown}
         {...props}
         className={cn(
           "w-full border border-input-stroke rounded-[0.8rem] px-[1.4rem] py-[1rem]",

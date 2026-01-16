@@ -1,8 +1,8 @@
-const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`
+const CDN_BASE_URL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/assets`;
 
 export const getAssetUrl = (path: string): string => {
-  return `${CDN_BASE_URL}/${path}`
-}
+  return `${CDN_BASE_URL}/${path}`;
+};
 
 export const SUPABASE_IMAGES = {
   chatBg: "images/chat-bg.svg",
@@ -53,7 +53,7 @@ export const SUPABASE_IMAGES = {
   dottedBg: "website/dotted-bg.png",
   teamInbox: "website/team-inbox-1.png",
   websiteHero: "website/website-herof.png",
-} as const
+} as const;
 
 export const SUPABASE_ICONS = {
   link: "website/link.png",
@@ -111,10 +111,12 @@ export const SUPABASE_ICONS = {
   dragVertical: "icons/drag-vertical.png",
   email1: "icons/email-with-bg-1.svg",
   phone1: "icons/phone-with-bg.svg",
+  outlinePhone: "icons/ic_outline-phone.svg",
   colorPalette1: "icons/color-palette-with-bg.svg",
   languages1: "icons/language-with-bg.svg",
   chatBubble1: "icons/chat-bubble-with-bg.svg",
   download1: "icons/download-with-bg.svg",
+  download: "icons/download-01.svg",
   code: "icons/code-with-green-bg.svg",
   copy3: "icons/copy-3.svg",
   loading: "icons/loading.svg",
@@ -274,6 +276,35 @@ export const SUPABASE_ICONS = {
   gridDropdown: "icons/gridicons_dropdown.svg",
   expand: "icons/akar-icons_enlarge.svg",
   arrowClockwise: "icons/ArrowsClockwise.svg",
+  sidebarCollapse: "icons/octicon_sidebar-collapse-16.svg",
+  tablerCopy: "icons/tabler_copy.svg",
+  location: "icons/proicons_location.svg",
+  tDesignChart: "icons/tdesign_chart.svg",
+  ggList: "icons/gg_list.svg",
+  addCall: "icons/material-symbols_add-call-outline-sharp.svg",
+  folder: "icons/material-symbols_folder-outline-rounded.svg",
+  fileIcon: "icons/fileIcon.svg",
+  lines: "icons/lines.svg",
+  bold: "icons/bold.svg",
+  italic: "icons/italic.svg",
+  underline: "icons/underline.svg",
+  curvyLeft: "icons/curvyLeft.svg",
+  curvyRight: "icons/curvyRight.svg",
+  lists: "icons/lists.svg",
+  listsUnordered: "icons/listsUnordered.svg",
+  linkChain: "icons/chain.svg",
+  emoji: "icons/emoji.svg",
+  gallery: "icons/gallery.svg",
+  phoneWhite: "icons/phoneWhite.svg",
+  whiteMail: "icons/material-symbols_mail-outline.svg",
+  calendar: "icons/calendar.svg",
+  phNote: "icons/ph_note.svg",
+  tablerVideo: "icons/tabler_video.svg",
+  tablerVideo2: "icons/tabler_video2.svg",
+  phoneOut: "icons/phone-outgoing-01.svg",
+  phoneIn: "icons/phone-incoming-01.svg",
+  phoneX: "icons/phone-x.svg",
+  messageGray: "icons/message-text-square-gray.svg",
   jobSearch: "website/job-search.svg",
   phoneDarkGray: "website/phone-dark-gray.svg",
   beeGray: "website/bee-gray.png",
@@ -295,7 +326,7 @@ export const SUPABASE_ICONS = {
   successAlt: "website/success-alt.svg",
   calendarAlt: "website/calendar-alt.svg",
   codeAlt: "website/code-alt.svg",
-}
+};
 
 export const SUPABASE_GIFS = {
   celebrationPopup: "/celebration-v3.gif",
@@ -309,4 +340,3 @@ export const SUPABASE_GIFS = {
   copilotSidebarSix: "copilot/copilotSidebarSix.gif",
   copilotSidebarBg: "copilot/copilotSidebarBg.svg",
 } as const;
-

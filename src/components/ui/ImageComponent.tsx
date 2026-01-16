@@ -99,15 +99,15 @@ function ImageComponent({
         onLoad={handleLoad}
         className={cn(
           "object-cover transition-opacity duration-300",
-          isLoading && "opacity-0",
-          !isLoading && "opacity-100",
+          // isLoading && "opacity-0",
+          // !isLoading && "opacity-100",
           className
         )}
       />
-
-      {isLoading && (
+      
+      {/* {isLoading && (
         <div className="absolute inset-0 bg-muted animate-pulse rounded" />
-      )}
+      )} */}
     </div>
   );
 }
