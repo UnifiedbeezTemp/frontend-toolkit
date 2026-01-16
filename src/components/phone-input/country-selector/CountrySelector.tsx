@@ -17,6 +17,7 @@ export default function CountrySelector({
     <div className="">
       <button
         ref={triggerRef}
+        type="button"
         onClick={() => onToggle(!isOpen)}
         className="w-full py-[0.8rem] bg-primary px-[1.2rem] text-[1.4rem] flex items-center justify-between hover:bg-border/10 transition-colors"
       >
