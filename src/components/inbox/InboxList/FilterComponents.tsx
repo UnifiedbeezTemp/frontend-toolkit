@@ -1,12 +1,12 @@
-import { useRef } from "react"
-import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon"
-import InboxSearchBar from "../components/SearchBar"
-import FunnelIcon from "../../../assets/icons/FunnelIcon"
-import IconButton from "../../ui/IconButton"
-import { SmartDropdown } from "../../smart-dropdown"
-import { QuickFilterBar } from "../components/QuickFilterBar"
-import { useToggle } from "../../../hooks/useToggle"
-import { FilterOptionList } from "../components/FilterOptionList"
+import { useRef } from "react";
+import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon";
+import InboxSearchBar from "../components/SearchBar";
+import FunnelIcon from "../../../assets/icons/FunnelIcon";
+import IconButton from "../../ui/IconButton";
+import { SmartDropdown } from "../../smart-dropdown";
+import { QuickFilterBar } from "../components/QuickFilterBar";
+import { useToggle } from "../../../hooks/useToggle";
+import { FilterOptionList } from "../components/FilterOptionList";
 
 export const InboxSearchAndFilters = () => {
   const filterOptions = [
@@ -22,16 +22,16 @@ export const InboxSearchAndFilters = () => {
       label: "Name",
       value: "name",
     },
-  ]
+  ];
 
   const {
     value: isOpen,
     setTrue: openDropdown,
     setFalse: closeDropdown,
-  } = useToggle()
-  const dropdownTriggerRef = useRef(null)
+  } = useToggle();
+  const dropdownTriggerRef = useRef(null);
   return (
-    <div className="flex flex-col gap-3 px-4 pb-4 bg-white border-b border-gray-100 mt-2">
+    <div className="flex flex-col gap-3 px-4 pb-4 bg-primary border-b border-gray-100 mt-2">
       <div className="flex gap-2 items-center">
         <InboxSearchBar
           value={""}
@@ -126,5 +126,5 @@ export const InboxSearchAndFilters = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};

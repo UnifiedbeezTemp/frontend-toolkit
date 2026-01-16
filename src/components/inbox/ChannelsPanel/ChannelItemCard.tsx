@@ -1,7 +1,7 @@
-import { ReactNode } from "react"
-import { LockIcon } from "../../../assets/icons/LockIcon"
-import { cn } from "../../../lib/utils"
-import Checkbox from "../../ui/CheckBox"
+import { ReactNode } from "react";
+import { LockIcon } from "../../../assets/icons/LockIcon";
+import { cn } from "../../../lib/utils";
+import Checkbox from "../../ui/CheckBox";
 
 export default function ChannelItemCard({
   item,
@@ -9,32 +9,28 @@ export default function ChannelItemCard({
   onClick,
   channelIcon,
 }: {
-  channelIcon: ReactNode
+  channelIcon: ReactNode;
   item: {
-    status: string
-    disabled: boolean
-    title: string
-    subTitle: string
-  }
-  selected?: boolean
-  onClick: () => void
+    status: string;
+    disabled: boolean;
+    title: string;
+    subTitle: string;
+  };
+  selected?: boolean;
+  onClick: () => void;
 }) {
-  const locked = item.status === "locked"
-  const disabled = !!item.disabled || locked
+  const locked = item.status === "locked";
+  const disabled = !!item.disabled || locked;
 
   return (
     <div
-      className={cn(
-        "rounded-md border border-border bg-white p-2",
-      )}
+      className={cn("rounded-md border border-border bg-primary p-2")}
       role="group"
     >
       <div className="flex items-start gap-1">
         <Checkbox checked={Boolean(selected)} onChange={onClick} />
 
-        <div className="">
-          {channelIcon}
-        </div>
+        <div className="">{channelIcon}</div>
 
         <button
           type="button"
@@ -58,7 +54,7 @@ export default function ChannelItemCard({
         <StatusLine status={item.status} />
       </div>
     </div>
-  )
+  );
 }
 
 function StatusLine({ status }: { status: string }) {
@@ -68,7 +64,7 @@ function StatusLine({ status }: { status: string }) {
         <LockIcon />
         <span>Locked</span>
       </div>
-    )
+    );
   }
 
   if (status === "connected") {
@@ -77,13 +73,13 @@ function StatusLine({ status }: { status: string }) {
         <span className="h-1.5 w-1.5 ring-2 ring-success/10 rounded-full bg-success" />
         <span>Connected</span>
       </div>
-    )
+    );
   }
-  if (!status) return <div />
+  if (!status) return <div />;
   return (
     <div className="flex items-center gap-2 text-sm text-zinc-500">
       <span className="h-2.5 w-2.5 rounded-full bg-zinc-400" />
       <span>{status}</span>
     </div>
-  )
+  );
 }
