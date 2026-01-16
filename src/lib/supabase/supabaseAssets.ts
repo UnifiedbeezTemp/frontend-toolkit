@@ -51,7 +51,7 @@ export const SUPABASE_IMAGES = {
   gdprCompliant: "website/gdpr-compliant.png",
   metaBusinessPartner: "website/meta-business-partner.png",
   dottedBg: "website/dotted-bg.png",
-  teamInbox: "website/team-inbox-1.png",
+  teamInbox: "website/team-inbox-10.png",
   websiteHero: "website/website-herof.png",
 } as const
 
@@ -295,6 +295,11 @@ export const SUPABASE_ICONS = {
   successAlt: "website/success-alt.svg",
   calendarAlt: "website/calendar-alt.svg",
   codeAlt: "website/code-alt.svg",
+  fbWhite: "website/facebook.png",
+  xWhite: "website/x.png",
+  linkedinWhite: "website/linkedin.png",
+  instagramWhite: "website/instagram.png",
+  youtubeWhite: "website/youtube.png"
 }
 
 export const SUPABASE_GIFS = {
