@@ -1,24 +1,24 @@
-import { ReactNode, useRef } from "react"
-import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon"
-import { cn } from "../../../lib/utils"
-import { SmartDropdown } from "../../smart-dropdown"
-import { useToggle } from "../../../hooks/useToggle"
-import { isFunction } from "../../../utils/is"
-import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon"
-import { FilterOptionList } from "./FilterOptionList"
+import { ReactNode, useRef } from "react";
+import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon";
+import { cn } from "../../../lib/utils";
+import { SmartDropdown } from "../../smart-dropdown";
+import { useToggle } from "../../../hooks/useToggle";
+import { isFunction } from "../../../utils/is";
+import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon";
+import { FilterOptionList } from "./FilterOptionList";
 
 export interface QuickFilterOption {
-  label: ReactNode
-  options: QuickFilterDropdownOption[]
+  label: ReactNode;
+  options: QuickFilterDropdownOption[];
 }
 
 export interface QuickFilterBarProps {
-  options: QuickFilterOption[]
-  selectedOption: QuickFilterOption
-  onSelect: (opt: QuickFilterOption) => void
-  handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void
-  selectedDropdownOptions: string[]
-  className?: string
+  options: QuickFilterOption[];
+  selectedOption: QuickFilterOption;
+  onSelect: (opt: QuickFilterOption) => void;
+  handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void;
+  selectedDropdownOptions: string[];
+  className?: string;
 }
 
 export function QuickFilterBar({
@@ -48,21 +48,21 @@ export function QuickFilterBar({
         />
       ))}
     </div>
-  )
+  );
 }
 
 type QuickFilterDropdownOption = {
-  label: string
-  value: string
-}
+  label: string;
+  value: string;
+};
 type QuickFilterOptionProps = {
-  label: ReactNode
-  options: QuickFilterDropdownOption[]
-  selected?: boolean
-  selectedDropdownOptions?: string[]
-  onSelect?: () => void
-  handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void
-}
+  label: ReactNode;
+  options: QuickFilterDropdownOption[];
+  selected?: boolean;
+  selectedDropdownOptions?: string[];
+  onSelect?: () => void;
+  handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void;
+};
 
 export function QuickFilterOption({
   label,
@@ -76,21 +76,21 @@ export function QuickFilterOption({
     value: isOpen,
     setTrue: openDropdown,
     setFalse: closeDropdown,
-  } = useToggle()
-  const dropdownTriggerRef = useRef(null)
+  } = useToggle();
+  const dropdownTriggerRef = useRef(null);
 
   return (
     <div className="relative ">
       <button
         ref={dropdownTriggerRef}
         onClick={() => {
-          if (isFunction(onSelect)) onSelect()
-          openDropdown()
+          if (isFunction(onSelect)) onSelect();
+          openDropdown();
         }}
         className={cn(
           `flex items-center gap-1 px-4 py-2 rounded-lg transition-all border-0 text-md`,
           selected
-            ? "bg-white border border-input-stroke text-gray-900 hover:bg-gray-50"
+            ? "bg-primary border border-input-stroke text-gray-900 hover:bg-gray-50"
             : "bg-transparent text-inactive-color hover:text-gray-600 hover:bg-primary"
         )}
       >
@@ -116,5 +116,5 @@ export function QuickFilterOption({
         />
       </SmartDropdown>
     </div>
-  )
+  );
 }

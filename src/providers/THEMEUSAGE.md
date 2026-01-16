@@ -76,7 +76,7 @@ Helper function to switch between "light" and "dark". Note: switching from "syst
 The provider adds a `dark` class to the `<html>` element. You can style your components using Tailwind's `dark:` modifier.
 
 ```tsx
-<div className="bg-white dark:bg-gray-900 text-black dark:text-white">
+<div className="bg-primary dark:bg-gray-900 text-black dark:text-white">
   This box adapts to the theme.
 </div>
 ```
