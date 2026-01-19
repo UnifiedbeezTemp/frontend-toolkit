@@ -1,27 +1,27 @@
-import ChevronRight from "../../../assets/icons/ChevronRight"
-import { useToggle } from "../../../hooks/useToggle"
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
+import ChevronRight from "../../../assets/icons/ChevronRight";
+import { useToggle } from "../../../hooks/useToggle";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 
-import { cn } from "../../../lib/utils"
-import ExpandableCard from "../../expandable-card/ExpandableCard"
-import Button from "../../ui/Button"
-import Checkbox from "../../ui/CheckBox"
-import ImageComponent from "../../ui/ImageComponent"
-import ChannelItemCard from "./ChannelItemCard"
+import { cn } from "../../../lib/utils";
+import ExpandableCard from "../../expandable-card/ExpandableCard";
+import Button from "../../ui/Button";
+import Checkbox from "../../ui/CheckBox";
+import ImageComponent from "../../ui/ImageComponent";
+import ChannelItemCard from "./ChannelItemCard";
 
 export default function ChannelHeaderRow({
   channel,
 }: {
-  channel: { label: string }
+  channel: { label: string };
 }) {
-  const icons = useSupabaseIcons()
-  const { value: isOpen, toggle: onToggle } = useToggle()
+  const icons = useSupabaseIcons();
+  const { value: isOpen, toggle: onToggle } = useToggle();
   return (
     <ExpandableCard
       title={channel.label}
       containerClassName={cn(
         "rounded-2xl px-2 py-3 text-left border border-input-stroke",
-        isOpen ? "bg-gradient-yellow-1" : "bg-white"
+        isOpen ? "bg-gradient-yellow-1" : "bg-primary"
       )}
       useDefaultDetailsStyling={false}
       summary={
@@ -81,5 +81,5 @@ export default function ChannelHeaderRow({
         </div>
       </div>
     </ExpandableCard>
-  )
+  );
 }

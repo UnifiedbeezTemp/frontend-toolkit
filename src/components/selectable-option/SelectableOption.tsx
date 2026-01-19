@@ -1,17 +1,17 @@
-import { CheckboxVisual, RadioVisual } from "./SelectedVisual"
-import { cn } from "../../lib/utils"
+import { CheckboxVisual, RadioVisual } from "./SelectedVisual";
+import { cn } from "../../lib/utils";
 
 interface SelectableOptionProps {
-  label: React.ReactNode
-  icon?: React.ReactNode
-  selected: boolean
-  onSelect: () => void
-  variant?: "check" | "radio"
-  className?: string
-  hideIndicator?: boolean
-  indicatorSize?: "sm" | "md"
-  disabled?: boolean
-  selectedBgClassName?: string
+  label: React.ReactNode;
+  icon?: React.ReactNode;
+  selected: boolean;
+  onSelect: () => void;
+  variant?: "check" | "radio";
+  className?: string;
+  hideIndicator?: boolean;
+  indicatorSize?: "sm" | "md";
+  disabled?: boolean;
+  selectedBgClassName?: string;
 }
 
 export default function SelectableOption({
@@ -39,9 +39,9 @@ export default function SelectableOption({
           : "flex-row",
         selected
           ? selectedBgClassName
-            ? `${selectedBgClassName} bg-white`
+            ? `${selectedBgClassName} bg-primary`
             : "bg-gradient-yellow-1"
-          : "bg-white",
+          : "bg-primary",
         className
       )}
     >
@@ -56,5 +56,5 @@ export default function SelectableOption({
         </>
       )}
     </button>
-  )
+  );
 }

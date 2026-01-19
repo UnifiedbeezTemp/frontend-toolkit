@@ -36,7 +36,7 @@ export default function MessageBubble({
         <div
           className={cn(
             "w-[4rem] h-[4rem] rounded-full flex-shrink-0 relative",
-            isUser ? "bg-white" : "border border-input-stroke p-[0.6rem]"
+            isUser ? "bg-primary" : "border border-input-stroke p-[0.6rem]"
           )}
         >
           <ImageComponent

@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { cn } from "../../../lib/utils"
-import { VideoControlsProps, PLAYBACK_RATES } from "../types"
-import { formatTime } from "../utils/formatTime"
-import VideoProgressBar from "./VideoProgressBar"
-import VolumeControl from "./VolumeControl"
-import ImageComponent from "../../ui/ImageComponent"
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "../../../lib/utils";
+import { VideoControlsProps, PLAYBACK_RATES } from "../types";
+import { formatTime } from "../utils/formatTime";
+import VideoProgressBar from "./VideoProgressBar";
+import VolumeControl from "./VolumeControl";
+import ImageComponent from "../../ui/ImageComponent";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 
 export default function VideoControls({
   videoState,
@@ -29,7 +29,7 @@ export default function VideoControls({
   accentColor = "rgb(0, 178, 169)",
   showCaptions = false,
 }: VideoControlsProps) {
-  const [showSpeedMenu, setShowSpeedMenu] = useState(false)
+  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
 
   const {
     isPlaying,
@@ -40,11 +40,11 @@ export default function VideoControls({
     isMuted,
     playbackRate,
     isFullscreen,
-  } = videoState
+  } = videoState;
 
-  const showHours = duration >= 3600
+  const showHours = duration >= 3600;
 
-  const icons = useSupabaseIcons()
+  const icons = useSupabaseIcons();
 
   return (
     <div className="absolute bottom-0 left-0 right-0 z-20">
@@ -64,7 +64,7 @@ export default function VideoControls({
           <div className="flex items-center gap-[0.4rem] sm:gap-[0.8rem]">
             <button
               onClick={onPlayPause}
-              className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-white/10"
+              className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-primary/10"
               aria-label={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? (
@@ -89,7 +89,7 @@ export default function VideoControls({
             {enableSkip && (
               <button
                 onClick={onSkipForward}
-                className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-white/10"
+                className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-primary/10"
                 aria-label="Skip forward"
               >
                 <svg
@@ -125,7 +125,7 @@ export default function VideoControls({
               <button
                 onClick={onCaptionsToggle}
                 className={cn(
-                  "p-[0.4rem] sm:p-[0.6rem] transition-colors rounded-[0.4rem] hover:bg-white/10",
+                  "p-[0.4rem] sm:p-[0.6rem] transition-colors rounded-[0.4rem] hover:bg-primary/10",
                   showCaptions ? "text-white" : "text-white/60 hover:text-white"
                 )}
                 aria-label={showCaptions ? "Hide captions" : "Show captions"}
@@ -149,7 +149,7 @@ export default function VideoControls({
               <div className="relative">
                 <button
                   onClick={() => setShowSpeedMenu(!showSpeedMenu)}
-                  className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-white/10"
+                  className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-primary/10"
                   aria-label="Playback speed"
                 >
                   <svg
@@ -180,11 +180,11 @@ export default function VideoControls({
                           <button
                             key={rate}
                             onClick={() => {
-                              onPlaybackRateChange(rate)
-                              setShowSpeedMenu(false)
+                              onPlaybackRateChange(rate);
+                              setShowSpeedMenu(false);
                             }}
                             className={cn(
-                              "w-full px-[1.2rem] py-[0.6rem] text-[1.2rem] sm:text-[1.4rem] text-left hover:bg-white/10 transition-colors",
+                              "w-full px-[1.2rem] py-[0.6rem] text-[1.2rem] sm:text-[1.4rem] text-left hover:bg-primary/10 transition-colors",
                               playbackRate === rate
                                 ? "text-white font-medium"
                                 : "text-white/70"
@@ -203,7 +203,7 @@ export default function VideoControls({
             {enablePiP && (
               <button
                 onClick={onPiPToggle}
-                className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-white/10"
+                className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-primary/10"
                 aria-label="Picture in picture"
               >
                 <svg
@@ -231,7 +231,7 @@ export default function VideoControls({
             {enableFullscreen && (
               <button
                 onClick={onFullscreenToggle}
-                className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-white/10"
+                className="p-[0.4rem] sm:p-[0.6rem] text-white hover:text-white/80 transition-colors rounded-[0.4rem] hover:bg-primary/10"
                 aria-label={
                   isFullscreen ? "Exit fullscreen" : "Enter fullscreen"
                 }
@@ -267,5 +267,5 @@ export default function VideoControls({
         </div>
       </div>
     </div>
-  )
+  );
 }
