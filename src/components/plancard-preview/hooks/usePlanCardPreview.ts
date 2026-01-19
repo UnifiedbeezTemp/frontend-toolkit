@@ -12,6 +12,7 @@ interface UsePlanCardPreviewProps {
   selectedAddons?: Addon[];
   monthlyPrice: number;
   isYearly?: boolean;
+  enableReturnTo?: boolean;
 }
 
 export const usePlanCardPreview = ({
@@ -19,6 +20,7 @@ export const usePlanCardPreview = ({
   selectedAddons,
   monthlyPrice,
   isYearly = false,
+  enableReturnTo = false,
 }: UsePlanCardPreviewProps) => {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -61,7 +63,15 @@ export const usePlanCardPreview = ({
   };
 
   const handleUpgradeClick = () => {
-    router.push("/plans");
+    if (enableReturnTo && typeof window !== "undefined") {
+      const currentPath = window.location.pathname + window.location.search;
+      const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
+      router.push(
+        `${baseUrl}/plans?returnTo=${encodeURIComponent(currentPath)}`
+      );
+    } else {
+      router.push("/plans");
+    }
   };
 
   const handleMenuToggle = () => {
