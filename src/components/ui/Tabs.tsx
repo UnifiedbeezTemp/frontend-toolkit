@@ -248,7 +248,7 @@ export default function Tabs({
         return (
           <button
             key={tab.value}
-            ref={(el) => (tabRefs.current[index] = el)}
+            ref={(el) => { tabRefs.current[index] = el; }}
             type="button"
             role="tab"
             aria-selected={isActive}
