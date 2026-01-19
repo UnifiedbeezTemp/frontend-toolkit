@@ -52,10 +52,13 @@ interface TabsProps {
   activeTab?: string | number;
   defaultTab?: string | number;
   onTabChange?: (value: string | number) => void;
-  variant?: "default" | "pills" | "underline";
+  variant?: "default" | "pills" | "underline" | "unpadded";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   className?: string;
+  labelClassName?: string;
+  inactiveLabelClassName?: string;
+  containerClassName?: string;
 }
 
 const sizeClasses = {
@@ -73,6 +76,9 @@ export default function Tabs({
   size = "md",
   fullWidth = true,
   className = "",
+  labelClassName = "",
+  inactiveLabelClassName = "",
+  containerClassName = "",
 }: TabsProps) {
   const normalizedTabs: Tab[] = React.useMemo(
     () =>
@@ -91,8 +97,14 @@ export default function Tabs({
     initialTab
   );
 
-  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const [indicatorStyle, setIndicatorStyle] = useState({ 
+    left: 0, 
+    width: 0,
+    top: 0,
+    height: 0
+  });
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const activeTab =
     controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
@@ -103,11 +115,31 @@ export default function Tabs({
     );
     const activeTabElement = tabRefs.current[activeIndex];
 
-    if (activeTabElement && variant === "default") {
+    if (activeTabElement && (variant === "default" || variant === "unpadded")) {
       const { offsetLeft, offsetWidth } = activeTabElement;
-      setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
+      
+      if (variant === "unpadded" && containerRef.current) {
+        const computedStyle = window.getComputedStyle(containerRef.current);
+        const paddingTop = parseFloat(computedStyle.paddingTop);
+        const paddingBottom = parseFloat(computedStyle.paddingBottom);
+        const containerHeight = containerRef.current.offsetHeight;
+        
+        setIndicatorStyle({ 
+          left: offsetLeft, 
+          width: offsetWidth,
+          top: paddingTop,
+          height: containerHeight - paddingTop - paddingBottom -2
+        });
+      } else {
+        setIndicatorStyle({ 
+          left: offsetLeft, 
+          width: offsetWidth,
+          top: 0,
+          height: 0
+        });
+      }
     }
-  }, [activeTab, variant]);
+  }, [activeTab, variant, normalizedTabs]);
 
   const handleTabChange = (value: string | number) => {
     if (controlledActiveTab === undefined) {
@@ -146,9 +178,11 @@ export default function Tabs({
 
   const containerVariants = {
     default:
-      "bg-toggle-filled border-[1px] border-input-stroke rounded-[0.8rem] p-[0.8rem]",
+      "bg-toggle-filled border-[1px] border-input-stroke rounded-[0.8rem] p-[0.8rem] gap-2",
     pills: "bg-transparent gap-2",
     underline: "border-b border-border",
+    unpadded:
+      "bg-[var(--crm-status-bounced-bg)] border border-input-stroke rounded-[0.8rem] p-0 gap-0 shadow-[0px_1px_2px_0px_#1018280D]",
   };
 
   const getTabVariantClasses = (isActive: boolean) => {
@@ -162,24 +196,40 @@ export default function Tabs({
       underline: isActive
         ? "text-brand-primary border-b-2 border-brand-primary"
         : "text-text-primary border-b-2 border-transparent hover:text-brand-primary hover:border-border",
+      unpadded: isActive
+        ? "text-dark-base-70 relative z-10"
+        : "text-dark-base-70 hover:text-dark-base-100",
     };
     return variants[variant];
   };
 
   return (
     <div
+      ref={containerRef}
       className={cn(
-        "inline-flex items-center relative",
-        "rounded-[0.8rem] p-[0.8rem] shadow-xs gap-2",
+        "inline-flex items-center relative transition-all duration-200",
         containerVariants[variant],
         fullWidth && "w-full",
-        className
+        containerClassName || className
       )}
       role="tablist"
     >
-      {variant === "default" && (
+      {(variant === "default" || variant === "unpadded") && (
         <motion.div
-          className="absolute bg-primary shadow-sm rounded-[0.8rem] h-[calc(100%-1.6rem)] top-[0.8rem]"
+          className={cn(
+            "absolute bg-primary rounded-[0.8rem]",
+            variant === "default"
+              ? "h-[calc(100%-1.6rem)] top-[0.8rem] shadow-sm"
+              : "shadow-[0px_1px_2px_0px_#1018280D] border-input-stroke",
+            variant === "unpadded" &&
+              normalizedTabs.findIndex((t) => t.value === activeTab) === 0
+              ? "border-r"
+              : variant === "unpadded" && "border-x"
+          )}
+          style={variant === "unpadded" ? {
+            top: indicatorStyle.top,
+            height: indicatorStyle.height
+          } : undefined}
           initial={false}
           animate={{
             left: indicatorStyle.left,
@@ -208,14 +258,14 @@ export default function Tabs({
             onClick={() => !tab.disabled && handleTabChange(tab.value)}
             onKeyDown={(e) => !tab.disabled && handleKeyDown(e, index)}
             className={cn(
-              "font-bold rounded-[0.8rem] transition-all duration-200",
-              "capitalize",
+              "font-normal rounded-[0.8rem] transition-all duration-200",
               sizeClasses[size],
               fullWidth && "flex-1",
               getTabVariantClasses(isActive),
               tab.disabled && "opacity-50 cursor-not-allowed",
               !tab.disabled && "cursor-pointer",
-              variant === "underline" && "rounded-none"
+              variant === "underline" && "rounded-none",
+              isActive ? labelClassName : inactiveLabelClassName,
             )}
           >
             {tab.label}

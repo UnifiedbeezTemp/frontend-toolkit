@@ -15,6 +15,7 @@ export interface DropdownProps {
   buttonClassName?: string;
   labelClassName?: string;
   hideLabelOnMobile?: boolean;
+  dropdownClasses?: string
 }
 
 export default function Dropdown({
@@ -27,6 +28,7 @@ export default function Dropdown({
   buttonClassName,
   labelClassName,
   hideLabelOnMobile = true,
+  dropdownClasses
 }: DropdownProps) {
   const {
     isOpen,
@@ -89,7 +91,7 @@ export default function Dropdown({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-full bg-primary border border-input-stroke rounded-[1.2rem] shadow-lg z-[50] overflow-hidden">
+        <div className={cn("absolute top-full right-0 mt-2 w-full bg-primary border border-input-stroke rounded-[1.2rem] shadow-lg z-[50] overflow-hidden", dropdownClasses)}>
           {options.map((option) => (
             <button
               key={option.value}

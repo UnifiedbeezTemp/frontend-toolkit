@@ -1,16 +1,18 @@
-import { useFetch } from "../../../hooks/useFetch";
-import { planBaseUrl } from "../../../rootUrls";
-import { OriginalPlan } from "../types";
+import { useAppQuery } from "../../../query";
+import { OriginalplansService } from "../plansServices";
 
 export const usePlans = () => {
-  const { data, loading, error, retry } = useFetch<OriginalPlan[]>(
-    `${planBaseUrl}/all`
+  const { data, isLoading, error, refetch } = useAppQuery(
+    ["plans", "all"],
+    () => OriginalplansService.getAllPlans()
   );
+
+  const errorMessage = error ? (error.message?.message || "An error occurred") : null;
 
   return {
     plans: data || [],
-    loading,
-    error,
-    retry,
+    loading: isLoading,
+    error: errorMessage,
+    retry: refetch,
   };
 };
