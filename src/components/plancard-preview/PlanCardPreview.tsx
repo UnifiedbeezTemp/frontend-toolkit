@@ -27,6 +27,7 @@ export default function PlanCardPreview({
   planType,
   isYearly = false,
   isOneSided = false,
+  enableReturnTo = false,
 }: PlanCardPreviewProps) {
   const { plan: backendPlan, loading, error, retry } = usePlan({ planType });
   const { plan, displayPrice, monthlyPrice } = useCheckoutPlan({
@@ -54,6 +55,7 @@ export default function PlanCardPreview({
     selectedAddons,
     monthlyPrice,
     isYearly,
+    enableReturnTo,
   });
 
   if (loading) {

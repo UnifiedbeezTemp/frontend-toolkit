@@ -39,7 +39,10 @@ export default function PlanCardHeader({
             />
           </Button>
         ) : (
-          <Tooltip content="Add-ons not available on this plan. Upgrade for full access.">
+          <Tooltip
+            content="Add-ons not available on this plan. Upgrade for full access."
+            contentClassName="w-[20rem] text-center"
+          >
             <Button
               variant="secondary"
               className="text-brand-primary p-[0.8rem] text-[1.4rem] text-inactive-color bg-input-filled cursor-default"
