@@ -8,6 +8,7 @@ interface TooltipProps {
   content: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   position?: "top" | "bottom" | "left" | "right";
   isInteractive?: boolean;
 }
@@ -16,6 +17,7 @@ export default function Tooltip({
   content,
   children,
   className = "",
+  contentClassName = "",
   position = "top",
   isInteractive = false,
 }: TooltipProps) {
@@ -37,7 +39,7 @@ export default function Tooltip({
 
   return (
     <div
-      className="relative inline-block"
+      className="relative inline-block a"
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
     >
@@ -55,11 +57,11 @@ export default function Tooltip({
               className
             )}
           >
-            <div className="bg-primary text-text-primary p-[0.6rem] rounded-[0.8rem] shadow-xl text-[1.2rem] font-medium border border-border/10 min-w-max">
+            <div className={cn("bg-primary text-text-primary p-[0.6rem] rounded-[0.8rem] shadow-xl text-[1.2rem] font-medium border border-border/10", contentClassName)}>
               {content}
               <div
                 className={cn(
-                  "absolute w-0 h-0 border-[.6rem] border-transparent",
+                  "absolute w-0 h-0 border-[.6rem] border-transparent max-w-[2rem]",
                   arrowClasses[position]
                 )}
               />

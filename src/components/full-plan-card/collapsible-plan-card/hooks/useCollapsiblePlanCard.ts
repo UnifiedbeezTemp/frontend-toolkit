@@ -1,4 +1,3 @@
-```typescript
 import { Plan } from "../../../../api/services/plan/types";
 
 import { formatPriceFromCents, calculateBillingCyclePrice } from "../../../../utils/priceUtils";
