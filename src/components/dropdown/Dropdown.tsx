@@ -55,7 +55,7 @@ export default function Dropdown({
         type="button"
         onClick={toggleDropdown}
         className={cn(
-          "group flex items-center justify-between w-full h-14 p-[1.4rem] rounded-[1.2rem] border transition-all text-[1.6rem] duration-300 font-medium",
+          "group flex items-center justify-between w-full py-[.8rem] px-[1.4rem] rounded-[.8rem] border transition-all text-[1.6rem] duration-300 font-medium",
           value
             ? "text-text-primary border-input-stroke bg-primary"
             : "bg-primary text-text-primary border-input-stroke",

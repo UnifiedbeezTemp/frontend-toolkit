@@ -64,11 +64,9 @@ export const usePlanCardPreview = ({
 
   const handleUpgradeClick = () => {
     if (enableReturnTo && typeof window !== "undefined") {
-      const currentPath = window.location.pathname + window.location.search;
+      const fullUrl = window.location.href;
       const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
-      router.push(
-        `${baseUrl}/plans?returnTo=${encodeURIComponent(currentPath)}`
-      );
+      router.push(`${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`);
     } else {
       router.push("/plans");
     }
@@ -93,7 +91,7 @@ export const usePlanCardPreview = ({
   const totalPrice = calculateTotalWithAddons(
     monthlyPrice,
     addonsTotal,
-    isYearly
+    isYearly,
   );
   const displayPrice = isYearly
     ? Math.floor(monthlyPrice * 12 * 0.85)
