@@ -20,6 +20,8 @@ interface PlanCardProps {
   isCompact?: boolean;
   onAddonsClick?: () => void;
   overridePrice?: number;
+  isCurrentPlan?: boolean;
+  isHero?: boolean;
 }
 
 export default function PlanCard({
@@ -33,6 +35,8 @@ export default function PlanCard({
   isCompact,
   onAddonsClick,
   overridePrice,
+  isCurrentPlan,
+  isHero,
 }: PlanCardProps) {
   const { showFeatures, displayPrice, toggleFeatures } = usePlanCard(
     plan,
@@ -72,6 +76,8 @@ export default function PlanCard({
         ctaText={ctaText}
         onClose={onClose}
         isCompact={isCompact}
+        isCurrentPlan={isCurrentPlan}
+        isHero={isHero}
       />
     </Card>
   );

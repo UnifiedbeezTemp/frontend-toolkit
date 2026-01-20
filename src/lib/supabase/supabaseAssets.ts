@@ -33,7 +33,7 @@ export const SUPABASE_IMAGES = {
   videoThumbnail: "images/videoThumbnail.jpeg",
   logoFull: "images/logo-full.png",
   mobilePhone: "website/mobile-phone.png",
-  channels: "website/channels-one.png",
+  channels: "website/channels.svg",
   phoneUpperHalf: "website/phone-upper-half.png",
   phoneLowerHalf: "website/phone-lower-half.png",
   industry1: "website/industry-1.png",
@@ -51,8 +51,14 @@ export const SUPABASE_IMAGES = {
   gdprCompliant: "website/gdpr-compliant.png",
   metaBusinessPartner: "website/meta-business-partner.png",
   dottedBg: "website/dotted-bg.png",
-  teamInbox: "website/team-inbox-1.png",
+  teamInbox: "website/team-inbox-1.svg",
   websiteHero: "website/website-herof.png",
+  aboutHero1: "website/about-hero-1.svg",
+  aboutHero2: "website/about-hero-2.svg",
+  aboutHero3: "website/about-hero-3.svg",
+  aboutHero4: "website/about-hero-4.svg",
+  aboutHero5: "website/about-hero-5.svg",
+  productScreenshot: "website/product-screenshot.svg",
 } as const;
 
 export const SUPABASE_ICONS = {
@@ -353,7 +359,12 @@ export const SUPABASE_ICONS = {
   mail02: "webchat-link-icons/mail-02.svg",
   mail03: "webchat-link-icons/mail-03.svg",
   mail04: "webchat-link-icons/mail-04.svg",
-};
+  fbWhite: "website/facebook.png",
+  xWhite: "website/x.png",
+  linkedinWhite: "website/linkedin.png",
+  instagramWhite: "website/instagram.png",
+  youtubeWhite: "website/youtube.png"
+}
 
 export const SUPABASE_GIFS = {
   celebrationPopup: "/celebration-v3.gif",
