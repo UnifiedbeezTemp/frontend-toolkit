@@ -1,8 +1,7 @@
 import { AttributeField as AttributeFieldType } from "../../types"
 import { AvatarGroup } from "../../../avatar/AvatarGroup"
-import LinkIcon from "../../../../assets/icons/LinkIcon"
 import { Badge } from "../../../ui/Badge"
-import ChevronDownIcon from "../../../../assets/icons/ChevronDownIcon"
+import { ChevronDown, Link as LinkIcon } from "lucide-react"
 import { isFunction } from "../../../../utils/is"
 import { Icons, IconName } from "./IconsMap"
 import { TagPill } from "../TagPill"
@@ -74,21 +73,21 @@ export function AttributeField({ field }: AttributeFieldProps) {
     }
   }
 
-  const icon = isFunction(Icons[field.icon as IconName])
-    ? Icons[field.icon as IconName]({ size: 24 })
-    : null
+  const Icon = Icons[field.icon as IconName]
 
   return (
-    <div className="grid grid-cols-2 items-center gap-3 py-2.5 px-0 rounded-sm hover:bg-primary group text-base">
+    <div className="grid grid-cols-2 items-center gap-3 py-2.5 px-2 rounded-sm hover:bg-primary group text-base">
       <div className="flex items-center gap-3 min-w-0">
-        <div className="shrink-0 text-dark-base-70">{icon}</div>
+        <div className="shrink-0 text-dark-base-70">
+          {Icon && <Icon size={24} />}
+        </div>
         <span className="text-sm text-dark-base-70">{field.label}</span>
       </div>
 
       <div className="flex items-center justify-between gap-2 text-dark-base-100">
         {renderValue()}
         {field.hasDropdown && (
-          <ChevronDownIcon size={15} className="text-dark-base-70" />
+          <ChevronDown size={15} className="text-dark-base-70" />
         )}
       </div>
     </div>
