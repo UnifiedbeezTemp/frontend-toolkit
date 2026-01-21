@@ -1,8 +1,8 @@
-
 import Image from "next/image";
 import { ComparisonPlan, ComparisonFeature } from "./types";
 import { cn } from "../../lib/utils";
 import Button from "../ui/Button";
+import Tooltip from "../ui/Tooltip";
 
 interface ComparisonDesktopProps {
   plans: ComparisonPlan[];
@@ -41,26 +41,38 @@ export default function ComparisonDesktop({
                     <div className="flex items-center justify-between">
                       {plan.badge}
 
-                      <Button
-                      variant="secondary"
-                      disabled={!plan.addonAvailable}
-                        className={cn(
-                          "flex items-center gap-2 px-3 py-1.5 rounded-lg border border-input-stroke/50 text-[1.2rem] font-medium",
-                          plan.addonAvailable
-                            ? "text-brand-primary bg-primary font-bold"
-                            : "text-muted bg-gray-50"
-                        )}
-                      >
-                        {plan.addonStatus}
-                        {plan.addonAvailable && icons.linkExternal && (
-                          <Image
-                            src={icons.linkExternal as string}
-                            alt="link"
-                            width={12}
-                            height={12}
-                          />
-                        )}
-                      </Button>
+                      {plan.addonAvailable ? (
+                        <Button
+                          variant="secondary"
+                          className={cn(
+                            "flex items-center gap-2 px-3 py-1.5 rounded-lg border border-input-stroke/50 text-[1.2rem] font-medium",
+                            "text-brand-primary bg-primary font-bold",
+                          )}
+                        >
+                          {plan.addonStatus}
+                          {icons.linkExternal && (
+                            <Image
+                              src={icons.linkExternal as string}
+                              alt="link"
+                              width={12}
+                              height={12}
+                            />
+                          )}
+                        </Button>
+                      ) : (
+                        <Tooltip
+                          content="Add-ons not available on this plan. Upgrade for full access."
+                          contentClassName="w-[20rem] text-center"
+                          position="bottom"
+                        >
+                          <Button
+                            variant="secondary"
+                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-input-stroke/50 text-[1.2rem] font-medium text-muted bg-gray-50 cursor-default"
+                          >
+                            {plan.addonStatus}
+                          </Button>
+                        </Tooltip>
+                      )}
                     </div>
 
                     <div>
@@ -111,11 +123,12 @@ export default function ComparisonDesktop({
                         "w-full py-2 text-sm font-bold",
                         plan.id === "business" &&
                           "btn-gradient text-primary border-0",
-                        plan.isCurrentPlan &&
-                          "opacity-50 cursor-not-allowed"
+                        plan.isCurrentPlan && "opacity-50 cursor-not-allowed",
                       )}
                       disabled={plan.isCurrentPlan}
-                      onClick={() => !plan.isCurrentPlan && onSelectPlan?.(plan.id)}
+                      onClick={() =>
+                        !plan.isCurrentPlan && onSelectPlan?.(plan.id)
+                      }
                     >
                       {plan.isCurrentPlan ? "Current Plan" : plan.ctaText}
                     </Button>
