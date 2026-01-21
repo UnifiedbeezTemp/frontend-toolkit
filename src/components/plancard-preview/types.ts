@@ -7,4 +7,5 @@ export interface PlanCardPreviewProps {
   isYearly: boolean;
   isOneSided?: boolean;
   enableReturnTo?: boolean;
+  onSelectPlan?: (planId: string) => void;
 }

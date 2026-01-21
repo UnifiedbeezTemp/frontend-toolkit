@@ -20,6 +20,7 @@ import PlanSelectionRequiredModal from "../plan-selection/modals/PlanSelectionRe
 import PlanPreviewModal from "./components/PlanPreviewModal";
 import PlanPreviewAddons from "./components/PlanPreviewAddons";
 import PlanPreviewPricing from "./components/PlanPreviewPricing";
+import ComparisonModal from "../comparison-table/ComparisonModal";
 
 export default function PlanCardPreview({
   isAddons,
@@ -28,6 +29,7 @@ export default function PlanCardPreview({
   isYearly = false,
   isOneSided = false,
   enableReturnTo = false,
+  onSelectPlan,
 }: PlanCardPreviewProps) {
   const { plan: backendPlan, loading, error, retry } = usePlan({ planType });
   const { plan, displayPrice, monthlyPrice } = useCheckoutPlan({
@@ -47,6 +49,10 @@ export default function PlanCardPreview({
     handleUpgradeClick,
     handleMenuToggle,
     handleSeeDetailsClick,
+    handleComparePlansClick,
+    handlePlanSelect,
+    isComparisonModalOpen,
+    setIsComparisonModalOpen,
     addonsTotal,
     totalPrice,
     addonsToUse,
@@ -56,6 +62,7 @@ export default function PlanCardPreview({
     monthlyPrice,
     isYearly,
     enableReturnTo,
+    onSelectPlan,
   });
 
   if (loading) {
@@ -124,7 +131,7 @@ export default function PlanCardPreview({
           "border border-input-stroke p-[1rem] rounded-[1rem] mt-[2.3rem] layout-body shadow flex flex-col gap-[3.1rem]",
           isOneSided
             ? " sm:flex-col lg:flex-row lg:justify-between"
-            : " sm:flex-row"
+            : " sm:flex-row",
         )}
       >
         <div className={cn("flex-1", isOneSided ? "sm:w-[50%]" : "w-full")}>
@@ -143,7 +150,7 @@ export default function PlanCardPreview({
           <div
             className={cn(
               "flex text-[1.4rem] flex-col mt-[1rem] gap-[1.3rem] sm:gap-[0.4rem]",
-              isOneSided ? "sm:flex-col lg:flex-row" : "sm:flex-row"
+              isOneSided ? "sm:flex-col lg:flex-row" : "sm:flex-row",
             )}
           >
             <p
@@ -151,13 +158,13 @@ export default function PlanCardPreview({
                 "",
                 isOneSided
                   ? "sm:flex-col lg:flex lg:flex-row"
-                  : "sm:flex sm:flex-row gap-[0.4rem] text-[1.4rem]"
+                  : "sm:flex sm:flex-row gap-[0.4rem] text-[1.4rem]",
               )}
             >
               The most important features of your plan.{" "}
-              <Link
-                href="/plans"
-                className="underline font-[700] text-brand-primary flex items-center gap-[1rem]"
+              <button
+                onClick={handleComparePlansClick}
+                className="underline font-[700] text-brand-primary flex items-center gap-[1rem] hover:opacity-80 transition-opacity"
               >
                 Compare plans{" "}
                 <ImageComponent
@@ -167,7 +174,7 @@ export default function PlanCardPreview({
                   height={15}
                   className="lg:hidden"
                 />
-              </Link>
+              </button>
             </p>
           </div>
 
@@ -207,6 +214,12 @@ export default function PlanCardPreview({
       <PlanSelectionRequiredModal
         isOpen={isAddonsModalOpen}
         onClose={() => setIsAddonsModalOpen(false)}
+      />
+
+      <ComparisonModal
+        isOpen={isComparisonModalOpen}
+        onClose={() => setIsComparisonModalOpen(false)}
+        onSelectPlan={handlePlanSelect}
       />
     </>
   );

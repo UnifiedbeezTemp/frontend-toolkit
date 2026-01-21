@@ -13,6 +13,7 @@ interface UsePlanCardPreviewProps {
   monthlyPrice: number;
   isYearly?: boolean;
   enableReturnTo?: boolean;
+  onSelectPlan?: (planId: string) => void;
 }
 
 export const usePlanCardPreview = ({
@@ -21,6 +22,7 @@ export const usePlanCardPreview = ({
   monthlyPrice,
   isYearly = false,
   enableReturnTo = false,
+  onSelectPlan,
 }: UsePlanCardPreviewProps) => {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -28,6 +30,7 @@ export const usePlanCardPreview = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddonsModalOpen, setIsAddonsModalOpen] = useState(false);
+  const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
 
   const { purchasedAddons, isLoading: isPurchasedAddonsLoading } =
     usePurchasedAddons();
@@ -81,6 +84,20 @@ export const usePlanCardPreview = ({
     setIsMenuOpen(false);
   };
 
+  const handleComparePlansClick = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    setIsComparisonModalOpen(true);
+  };
+
+  const handlePlanSelect = (planId: string) => {
+    setIsComparisonModalOpen(false);
+    if (onSelectPlan) {
+      onSelectPlan(planId);
+    } else {
+      router.push(`/plans?plan=${planId}`);
+    }
+  };
+
   const addonsTotal = useMemo(() => {
     if (!addonsToUse || addonsToUse.length === 0) return 0;
     return addonsToUse.reduce((total, addon) => {
@@ -109,6 +126,10 @@ export const usePlanCardPreview = ({
     handleUpgradeClick,
     handleMenuToggle,
     handleSeeDetailsClick,
+    handleComparePlansClick,
+    handlePlanSelect,
+    isComparisonModalOpen,
+    setIsComparisonModalOpen,
     addonsTotal,
     totalPrice,
     router,
