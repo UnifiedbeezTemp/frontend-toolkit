@@ -23,15 +23,11 @@ export const InfoSection: React.FC<InfoSectionProps> = ({
   if (canAddMore) {
     return (
       <div
-        className={`sm:flex md:flex-col lg:flex-row items-start gap-[1.6rem] md:gap-[1.6rem] lg:gap-[1.6rem] border ${borderColor} p-[1.6rem] rounded-[0.8rem] space-y-[1rem] md:space-y-[1.6rem] mb-[4.8rem] md:h-full md:flex md:flex-col md:justify-center`}
+        className={`sm:flex md:flex-col lg:flex-row items-start gap-[1.6rem] md:gap-[1.6rem] lg:gap-[1.6rem] border ${borderColor} p-[1.6rem] rounded-[0.8rem] space-y-[1rem] md:space-y-[1.6rem] mb-[4.8rem] lg:mb-[2rem] md:h-full md:flex md:flex-col md:justify-center`}
       >
-        <ImageComponent
-          src={iconSrc}
-          alt={iconAlt}
-          width={20}
-          height={20}
-          className="md:w-[24px] md:h-[24px] md:mx-auto"
-        />
+        <div className="shrink-0">
+          <ImageComponent src={iconSrc} alt={iconAlt} width={24} height={24} />
+        </div>
         <div>
           <Heading size="sm">Booking additional Extra {addon?.name}</Heading>
           <Text size="sm">
@@ -48,7 +44,9 @@ export const InfoSection: React.FC<InfoSectionProps> = ({
     <div
       className={`sm:flex md:flex-col lg:flex-row items-start gap-[1.6rem] md:gap-[0rem] lg:gap-[1.6rem] border ${borderColor} p-[1.6rem] rounded-[0.8rem] space-y-[1rem] mb-[4.8rem] md:h-full md:flex md:flex-col md:justify-center`}
     >
-      <ImageComponent src={iconSrc} alt={iconAlt} width={20} height={20} />
+      <div className="shrink-0">
+        <ImageComponent src={iconSrc} alt={iconAlt} width={24} height={24} />
+      </div>
       <div className="">
         <Heading size="sm">
           You reached your limit for {addon?.name} for this plan

@@ -20,7 +20,7 @@ export default function ChatHeader({
 
       <button
         onClick={onRefresh}
-        className="p-[0.8rem] rounded-[0.8rem] bg-white text-[1.4rem] text-brand-primary flex items-center gap-[0.8rem] hover:scale-90 transition-all"
+        className="p-[0.8rem] rounded-[0.8rem] bg-primary text-[1.4rem] text-brand-primary flex items-center gap-[0.8rem] hover:scale-90 transition-all"
       >
         <ImageComponent
           src={icons.refreshGreen}

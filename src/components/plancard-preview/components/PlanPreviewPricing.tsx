@@ -8,7 +8,6 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 
 interface PlanPreviewPricingProps {
   totalPrice: number;
-  displayPrice: number;
   addonsTotal: number;
   isYearly: boolean;
   isOneSided: boolean;
@@ -22,7 +21,6 @@ interface PlanPreviewPricingProps {
 
 export default function PlanPreviewPricing({
   totalPrice,
-  displayPrice,
   addonsTotal,
   isYearly,
   isOneSided,
@@ -46,22 +44,26 @@ export default function PlanPreviewPricing({
     >
       <div className="sm:mb-[-1rem] md:text-right">
         <span className="text-[4rem] font-[700] text-brand-primary">
-          £{addonsTotal > 0 ? totalPrice : displayPrice}
+          £{totalPrice}
         </span>
         <span className="text-[1rem] font-[700] text-text-primary">
           /per {isYearly ? "year" : "month"}
         </span>
       </div>
 
-      <div className="flex gap-[1rem]">
-        <Button
-          className={cn(" px-[1.6rem]", isOneSided ? "w-full" : "w-full")}
-          onClick={onUpgradeClick}
-        >
-          {planType?.toLowerCase() === "organisation"
-            ? "Talk to Sales"
-            : "Upgrade Plan"}
-        </Button>
+      <div className="flex gap-[1rem] w-full">
+        {planType?.toLowerCase() === "organisation" ? (
+          <div className="w-full px-[1.6rem] py-[1.2rem] bg-brand-primary text-white text-center rounded-[0.8rem] font-[700] text-[1.4rem]">
+            Talk to Sales
+          </div>
+        ) : (
+          <Button
+            className={cn(" px-[1.6rem]", isOneSided ? "w-full" : "w-full")}
+            onClick={onUpgradeClick}
+          >
+            Upgrade Plan
+          </Button>
+        )}
         <div className="relative" ref={menuRef}>
           <Button variant="secondary" className="h-full" onClick={onMenuToggle}>
             <DotsMenu />

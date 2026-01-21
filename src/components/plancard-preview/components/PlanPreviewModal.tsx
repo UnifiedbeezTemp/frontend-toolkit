@@ -9,6 +9,7 @@ interface PlanPreviewModalProps {
   onClose: () => void;
   plan: Plan;
   isYearly: boolean;
+  totalPrice: number;
   onAddonsClick: () => void;
   onSelect: () => void;
 }
@@ -18,6 +19,7 @@ export default function PlanPreviewModal({
   onClose,
   plan,
   isYearly,
+  totalPrice,
   onAddonsClick,
   onSelect,
 }: PlanPreviewModalProps) {
@@ -28,11 +30,11 @@ export default function PlanPreviewModal({
         isYearly={isYearly}
         isSelected={true}
         onSelect={onSelect}
-        ctaText={plan.id === "organisation" ? "Talk to Sales" : "Upgrade Plan"}
+        overridePrice={totalPrice}
         onClose={onClose}
         onAddonsClick={onAddonsClick}
         isCompact={true}
-        className={"layout-body max-w-[30rem]"}
+        className={"layout-body max-w-[30rem] border-0"}
       />
     </Modal>
   );

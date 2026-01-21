@@ -1,41 +1,41 @@
-"use client"
+"use client";
 
-import Modal from "./Modal"
-import CloseModalButton from "./CloseModalButton"
-import Button from "../ui/Button"
-import Heading from "../ui/Heading"
-import Text from "../ui/Text"
-import ImageComponent from "../ui/ImageComponent"
+import Modal from "./Modal";
+import CloseModalButton from "./CloseModalButton";
+import Button from "../ui/Button";
+import Heading from "../ui/Heading";
+import Text from "../ui/Text";
+import ImageComponent from "../ui/ImageComponent";
 
 export interface IconActionModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
   icon: {
-    src: string
-    alt: string
-    width?: number
-    height?: number
-  }
-  title: string
-  description?: string
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  };
+  title: string;
+  description?: string;
   primaryAction: {
-    label: string
-    onClick: () => void
-    variant?: "primary" | "secondary" | "outline" | "ghost" | "danger"
-    loading?: boolean
-    disabled?: boolean
-  }
+    label: string;
+    onClick: () => void;
+    variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+    loading?: boolean;
+    disabled?: boolean;
+  };
   secondaryAction?: {
-    label: string
-    onClick: () => void
-    variant?: "primary" | "secondary" | "outline" | "ghost" | "danger"
-    loading?: boolean
-    disabled?: boolean
-  }
-  iconContainerClassName?: string
-  iconClassName?: string
-  modalClassName?: string
-  showCloseButton?: boolean
+    label: string;
+    onClick: () => void;
+    variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+    loading?: boolean;
+    disabled?: boolean;
+  };
+  iconContainerClassName?: string;
+  iconClassName?: string;
+  modalClassName?: string;
+  showCloseButton?: boolean;
 }
 
 export default function IconActionModal({
@@ -57,7 +57,7 @@ export default function IconActionModal({
       onClose={onClose}
       className={
         modalClassName ||
-        "bg-white rounded-[2.2rem] p-6 md:p-8 w-[90dvw] max-w-100"
+        "bg-primary rounded-[2.2rem] p-6 md:p-8 w-[90dvw] max-w-100"
       }
     >
       <div className="relative">
@@ -74,10 +74,7 @@ export default function IconActionModal({
         </div>
         {showCloseButton && (
           <div className="absolute top-0 right-0">
-            <CloseModalButton
-              onClick={onClose}
-              className="bg-input-filled"
-            />
+            <CloseModalButton onClick={onClose} className="bg-input-filled" />
           </div>
         )}
         <div className="pt-16 pb-6">
@@ -119,5 +116,5 @@ export default function IconActionModal({
         </div>
       </div>
     </Modal>
-  )
+  );
 }

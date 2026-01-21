@@ -24,32 +24,38 @@ export default function MobileBottomRow({
   const canChangeRole = !(isCurrentUser && isOwner);
   const isLoading = isRemoving || isCanceling || isAssigningRole;
   const hideOwnerControls = type === "members" && isCurrentUser && isOwner;
-  
+
   return (
     <div className="flex items-center justify-between">
       {user.status !== "active" && user.status !== "draft" ? (
         <StatusBadge status={user.status} getStatusStyles={getStatusStyles} />
-      ): <div></div>}
+      ) : (
+        <div></div>
+      )}
 
-        <div className="flex items-center gap-[0.5rem]">
+      <div className="flex items-center gap-[0.5rem]">
         {!hideOwnerControls && (isDraft || type === "members") && (
           <RoleDropdown
             currentRole={user.role}
             onRoleChange={onRoleChange}
             disabled={
-              user.status === "denied" || isSendingInvite || !canChangeRole || isLoading
+              user.status === "denied" ||
+              isSendingInvite ||
+              !canChangeRole ||
+              isLoading
             }
             loading={isAssigningRole}
           />
         )}
-        {!hideOwnerControls &&
-          (isDraft ? (
-            <SendInviteButton
-              onClick={onSendInvite || (() => {})}
-              loading={isSendingInvite}
-              mobile
-            />
-          ) : (
+        {!hideOwnerControls && (
+          <>
+            {isDraft && (
+              <SendInviteButton
+                onClick={onSendInvite || (() => {})}
+                loading={isSendingInvite}
+                mobile
+              />
+            )}
             <RemoveButton
               type={type}
               status={user.status}
@@ -58,7 +64,8 @@ export default function MobileBottomRow({
               disabled={isCurrentUser}
               loading={isLoading}
             />
-          ))}
+          </>
+        )}
       </div>
     </div>
   );

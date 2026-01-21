@@ -1,6 +1,6 @@
-import React from "react"
-import { motion } from "framer-motion"
-import { cn } from "../../lib/utils"
+import React from "react";
+import { motion } from "framer-motion";
+import { cn } from "../../lib/utils";
 
 /**
  * REUSABLE BUTTON COMPONENT
@@ -27,18 +27,16 @@ import { cn } from "../../lib/utils"
  */
 
 interface IconButtonProps {
-  onClick?: () => void
-  variant?:
-    | "primary"
-    | "secondary"
-  size?: "sm" | "md" | "lg"
-  disabled?: boolean
-  loading?: boolean
-  type?: "button" | "submit" | "reset"
-  className?: string
-  icon: React.ReactNode
-  ref?: React.RefObject<HTMLButtonElement | null>
-  ariaLabel: string
+  onClick?: () => void;
+  variant?: "primary" | "secondary";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  loading?: boolean;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  icon: React.ReactNode;
+  ref?: React.RefObject<HTMLButtonElement | null>;
+  ariaLabel: string;
 }
 
 export default function IconButton({
@@ -55,25 +53,25 @@ export default function IconButton({
   ...props
 }: IconButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-[0.8rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]"
+    "inline-flex items-center justify-center font-medium rounded-[0.8rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]";
 
   const variantClasses = {
     primary:
       "bg-brand-primary text-white border border-brand-primary not-disabled:hover:bg-primary not-disabled:hover:text-brand-primary not-disabled:hover:border-brand-primary hover:shadow-md",
     secondary:
-      "grid place-items-center rounded-xl bg-white text-dark-base-70 border-input-stroke border hover:bg-gray-50 active:scale-[0.98] transition",
-  }
+      "grid place-items-center rounded-xl bg-primary text-dark-base-70 border-input-stroke border hover:bg-gray-50 active:scale-[0.98] transition",
+  };
 
   const sizeClasses = {
     sm: "h-8 w-8",
     md: "h-10 w-10",
     lg: "h-8 w-8",
-  }
+  };
 
   const stateClasses = {
     disabled: "opacity-50 cursor-not-allowed",
     loading: "cursor-wait",
-  }
+  };
 
   return (
     <motion.button
@@ -102,5 +100,5 @@ export default function IconButton({
         icon
       )}
     </motion.button>
-  )
+  );
 }

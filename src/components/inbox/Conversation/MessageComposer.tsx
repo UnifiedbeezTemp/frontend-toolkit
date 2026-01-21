@@ -1,9 +1,9 @@
-import { ReactNode } from "react"
-import { cn } from "../../../lib/utils"
-import { PaperclipIcon } from "../../../assets/icons/PaperclipIcon"
-import { SmileIcon } from "../../../assets/icons/SmileIcon"
-import { SendIcon } from "../../../assets/icons/SendIcon"
-import IconButton from "../../ui/IconButton"
+import { ReactNode } from "react";
+import { cn } from "../../../lib/utils";
+import { PaperclipIcon } from "../../../assets/icons/PaperclipIcon";
+import { SmileIcon } from "../../../assets/icons/SmileIcon";
+import { SendIcon } from "../../../assets/icons/SendIcon";
+import IconButton from "../../ui/IconButton";
 
 export default function MessageComposer({
   value,
@@ -17,24 +17,24 @@ export default function MessageComposer({
   leftIcon,
   emojiIcon,
 }: {
-  value: string
-  onChange: (v: string) => void
-  onSend?: () => void
-  onAttach?: () => void
-  onEmoji?: () => void
-  placeholder?: string
-  disabled?: boolean
-  className?: string
-  leftIcon?: ReactNode
-  emojiIcon?: ReactNode
+  value: string;
+  onChange: (v: string) => void;
+  onSend?: () => void;
+  onAttach?: () => void;
+  onEmoji?: () => void;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+  leftIcon?: ReactNode;
+  emojiIcon?: ReactNode;
 }) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (disabled) return
+    if (disabled) return;
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      onSend?.()
+      e.preventDefault();
+      onSend?.();
     }
-  }
+  };
 
   return (
     <div className={cn("flex items-center gap-3.75", className)}>
@@ -53,7 +53,7 @@ export default function MessageComposer({
       </button>
       <div
         className={cn(
-          "flex h-14 flex-1 items-center gap-3 rounded-2xl border-[0.5px] border-input-stroke bg-white px-2.5 md:px-3 lg:px-2 py-2 shadow-sm"
+          "flex h-14 flex-1 items-center gap-3 rounded-2xl border-[0.5px] border-input-stroke bg-primary px-2.5 md:px-3 lg:px-2 py-2 shadow-sm"
         )}
       >
         <input
@@ -93,5 +93,5 @@ export default function MessageComposer({
         ariaLabel={"Send"}
       />
     </div>
-  )
+  );
 }

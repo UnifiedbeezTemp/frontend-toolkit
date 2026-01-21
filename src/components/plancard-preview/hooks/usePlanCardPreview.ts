@@ -5,17 +5,24 @@ import { useRouter } from "next/navigation";
 import { Plan } from "../../../api/services/plan/types";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
 import { usePurchasedAddons } from "./usePurchasedAddons";
+import { calculateTotalWithAddons } from "../../../utils/priceUtils";
 
 interface UsePlanCardPreviewProps {
   plan: Plan | null;
   selectedAddons?: Addon[];
-  displayPrice: number;
+  monthlyPrice: number;
+  isYearly?: boolean;
+  enableReturnTo?: boolean;
+  onSelectPlan?: (planId: string) => void;
 }
 
 export const usePlanCardPreview = ({
   plan,
   selectedAddons,
-  displayPrice,
+  monthlyPrice,
+  isYearly = false,
+  enableReturnTo = false,
+  onSelectPlan,
 }: UsePlanCardPreviewProps) => {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -23,6 +30,7 @@ export const usePlanCardPreview = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddonsModalOpen, setIsAddonsModalOpen] = useState(false);
+  const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
 
   const { purchasedAddons, isLoading: isPurchasedAddonsLoading } =
     usePurchasedAddons();
@@ -46,14 +54,25 @@ export const usePlanCardPreview = ({
 
   const handleAddonsClick = () => {
     if (plan) {
-      router.push("/addons");
+      const params = new URLSearchParams();
+      if (isYearly) {
+        params.set("isYearly", "true");
+      }
+      const queryString = params.toString();
+      router.push(`/addons${queryString ? `?${queryString}` : ""}`);
     } else {
       setIsAddonsModalOpen(true);
     }
   };
 
   const handleUpgradeClick = () => {
-    router.push("/plans");
+    if (enableReturnTo && typeof window !== "undefined") {
+      const fullUrl = window.location.href;
+      const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
+      router.push(`${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`);
+    } else {
+      router.push("/plans");
+    }
   };
 
   const handleMenuToggle = () => {
@@ -65,6 +84,20 @@ export const usePlanCardPreview = ({
     setIsMenuOpen(false);
   };
 
+  const handleComparePlansClick = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    setIsComparisonModalOpen(true);
+  };
+
+  const handlePlanSelect = (planId: string) => {
+    setIsComparisonModalOpen(false);
+    if (onSelectPlan) {
+      onSelectPlan(planId);
+    } else {
+      router.push(`/plans?plan=${planId}`);
+    }
+  };
+
   const addonsTotal = useMemo(() => {
     if (!addonsToUse || addonsToUse.length === 0) return 0;
     return addonsToUse.reduce((total, addon) => {
@@ -72,7 +105,14 @@ export const usePlanCardPreview = ({
     }, 0);
   }, [addonsToUse]);
 
-  const totalPrice = displayPrice + addonsTotal;
+  const totalPrice = calculateTotalWithAddons(
+    monthlyPrice,
+    addonsTotal,
+    isYearly,
+  );
+  const displayPrice = isYearly
+    ? Math.floor(monthlyPrice * 12 * 0.85)
+    : monthlyPrice;
 
   return {
     isMenuOpen,
@@ -86,6 +126,10 @@ export const usePlanCardPreview = ({
     handleUpgradeClick,
     handleMenuToggle,
     handleSeeDetailsClick,
+    handleComparePlansClick,
+    handlePlanSelect,
+    isComparisonModalOpen,
+    setIsComparisonModalOpen,
     addonsTotal,
     totalPrice,
     router,

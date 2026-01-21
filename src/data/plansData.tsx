@@ -4,7 +4,7 @@ import { useSupabaseIcons } from "../lib/supabase/useSupabase";
 
 export const transformOriginalPlan = (
   originalPlan: OriginalPlan,
-  icons: ReturnType<typeof useSupabaseIcons>
+  icons: ReturnType<typeof useSupabaseIcons>,
 ): Plan => {
   const planType = originalPlan.planType.toLowerCase();
 
@@ -92,9 +92,7 @@ export const transformOriginalPlan = (
     formatAiAssistants(originalPlan.maxAiAssistants),
     getChannels(originalPlan),
     originalPlan.supportLevel.replace("_", " "),
-    ...(originalPlan.hasCrmCalendarSync
-      ? ["CRM/Calendar\nIncluded"]
-      : []),
+    ...(originalPlan.hasCrmCalendarSync ? ["CRM/Calendar\nIncluded"] : []),
     ...(originalPlan.hasEcommercePack ? ["E-commerce Pack\nIncluded"] : []),
     ...(originalPlan.canPurchaseAddons ? ["Add-ons allowed"] : []),
   ];
@@ -113,7 +111,7 @@ export const transformOriginalPlan = (
     description: `${originalPlan.name} for custom AI & Chat Automation`,
     tag: config.tag,
     badge: config.badge,
-    monthlyPrice: originalPlan.priceEur,
+    monthlyPrice: originalPlan.priceEur / 100,
     addonAvailable: originalPlan.canPurchaseAddons,
     availableFeatures,
     unAvailableFeatures,
@@ -126,14 +124,14 @@ export const transformOriginalPlan = (
 
 export const getPlansData = (
   originalPlans: OriginalPlan[],
-  icons: ReturnType<typeof useSupabaseIcons>
+  icons: ReturnType<typeof useSupabaseIcons>,
 ): Plan[] => {
   return originalPlans?.map((plan) => transformOriginalPlan(plan, icons));
 };
 
 export const getPlanByType = (
   originalPlan: OriginalPlan,
-  icons: ReturnType<typeof useSupabaseIcons>
+  icons: ReturnType<typeof useSupabaseIcons>,
 ): Plan => {
   return transformOriginalPlan(originalPlan, icons);
 };

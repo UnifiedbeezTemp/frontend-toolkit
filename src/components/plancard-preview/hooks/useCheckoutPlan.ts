@@ -4,6 +4,11 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import { OriginalPlan } from "../../../api/services/plan/types";
 import { getPlanByType } from "../../../data/plansData";
 
+import {
+  formatPriceRaw,
+  calculateBillingCyclePrice,
+} from "../../../utils/priceUtils";
+
 export const useCheckoutPlan = ({
   backendPlan,
   isYearly,
@@ -14,15 +19,13 @@ export const useCheckoutPlan = ({
   const icons = useSupabaseIcons();
   const plan = backendPlan ? getPlanByType(backendPlan, icons) : null;
 
-  const calculatePrice = (monthlyPrice: number) => {
-    return isYearly ? Math.floor(monthlyPrice * 12 * 0.85) : monthlyPrice;
-  };
-
-  const displayPrice = plan ? calculatePrice(plan.monthlyPrice) : 0;
+  const monthlyPrice = plan ? formatPriceRaw(plan.monthlyPrice) : 0;
+  const displayPrice = calculateBillingCyclePrice(monthlyPrice, isYearly);
 
   return {
     plan,
     isYearly,
+    monthlyPrice,
     displayPrice,
   };
 };

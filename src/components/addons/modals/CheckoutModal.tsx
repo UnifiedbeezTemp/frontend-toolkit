@@ -13,6 +13,7 @@ interface CheckoutModalProps {
   onClose: () => void;
   selectedAddons: Addon[];
   planType: string | undefined;
+  isYearly: boolean;
   onQuantityChange: (id: string, quantity: number) => void;
 }
 
@@ -21,10 +22,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onClose,
   selectedAddons,
   planType,
+  isYearly,
   onQuantityChange,
 }) => {
   const {
     calculateAddonPrice,
+    planFee,
     subtotal,
     vat,
     total,
@@ -33,6 +36,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   } = useCheckoutModal({
     selectedAddons,
     planType,
+    isYearly,
   });
 
   return (
@@ -50,9 +54,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       <CheckoutHeader />
 
       <div className="mt-[4rem]">
-        <div className="flex items-center justify-between text-[1.6rem] text-inactive-color mb-[2.4rem]">
-          <span>Plan</span>
-          <span>{planType || "Selected Plan"}</span>
+        <div className="flex items-center justify-between text-[1.6rem] text-inactive-color mb-[2.4rem] font-bold">
+          <span>Plan Fee</span>
+          <span>£{planFee}</span>
         </div>
 
         {selectedAddons.map((addon) => (

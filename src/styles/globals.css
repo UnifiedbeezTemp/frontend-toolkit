@@ -134,6 +134,7 @@
   --color-gray-20: var(--gray-20);
   --color-gray-15: var(--gray-15);
   --color-primary-blue: var(--primary-blue);
+  --color-dark-stroke: var(--dark-stroke);
   --color-primary-blue-100: var(--primary-blue-100);
   --color-primary-blue-50: var(--primary-blue-50);
   --text-xs: 1rem;
@@ -190,8 +191,10 @@
   --success: #29953e;
   --success-500: #12B76A;
   --primary-blue: #155dfc;
+  --success-500: #12b76a;
+  --primary-blue: #155dfc;
   --primary-blue-100: #2186f8;
-  --primary-blue-50: #15C0E6;
+  --primary-blue-50: #15c0e6;
 
   --input-stroke: #d0d5dd;
   --input-stroke-1: #dedede;
@@ -265,20 +268,31 @@
   --yellow-100-alt: #facc15;
   --gray-900: #101828;
   --gray-600: #475467;
-  --gray-250: #71717A;
+  --gray-250: #71717a;
   --gray-200: #eaecf0;
   --gray-60: #e4e4e4;
   --gray-50: #f9fafb;
   --gray-40: #919191;
-  --gray-45: #A2A2A2;
+  --gray-45: #a2a2a2;
   --gray-35: #c5c6c9;
   --gray-30: #d0d5dd;
   --gray-25: #f8f8f8;
   --gray-20: #f6f6f6;
   --gray-15: #e4e4e4;
+  --dark-stroke: #0b1012;
+
+  /* CRM Specific Status Colors */
+  --crm-status-active-text: #027a48;
+  --crm-status-active-bg: #ecfdf3;
+  --crm-status-unconfirmed-text: #ECB22D;
+  --crm-status-unconfirmed-bg: #fffaeb;
+  --crm-status-unsubscribed-text: #CC0E11;
+  --crm-status-unsubscribed-bg: #fef3f2;
+  --crm-status-bounced-text: #9D9FA0;
+  --crm-status-bounced-bg: #f2f4f7;
 }
 
-.dark {
+/* .dark {
   --background: var(--black-100);
   --primary: var(--black-100);
   --secondary: #ffffff;
@@ -300,7 +314,7 @@
   --mid-green: #0d2b21;
   --light-green: #0a1c15;
   --inactive-color: var(--black-70);
-}
+} */
 
 html {
   font-size: 62.5%;
@@ -419,6 +433,9 @@ button:disabled {
 }
 
 @layer components {
+  .btn-gradient {
+    @apply bg-[linear-gradient(143deg,#053D27_21.47%,#FAB403_289.64%)] shadow-[0_0_0_1px_rgba(0,0,0,0.20),0_1px_4px_0_rgba(0,0,0,0.50),inset_0_2px_3.2px_0_rgba(255,255,255,0.35),0_8px_20px_0_rgba(56,86,32,0.30)] hover:text-white!;
+  }
   .bg-brand-gradient-1 {
     @apply bg-[linear-gradient(180deg,#053d27_0%,#fab403_100%)];
   }

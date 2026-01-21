@@ -8,7 +8,10 @@ interface FilterDropdownProps {
   onClose?: () => void;
 }
 
-export default function FilterDropdown({ section, onClose }: FilterDropdownProps) {
+export default function FilterDropdown({
+  section,
+  onClose,
+}: FilterDropdownProps) {
   const {
     isOpen,
     dropdownRef,
@@ -23,7 +26,7 @@ export default function FilterDropdown({ section, onClose }: FilterDropdownProps
   return (
     <div
       ref={dropdownRef}
-      className="absolute top-full right-0 mt-1 min-w-[28rem] bg-white border border-border rounded-lg shadow-lg z-20"
+      className="absolute top-full right-0 mt-1 min-w-[28rem] bg-primary border border-border rounded-lg shadow-lg z-20"
     >
       <div className="max-h-64 overflow-y-auto">
         {options.map((option) => {
@@ -57,4 +60,3 @@ export default function FilterDropdown({ section, onClose }: FilterDropdownProps
     </div>
   );
 }
-

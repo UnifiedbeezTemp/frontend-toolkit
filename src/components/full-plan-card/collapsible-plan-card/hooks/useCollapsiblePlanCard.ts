@@ -1,14 +1,14 @@
 import { Plan } from "../../../../api/services/plan/types";
 
-export const useCollapsiblePlanCard = (plan: Plan, isYearly: boolean) => {
-  const calculatePrice = (monthlyPrice: number) => {
-    return isYearly ? Math.floor(monthlyPrice * 12 * 0.85) : monthlyPrice;
-  };
+import { formatPriceFromCents, calculateBillingCyclePrice } from "../../../../utils/priceUtils";
 
-  const displayPrice = calculatePrice(plan.monthlyPrice);
+export const useCollapsiblePlanCard = (plan: Plan, isYearly: boolean) => {
+  const displayPrice = calculateBillingCyclePrice(
+    formatPriceFromCents(plan.monthlyPrice),
+    isYearly
+  );
 
   return {
     displayPrice,
   };
 };
-
