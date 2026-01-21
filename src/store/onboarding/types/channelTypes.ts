@@ -1,4 +1,5 @@
-import { SelectedChannel, BackendChannel } from "@/shared/src/types/channelApiTypes";
+import { BackendChannel, SelectedChannel } from "../../../types/channelApiTypes";
+
 
 export interface Channel extends Omit<SelectedChannel, 'id' | 'availableChannel'> {
   name: string;
