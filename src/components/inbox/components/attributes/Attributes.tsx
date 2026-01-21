@@ -1,4 +1,4 @@
-import TimesIcon from "../../../../assets/icons/TimesIcon"
+import { X } from "lucide-react"
 import IconButton from "../../../ui/IconButton"
 import { attributesData } from "../../temp/attributesData"
 import InboxSearchBar from "../SearchBar"
@@ -21,7 +21,7 @@ export default function Attributes({ onCancel }: { onCancel?: () => void }) {
           variant="secondary"
           onClick={onCancel}
           className="text-gray-400 hover:text-gray-600 transition-colors"
-          icon={<TimesIcon />}
+          icon={<X />}
         />
       </div>
 

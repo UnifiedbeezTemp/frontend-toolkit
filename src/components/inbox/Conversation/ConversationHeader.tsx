@@ -34,12 +34,7 @@ export function ConversationHeader({
   onBack?: () => void
 }) {
   const { arrowLeft } = useSupabaseIcons()
-  const tagNode =
-    typeof tag === "string" ? (
-      <TagPill className="text-gray-700" label={tag} />
-    ) : (
-      tag
-    )
+  const tagNode = typeof tag === "string" ? <TagPill label={tag} /> : tag
   const {
     value: isMobileActionsOpen,
     setFalse: closeMobileActions,

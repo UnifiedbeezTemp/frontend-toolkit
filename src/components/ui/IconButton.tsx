@@ -1,6 +1,6 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { cn } from "../../lib/utils";
+import React, { useMemo } from "react"
+import { motion } from "framer-motion"
+import { cn } from "../../lib/utils"
 
 /**
  * REUSABLE BUTTON COMPONENT
@@ -27,16 +27,17 @@ import { cn } from "../../lib/utils";
  */
 
 interface IconButtonProps {
-  onClick?: () => void;
-  variant?: "primary" | "secondary";
-  size?: "sm" | "md" | "lg";
-  disabled?: boolean;
-  loading?: boolean;
-  type?: "button" | "submit" | "reset";
-  className?: string;
-  icon: React.ReactNode;
-  ref?: React.RefObject<HTMLButtonElement | null>;
-  ariaLabel: string;
+  onClick?: () => void
+  variant?: "primary" | "secondary"
+  size?: "sm" | "md" | "lg"
+  disabled?: boolean
+  loading?: boolean
+  type?: "button" | "submit" | "reset"
+  className?: string
+  icon: React.ReactNode
+  ref?: React.RefObject<HTMLButtonElement | null>
+  ariaLabel: string
+  as?: string
 }
 
 export default function IconButton({
@@ -50,6 +51,7 @@ export default function IconButton({
   ariaLabel,
   icon,
   ref,
+  as = "button",
   ...props
 }: IconButtonProps) {
   const baseClasses =
@@ -73,25 +75,34 @@ export default function IconButton({
     loading: "cursor-wait",
   };
 
+  // Get the motion component - memoized to avoid creating during render
+  const MotionComponent = useMemo(() => {
+    if (!as || as === "button") return motion.button
+    const motionRecord = motion as unknown as Record<string, React.ElementType>
+    return (motionRecord[as] || motion.button) as typeof motion.button
+  }, [as])
+
+  const componentProps = {
+    ...props,
+    type: as === "button" ? type : undefined,
+    "aria-label": ariaLabel,
+    onClick,
+    disabled: disabled || loading,
+    className: cn(
+      baseClasses,
+      variantClasses[variant],
+      sizeClasses[size],
+      (disabled || loading) && stateClasses.disabled,
+      loading && stateClasses.loading,
+      !disabled && !loading && "active:scale-90",
+      className
+    ),
+    whileTap: { scale: disabled || loading ? 1 : 0.98 },
+    ref,
+  }
+
   return (
-    <motion.button
-      {...props}
-      type={type}
-      aria-label={ariaLabel}
-      onClick={onClick}
-      disabled={disabled || loading}
-      className={cn(
-        baseClasses,
-        variantClasses[variant],
-        sizeClasses[size],
-        (disabled || loading) && stateClasses.disabled,
-        loading && stateClasses.loading,
-        !disabled && !loading && "active:scale-90",
-        className
-      )}
-      whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
-      ref={ref}
-    >
+    <MotionComponent {...componentProps}>
       {loading ? (
         <div className="flex items-center gap-2">
           <div className="w-[2rem] h-[2rem] border border-current border-t-transparent rounded-full animate-spin" />
@@ -99,6 +110,6 @@ export default function IconButton({
       ) : (
         icon
       )}
-    </motion.button>
-  );
+    </MotionComponent>
+  )
 }

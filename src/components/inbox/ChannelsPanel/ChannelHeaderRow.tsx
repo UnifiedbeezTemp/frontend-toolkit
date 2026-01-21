@@ -8,14 +8,20 @@ import Button from "../../ui/Button";
 import Checkbox from "../../ui/CheckBox";
 import ImageComponent from "../../ui/ImageComponent";
 import ChannelItemCard from "./ChannelItemCard";
+import ConnectChannelsModal from "../ConnectChannelsModal"
 
 export default function ChannelHeaderRow({
   channel,
 }: {
   channel: { label: string };
 }) {
-  const icons = useSupabaseIcons();
-  const { value: isOpen, toggle: onToggle } = useToggle();
+  const icons = useSupabaseIcons()
+  const { value: isOpen, toggle: onToggle } = useToggle()
+  const {
+    value: showConnectModal,
+    setTrue: openConnectModal,
+    setFalse: closeConnectModal,
+  } = useToggle()
   return (
     <ExpandableCard
       title={channel.label}
@@ -75,11 +81,21 @@ export default function ChannelHeaderRow({
           <Button
             variant="primary"
             className="text-[1rem] font-bold py-2 w-full"
+            onClick={openConnectModal}
           >
             See all
           </Button>
         </div>
       </div>
+      <ConnectChannelsModal
+        isOpen={showConnectModal}
+        onClose={closeConnectModal}
+        selectedChannelId={
+          channel.label.toLowerCase() === "whatsapp"
+            ? "whatsapp"
+            : channel.label.toLowerCase().replace(/\s+/g, "-")
+        }
+      />
     </ExpandableCard>
   );
 }
