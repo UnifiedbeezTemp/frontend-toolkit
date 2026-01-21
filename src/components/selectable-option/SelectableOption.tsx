@@ -1,5 +1,5 @@
-import { CheckboxVisual, RadioVisual } from "./SelectedVisual"
-import { cn } from "../../lib/utils"
+import { CheckboxVisual, RadioVisual } from "./SelectedVisual";
+import { cn } from "../../lib/utils";
 
 interface SelectableOptionProps {
   label: React.ReactNode
@@ -41,9 +41,9 @@ export default function SelectableOption({
           : "flex-row",
         selected
           ? selectedBgClassName
-            ? `${selectedBgClassName} bg-white`
+            ? `${selectedBgClassName} bg-primary`
             : "bg-gradient-yellow-1"
-          : "bg-white",
+          : "bg-primary",
         className
       )}
     >
@@ -58,5 +58,5 @@ export default function SelectableOption({
         </>
       )}
     </button>
-  )
+  );
 }

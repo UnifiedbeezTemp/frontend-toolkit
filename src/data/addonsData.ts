@@ -15,26 +15,30 @@ export const transformApiAddonsToUiAddons = (
       case "EXTRA_AI_ASSISTANT":
         uiId = "ai-assistant";
         icon = icons.usersCheck;
-        limitText = addon.maxQuantity 
-          ? `Max Assistants: ${addon.maxQuantity} assistants` 
+        limitText = addon.maxQuantity
+          ? `Max Assistants: ${addon.maxQuantity} assistants`
           : "Unlimited assistants";
         break;
       case "EXTRA_SEAT":
         uiId = "seats";
         icon = icons.seatsIcon;
-        limitText = addon.maxQuantity 
-          ? `Limit: Up to ${addon.maxQuantity} seats` 
+        limitText = addon.maxQuantity
+          ? `Limit: Up to ${addon.maxQuantity} seats`
           : "Unlimited seats";
         break;
       case "EXTRA_WHATSAPP_CHANNEL":
         uiId = "whatsapp-channel";
         icon = icons.riWhatsappLine;
-        limitText = `Limit: ${addon.maxQuantity || "Unlimited"} WhatsApp number${addon.maxQuantity !== 1 ? "s" : ""}`;
+        limitText = `Limit: ${
+          addon.maxQuantity || "Unlimited"
+        } WhatsApp number${addon.maxQuantity !== 1 ? "s" : ""}`;
         break;
       case "MULTI_LANGUAGE_AI":
         uiId = "multi-language";
         icon = icons.languageIcon;
-        limitText = `Limit: ${addon.maxQuantity || "Unlimited"} language${addon.maxQuantity !== 1 ? "s" : ""}`;
+        limitText = `Limit: ${addon.maxQuantity || "Unlimited"} language${
+          addon.maxQuantity !== 1 ? "s" : ""
+        }`;
         break;
       case "WHITE_LABEL_PORTAL":
         uiId = "white-label";
@@ -45,22 +49,27 @@ export const transformApiAddonsToUiAddons = (
         uiId = "sms-pack";
         icon = icons.tabblerBrandTwillo;
         // User's description: "1000 SMS/messaging credits"
-        limitText = "Limit: 1 phone number/per 1,000 messages"; 
+        limitText = "Limit: 1 phone number/per 1,000 messages";
         break;
       case "TWILIO_VOICE_PACK":
         uiId = "voice-call";
         icon = icons.tabblerBrandTwillo;
-        limitText = `Limit: ${addon.maxQuantity || "Unlimited"} phone number${addon.maxQuantity !== 1 ? "s" : ""}`;
+        limitText = `Limit: ${addon.maxQuantity || "Unlimited"} phone number${
+          addon.maxQuantity !== 1 ? "s" : ""
+        }`;
         break;
       case "CRM_CALENDAR_SYNC":
         uiId = "crm-sync";
         icon = icons.lucideCalender;
-        limitText = addon.maxQuantity === 1 ? "Optional" : `Up to ${addon.maxQuantity}`;
+        limitText =
+          addon.maxQuantity === 1 ? "Optional" : `Up to ${addon.maxQuantity}`;
         break;
       case "ECOMMERCE_PACK":
         uiId = "ecommerce-pack";
         icon = icons.ecommerceApparel;
-        limitText = `Limit: ${addon.maxQuantity || "Unlimited"} Store${addon.maxQuantity !== 1 ? "s" : ""}`;
+        limitText = `Limit: ${addon.maxQuantity || "Unlimited"} Store${
+          addon.maxQuantity !== 1 ? "s" : ""
+        }`;
         break;
       case "PRIORITY_SUPPORT":
         uiId = "priority-support";
@@ -69,7 +78,7 @@ export const transformApiAddonsToUiAddons = (
         break;
       case "RESELLER_AGENCY_PORTAL":
         uiId = "reseller-portal";
-        icon = icons.websiteActive; 
+        icon = icons.websiteActive;
         limitText = `Limit: ${addon.maxQuantity || "Unlimited"}`;
         break;
       default:
@@ -90,8 +99,7 @@ export const transformApiAddonsToUiAddons = (
       limitText: limitText,
       icon: icon,
       addonType: addon.type,
+      used: 0,
     };
   });
 };
-
-

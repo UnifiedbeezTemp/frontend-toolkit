@@ -1,7 +1,7 @@
-import Modal from "../modal/Modal"
-import CloseModalButton from "../modal/CloseModalButton"
-import { cn } from "../../lib/utils"
-import { ErrorModalLayoutProps } from "./types"
+import Modal from "../modal/Modal";
+import CloseModalButton from "../modal/CloseModalButton";
+import { cn } from "../../lib/utils";
+import { ErrorModalLayoutProps } from "./types";
 
 export default function ErrorModalLayout({
   isOpen,
@@ -20,7 +20,7 @@ export default function ErrorModalLayout({
       isBlur={true}
       priority={1}
       className={cn(
-        "bg-white rounded-[2.2rem] p-6 md:p-8 w-[90dvw] max-w-105.5",
+        "bg-primary rounded-[2.2rem] p-6 md:p-8 w-[90dvw] max-w-105.5",
         modalClassName
       )}
       closeOnOverlayClick={closeOnOverlayClick}
@@ -35,5 +35,5 @@ export default function ErrorModalLayout({
         <div className="pt-16 pb-6">{children}</div>
       </div>
     </Modal>
-  )
+  );
 }

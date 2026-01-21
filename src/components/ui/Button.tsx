@@ -73,7 +73,7 @@ export default function Button({
     ghost: "text-text-primary",
     danger: "bg-destructive text-white hover:bg-destructive/90 hover:shadow-md",
     dangerReverse:
-      "border-destructive bg-white text-destructive hover:border-destructive/90 hover:shadow-md border",
+      "border-destructive bg-primary text-destructive hover:border-destructive/90 hover:shadow-md border",
   };
 
   const sizeClasses = {

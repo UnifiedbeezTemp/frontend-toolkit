@@ -1,14 +1,25 @@
 import { useState } from "react";
 import { Plan } from "../../../api/services/plan/types";
 
-export const usePlanCard = (plan: Plan, isYearly: boolean) => {
+import {
+  formatPriceFromCents,
+  calculateBillingCyclePrice,
+} from "../../../utils/priceUtils";
+
+export const usePlanCard = (
+  plan: Plan,
+  isYearly: boolean,
+  overridePrice?: number
+) => {
   const [showFeatures, setShowFeatures] = useState(false);
 
-  const calculatePrice = (monthlyPrice: number) => {
-    return isYearly ? Math.floor(monthlyPrice * 12 * 0.85) : monthlyPrice;
-  };
+  const calculatedPrice = calculateBillingCyclePrice(
+    formatPriceFromCents(plan.monthlyPrice),
+    isYearly
+  );
 
-  const displayPrice = calculatePrice(plan.monthlyPrice);
+  const displayPrice =
+    overridePrice !== undefined ? overridePrice : calculatedPrice;
 
   const toggleFeatures = () => setShowFeatures(!showFeatures);
 

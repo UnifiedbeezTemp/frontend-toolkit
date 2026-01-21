@@ -64,3 +64,30 @@ export function calculateDaysLeft(endDate: string | Date): number {
 
   return diffDays > 0 ? diffDays : 0;
 }
+
+export function formatDateTime(dateString: string): string {
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(new Date(dateString));
+  } catch {
+    return dateString;
+  }
+}
+
+export function formatDate(dateString: string): string {
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }).format(new Date(dateString));
+  } catch {
+    return dateString;
+  }
+}

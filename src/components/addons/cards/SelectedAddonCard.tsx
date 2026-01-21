@@ -3,6 +3,7 @@ import { BaseAddonCard } from "./BaseAddonCard";
 
 interface SelectedAddonCardProps {
   addon: Addon;
+  onAdd: () => void;
   onRemove: () => void;
   onQuantityChange: (quantity: number) => void;
   isRemoving?: boolean;
@@ -10,6 +11,7 @@ interface SelectedAddonCardProps {
 
 export const SelectedAddonCard: React.FC<SelectedAddonCardProps> = ({
   addon,
+  onAdd,
   onRemove,
   onQuantityChange,
   isRemoving = false,
@@ -20,6 +22,7 @@ export const SelectedAddonCard: React.FC<SelectedAddonCardProps> = ({
       isSelected={true}
       variant="manage"
       showProgress={true}
+      onAdd={onAdd}
       onRemove={onRemove}
       onQuantityChange={onQuantityChange}
       isRemoving={isRemoving}

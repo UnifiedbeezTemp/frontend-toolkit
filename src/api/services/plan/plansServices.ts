@@ -1,16 +1,13 @@
+import { api } from "../../";
 import { planBaseUrl } from "../../rootUrls";
 import { OriginalPlan } from "./types";
 
 export const OriginalplansService = {
   async getAllPlans(): Promise<OriginalPlan[]> {
-    const response = await fetch(`${planBaseUrl}/all`, {
-      credentials: 'include',
-    });
+    return api.get<OriginalPlan[]>(`${planBaseUrl}/all`);
+  },
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch plans: ${response.status}`);
-    }
-
-    return response.json();
+  async getUserPlanFeatures(): Promise<OriginalPlan> {
+    return api.get<OriginalPlan>(`${planBaseUrl}/features`);
   },
 };

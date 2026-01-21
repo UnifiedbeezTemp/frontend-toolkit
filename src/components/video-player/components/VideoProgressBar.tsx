@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import React, { useCallback, useRef, useState } from "react"
-import { motion } from "framer-motion"
-import { cn } from "../../../lib/utils"
-import { VideoProgressBarProps } from "../types"
-import { formatTime, calculateProgress } from "../utils/formatTime"
+import React, { useCallback, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { cn } from "../../../lib/utils";
+import { VideoProgressBarProps } from "../types";
+import { formatTime, calculateProgress } from "../utils/formatTime";
 
 export default function VideoProgressBar({
   currentTime,
@@ -14,94 +14,94 @@ export default function VideoProgressBar({
   accentColor = "rgb(0, 178, 169)",
   className,
 }: VideoProgressBarProps) {
-  const progressRef = useRef<HTMLDivElement>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [hoverPosition, setHoverPosition] = useState<number | null>(null)
-  const [hoverTime, setHoverTime] = useState(0)
+  const progressRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [hoverPosition, setHoverPosition] = useState<number | null>(null);
+  const [hoverTime, setHoverTime] = useState(0);
 
-  const progress = calculateProgress(currentTime, duration)
+  const progress = calculateProgress(currentTime, duration);
   const bufferedProgress = calculateProgress(
     buffered * (duration / 100),
     duration
-  )
+  );
 
   const getTimeFromPosition = useCallback(
     (clientX: number) => {
-      if (!progressRef.current || !duration) return 0
-      const rect = progressRef.current.getBoundingClientRect()
-      const position = (clientX - rect.left) / rect.width
-      return Math.max(0, Math.min(duration, position * duration))
+      if (!progressRef.current || !duration) return 0;
+      const rect = progressRef.current.getBoundingClientRect();
+      const position = (clientX - rect.left) / rect.width;
+      return Math.max(0, Math.min(duration, position * duration));
     },
     [duration]
-  )
+  );
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
-      if (!progressRef.current) return
-      const rect = progressRef.current.getBoundingClientRect()
-      const position = ((e.clientX - rect.left) / rect.width) * 100
-      setHoverPosition(Math.max(0, Math.min(100, position)))
-      setHoverTime(getTimeFromPosition(e.clientX))
+      if (!progressRef.current) return;
+      const rect = progressRef.current.getBoundingClientRect();
+      const position = ((e.clientX - rect.left) / rect.width) * 100;
+      setHoverPosition(Math.max(0, Math.min(100, position)));
+      setHoverTime(getTimeFromPosition(e.clientX));
     },
     [getTimeFromPosition]
-  )
+  );
 
   const handleMouseLeave = useCallback(() => {
     if (!isDragging) {
-      setHoverPosition(null)
+      setHoverPosition(null);
     }
-  }, [isDragging])
+  }, [isDragging]);
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
-      const time = getTimeFromPosition(e.clientX)
-      onSeek(time)
+      const time = getTimeFromPosition(e.clientX);
+      onSeek(time);
     },
     [getTimeFromPosition, onSeek]
-  )
+  );
 
   const handleDragStart = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {
-      setIsDragging(true)
-      e.preventDefault()
+      setIsDragging(true);
+      e.preventDefault();
 
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX
-      const time = getTimeFromPosition(clientX)
-      onSeek(time)
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const time = getTimeFromPosition(clientX);
+      onSeek(time);
     },
     [getTimeFromPosition, onSeek]
-  )
+  );
 
   const handleDrag = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!isDragging) return
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX
-      const time = getTimeFromPosition(clientX)
-      onSeek(time)
+      if (!isDragging) return;
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const time = getTimeFromPosition(clientX);
+      onSeek(time);
     },
     [isDragging, getTimeFromPosition, onSeek]
-  )
+  );
 
   const handleDragEnd = useCallback(() => {
-    setIsDragging(false)
-    setHoverPosition(null)
-  }, [])
+    setIsDragging(false);
+    setHoverPosition(null);
+  }, []);
 
   React.useEffect(() => {
     if (isDragging) {
-      document.addEventListener("mousemove", handleDrag)
-      document.addEventListener("mouseup", handleDragEnd)
-      document.addEventListener("touchmove", handleDrag)
-      document.addEventListener("touchend", handleDragEnd)
+      document.addEventListener("mousemove", handleDrag);
+      document.addEventListener("mouseup", handleDragEnd);
+      document.addEventListener("touchmove", handleDrag);
+      document.addEventListener("touchend", handleDragEnd);
     }
 
     return () => {
-      document.removeEventListener("mousemove", handleDrag)
-      document.removeEventListener("mouseup", handleDragEnd)
-      document.removeEventListener("touchmove", handleDrag)
-      document.removeEventListener("touchend", handleDragEnd)
-    }
-  }, [isDragging, handleDrag, handleDragEnd])
+      document.removeEventListener("mousemove", handleDrag);
+      document.removeEventListener("mouseup", handleDragEnd);
+      document.removeEventListener("touchmove", handleDrag);
+      document.removeEventListener("touchend", handleDragEnd);
+    };
+  }, [isDragging, handleDrag, handleDragEnd]);
 
   return (
     <div className={cn("relative w-full group", className)}>
@@ -116,7 +116,7 @@ export default function VideoProgressBar({
 
       <div
         ref={progressRef}
-        className="relative h-[0.4rem] bg-white/30 rounded-full cursor-pointer group-hover:h-[0.6rem] transition-all duration-150"
+        className="relative h-[0.4rem] bg-primary/30 rounded-full cursor-pointer group-hover:h-[0.6rem] transition-all duration-150"
         onClick={handleClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -130,7 +130,7 @@ export default function VideoProgressBar({
         tabIndex={0}
       >
         <div
-          className="absolute inset-y-0 left-0 bg-white/40 rounded-full"
+          className="absolute inset-y-0 left-0 bg-primary/40 rounded-full"
           style={{ width: `${bufferedProgress}%` }}
         />
 
@@ -146,7 +146,7 @@ export default function VideoProgressBar({
 
         {hoverPosition !== null && (
           <div
-            className="absolute inset-y-0 w-[0.2rem] bg-white/60 pointer-events-none"
+            className="absolute inset-y-0 w-[0.2rem] bg-primary/60 pointer-events-none"
             style={{ left: `${hoverPosition}%`, transform: "translateX(-50%)" }}
           />
         )}
@@ -166,5 +166,5 @@ export default function VideoProgressBar({
         />
       </div>
     </div>
-  )
+  );
 }

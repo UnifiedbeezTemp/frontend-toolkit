@@ -1,15 +1,15 @@
-import React from 'react';
-import { cn } from '../../lib/utils';
+import React from "react";
+import { cn } from "../../lib/utils";
 
 /**
  * REUSABLE INPUT COMPONENT
- * 
+ *
  * USAGE:
  * <Input value={value} onChange={setValue} placeholder="Enter text" />
  * <Input type="email" leftIcon={<MailIcon />} placeholder="Email" />
  * <Input type="password" rightIcon={<EyeIcon />} placeholder="Password" />
  * <Input className="custom-styles" placeholder="Custom input" />
- * 
+ *
  * PROPS:
  * - value: Input value (required)
  * - onChange: Change handler (required)
@@ -19,7 +19,7 @@ import { cn } from '../../lib/utils';
  * - rightIcon: React node for right icon
  * - className: Add custom styles (overrides defaults)
  * - disabled: Boolean for when input can be used
- * 
+ *
  * DEFAULTS:
  * - Border focus states
  * - Automatic padding for icons
@@ -27,26 +27,29 @@ import { cn } from '../../lib/utils';
  * - Full width container
  */
 
-export interface InputProps {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password' | 'number';
+  type?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function Input({
   value,
   onChange,
-  placeholder = '',
-  type = 'text',
+  placeholder = "",
+  type = "text",
   leftIcon,
   rightIcon,
-  className = '',
+  className = "",
   disabled = false,
+  onKeyDown,
+  ...props
 }: InputProps) {
   return (
     <div className="relative w-full">
@@ -61,6 +64,8 @@ export default function Input({
         onChange={onChange}
         disabled={disabled}
         placeholder={placeholder}
+        onKeyDown={onKeyDown}
+        {...props}
         className={cn(
           "w-full border border-input-stroke rounded-[0.8rem] px-[1.4rem] py-[1rem]",
           "focus:ring-0 focus:outline-0 focus:border-brand-primary focus:shadow-[0_0_0_5px_rgba(5,61,39,0.1)]",

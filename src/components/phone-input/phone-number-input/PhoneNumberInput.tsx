@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/utils";
 import { PhoneNumberInputProps } from '../types';
 
 export default function PhoneNumberInput({
@@ -5,6 +6,7 @@ export default function PhoneNumberInput({
   onChange,
   callingCode,
   isEditing = true,
+  className
 }: PhoneNumberInputProps) {
   const handleChange = (inputValue: string) => {
     const numbersOnly = inputValue.replace(/\D/g, '');
@@ -19,7 +21,7 @@ export default function PhoneNumberInput({
       <input
         value={value}
         onChange={(e) => handleChange(e.target.value)}
-        className="flex-1 py-[0.8rem] bg-primary px-[.2rem] text-[1.6rem] border-none text-text-primary focus:outline-none focus:ring-0"
+        className={cn("flex-1 py-[0.8rem] bg-primary px-[.2rem] text-[1.6rem] border-none text-text-primary focus:outline-none focus:ring-0", className)}
         placeholder="Enter phone number"
         type="tel"
         inputMode="numeric"

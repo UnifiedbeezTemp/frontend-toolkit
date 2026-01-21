@@ -1,9 +1,9 @@
-import { useMemo } from "react"
-import Button from "../ui/Button"
-import ImageComponent from "../ui/ImageComponent"
-import { useSupabaseIcons } from "../../lib/supabase/useSupabase"
-import { BotItemProps } from "./types"
-import BotPersonalityBadge from "./BotPersonalityBadge"
+import { useMemo } from "react";
+import Button from "../ui/Button";
+import ImageComponent from "../ui/ImageComponent";
+import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
+import { BotItemProps } from "./types";
+import BotPersonalityBadge from "./BotPersonalityBadge";
 
 export default function BotItem({
   botImage,
@@ -16,10 +16,10 @@ export default function BotItem({
   botPersonalityTheme = "default",
   isDeleting
 }: BotItemProps) {
-  const { beeZoraWelcome, pencil, trashRed } = useSupabaseIcons()
+  const { beeZoraWelcome, pencil, trashRed } = useSupabaseIcons();
 
   return (
-    <div className="relative bg-white border border-input-stroke rounded-md pl-3.5 pr-2.75 pt-2.75 pb-4 flex justify-between shadow-[0_1px_2px_0_rgba(16,24,40,0.05)] w-full">
+    <div className="relative bg-primary border border-input-stroke rounded-md pl-3.5 pr-2.75 pt-2.75 pb-4 flex justify-between shadow-[0_1px_2px_0_rgba(16,24,40,0.05)] w-full">
       <div className="flex gap-1 flex-wrap sm:flex-nowrap items-center">
         <ImageComponent
           className=" border-dark-base-5 border rounded-[.35rem] p-[.35rem]"
@@ -28,10 +28,14 @@ export default function BotItem({
           height={27}
           alt="beezora - Yellow bee with green stripes on thorax"
         />
-        <p className="break-after-column text-md font-normal text-dark-base-70 leading-[160%]">{botName}</p>
+        <p className="break-after-column text-md font-normal text-dark-base-70 leading-[160%]">
+          {botName}
+        </p>
         <span className="basis-full sm:hidden" />
         <BotPersonalityBadge
-          className="mt-2 sm:mt-0 sm:basis-auto sm:ml-3 border badge" theme={botPersonalityTheme}>
+          className="mt-2 sm:mt-0 sm:basis-auto sm:ml-3 border badge"
+          theme={botPersonalityTheme}
+        >
           {botPersonality}
         </BotPersonalityBadge>
       </div>
@@ -63,5 +67,5 @@ export default function BotItem({
         )}
       </div>
     </div>
-  )
+  );
 }
