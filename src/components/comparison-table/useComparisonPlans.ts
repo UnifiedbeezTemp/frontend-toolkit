@@ -5,9 +5,50 @@ import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import { useMemo } from "react";
 import { getPlansData } from "../../data/plansData";
 
+const PLAN_HIERARCHY: Record<string, number> = {
+  individual: 1,
+  business: 2,
+  premium: 3,
+  organisation: 4,
+};
+
+const getDynamicCtaText = (
+  planId: string,
+  planName: string,
+  currentPlanId: string | undefined,
+  isCurrentPlan: boolean,
+): string => {
+  if (isCurrentPlan) {
+    return "Current Plan";
+  }
+
+  if (planId === "organisation") {
+    return "Talk to Sales";
+  }
+
+  if (!currentPlanId) {
+    if (planId === "business") return `Choose ${planName}`;
+    if (planId === "premium") return `Upgrade to ${planName}`;
+    return `Start with ${planName}`;
+  }
+
+  const currentRank = PLAN_HIERARCHY[currentPlanId] || 0;
+  const targetRank = PLAN_HIERARCHY[planId] || 0;
+
+  if (targetRank < currentRank) {
+    return `Downgrade to ${planName}`;
+  }
+
+  return `Upgrade to ${planName}`;
+};
+
 export const useComparisonPlans = () => {
   const { plans: apiPlans, loading, error, retry } = usePlans();
-  const { userPlan, loading: userPlanLoading, isUnauthenticated } = useUserPlan();
+  const {
+    userPlan,
+    loading: userPlanLoading,
+    isUnauthenticated,
+  } = useUserPlan();
   const icons = useSupabaseIcons();
 
   const comparisonPlans: ComparisonPlan[] = useMemo(() => {
@@ -47,9 +88,11 @@ export const useComparisonPlans = () => {
         description: plan.description,
         iconKey: "",
         badge: plan.badge,
-        addonStatus: plan.addonAvailable ? "Add-on available" : "Add-on not available",
+        addonStatus: plan.addonAvailable
+          ? "Add-on available"
+          : "Add-on not available",
         addonAvailable: plan.addonAvailable,
-        tag: plan.tag, 
+        tag: plan.tag,
         values: {
           monthlyPrice: `£${plan.monthlyPrice}/month`,
           seats: formatSeats(original.maxSeats),
@@ -60,7 +103,12 @@ export const useComparisonPlans = () => {
           ecommerce: original.hasEcommercePack ? "Included" : "Not Included",
           addons: plan.addonAvailable ? "Add-ons allowed" : "No Add-ons",
         },
-        ctaText: plan.ctaText,
+        ctaText: getDynamicCtaText(
+          plan.id,
+          plan.title,
+          userPlanType,
+          isCurrentPlan,
+        ),
         footerText: plan.footerText,
         footerIcon: plan.footerIcon,
         isCurrentPlan,

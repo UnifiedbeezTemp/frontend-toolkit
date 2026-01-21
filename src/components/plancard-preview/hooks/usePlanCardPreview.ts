@@ -58,8 +58,13 @@ export const usePlanCardPreview = ({
       if (isYearly) {
         params.set("isYearly", "true");
       }
+      if (enableReturnTo && typeof window !== "undefined") {
+        const fullUrl = window.location.href;
+        params.set("returnTo", fullUrl);
+      }
+      const baseUrl = enableReturnTo ? process.env.NEXT_PUBLIC_BASE || "" : "";
       const queryString = params.toString();
-      router.push(`/addons${queryString ? `?${queryString}` : ""}`);
+      router.push(`${baseUrl}/addons${queryString ? `?${queryString}` : ""}`);
     } else {
       setIsAddonsModalOpen(true);
     }
@@ -94,7 +99,13 @@ export const usePlanCardPreview = ({
     if (onSelectPlan) {
       onSelectPlan(planId);
     } else {
-      router.push(`/plans?plan=${planId}`);
+      if (enableReturnTo && typeof window !== "undefined") {
+        const fullUrl = window.location.href;
+        const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
+        router.push(`${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`);
+      } else {
+        router.push("/plans");
+      }
     }
   };
 
