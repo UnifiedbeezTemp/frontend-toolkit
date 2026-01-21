@@ -2,8 +2,8 @@
 
 import { InboxSearchAndFilters } from "./FilterComponents"
 import { InboxListTopToolBar } from "./InboxListTopToolBar"
-import { GeneralInboxConversationItem } from "../GeneralInboxConversationItem"
-import { TeamInboxConversationItem } from "../TeamInboxConversationItem"
+import { GeneralInboxConversationItem } from "./components/GeneralInboxConversationItem"
+import { TeamInboxConversationItem } from "./components/TeamInboxConversationItem"
 import InboxListContainer from "./InboxListContainer"
 import { useToggle } from "../../../hooks/useToggle"
 import { ReactNode } from "react"
@@ -12,9 +12,12 @@ import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon"
 import IconButton from "../../ui/IconButton"
 import Heading from "../../ui/Heading"
 import ChannelsList from "../ChannelsPanel/ChannelsList"
-import { InboxType, inboxTypeLabels, Conversation } from "../utils/dummyData"
+import { inboxTypeLabels } from "../utils/dummyData"
+import { InboxType, Conversation } from "../types"
 import { useRouter } from "next/navigation"
 import Avatar from "../../ui/Avatar"
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
+import ImageComponent from "../../ui/ImageComponent"
 
 export default function InboxList({
   sideDrawerContent = <ChannelsList />,
@@ -41,6 +44,7 @@ export default function InboxList({
     value: isSideDrawerOpen,
     setFalse: closeSideDrawer,
   } = useToggle()
+  const icons = useSupabaseIcons()
 
   const handleInboxTypeChange = (type: InboxType) => {
     onInboxTypeChange(type)
@@ -83,11 +87,10 @@ export default function InboxList({
             <InboxListTopToolBar
               onLeftClick={isSideDrawerOpen ? closeSideDrawer : openSideDrawer}
               title={currentTitle}
-              leftIcon={undefined}
               selectedInboxType={selectedInboxType}
               onInboxTypeChange={handleInboxTypeChange}
             />
-            <InboxSearchAndFilters />
+            <InboxSearchAndFilters inboxType={selectedInboxType} />
           </div>
         }
         body={
@@ -107,7 +110,29 @@ export default function InboxList({
               )
 
               if (selectedInboxType === "general") {
-                const generalLeading = conversation.avatarUrl ? (
+                const channelIcon = conversation.channel
+                  ? {
+                      whatsapp: icons.whatsappIcon,
+                      instagram: icons.instagramLogo,
+                      facebook: icons.facebookMessengerLogo,
+                      telegram: icons.telegramLogo,
+                      linkedin: icons.linkedinLogo,
+                      sms: icons.twilioSmsIcon,
+                      email: icons.emailRedIcon,
+                      phone: icons.twilioPhoneIcon,
+                      "website-chat": icons.websiteWebChatIcon,
+                    }[conversation.channel]
+                  : null
+
+                const generalLeading = channelIcon ? (
+                  <ImageComponent
+                    src={channelIcon}
+                    alt={conversation.channel || "channel"}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                ) : conversation.avatarUrl ? (
                   <Avatar
                     src={conversation.avatarUrl}
                     alt={conversation.name}

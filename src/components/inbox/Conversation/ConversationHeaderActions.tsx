@@ -11,6 +11,7 @@ export type ConversationHeaderAction = {
   variant?: "primary" | "secondary"
   disabled?: boolean
   hidden?: boolean
+  ref?: RefObject<HTMLElement | null>
 }
 
 export function ConversationHeaderActions({
@@ -20,22 +21,25 @@ export function ConversationHeaderActions({
   actions: ConversationHeaderAction[]
   className?: string
 }) {
-  const buttonRef = useRef(null)
+  const defaultButtonRef = useRef(null)
   return (
     <div className={cn("flex items-center gap-3", className)}>
       {actions
         .filter((a) => !a.hidden)
-        .map((a) => (
-          <IconButton
-            key={a.key}
-            ref={buttonRef}
-            variant={a.variant ?? "secondary"}
-            ariaLabel={a.ariaLabel}
-            onClick={() => isFunction(a.onClick) && a.onClick(buttonRef)}
-            disabled={a.disabled}
-            icon={a.icon}
-          />
-        ))}
+        .map((a) => {
+          const buttonRef = a.ref || defaultButtonRef
+          return (
+            <IconButton
+              key={a.key}
+              ref={buttonRef}
+              variant={a.variant ?? "secondary"}
+              ariaLabel={a.ariaLabel}
+              onClick={() => isFunction(a.onClick) && a.onClick(buttonRef)}
+              disabled={a.disabled}
+              icon={a.icon}
+            />
+          )
+        })}
     </div>
   )
 }

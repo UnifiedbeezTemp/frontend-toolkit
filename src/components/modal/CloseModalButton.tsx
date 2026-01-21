@@ -1,7 +1,6 @@
+import TimesIcon from "../../assets/icons/TimesIcon";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
-import { cn } from "../../lib/utils";
-import Button from "../ui/Button";
-import ImageComponent from "../ui/ImageComponent";
+import IconButton from "../ui/IconButton";
 
 interface Props {
   onClick: () => void;
@@ -11,12 +10,12 @@ interface Props {
 export default function CloseModalButton({ onClick, className }: Props) {
   const icons = useSupabaseIcons();
   return (
-    <Button
-      className={cn("p-[0.6rem] rounded-md", className)}
+    <IconButton
+      className={className}
       variant="secondary"
+      icon={<TimesIcon size={10} />}
       onClick={onClick}
-    >
-      <ImageComponent src={icons.close} alt={"X"} width={20} height={20} />
-    </Button>
+      ariaLabel="Close"
+    />
   );
 }

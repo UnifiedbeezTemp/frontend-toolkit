@@ -137,6 +137,7 @@
   --color-dark-stroke: var(--dark-stroke);
   --color-primary-blue-100: var(--primary-blue-100);
   --color-primary-blue-50: var(--primary-blue-50);
+  --color-dark-green-100: var(--dark-green-100);
   --text-xs: 1rem;
   --text-sm: 1.2rem;
   --text-md: 1.4rem;
@@ -189,11 +190,13 @@
   --warning: #fab404;
   --destructive: #cc0e11;
   --success: #29953e;
+  --success-500: #12B76A;
   --primary-blue: #155dfc;
   --success-500: #12b76a;
   --primary-blue: #155dfc;
   --primary-blue-100: #2186f8;
-  --primary-blue-50: #15c0e6;
+  --primary-blue-50: #15C0E6;
+  --dark-green-100: #003B1A;
 
   --input-stroke: #d0d5dd;
   --input-stroke-1: #dedede;

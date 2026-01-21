@@ -1,8 +1,10 @@
 import { ReactNode } from "react"
-import { cn } from "../../lib/utils"
-import Heading from "../ui/Heading"
-import Text from "../ui/Text"
-import { AvatarGroup } from "../avatar/AvatarGroup"
+import { cn } from "../../../../lib/utils"
+import Heading from "../../../ui/Heading"
+import Text from "../../../ui/Text"
+import { AvatarGroup } from "../../../avatar/AvatarGroup"
+
+import { TeamInboxConversationItemProps } from "../types"
 
 export function TeamInboxConversationItem({
   leading,
@@ -16,19 +18,7 @@ export function TeamInboxConversationItem({
   isGroup = false,
   participants = [],
   participantAvatars = [],
-}: {
-  onClick?: () => void
-  className?: string
-  unreadCount?: number
-  preview?: string
-  timestamp?: string
-  name: string
-  leading: ReactNode
-  isActive?: boolean
-  isGroup?: boolean
-  participants?: string[]
-  participantAvatars?: string[]
-}) {
+}: TeamInboxConversationItemProps) {
   return (
     <button
       type="button"

@@ -1,8 +1,7 @@
 import { AttributeSection } from "../../types"
 import { AttributeField } from "./AttributeField"
-import PlusIcon from "../../../../assets/icons/PlusIcon"
 import { useToggle } from "../../../../hooks/useToggle"
-import CaretDownIcon from "../../../../assets/icons/CaretDownIcon"
+import { ChevronDown, Plus } from "lucide-react"
 import { IconName, Icons } from "./IconsMap"
 import { isFunction } from "../../../../utils/is"
 import { cn } from "../../../../lib/utils"
@@ -14,9 +13,7 @@ interface AccordionSectionProps {
 
 export function AccordionSection({ section }: AccordionSectionProps) {
   const { value: isExpanded, toggle } = useToggle(section.defaultExpanded)
-  const icon = isFunction(Icons[section.icon as IconName])
-    ? Icons[section.icon as IconName]({ size: 24 })
-    : null
+  const Icon = Icons[section.icon as IconName]
   return (
     <div
       className={cn(
@@ -29,12 +26,12 @@ export function AccordionSection({ section }: AccordionSectionProps) {
         className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-2">
-          {icon}
+          {Icon && <Icon size={24} className="text-dark-base-100" />}
           <span className="text-base text-dark-base-100 font-bold">
             {section.title}
           </span>
         </div>
-        <CaretDownIcon />
+        <ChevronDown />
       </button>
 
       {isExpanded && (
@@ -43,7 +40,7 @@ export function AccordionSection({ section }: AccordionSectionProps) {
             <AttributeField key={field.id} field={field} />
           ))}
           <Button variant="secondary" className="mt-4 flex items-center gap-2 max-w-2xs font-normal px-4 py-2.5 text-dark-base-70 text-base">
-            <PlusIcon />
+            <Plus />
             <span>Create attribute</span>
           </Button>
         </div>

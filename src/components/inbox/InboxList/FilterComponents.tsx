@@ -1,128 +1,93 @@
-import { useRef } from "react";
-import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon";
-import InboxSearchBar from "../components/SearchBar";
-import FunnelIcon from "../../../assets/icons/FunnelIcon";
-import IconButton from "../../ui/IconButton";
-import { SmartDropdown } from "../../smart-dropdown";
-import { QuickFilterBar } from "../components/QuickFilterBar";
-import { useToggle } from "../../../hooks/useToggle";
-import { FilterOptionList } from "../components/FilterOptionList";
+import { useRef } from "react"
+import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon"
+import InboxSearchBar from "../components/SearchBar"
+import FunnelIcon from "../../../assets/icons/FunnelIcon"
+import IconButton from "../../ui/IconButton"
+import { SmartDropdown } from "../../smart-dropdown"
+import { QuickFilterBar } from "../components/QuickFilterBar"
+import { FilterOptionList } from "../components/FilterOptionList"
+import { CRMTags } from "../components/crm-tags/CRMTags"
+import { useInboxFilters } from "./hooks/useInboxFilters"
+import { MAIN_FILTER_OPTIONS } from "./constants"
+import { InboxSearchAndFiltersProps } from "./types"
 
-export const InboxSearchAndFilters = () => {
-  const filterOptions = [
-    {
-      label: "Channels",
-      value: "self",
-    },
-    {
-      label: "Tags",
-      value: "not_assigned",
-    },
-    {
-      label: "Name",
-      value: "name",
-    },
-  ];
+export const InboxSearchAndFilters = ({ inboxType = 'general' }: InboxSearchAndFiltersProps) => {
+  const dropdownTriggerRef = useRef(null)
 
   const {
-    value: isOpen,
-    setTrue: openDropdown,
-    setFalse: closeDropdown,
-  } = useToggle();
-  const dropdownTriggerRef = useRef(null);
+    activeDropdown,
+    selectedTags,
+    setSelectedTags,
+    quickFilterOptions,
+    activeFilter,
+    selectedSubFilters,
+    handleFilterSelect,
+    handleSubFilterToggle,
+    handleMainFilterOptionSelect,
+    toggleMainDropdown,
+    closeAllDropdowns
+  } = useInboxFilters(inboxType);
+
   return (
     <div className="flex flex-col gap-3 px-4 pb-4 bg-primary border-b border-gray-100 mt-2">
       <div className="flex gap-2 items-center">
         <InboxSearchBar
           value={""}
           placeholder="Search inbox"
-          onChange={() => {}}
+          onChange={() => { }}
           className="grow shrink"
         />
-        <IconButton
-          onClick={openDropdown}
-          ref={dropdownTriggerRef}
-          variant="secondary"
-          ariaLabel="toggle filters"
-          className="shrink-0"
-          icon={<FunnelIcon className="text-input-stroke" />}
-        />
-        <SmartDropdown
-          isOpen={isOpen}
-          onClose={closeDropdown}
-          triggerRef={dropdownTriggerRef}
-          className="min-w-60 -mt-1"
-          placement="bottom-end"
-          maxHeight="30rem"
-        >
-          <FilterOptionList<string, string>
-            options={filterOptions}
-            value={filterOptions[0].value || ""}
-            onChange={(opt) => opt}
-            icon={CheckMarkIcon}
-          />
-        </SmartDropdown>
+
+        {inboxType === 'general' && (
+          <>
+            <IconButton
+              onClick={toggleMainDropdown}
+              ref={dropdownTriggerRef}
+              variant="secondary"
+              ariaLabel="toggle filters"
+              className="shrink-0"
+              icon={<FunnelIcon className="text-input-stroke" />}
+            />
+
+            {activeDropdown === 'MAIN' && (
+              <SmartDropdown
+                isOpen={true}
+                onClose={closeAllDropdowns}
+                triggerRef={dropdownTriggerRef}
+                className="min-w-60 -mt-1"
+                placement="bottom-end"
+                maxHeight="30rem"
+              >
+                <FilterOptionList<string, string>
+                  options={MAIN_FILTER_OPTIONS}
+                  value={""}
+                  onChange={(opt) => handleMainFilterOptionSelect(opt)}
+                  icon={CheckMarkIcon}
+                />
+              </SmartDropdown>
+            )}
+
+            {activeDropdown === 'TAGS' && (
+              <CRMTags
+                isOpen={true}
+                onClose={closeAllDropdowns}
+                triggerRef={dropdownTriggerRef}
+                selectedTags={selectedTags}
+                onTagsChange={setSelectedTags}
+                className="w-[90dvw]! max-w-[40rem] -mt-1"
+              />
+            )}
+          </>
+        )}
       </div>
 
       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
         <QuickFilterBar
-          options={[
-            {
-              label: "All conversations",
-              options: [
-                {
-                  label: "Assigned to me",
-                  value: "self",
-                },
-                {
-                  label: "Not assigned",
-                  value: "not_assigned",
-                },
-              ],
-            },
-            {
-              label: "Unread",
-              options: [
-                {
-                  label: "Assigned to me",
-                  value: "self",
-                },
-                {
-                  label: "Not assigned",
-                  value: "not_assigned",
-                },
-              ],
-            },
-            {
-              label: "Labels",
-              options: [
-                {
-                  label: "Assigned to me",
-                  value: "self",
-                },
-                {
-                  label: "Not assigned",
-                  value: "not_assigned",
-                },
-              ],
-            },
-          ]}
-          onSelect={() => {}}
-          selectedDropdownOptions={["not_assigned"]}
-          selectedOption={{
-            label: "All conversations",
-            options: [
-              {
-                label: "Assigned to me",
-                value: "self",
-              },
-              {
-                label: "Not assigned",
-                value: "not_assigned",
-              },
-            ],
-          }}
-          handleDropdownOptionSelect={() => {}}
+          options={quickFilterOptions}
+          onSelect={handleFilterSelect}
+          selectedOption={activeFilter}
+          selectedDropdownOptions={selectedSubFilters}
+          handleDropdownOptionSelect={(opt) => handleSubFilterToggle(opt.value)}
         />
       </div>
     </div>

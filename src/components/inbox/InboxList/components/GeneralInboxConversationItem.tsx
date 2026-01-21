@@ -1,9 +1,11 @@
 import { ReactNode } from "react"
-import { cn } from "../../lib/utils"
-import { isString } from "../../utils/is"
-import Heading from "../ui/Heading"
-import Text from "../ui/Text"
-import { TagPill } from "./components/TagPill"
+import { cn } from "../../../../lib/utils"
+import { isString } from "../../../../utils/is"
+import Heading from "../../../ui/Heading"
+import Text from "../../../ui/Text"
+import { TagPill } from "../../components/TagPill"
+
+import { GeneralInboxConversationItemProps } from "../types"
 
 export function GeneralInboxConversationItem({
   leading,
@@ -14,34 +16,27 @@ export function GeneralInboxConversationItem({
   className,
   onClick,
   isActive,
-}: {
-  onClick?: () => void
-  className?: string
-  preview?: string
-  timestamp?: string
-  tag?: string | ReactNode
-  name: string
-  leading: ReactNode
-  isActive?: boolean
-}) {
+}: GeneralInboxConversationItemProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "relative w-full flex items-center gap-4 border-b border-gray-200 px-4 py-3.75 md:pt-1.25 lg:pt-4 text-left hover:bg-input-filled",
+        "relative w-full flex items-center gap-4 border-b border-gray-200 px-4 py-3.75 md:px-2 lg:px-4 text-left hover:bg-input-filled",
         isActive && "bg-input-filled",
         className
       )}
     >
-      <div>
+      <div className="w-full">
         <div className="flex flex-wrap items-center gap-1">
           <div className="w-full sm:w-fit lg:w-full">{leading}</div>
-          <Heading className="w-fit text-dark-base-100 text-base">
-            {name}
-          </Heading>
-          <div className="sm:w-full lg:w-auto">
-            {isString(tag) ? <TagPill label={tag} /> : tag}
+          <div className="flex items-center gap-2">
+            <Heading className="w-fit text-dark-base-100 text-base">
+              {name}
+            </Heading>
+            <div className="sm:w-full lg:w-auto">
+              {isString(tag) ? <TagPill label={tag} /> : tag}
+            </div>
           </div>
         </div>
         <div className="flex justify-between w-full mt-2">
