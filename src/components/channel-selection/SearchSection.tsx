@@ -48,7 +48,6 @@ export default function SearchSection({
           value={searchQuery}
           onChange={handleSearchChange}
           placeholder="Find integrations, apps, and more"
-          className="bg-primary"
           leftIcon={
             <ImageComponent
               alt="search"

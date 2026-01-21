@@ -14,6 +14,7 @@ export default function BotItem({
   onEdit,
   onDelete,
   botPersonalityTheme = "default",
+  isDeleting
 }: BotItemProps) {
   const { beeZoraWelcome, pencil, trashRed } = useSupabaseIcons();
 
@@ -56,6 +57,7 @@ export default function BotItem({
         )}
         {showDeleteButton && (
           <Button
+            loading={isDeleting}
             onClick={onDelete}
             variant="secondary"
             className="p-2 border-destructive"

@@ -7,9 +7,12 @@ import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon"
 import Heading from "../../ui/Heading"
 import { SmartDropdown, DropdownItem } from "../../smart-dropdown"
 import { useToggle } from "../../../hooks/useToggle"
-import { InboxType, inboxTypeLabels } from "../utils/dummyData"
+import { inboxTypeLabels } from "../utils/dummyData"
+import { InboxType } from "../types"
 import MoreVerticalIcon from "../../../assets/icons/MoreVerticalIcon"
 import PlusIcon from "../../../assets/icons/PlusIcon"
+import CreateNewChatModal from "../CreateNewChatModal"
+import { InboxListTopToolBarProps } from "./types"
 
 export function InboxListTopToolBar({
   title,
@@ -18,15 +21,7 @@ export function InboxListTopToolBar({
   onLeftClick,
   selectedInboxType,
   onInboxTypeChange,
-}: {
-  title: string
-  onTitleClick?: () => void
-  leftIcon: ReactNode
-  onLeftClick?: () => void
-  className?: string
-  selectedInboxType?: InboxType
-  onInboxTypeChange?: (type: InboxType) => void
-}) {
+}: InboxListTopToolBarProps) {
   const {
     value: showActions,
     toggle: toggleActions,
@@ -37,6 +32,12 @@ export function InboxListTopToolBar({
     value: showInboxDropdown,
     toggle: toggleInboxDropdown,
     setFalse: closeInboxDropdown,
+  } = useToggle()
+
+  const {
+    value: showCreateChatModal,
+    setTrue: openCreateChatModal,
+    setFalse: closeCreateChatModal,
   } = useToggle()
 
   const actionsToggleRef = useRef<HTMLButtonElement | null>(null)
@@ -54,10 +55,11 @@ export function InboxListTopToolBar({
           variant="primary"
           icon={<PlusIcon />}
           ariaLabel={"Add New"}
+          onClick={openCreateChatModal}
         />
       </>
     ),
-    []
+    [openCreateChatModal]
   )
 
   return (
@@ -130,14 +132,14 @@ export function InboxListTopToolBar({
           </SmartDropdown>
         </div>
         <div>
-          <div className="md:hidden flex items-center gap-2">
+          <div className="md:hidden lg:flex flex items-center gap-2">
             {actionButtons}
           </div>
           <button
             onClick={toggleActions}
             ref={actionsToggleRef}
             aria-label="Toggle Options"
-            className="text-gray-45 hidden md:flex"
+            className="text-gray-45 hidden md:flex lg:hidden p-4"
           >
             <MoreVerticalIcon />
           </button>
@@ -154,6 +156,10 @@ export function InboxListTopToolBar({
           </SmartDropdown>
         </div>
       </div>
+      <CreateNewChatModal
+        isOpen={showCreateChatModal}
+        onClose={closeCreateChatModal}
+      />
     </header>
   )
 }

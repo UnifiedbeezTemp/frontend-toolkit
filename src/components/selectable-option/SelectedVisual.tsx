@@ -4,10 +4,12 @@ import { cn } from "../../lib/utils"
 
 export function CheckboxVisual({
   selected,
-  size
+  size,
+  centerVertically
 }: {
   selected: boolean
   size?: "sm" | "md"
+  centerVertically?: boolean
 }) {
   const { check } = useSupabaseIcons()
   return (
@@ -15,7 +17,8 @@ export function CheckboxVisual({
       className={cn(
         "w-5 h-5 flex items-center justify-center rounded-full border absolute right-3.25 top-3.25 shrink-0",
         selected ? "bg-brand-primary border-white" : "border-gray-300",
-        size === "md" && ""
+        size === "md" && "",
+        centerVertically && "-translate-y-1/2 top-1/2"
       )}
     >
       {selected && <ImageComponent src={check} alt="" width={26} height={26} />}

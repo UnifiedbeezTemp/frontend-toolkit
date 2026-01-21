@@ -21,7 +21,7 @@ import { store } from "../../../../store";
 export const useUserItem = (
   type: "invited" | "members",
   userId: string,
-  onSendInvite?: (invitationId: string, email: string, roleId: number) => void
+  onSendInvite?: (invitationId: string, email: string, roleId: number) => void,
 ) => {
   const dispatch = useAppDispatch();
   const supabaseIcons = useSupabaseIcons();
@@ -30,7 +30,7 @@ export const useUserItem = (
   const members = useAppSelector((state) => state.members.members);
   const roles = useAppSelector((state) => state.members.roles);
   const invitedStatusFilter = useAppSelector(
-    (state) => state.members.statusFilterInvited
+    (state) => state.members.statusFilterInvited,
   );
 
   const queryClient = useQueryClient();
@@ -53,7 +53,7 @@ export const useUserItem = (
           dispatch(cancelInvitation(invitationId));
           queryClient.invalidateQueries({ queryKey: ["invitations"] });
         },
-      }
+      },
     );
 
   const { mutate: removeMemberMutation, isPending: isRemovingMember } =
@@ -66,7 +66,7 @@ export const useUserItem = (
           dispatch(removeMember(memberId));
           queryClient.invalidateQueries({ queryKey: ["members"] });
         },
-      }
+      },
     );
 
   const { mutate: assignRoleMutation, isPending: isAssigningRole } =
@@ -78,7 +78,7 @@ export const useUserItem = (
         onSuccess: (_, variables) => {
           const currentState = store.getState();
           const member = currentState.members.members.find(
-            (m) => m.id === variables.userId
+            (m) => m.id === variables.userId,
           );
           if (member) {
             const role = roles.find((r) => r.id === variables.roleId);
@@ -88,7 +88,7 @@ export const useUserItem = (
           }
           queryClient.invalidateQueries({ queryKey: ["members"] });
         },
-      }
+      },
     );
 
   const getStatusStyles = useCallback((status: string) => {
@@ -112,7 +112,7 @@ export const useUserItem = (
         dispatch(updateInvitedUserRole({ id: userId, role }));
       }
     },
-    [type, userId, dispatch]
+    [type, userId, dispatch],
   );
 
   const handleRemove = useCallback(() => {
@@ -122,7 +122,12 @@ export const useUserItem = (
       }
       removeMemberMutation(userId);
     } else {
-      cancelInvitationMutation(userId);
+      const isDraft = userId.toString().startsWith("draft-");
+      if (isDraft) {
+        dispatch(cancelInvitation(userId));
+      } else {
+        cancelInvitationMutation(userId);
+      }
     }
   }, [
     type,
@@ -130,6 +135,7 @@ export const useUserItem = (
     isCurrentUser,
     removeMemberMutation,
     cancelInvitationMutation,
+    dispatch,
   ]);
 
   const handleToggle = useCallback(() => {
@@ -170,7 +176,7 @@ export const useUserItem = (
           const roleObj = roles.find((r) => r.type === role);
           if (roleObj) {
             dispatch(
-              updateInvitedUserRoleId({ id: userId, roleId: roleObj.id })
+              updateInvitedUserRoleId({ id: userId, roleId: roleObj.id }),
             );
           }
         }
@@ -185,7 +191,7 @@ export const useUserItem = (
       isCurrentUser,
       isOwner,
       assignRoleMutation,
-    ]
+    ],
   );
 
   return {

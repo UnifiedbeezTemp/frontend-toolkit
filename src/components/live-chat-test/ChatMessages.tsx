@@ -2,9 +2,8 @@
 
 import {
   useSupabaseIcons,
-  useSupabaseImages,
 } from "../../lib/supabase/useSupabase";
-import { ChatMessage } from "./hooks/useChat";
+import { ChatMessage } from "./types";
 import MessageBubble from "./MessageBubble";
 import TypingIndicator from "./TypingIndicator";
 import { useRef, useEffect } from "react";
@@ -31,10 +30,10 @@ export default function ChatMessages({
 
   return (
     <div
-      className="bg-cover bg-center bg-no-repeat overflow-y-auto p-5 flex-1"
+      className="bg-cover bg-center bg-no-repeat overflow-y-auto p-5 flex-1 min-h-0"
       style={{ backgroundImage: `url(${icons.rectangle4})` }}
     >
-      <div className="space-y-5 flex flex-col h-[40vh] xl:h-[auto] overflow-y-scroll">
+      <div className="space-y-5 flex flex-col overflow-y-auto h-full">
         {messages.map((message) => (
           <MessageBubble
             key={message.id}
@@ -42,7 +41,7 @@ export default function ChatMessages({
             assistantName={assistantName}
           />
         ))}
-        <div ref={messagesEndRef} className=" bg-[red]" />
+        <div ref={messagesEndRef} />
 
         {isTyping && (
           <TypingIndicator

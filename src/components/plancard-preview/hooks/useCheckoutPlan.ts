@@ -19,7 +19,7 @@ export const useCheckoutPlan = ({
   const icons = useSupabaseIcons();
   const plan = backendPlan ? getPlanByType(backendPlan, icons) : null;
 
-  const monthlyPrice = plan ? formatPriceRaw(plan.monthlyPrice) : 0;
+  const monthlyPrice = backendPlan ? backendPlan.priceEur : 0;
   const displayPrice = calculateBillingCyclePrice(monthlyPrice, isYearly);
 
   return {

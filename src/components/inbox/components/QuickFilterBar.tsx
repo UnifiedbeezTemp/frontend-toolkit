@@ -8,43 +8,68 @@ import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon";
 import { FilterOptionList } from "./FilterOptionList";
 
 export interface QuickFilterOption {
-  label: ReactNode;
-  options: QuickFilterDropdownOption[];
+  value?: string
+  label: ReactNode
+  options?: QuickFilterDropdownOption[]
 }
 
 export interface QuickFilterBarProps {
-  options: QuickFilterOption[];
-  selectedOption: QuickFilterOption;
-  onSelect: (opt: QuickFilterOption) => void;
-  handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void;
-  selectedDropdownOptions: string[];
-  className?: string;
+  options: QuickFilterOption[]
+  selectedOption: QuickFilterOption
+  onSelect: (opt: QuickFilterOption) => void
+  handleDropdownOptionSelect?: (opt: QuickFilterDropdownOption) => void
+  selectedDropdownOptions?: string[]
+  className?: string
+  justify?: "start" | "between" | "end" | "center" | "around" | "evenly"
+  itemClassName?: string
+  activeItemClassName?: string
+  inactiveItemClassName?: string
 }
 
 export function QuickFilterBar({
   options,
   selectedOption,
-  selectedDropdownOptions,
+  selectedDropdownOptions = [],
   onSelect,
-  handleDropdownOptionSelect,
+  handleDropdownOptionSelect = () => {},
   className,
+  justify = "between",
+  itemClassName,
+  activeItemClassName,
+  inactiveItemClassName,
 }: QuickFilterBarProps) {
+  const isSelected = (opt: QuickFilterOption) => {
+    if (opt.value && selectedOption.value) return opt.value === selectedOption.value
+    return opt.label === selectedOption.label
+  }
+
   return (
     <div
       className={cn(
-        "relative overflow-auto font-medium flex gap-2 lg:gap-4 justify-between w-full bg-input-filled border border-input-stroke p-2 rounded-[.9rem]",
+        "relative overflow-auto font-medium flex gap-2 lg:gap-4 w-full bg-input-filled border border-input-stroke p-2 rounded-[.9rem]",
+        {
+          "justify-start": justify === "start",
+          "justify-between": justify === "between",
+          "justify-end": justify === "end",
+          "justify-center": justify === "center",
+          "justify-around": justify === "around",
+          "justify-evenly": justify === "evenly",
+        },
         className
       )}
     >
       {options.map((opt, idx) => (
         <QuickFilterOption
-          selected={selectedOption.label === opt.label}
+          selected={isSelected(opt)}
           selectedDropdownOptions={selectedDropdownOptions}
           onSelect={() => onSelect(opt)}
           key={idx}
           label={opt.label}
           options={opt.options}
           handleDropdownOptionSelect={handleDropdownOptionSelect}
+          itemClassName={itemClassName}
+          activeItemClassName={activeItemClassName}
+          inactiveItemClassName={inactiveItemClassName}
         />
       ))}
     </div>
@@ -56,13 +81,16 @@ type QuickFilterDropdownOption = {
   value: string;
 };
 type QuickFilterOptionProps = {
-  label: ReactNode;
-  options: QuickFilterDropdownOption[];
-  selected?: boolean;
-  selectedDropdownOptions?: string[];
-  onSelect?: () => void;
-  handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void;
-};
+  label: ReactNode
+  options?: QuickFilterDropdownOption[]
+  selected?: boolean
+  selectedDropdownOptions?: string[]
+  onSelect?: () => void
+  handleDropdownOptionSelect: (opt: QuickFilterDropdownOption) => void
+  itemClassName?: string
+  activeItemClassName?: string
+  inactiveItemClassName?: string
+}
 
 export function QuickFilterOption({
   label,
@@ -71,6 +99,9 @@ export function QuickFilterOption({
   handleDropdownOptionSelect,
   onSelect,
   selectedDropdownOptions,
+  itemClassName,
+  activeItemClassName,
+  inactiveItemClassName,
 }: QuickFilterOptionProps) {
   const {
     value: isOpen,
@@ -80,41 +111,57 @@ export function QuickFilterOption({
   const dropdownTriggerRef = useRef(null);
 
   return (
-    <div className="relative ">
+    <div className={cn(
+        "relative flex items-center rounded-lg transition-all border text-md group",
+        selected
+          ? cn("bg-white border-input-stroke text-gray-900 hover:bg-gray-50", activeItemClassName)
+          : cn("bg-transparent border-transparent text-inactive-color hover:text-gray-600 hover:bg-primary", inactiveItemClassName),
+        itemClassName
+      )}
+    >
       <button
-        ref={dropdownTriggerRef}
-        onClick={() => {
-          if (isFunction(onSelect)) onSelect();
-          openDropdown();
-        }}
+        onClick={() => isFunction(onSelect) && onSelect()}
         className={cn(
-          `flex items-center gap-1 px-4 py-2 rounded-lg transition-all border-0 text-md`,
-          selected
-            ? "bg-primary border border-input-stroke text-gray-900 hover:bg-gray-50"
-            : "bg-transparent text-inactive-color hover:text-gray-600 hover:bg-primary"
+          "px-3 py-2 text-sm font-inherit whitespace-nowrap cursor-pointer focus:outline-none",
+          !options?.length && "pr-3"
         )}
       >
-        <span className="text-sm font-inherit whitespace-nowrap">{label}</span>
-        <ChevronDownIcon
-          width={15}
-          height={7.5}
-          className={`transition-transform mt-1 ${isOpen ? "rotate-180" : ""}`}
-        />
+        {label}
       </button>
-      <SmartDropdown
-        isOpen={isOpen}
-        onClose={closeDropdown}
-        triggerRef={dropdownTriggerRef}
-        className="min-w-37.5 -mt-1"
-        maxHeight=""
-      >
-        <FilterOptionList<string, string>
-          options={options}
-          value={selectedDropdownOptions?.[0] || ""}
-          onChange={(opt) => handleDropdownOptionSelect(opt)}
-          icon={CheckMarkIcon}
-        />
-      </SmartDropdown>
+      {!!options?.length && (
+        <button
+          ref={dropdownTriggerRef}
+          onClick={(e) => {
+            e.stopPropagation()
+            if (isFunction(onSelect)) onSelect()
+            openDropdown()
+          }}
+          className="pl-1 pr-3 py-2 cursor-pointer focus:outline-none flex items-center"
+        >
+          <ChevronDownIcon
+            width={15}
+            height={7.5}
+            className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+      )}
+      {!!options?.length && (
+        <SmartDropdown
+          isOpen={isOpen}
+          onClose={closeDropdown}
+          triggerRef={dropdownTriggerRef}
+          className="min-w-37.5 -mt-1"
+          maxHeight=""
+          placement="bottom-end"
+        >
+          <FilterOptionList<string, string>
+            options={options}
+            value={selectedDropdownOptions?.[0] || ""}
+            onChange={(opt) => handleDropdownOptionSelect(opt)}
+            icon={CheckMarkIcon}
+          />
+        </SmartDropdown>
+      )}
     </div>
   );
 }

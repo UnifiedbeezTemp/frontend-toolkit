@@ -23,9 +23,16 @@ export default function ChannelCard({
   const [openEditModal, setOpenEditModal] = useState(false);
   const icons = useSupabaseIcons();
 
+  const comingSoon = channel.availableChannel?.comingSoon;
+
   return (
     <>
-      <div className="border border-border rounded-[1.6rem] p-[1rem] lg:p-[1.6rem] flex flex-col h-full bg-primary">
+      <div
+        className={cn(
+          "border border-border rounded-[1.6rem] p-[1rem] lg:p-[1.6rem] flex flex-col h-full bg-primary transition-all",
+          comingSoon && "pointer-events-none select-none",
+        )}
+      >
         <div className="flex flex-col gap-[1rem] xl:flex-row items-start justify-between">
           <div
             className={`${
@@ -37,7 +44,7 @@ export default function ChannelCard({
               src={channel.icon}
               width={60}
               height={60}
-              className="w-[100%] h-[100%]"
+              className={cn("w-[100%] h-[100%]", comingSoon && "grayscale")}
             />
           </div>
 
@@ -61,19 +68,27 @@ export default function ChannelCard({
           <div className="bg-border/20 hidden lg:inline-block border border-border rounded-[0.4rem] p-[0.4rem] font-[700] text-[1rem] text-text-primary">
             {channel.info}
           </div>
-          <Heading className="mt-[0.4rem] text-[1.4rem] lg:text-[2rem] lg:leading-[2.96rem]">
+          <Heading className={cn("mt-[0.4rem] text-[1.4rem] lg:text-[2rem] lg:leading-[2.96rem]", comingSoon && "text-inactive-color")}>
             {channel.name}
           </Heading>
           <Text size="sm">{channel.description}</Text>
         </div>
 
         <div className="mt-auto">
-          {canEdit ? (
+          {comingSoon ? (
+            <Button
+              variant="secondary"
+              className="w-full border-0 rounded-[0.8rem] bg-input-filled text-text-secondary cursor-not-allowed"
+              disabled
+            >
+              Select
+            </Button>
+          ) : canEdit ? (
             <Button
               variant={channel.isSelected ? "secondary" : "primary"}
               className={cn(
                 "w-full rounded-[0.8rem]",
-                channel.isSelected ? "bg-input-filled" : ""
+                channel.isSelected ? "bg-input-filled" : "",
               )}
               onClick={() => {
                 channel.isSelected

@@ -51,7 +51,7 @@ export default function DesktopSection({
           />
           <p className="text-[1.4rem] text-text-primary">{user.email}</p>
 
-          {!isDraft && user.status !== "active"  && (
+          {!isDraft && user.status !== "active" && (
             <StatusBadge
               status={user.status}
               getStatusStyles={getStatusStyles}
@@ -68,18 +68,22 @@ export default function DesktopSection({
             currentRole={user.role}
             onRoleChange={onRoleChange}
             disabled={
-              user.status === "denied" || isSendingInvite || !canChangeRole || isLoading
+              user.status === "denied" ||
+              isSendingInvite ||
+              !canChangeRole ||
+              isLoading
             }
             loading={isAssigningRole}
           />
         )}
-        {!hideOwnerControls &&
-          (isDraft ? (
-            <SendInviteButton
-              onClick={onSendInvite || (() => {})}
-              loading={isSendingInvite}
-            />
-          ) : (
+        {!hideOwnerControls && (
+          <>
+            {isDraft && (
+              <SendInviteButton
+                onClick={onSendInvite || (() => {})}
+                loading={isSendingInvite}
+              />
+            )}
             <RemoveButton
               type={type}
               status={user.status}
@@ -87,7 +91,8 @@ export default function DesktopSection({
               disabled={isCurrentUser}
               loading={isLoading}
             />
-          ))}
+          </>
+        )}
       </div>
     </div>
   );
@@ -96,7 +101,7 @@ export default function DesktopSection({
 function DesktopRoleBadge({ role }: { role: string }) {
   const roles = useAppSelector((state) => state.members.roles);
   const roleName = getRoleName(role, roles);
-  
+
   return (
     <p className="text-[1.2rem] text-text-primary border border-input-stroke rounded-[0.4rem] p-[0.4rem] px-[0.8rem] bg-border/50">
       {roleName}
