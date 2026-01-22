@@ -29,9 +29,12 @@ axiosInstance.interceptors.response.use(
     return Promise.reject({
       status,
       message:
-        error.response?.data?.message ||
-        error.message ||
-        "Something went wrong",
+        (error?.status === 0 || error?.code === "OFFLINE" || error?.code === "NETWORK_ERROR")
+          ? "You aren't connected to the internet. Please connect and try again."
+          :
+          error.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
       details: error.response?.data || null,
     });
   }

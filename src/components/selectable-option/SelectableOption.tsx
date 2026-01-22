@@ -2,16 +2,17 @@ import { CheckboxVisual, RadioVisual } from "./SelectedVisual";
 import { cn } from "../../lib/utils";
 
 interface SelectableOptionProps {
-  label: React.ReactNode;
-  icon?: React.ReactNode;
-  selected: boolean;
-  onSelect: () => void;
-  variant?: "check" | "radio";
-  className?: string;
-  hideIndicator?: boolean;
-  indicatorSize?: "sm" | "md";
-  disabled?: boolean;
-  selectedBgClassName?: string;
+  label: React.ReactNode
+  icon?: React.ReactNode
+  selected: boolean
+  onSelect: () => void
+  variant?: "check" | "radio"
+  className?: string
+  hideIndicator?: boolean
+  indicatorSize?: "sm" | "md"
+  disabled?: boolean
+  selectedBgClassName?: string
+  centerCheckIndicator?: boolean
 }
 
 export default function SelectableOption({
@@ -24,6 +25,7 @@ export default function SelectableOption({
   indicatorSize = "sm",
   disabled,
   selectedBgClassName,
+  centerCheckIndicator
 }: SelectableOptionProps) {
   return (
     <button
@@ -49,7 +51,7 @@ export default function SelectableOption({
       {!hideIndicator && (
         <>
           {variant === "check" ? (
-            <CheckboxVisual selected={selected} size={indicatorSize} />
+            <CheckboxVisual centerVertically={centerCheckIndicator} selected={selected} size={indicatorSize} />
           ) : (
             <RadioVisual selected={selected} size={indicatorSize} />
           )}
