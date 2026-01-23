@@ -82,6 +82,8 @@ export const SUPABASE_IMAGES = {
   realEstateDemo: "website/real-estate-demo.png",
   orgsAndTeamsDemo: "website/orgs-and-teams-demo.png",
   customerSupportDemo: "website/customer-support-demo.jpg",
+  blog1: "website/blog-1.svg",
+  blog2: "website/blog-2.svg",
 } as const;
 
 export const SUPABASE_ICONS = {
