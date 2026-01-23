@@ -13,7 +13,8 @@ export default function PhoneInput({
   isEditing,
   className = "",
   labelClasses,
-  inputClasses
+  inputClasses,
+  showLabel = true
 }: PhoneInputProps) {
   const {
     selectedCountry,
@@ -32,9 +33,9 @@ export default function PhoneInput({
   if (!isEditing) {
     return (
       <div className={className}>
-      <Heading size={"sm"} className={cn("mb-[0.8rem]", labelClasses)}>
+        {showLabel && <Heading size={"sm"} className={cn("mb-[0.8rem]", labelClasses)}>
           Phone number
-        </Heading>
+        </Heading>}
         <div className="text-[1.6rem] border border-border rounded-[0.8rem] text-text-primary px-[1.4rem] py-[1rem]">
           {value || ""}
         </div>
@@ -44,9 +45,9 @@ export default function PhoneInput({
 
   return (
     <div className={className}>
-      <Heading size={"sm"} className={cn("mb-[0.4rem]", labelClasses)}>
+      {showLabel && <Heading size={"sm"} className={cn("mb-[0.4rem]", labelClasses)}>
         Phone number
-      </Heading>
+      </Heading>}
       <div className={cn("flex items-center gap-[1rem] rounded-[0.8rem] bg-primary border border-border overflow-hidden focus-within:border-brand-primary focus-within:border-(--primary-90) focus-within:ring-4 focus-within:ring-(--focus-ring) focus-within:outline-none", inputClasses)}>
         <CountrySelector
           selectedCountry={selectedCountry}
