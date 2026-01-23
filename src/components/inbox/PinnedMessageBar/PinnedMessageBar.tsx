@@ -1,13 +1,12 @@
-"use client"
+"use client";
 
-import { Pin } from "lucide-react"
-import { cn } from "../../../lib/utils"
-import Text from "../../ui/Text"
+import { Pin } from "lucide-react";
+import { cn } from "../../../lib/utils";
 
 interface PinnedMessageBarProps {
-  messageText: string
-  onUnpin?: () => void
-  className?: string
+  messageText: string;
+  onUnpin?: () => void;
+  className?: string;
 }
 
 export default function PinnedMessageBar({
@@ -15,23 +14,33 @@ export default function PinnedMessageBar({
   onUnpin,
   className,
 }: PinnedMessageBarProps) {
-  // Truncate message if too long
   const displayText =
-    messageText.length > 60
-      ? `${messageText.substring(0, 60)}...`
-      : messageText
+    messageText.length > 50
+      ? `${messageText.substring(0, 50)}...`
+      : messageText;
 
   return (
     <div
       className={cn(
-        "flex items-center gap-3 px-4 py-3 bg-gray-100 rounded-lg border border-gray-200",
-        className
+        "flex items-center gap-3 px-4 py-3 border-b border-input-stroke bg-primary",
+        className,
       )}
     >
-      <Pin size={16} className="text-gray-600 shrink-0" />
-      <Text className="text-[1.4rem] text-gray-700 flex-1 truncate">
+      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-input-filled">
+        <Pin size={16} className="text-brand-primary" />
+      </div>
+      <span className="text-[1.4rem] text-dark-base-70 flex-1 truncate font-medium">
         {displayText}
-      </Text>
+      </span>
+      {onUnpin && (
+        <button
+          type="button"
+          onClick={onUnpin}
+          className="text-dark-base-40 hover:text-dark-base-70 text-sm underline"
+        >
+          Unpin
+        </button>
+      )}
     </div>
-  )
+  );
 }
