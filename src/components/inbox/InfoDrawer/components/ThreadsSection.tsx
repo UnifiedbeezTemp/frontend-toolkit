@@ -1,8 +1,8 @@
-import { Thread } from "../types"
-import Text from "../../../ui/Text"
+import { Thread } from "../types";
+import Text from "../../../ui/Text";
 
 interface ThreadsSectionProps {
-  threads: Thread[]
+  threads: Thread[];
 }
 
 export default function ThreadsSection({ threads }: ThreadsSectionProps) {
@@ -11,16 +11,16 @@ export default function ThreadsSection({ threads }: ThreadsSectionProps) {
       {threads.map((thread) => (
         <div
           key={thread.id}
-          className="bg-gray-50 rounded-[0.8rem] p-3 hover:bg-gray-100 transition-colors cursor-pointer"
+          className="bg-input-filled rounded-[0.8rem] p-3 hover:bg-black-5 transition-colors cursor-pointer"
         >
-          <Text className="text-[1.4rem] font-medium text-text-primary mb-1">
+          <Text className="text-[1.4rem] font-medium text-dark-base-70 mb-1">
             {thread.title}
           </Text>
-          <Text className="text-[1.2rem] text-text-secondary">
+          <Text className="text-[1.2rem] text-dark-base-40">
             {thread.replyCount} replies • {thread.lastActivity}
           </Text>
         </div>
       ))}
     </div>
-  )
+  );
 }

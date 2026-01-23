@@ -17,6 +17,8 @@ export const SUPABASE_IMAGES = {
   beeBotImg: "images/beebot-icon.svg",
   footerBg: "images/footer-bg.png",
   bgImage: "images/bg-frame.webp",
+  phoneFrame: "images/phone-frame.png",
+  whatsappLayer: "images/whatsappLayer.png",
   img1: "images/img1.jpg",
   img2: "images/img2.jpg",
   img3: "images/img3.jpg",
@@ -364,8 +366,8 @@ export const SUPABASE_ICONS = {
   xWhite: "website/x.png",
   linkedinWhite: "website/linkedin.png",
   instagramWhite: "website/instagram.png",
-  youtubeWhite: "website/youtube.png"
-}
+  youtubeWhite: "website/youtube.png",
+};
 
 export const SUPABASE_GIFS = {
   celebrationPopup: "/celebration-v3.gif",

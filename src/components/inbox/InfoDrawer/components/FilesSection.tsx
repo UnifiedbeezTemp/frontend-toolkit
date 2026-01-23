@@ -1,9 +1,9 @@
-import { File } from "../types"
-import Text from "../../../ui/Text"
-import ImageComponent from "../../../ui/ImageComponent"
+import { File } from "../types";
+import Text from "../../../ui/Text";
+import ImageComponent from "../../../ui/ImageComponent";
 
 interface FilesSectionProps {
-  files: File[]
+  files: File[];
 }
 
 export default function FilesSection({ files }: FilesSectionProps) {
@@ -12,7 +12,7 @@ export default function FilesSection({ files }: FilesSectionProps) {
       {files.map((file) => (
         <div
           key={file.id}
-          className="bg-gray-50 rounded-[0.8rem] p-3 hover:bg-gray-100 transition-colors cursor-pointer flex items-center gap-3"
+          className="bg-input-filled rounded-[0.8rem] p-3 hover:bg-black-5 transition-colors cursor-pointer flex items-center gap-3"
         >
           {file.thumbnail && (
             <ImageComponent
@@ -24,15 +24,15 @@ export default function FilesSection({ files }: FilesSectionProps) {
             />
           )}
           <div className="flex-1">
-            <Text className="text-[1.4rem] font-medium text-text-primary">
+            <Text className="text-[1.4rem] font-medium text-dark-base-70">
               {file.name}
             </Text>
-            <Text className="text-[1.2rem] text-text-secondary">
+            <Text className="text-[1.2rem] text-dark-base-40">
               {file.size} {file.type}
             </Text>
           </div>
         </div>
       ))}
     </div>
-  )
+  );
 }

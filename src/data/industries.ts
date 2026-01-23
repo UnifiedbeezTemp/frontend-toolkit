@@ -3,6 +3,8 @@ import { formatEnumString } from "../utils/formatEnumString";
 export interface Industry {
   value: string;
   label: string;
+  name?: string;
+  icon?: string;
 }
 
 export interface FormattedIndustry {

@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react"
-import { cn } from "../../../lib/utils"
+import { PropsWithChildren } from "react";
+import { cn } from "../../../lib/utils";
 
 export default function PanelShell({
   className,
@@ -13,12 +13,12 @@ export default function PanelShell({
           ? "w-[90%] max-w-[24rem] border-r border-x border-x-input-stroke px-3 py-4"
           : "w-0 p-0",
         "transition-all duration-500 bg-input-filled",
-        "absolute xl:static top-0 left-0 z-20 h-full",
+        "absolute xl:static top-0 left-0 z-50 h-full",
         "overflow-hidden",
-        className
+        className,
       )}
     >
       {children}
     </div>
-  )
+  );
 }

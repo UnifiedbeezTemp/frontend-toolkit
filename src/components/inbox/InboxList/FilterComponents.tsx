@@ -1,18 +1,23 @@
-import { useRef } from "react"
-import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon"
-import InboxSearchBar from "../components/SearchBar"
-import FunnelIcon from "../../../assets/icons/FunnelIcon"
-import IconButton from "../../ui/IconButton"
-import { SmartDropdown } from "../../smart-dropdown"
-import { QuickFilterBar } from "../components/QuickFilterBar"
-import { FilterOptionList } from "../components/FilterOptionList"
-import { CRMTags } from "../components/crm-tags/CRMTags"
-import { useInboxFilters } from "./hooks/useInboxFilters"
-import { MAIN_FILTER_OPTIONS } from "./constants"
-import { InboxSearchAndFiltersProps } from "./types"
+import { useRef } from "react";
+import CheckMarkIcon from "../../../assets/icons/CheckMarkIcon";
+import InboxSearchBar from "../components/SearchBar";
+import FunnelIcon from "../../../assets/icons/FunnelIcon";
+import IconButton from "../../ui/IconButton";
+import { SmartDropdown } from "../../smart-dropdown";
+import { QuickFilterBar } from "../components/QuickFilterBar";
+import { FilterOptionList } from "../components/FilterOptionList";
+import { CRMTags } from "../components/crm-tags/CRMTags";
+import { useInboxFilters } from "./hooks/useInboxFilters";
+import { MAIN_FILTER_OPTIONS } from "./constants";
+import { InboxSearchAndFiltersProps } from "./types";
+import { useConversations } from "@/app/inbox/context/ConversationContext";
+import { useEffect } from "react";
 
-export const InboxSearchAndFilters = ({ inboxType = 'general' }: InboxSearchAndFiltersProps) => {
-  const dropdownTriggerRef = useRef(null)
+export const InboxSearchAndFilters = ({
+  inboxType = "general",
+}: InboxSearchAndFiltersProps) => {
+  const dropdownTriggerRef = useRef(null);
+  const { searchQuery, setSearchQuery, setActiveFilter } = useConversations();
 
   const {
     activeDropdown,
@@ -25,20 +30,24 @@ export const InboxSearchAndFilters = ({ inboxType = 'general' }: InboxSearchAndF
     handleSubFilterToggle,
     handleMainFilterOptionSelect,
     toggleMainDropdown,
-    closeAllDropdowns
+    closeAllDropdowns,
   } = useInboxFilters(inboxType);
+
+  useEffect(() => {
+    setActiveFilter(activeFilter.label);
+  }, [activeFilter, setActiveFilter]);
 
   return (
     <div className="flex flex-col gap-3 px-4 pb-4 bg-primary border-b border-gray-100 mt-2">
       <div className="flex gap-2 items-center">
         <InboxSearchBar
-          value={""}
+          value={searchQuery}
           placeholder="Search inbox"
-          onChange={() => { }}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="grow shrink"
         />
 
-        {inboxType === 'general' && (
+        {inboxType === "general" && (
           <>
             <IconButton
               onClick={toggleMainDropdown}
@@ -49,7 +58,7 @@ export const InboxSearchAndFilters = ({ inboxType = 'general' }: InboxSearchAndF
               icon={<FunnelIcon className="text-input-stroke" />}
             />
 
-            {activeDropdown === 'MAIN' && (
+            {activeDropdown === "MAIN" && (
               <SmartDropdown
                 isOpen={true}
                 onClose={closeAllDropdowns}
@@ -67,7 +76,7 @@ export const InboxSearchAndFilters = ({ inboxType = 'general' }: InboxSearchAndF
               </SmartDropdown>
             )}
 
-            {activeDropdown === 'TAGS' && (
+            {activeDropdown === "TAGS" && (
               <CRMTags
                 isOpen={true}
                 onClose={closeAllDropdowns}

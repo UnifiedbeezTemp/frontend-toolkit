@@ -1,16 +1,16 @@
-import { useState, ReactNode } from "react"
-import { cn } from "../../../../lib/utils"
-import ChevronDownIcon from "../../../../assets/icons/ChevronDownIcon"
-import Text from "../../../ui/Text"
+import { useState, ReactNode } from "react";
+import { cn } from "../../../../lib/utils";
+import ChevronDownIcon from "../../../../assets/icons/ChevronDownIcon";
+import Text from "../../../ui/Text";
 
 interface InfoSectionProps {
-  title: string
-  subtitle?: string
-  icon: ReactNode
-  children: ReactNode
-  defaultExpanded?: boolean
-  showAddButton?: boolean
-  onAdd?: () => void
+  title: string;
+  subtitle?: string;
+  icon: ReactNode;
+  children: ReactNode;
+  defaultExpanded?: boolean;
+  showAddButton?: boolean;
+  onAdd?: () => void;
 }
 
 export default function InfoSection({
@@ -22,30 +22,30 @@ export default function InfoSection({
   showAddButton = false,
   onAdd,
 }: InfoSectionProps) {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
     <div className="border-b border-input-stroke last:border-b-0">
       <div
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center justify-between py-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        className="flex items-center justify-between py-4 cursor-pointer hover:bg-input-filled transition-colors"
       >
         <div className="flex items-center gap-3 flex-1">
-          <div className="text-text-primary">{icon}</div>
+          <div>{icon}</div>
           <div className="flex-1">
-            <Text className="text-[1.6rem] font-semibold text-text-primary">
+            <Text className="text-[1.6rem] font-semibold text-dark-base-70">
               {title}
             </Text>
             {subtitle && (
               <div className="flex items-center justify-between mt-1">
-                <Text className="text-[1.2rem] text-text-secondary">
+                <Text className="text-[1.2rem] text-dark-base-40">
                   {subtitle}
                 </Text>
                 {showAddButton && (
                   <button
                     onClick={(e) => {
-                      e.stopPropagation()
-                      onAdd?.()
+                      e.stopPropagation();
+                      onAdd?.();
                     }}
                     className="text-[1.2rem] text-brand-primary font-medium hover:underline"
                   >
@@ -58,8 +58,8 @@ export default function InfoSection({
         </div>
         <ChevronDownIcon
           className={cn(
-            "transition-transform duration-200",
-            isExpanded && "rotate-180"
+            "transition-transform duration-200 text-dark-base-40",
+            isExpanded && "rotate-180",
           )}
         />
       </div>
@@ -69,5 +69,5 @@ export default function InfoSection({
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -65,7 +65,7 @@ export default function Modal({
         <motion.div
           className={cn(
             "fixed inset-0 flex items-center justify-center",
-            bottomSheet && "items-end sm:items-center"
+            bottomSheet && "items-end sm:items-center",
           )}
           role="dialog"
           aria-modal="true"
@@ -77,7 +77,7 @@ export default function Modal({
           <motion.div
             className={cn(
               "absolute inset-0 bg-black/40",
-              isBlur && "backdrop-blur-sm"
+              isBlur && "backdrop-blur-sm",
             )}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -89,16 +89,20 @@ export default function Modal({
           <motion.div
             ref={modalRef}
             className={cn(
-              "outline-none ring-none relative bg-primary shadow-xl",
-              overflow && "overflow-auto",
-              bottomSheet && maxHeight ? `max-h-[${maxHeight}]` : "",
-              bottomSheet
-                ? "w-full sm:w-auto sm:rounded-xl sm:overflow-hidden"
-                : "rounded-xl m-4",
+              "outline-none ring-none relative bg-primary shadow-xl flex flex-col overflow-hidden",
+              bottomSheet ? "w-full sm:w-auto sm:rounded-xl" : "rounded-xl m-4",
               bottomSheet ? "" : getSizeClasses(size),
               size === "fullscreen" && "rounded-none",
-              className
+              className,
             )}
+            style={{
+              maxHeight: bottomSheet
+                ? maxHeight
+                : size === "fullscreen"
+                  ? "100vh"
+                  : "90vh",
+              zIndex: getZIndex(),
+            }}
             variants={bottomSheet ? bottomSheetVariants : regularModalVariants}
             initial="hidden"
             animate="visible"
@@ -106,7 +110,14 @@ export default function Modal({
             transition={contentTransition}
             tabIndex={-1}
           >
-            {children}
+            <div
+              className={cn(
+                "w-full flex-1",
+                overflow && "overflow-y-auto overflow-x-hidden",
+              )}
+            >
+              {children}
+            </div>
           </motion.div>
         </motion.div>
       )}
