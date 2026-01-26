@@ -3,12 +3,12 @@ import { OriginalplansService } from "../plansServices";
 import { APIError } from "../../../types";
 import { OriginalPlan } from "../types";
 
-export const useUserPlan = () => {
+export const useUserPlan = (retry?: boolean) => {
   const { data, isLoading, error, refetch } = useAppQuery<OriginalPlan, APIError>(
     ["plans", "user"],
     () => OriginalplansService.getUserPlanFeatures(),
     {
-      retry: false,
+      retry,
     }
   );
 
