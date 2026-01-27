@@ -1,7 +1,7 @@
 export interface ImageUploadSectionProps {
   image: string | null;
   selectedFile: File | null;
-  onImageSelect: (file: File) => void;
+  onImageSelect: (file: File | null) => void;
   title: string;
   description: string;
   displayName?: string;
