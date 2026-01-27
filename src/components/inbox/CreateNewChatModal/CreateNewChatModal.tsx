@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import Modal from "../../modal/Modal"
-import ModalHeader from "../../modal/ModalHeader"
-import CloseModalButton from "../../modal/CloseModalButton"
-import Input from "../../ui/Input"
-import Button from "../../ui/Button"
-import Text from "../../ui/Text"
-import { useCreateNewChatModal } from "./hooks/useCreateNewChatModal"
-import ChannelSelector from "./components/ChannelSelector"
-import ContactListButton from "./components/ContactListButton"
-import { CreateNewChatModalProps } from "./types"
+import Modal from "../../modal/Modal";
+import ModalHeader from "../../modal/ModalHeader";
+import CloseModalButton from "../../modal/CloseModalButton";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import Text from "../../ui/Text";
+import { useCreateNewChatModal } from "./hooks/useCreateNewChatModal";
+import ChannelSelector from "./components/ChannelSelector";
+import ContactListButton from "./components/ContactListButton";
+import { CreateNewChatModalProps } from "./types";
 
 export default function CreateNewChatModal({
   isOpen,
@@ -28,7 +28,7 @@ export default function CreateNewChatModal({
     closeChannelDropdown,
     handleSubmit,
     handleContactListClick,
-  } = useCreateNewChatModal()
+  } = useCreateNewChatModal();
 
   return (
     <Modal
@@ -53,6 +53,11 @@ export default function CreateNewChatModal({
             <Input
               value={toValue}
               onChange={(e) => handleToChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && isFormValid) {
+                  handleSubmit(onClose);
+                }
+              }}
               placeholder="Enter a phone number, email address, or a name of an existing contact"
               className="w-full placeholder:text-md text-md"
             />
@@ -94,5 +99,5 @@ export default function CreateNewChatModal({
         </div>
       </div>
     </Modal>
-  )
+  );
 }

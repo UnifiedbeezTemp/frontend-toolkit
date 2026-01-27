@@ -13,6 +13,7 @@ import MoreVerticalIcon from "../../../assets/icons/MoreVerticalIcon"
 import PlusIcon from "../../../assets/icons/PlusIcon"
 import CreateNewChatModal from "../CreateNewChatModal"
 import { InboxListTopToolBarProps } from "./types"
+import { useRouter } from "next/navigation"
 
 export function InboxListTopToolBar({
   title,
@@ -39,6 +40,7 @@ export function InboxListTopToolBar({
     setTrue: openCreateChatModal,
     setFalse: closeCreateChatModal,
   } = useToggle()
+  const router = useRouter()
 
   const actionsToggleRef = useRef<HTMLButtonElement | null>(null)
   const inboxToggleRef = useRef<HTMLButtonElement | null>(null)
@@ -50,6 +52,7 @@ export function InboxListTopToolBar({
           variant="secondary"
           icon={<SettingsDrawerIcon />}
           ariaLabel={"Settings"}
+          onClick={() => router.push("/inbox/settings")}
         />
         <IconButton
           variant="primary"

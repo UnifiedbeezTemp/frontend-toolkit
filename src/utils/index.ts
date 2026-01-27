@@ -38,3 +38,4 @@ export * from "./is";
 export * from "./redirectToLogin";
 export * from "./setupRoutes";
 export * from "./urlValidation";
+export * from "./formatEnumString";

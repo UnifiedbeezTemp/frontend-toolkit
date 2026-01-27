@@ -44,7 +44,7 @@ export function getCurrencySymbol(currencyCode: string): string {
 export function formatPrice(
   amount: number,
   currency: string = "GBP",
-  locale: string = "en-GB"
+  locale: string = "en-GB",
 ): string {
   return new Intl.NumberFormat(locale, {
     style: "currency",
@@ -90,4 +90,11 @@ export function formatDate(dateString: string): string {
   } catch {
     return dateString;
   }
+}
+
+export function getCurrentTime(): string {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
 }

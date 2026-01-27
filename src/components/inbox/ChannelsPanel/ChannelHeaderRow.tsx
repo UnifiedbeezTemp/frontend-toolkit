@@ -8,26 +8,30 @@ import Button from "../../ui/Button";
 import Checkbox from "../../ui/CheckBox";
 import ImageComponent from "../../ui/ImageComponent";
 import ChannelItemCard from "./ChannelItemCard";
-import ConnectChannelsModal from "../ConnectChannelsModal"
+import ConnectChannelsModal from "../ConnectChannelsModal";
+
+import { ChannelAccount } from "../ConnectChannelsModal/types";
 
 export default function ChannelHeaderRow({
   channel,
+  accounts = [],
 }: {
-  channel: { label: string };
+  channel: { label: string; icon: string; id: string };
+  accounts?: ChannelAccount[];
 }) {
-  const icons = useSupabaseIcons()
-  const { value: isOpen, toggle: onToggle } = useToggle()
+  const icons = useSupabaseIcons();
+  const { value: isOpen, toggle: onToggle } = useToggle();
   const {
     value: showConnectModal,
     setTrue: openConnectModal,
     setFalse: closeConnectModal,
-  } = useToggle()
+  } = useToggle();
   return (
     <ExpandableCard
       title={channel.label}
       containerClassName={cn(
         "rounded-2xl px-2 py-3 text-left border border-input-stroke",
-        isOpen ? "bg-gradient-yellow-1" : "bg-primary"
+        isOpen ? "bg-gradient-yellow-1" : "bg-primary",
       )}
       useDefaultDetailsStyling={false}
       summary={
@@ -36,7 +40,7 @@ export default function ChannelHeaderRow({
             <ImageComponent
               width={25}
               height={25}
-              src={icons.whatsappIcon}
+              src={channel.icon}
               alt={channel.label}
             />
           </div>
@@ -60,23 +64,28 @@ export default function ChannelHeaderRow({
           <Checkbox checked={false} onChange={() => {}} />
           <span className="text-[1rem] text-dark-base-70">Select all</span>
         </div>
-        <ChannelItemCard
-          channelIcon={
-            <ImageComponent
-              width={25}
-              height={25}
-              src={icons.whatsappIcon}
-              alt={channel.label}
-            />
-          }
-          item={{
-            status: "connected",
-            disabled: false,
-            title: "+234 902 922 0646",
-            subTitle: "Brian George",
-          }}
-          onClick={() => {}}
-        />
+        {accounts.map((account) => (
+          <ChannelItemCard
+            key={account.id}
+            channelIcon={
+              <ImageComponent
+                width={25}
+                height={25}
+                src={channel.icon}
+                alt={channel.label}
+              />
+            }
+            item={{
+              status:
+                account.status ||
+                (account.isConnected ? "connected" : "disconnected"),
+              disabled: false,
+              title: account.phoneNumber || account.email || account.name,
+              subTitle: account.name,
+            }}
+            onClick={() => {}}
+          />
+        ))}
         <div>
           <Button
             variant="primary"
@@ -90,11 +99,7 @@ export default function ChannelHeaderRow({
       <ConnectChannelsModal
         isOpen={showConnectModal}
         onClose={closeConnectModal}
-        selectedChannelId={
-          channel.label.toLowerCase() === "whatsapp"
-            ? "whatsapp"
-            : channel.label.toLowerCase().replace(/\s+/g, "-")
-        }
+        selectedChannelId={channel.id}
       />
     </ExpandableCard>
   );

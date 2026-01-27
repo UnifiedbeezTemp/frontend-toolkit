@@ -1,9 +1,10 @@
-import SmartDropdown from "../../smart-dropdown/SmartDropdown"
-import Input from "../../ui/Input"
-import { useAssignChatDropdown } from "./hooks/useAssignChatDropdown"
-import UserListItem from "./components/UserListItem"
-import { AssignChatDropdownProps } from "./types"
-import SearchIcon from "../../../assets/icons/SearchIcon"
+import SmartDropdown from "../../smart-dropdown/SmartDropdown";
+import Input from "../../ui/Input";
+import { useAssignChatDropdown } from "./hooks/useAssignChatDropdown";
+import UserListItem from "./components/UserListItem";
+import { AssignChatDropdownProps } from "./types";
+import SearchIcon from "../../../assets/icons/SearchIcon";
+import { InfoIcon } from "../../../assets/icons/InfoIcon";
 
 export default function AssignChatDropdown({
   isOpen,
@@ -13,9 +14,8 @@ export default function AssignChatDropdown({
   onAssign,
   onUnassign,
 }: AssignChatDropdownProps) {
-  const { searchQuery, setSearchQuery, filteredUsers } = useAssignChatDropdown(
-    assignedUserIds
-  )
+  const { searchQuery, setSearchQuery, filteredUsers } =
+    useAssignChatDropdown(assignedUserIds);
 
   return (
     <SmartDropdown
@@ -23,32 +23,34 @@ export default function AssignChatDropdown({
       onClose={onClose}
       triggerRef={triggerRef}
       placement="bottom-end"
-      maxHeight="40rem"
-      className="w-[90dvw]! max-w-[40rem]! rounded-[1.6rem] p-"
+      maxHeight="50rem"
+      className="w-[90dvw]! max-w-[40rem]! rounded-[2rem] p-6"
       closeOnClick={false}
     >
       <div>
-        <div className="mb-6">
-          <div className="text-[1.8rem] font-bold text-text-primary mb-4">
-            Assigned chat to
+        <div className="mb-5">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-[2rem] font-bold text-dark-base-100">
+              Assigned chat to
+            </h2>
           </div>
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search"
-            leftIcon={<SearchIcon />}
-            className="w-full"
+            leftIcon={<SearchIcon className="w-5 h-5 text-dark-base-40" />}
+            className="w-full rounded-xl border-input-stroke"
           />
         </div>
-        <div className="max-h-[32rem] overflow-y-auto">
+        <div className="max-h-[36rem] overflow-y-auto">
           {filteredUsers.length === 0 ? (
-            <div className="text-center py-8 text-text-secondary">
+            <div className="text-center py-8 text-dark-base-40">
               No users found
             </div>
           ) : (
-            <div className="flex flex-col divide-y divide-input-stroke">
+            <div className="flex flex-col">
               {filteredUsers.map((user) => {
-                const isAssigned = assignedUserIds.includes(user.id)
+                const isAssigned = assignedUserIds.includes(user.id);
                 return (
                   <UserListItem
                     key={user.id}
@@ -57,12 +59,12 @@ export default function AssignChatDropdown({
                     onAssign={() => onAssign?.(user.id)}
                     onUnassign={() => onUnassign?.(user.id)}
                   />
-                )
+                );
               })}
             </div>
           )}
         </div>
       </div>
     </SmartDropdown>
-  )
+  );
 }
