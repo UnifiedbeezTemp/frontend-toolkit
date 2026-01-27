@@ -8,9 +8,10 @@ import { cn } from "../../lib/utils";
 interface ComparisonTableProps {
   className?: string;
   onSelectPlan?: (planId: string) => void;
+  onAddonsClick?: () => void;
 }
 
-export default function ComparisonTable({ className, onSelectPlan }: ComparisonTableProps) {
+export default function ComparisonTable({ className, onSelectPlan, onAddonsClick }: ComparisonTableProps) {
   const { plans, loading, error, icons } = useComparisonPlans();
 
   if (loading) {
@@ -39,11 +40,13 @@ export default function ComparisonTable({ className, onSelectPlan }: ComparisonT
         plans={plans} 
         features={COMPARISON_FEATURES} 
         icons={icons}
+        onAddonsClick={onAddonsClick}
         onSelectPlan={onSelectPlan}
       />
       <ComparisonMobile 
         plans={plans} 
         features={COMPARISON_FEATURES} 
+        onAddonsClick={onAddonsClick}
         icons={icons}
         onSelectPlan={onSelectPlan}
       />

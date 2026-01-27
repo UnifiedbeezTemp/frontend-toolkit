@@ -10,6 +10,7 @@ interface ComparisonMobileProps {
   features: ComparisonFeature[];
   icons: Record<string, string | null>;
   onSelectPlan?: (planId: string) => void;
+  onAddonsClick?: () => void;
 }
 
 export default function ComparisonMobile({
@@ -17,6 +18,7 @@ export default function ComparisonMobile({
   features,
   icons,
   onSelectPlan,
+  onAddonsClick,
 }: ComparisonMobileProps) {
   const [activeIndex, setActiveIndex] = useState(1);
 
@@ -35,7 +37,7 @@ export default function ComparisonMobile({
   const monthlyPriceStr = String(activePlan.values.monthlyPrice);
   const priceMatch = monthlyPriceStr.match(/£(\d+)/);
   const displayPrice = priceMatch ? parseInt(priceMatch[1]) : 0;
-  
+
   const seatsStr = String(activePlan.values.seats);
   const aiAssistantsStr = String(activePlan.values.aiAssistants);
   const seatsMatch = seatsStr.match(/(\d+)/);
@@ -53,7 +55,7 @@ export default function ComparisonMobile({
         <div className="absolute top-6 right-5.25">
           <div className="*:border *:border-border *:rounded-[0.325rem] *:px-1.25 *:py-0.5">
             {activePlan.addonAvailable ? (
-              <button className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium">
+              <button onClick={onAddonsClick} className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium">
                 Add-on available
                 {icons.linkExternal && (
                   <Image
