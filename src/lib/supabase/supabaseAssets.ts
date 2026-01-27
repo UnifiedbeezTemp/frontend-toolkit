@@ -50,6 +50,7 @@ export const SUPABASE_IMAGES = {
   uploadLogo: "website/upload-logo.png",
   typo: "website/typo.png",
   hiveHero: "website/hive-hero.webp",
+  hiveHeroMobile: "website/hive-hero-mobile.png",
   gdprCompliant: "website/gdpr-compliant.png",
   metaBusinessPartner: "website/meta-business-partner.png",
   dottedBg: "website/dotted-bg.png",
