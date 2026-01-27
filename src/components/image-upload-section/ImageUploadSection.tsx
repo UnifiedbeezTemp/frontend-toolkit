@@ -5,35 +5,16 @@ import { useProfileImage } from "./hooks/useProfileImage";
 import Text from "../ui/Text";
 import { ImageUploadSectionProps } from "./types";
 import Heading from "../ui/Heading";
-import { useEffect, useState } from "react";
+import React from "react";
 import ImageComponent from "../ui/ImageComponent";
+import CameraModal from "./components/CameraModal";
+import { ImagePreview } from "./components/ImagePreview";
 
 const sizeClasses = {
   sm: "w-[6rem] h-[6rem]",
   md: "w-[8.6rem] h-[8.6rem]",
   lg: "w-[12rem] h-[12rem]",
   xs: "w-[6rem] h-[6rem]",
-};
-
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
-const isValidImageFile = (file: File): boolean => {
-  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    return false;
-  }
-  if (
-    file.type === "image/svg+xml" ||
-    file.name.toLowerCase().endsWith(".svg")
-  ) {
-    return false;
-  }
-
-  return true;
 };
 
 export default function ImageUploadSection({
@@ -49,136 +30,19 @@ export default function ImageUploadSection({
   size = "md",
 }: ImageUploadSectionProps) {
   const icons = useSupabaseIcons();
-  const {
-    uploadRef,
-    captureRef,
-    handleUploadClick,
-    handleCaptureClick,
-    handleSelectImage,
-  } = useImageUpload({ onImageSelect });
   const { getInitials, createObjectURL } = useProfileImage();
 
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [fileError, setFileError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (selectedFile) {
-      const url = createObjectURL(selectedFile);
-      setPreviewUrl(url);
-
-      return () => {
-        URL.revokeObjectURL(url);
-      };
-    } else {
-      setPreviewUrl(null);
-    }
-  }, [selectedFile]);
-
-  const handleFileSelect = (file: File | undefined) => {
-    setFileError(null);
-
-    if (!file) return;
-
-    if (!isValidImageFile(file)) {
-      setFileError(
-        "Please select a valid image file (JPEG, PNG, GIF, WebP, BMP, TIFF). SVG files are not allowed."
-      );
-      return;
-    }
-
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setFileError(
-        "File size too large. Please select an image smaller than 10MB."
-      );
-      return;
-    }
-
-    handleSelectImage(file);
-  };
-
-  // Fix camera capture to actually open camera
-  const handleCameraCapture = () => {
-    if (captureRef.current) {
-      // Clear any previous value to ensure change event fires
-      captureRef.current.value = "";
-      captureRef.current.click();
-    }
-  };
-
-  const renderImagePreview = () => {
-    if (previewUrl) {
-      return (
-        <ImageComponent
-          src={previewUrl}
-          alt={`${type} preview`}
-          width={500}
-          height={500}
-          className={`${sizeClasses[size]} rounded-full object-cover object-center`}
-        />
-      );
-    }
-
-    if (image) {
-      return (
-        <ImageComponent
-          src={image}
-          alt={`${type} preview`}
-          width={500}
-          height={500}
-          className={`${sizeClasses[size]} rounded-full object-cover object-center`}
-        />
-      );
-    }
-
-    if (type === "logo") {
-      return (
-        <div
-          className={`flex items-center text-[2rem] text-text-primary justify-center w-full h-full bg-border/20 rounded-full`}
-        >
-          {displayName ? (
-            getInitials(displayName)
-          ) : (
-            <ImageComponent
-              src={icons.profileActive}
-              alt={`${type} preview`}
-              width={500}
-              height={500}
-              className={`rounded-full object-cover object-center`}
-            />
-          )}
-        </div>
-      );
-    }
-
-    return (
-      <div
-        className={`flex items-center text-[2rem] text-text-primary justify-center w-full h-full bg-border/20 rounded-full`}
-      >
-        {displayName ? (
-          getInitials(displayName)
-        ) : (
-          <ImageComponent
-            src={icons.preferenceActive}
-            alt={`${type} preview`}
-            width={100}
-            height={100}
-            className={`rounded-full object-cover object-center hidden`}
-          />
-        )}
-      </div>
-    );
-  };
-
-  const handleRemoveImage = () => {
-    onImageSelect(null as unknown as File);
-    setPreviewUrl(null);
-    setFileError(null);
-
-    // Clear file inputs
-    if (uploadRef.current) uploadRef.current.value = "";
-    if (captureRef.current) captureRef.current.value = "";
-  };
+  const {
+    uploadRef,
+    isCameraModalOpen,
+    previewUrl,
+    fileError,
+    handleUploadClick,
+    handleCameraCapture,
+    closeCameraModal,
+    handleFileSelect,
+    handleRemoveImage,
+  } = useImageUpload({ onImageSelect, selectedFile, createObjectURL });
 
   const hasImage = previewUrl || image;
 
@@ -188,7 +52,16 @@ export default function ImageUploadSection({
         <div
           className={`${sizeClasses[size]} border border-border bg-border/20 rounded-full relative`}
         >
-          {renderImagePreview()}
+          <ImagePreview
+            previewUrl={previewUrl}
+            image={image}
+            type={type}
+            displayName={displayName}
+            getInitials={getInitials}
+            icons={icons}
+            sizeClasses={sizeClasses}
+            size={size}
+          />
         </div>
         <div className="flex-1">
           <Heading size="sm">{title}</Heading>
@@ -206,9 +79,17 @@ export default function ImageUploadSection({
         <div
           className={`${sizeClasses[size]} border border-border bg-border/20 rounded-full relative`}
         >
-          {renderImagePreview()}
+          <ImagePreview
+            previewUrl={previewUrl}
+            image={image}
+            type={type}
+            displayName={displayName}
+            getInitials={getInitials}
+            icons={icons}
+            sizeClasses={sizeClasses}
+            size={size}
+          />
 
-          {/* Remove Image Button (X) - Only show when there's an image */}
           {selectedFile && (
             <button
               type="button"
@@ -294,16 +175,6 @@ export default function ImageUploadSection({
             className="hidden"
             onChange={(e) => handleFileSelect(e.target.files?.[0])}
           />
-
-          {/* Camera input with capture attribute */}
-          <input
-            ref={captureRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            className="hidden"
-            onChange={(e) => handleFileSelect(e.target.files?.[0])}
-          />
         </div>
       </div>
 
@@ -338,6 +209,12 @@ export default function ImageUploadSection({
           Take photo
         </Button>
       </div>
+
+      <CameraModal
+        isOpen={isCameraModalOpen}
+        onClose={closeCameraModal}
+        onCapture={(file) => handleFileSelect(file)}
+      />
     </div>
   );
 }

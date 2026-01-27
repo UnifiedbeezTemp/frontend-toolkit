@@ -47,8 +47,10 @@ import { cn } from "../../lib/utils";
  * - Accessible labels and error messages
  */
 
-interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+interface InputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "onChange"
+> {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -92,7 +94,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       onFocus,
       ...rest
     },
-    ref
+    ref,
   ) => {
     const inputId = React.useId();
     const errorId = `${inputId}-error`;
@@ -105,10 +107,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className={cn("block text-text-secondary text-[1.6rem] font-[700] mb-2 flex", labelClassName)}
+            className={cn(
+              "block text-text-secondary text-[1.6rem] font-[700] mb-2 flex",
+              labelClassName,
+            )}
           >
             {label}
-            {showRequired && <span className="text-destructive text-[1.3rem]">*</span>}
+            {showRequired && (
+              <span className="text-destructive text-[1.3rem]">*</span>
+            )}
           </label>
         )}
 
@@ -143,7 +150,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               "border border-(--input-stroke) bg-primary",
               "focus:border-(--primary-90) focus:ring-4 focus:ring-(--focus-ring) focus:outline-none",
               "shadow-xs",
-              "placeholder:text-text-primary placeholder:text-[1.6rem]",
+              "placeholder:text-inactive-color placeholder:text-[1.4rem] placeholder:opacity-60",
               "text-text-primary text-[1.6rem] bg-primary transition-colors duration-200",
               "autofill:bg-primary autofill:text-text-primary",
               "[-webkit-text-fill-color:var(--text-primary)]",
@@ -154,7 +161,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 ? "border-destructive focus:border-destructive"
                 : "border-border focus:border-brand-primary",
               disabled && "opacity-50 cursor-not-allowed bg-muted/20",
-              inputClassName
+              inputClassName,
             )}
             {...rest}
           />
@@ -179,14 +186,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
 
         {/* Helper Text */}
-        {!error && helperText &&  (
-          <p id={helperId} className="mt-[0.6rem] ml-1 text-[1.4rem] text-dark-base-40">
+        {!error && helperText && (
+          <p
+            id={helperId}
+            className="mt-[0.6rem] ml-1 text-[1.4rem] text-dark-base-40"
+          >
             {helperText}
           </p>
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";
