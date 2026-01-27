@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ImageComponent from "next/image";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Loader from "../ui/Loader";
+import PreLoader from "../ui/PreLoader";
 
 interface BusinessDescriptionEditorProps {
   description: string;
@@ -36,7 +37,7 @@ export default function BusinessDescriptionEditor({
   }, [description, isTyping, typedText]);
 
   return (
-    <div className="border-border border p-[1.6rem] rounded-[1.6rem] focus-within:shadow-[0_0_0_5px_rgba(5,61,39,0.1)] transition-shadow bg-primary focus-within:border-brand-primary">
+    <div className="border-border border p-[1.6rem] rounded-[1.6rem] focus-within:border-(--primary-90) focus-within:ring-4 focus-within:ring-(--focus-ring) focus-within:outline-none transition-shadow bg-primary focus-within:border-brand-primary">
       <div className="flex items-center justify-between">
         <span className="text-[1.6rem] font-[700] text-brand-primary">
           Business overview
@@ -68,13 +69,20 @@ export default function BusinessDescriptionEditor({
         </button>
       </div>
 
-      <textarea
-        value={displayText}
-        onChange={(e) => onDescriptionChange(e.target.value)}
-        className="focus:ring-0 focus:outline-0 border-0 mt-[1.4rem] text-text-primary block w-full text-[1.6rem] min-h-[20rem] resize-none placeholder-text-primary/50 sm:min-h-[16rem] md:min-h-[18rem] disabled:cursor-not-allowed"
-        placeholder="Enter business description"
-        disabled={isTyping || isEnhancing}
-      />
+      <div className="relative">
+        <textarea
+          value={displayText}
+          onChange={(e) => onDescriptionChange(e.target.value)}
+          className="focus:ring-0 focus:outline-0 border-0 mt-[1.4rem] text-text-primary block w-full text-[1.6rem] min-h-[20rem] resize-none placeholder-text-primary/50 sm:min-h-[16rem] md:min-h-[18rem] disabled:cursor-not-allowed"
+          placeholder="Enter business description"
+          disabled={isTyping || isEnhancing}
+        />
+        {(isEnhancing) && (
+          <div className="absolute inset-0 flex items-center justify-center bg-primary/20 backdrop-blur-[2px] rounded-[1.6rem]">
+            <PreLoader isPage={false} height={150} />
+          </div>
+        )}
+      </div>
 
       <div className="flex justify-between sm:justify-end items-center mt-2">
         <p className="text-[1rem] text-text-primary">

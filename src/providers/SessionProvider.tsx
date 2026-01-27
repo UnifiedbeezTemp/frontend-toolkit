@@ -19,7 +19,7 @@ export default function SessionProvider({ children }: PropsWithChildren) {
 
   if (isPending) return <PreLoader />;
 
-  if (showSessionExpired) {
+  if (authStatus === "unauthenticated" || showSessionExpired) {
     return <SessionExpiredModal isOpen={true} />;
   }
 

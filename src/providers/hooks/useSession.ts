@@ -36,7 +36,6 @@ export default function useSession() {
 
       if (error.status === 401) {
         setShowSessionExpired(true);
-        redirectToLogin();
       }
     }
   }, [isError, error, showToast]);
