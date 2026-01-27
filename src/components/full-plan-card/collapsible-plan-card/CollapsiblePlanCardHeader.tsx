@@ -8,12 +8,14 @@ interface CollapsiblePlanCardHeaderProps {
   plan: Plan;
   isExpanded?: boolean;
   showChevron?: boolean
+  handleAddonClick?: () => void
 }
 
 export default function CollapsiblePlanCardHeader({
   plan,
   isExpanded,
-  showChevron
+  showChevron,
+  handleAddonClick,
 }: CollapsiblePlanCardHeaderProps) {
   const icons = useSupabaseIcons();
 
@@ -46,7 +48,8 @@ export default function CollapsiblePlanCardHeader({
       </div>
       <div className="mt-2.5 *:border *:border-border *:rounded-[0.325rem] *:px-1.25 *:py-0.5">
         {plan.addonAvailable ? (
-          <button className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium">
+          <button
+            onClick={handleAddonClick} className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium">
             Add-on available
             <ImageComponent
               src={icons.linkExternal}
