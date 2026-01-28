@@ -10,7 +10,7 @@ interface ComparisonMobileProps {
   features: ComparisonFeature[];
   icons: Record<string, string | null>;
   onSelectPlan?: (planId: string) => void;
-  onAddonsClick?: () => void;
+  onAddonsClick?: (planId?: string) => void;
 }
 
 export default function ComparisonMobile({
@@ -55,7 +55,8 @@ export default function ComparisonMobile({
         <div className="absolute top-6 right-5.25">
           <div className="*:border *:border-border *:rounded-[0.325rem] *:px-1.25 *:py-0.5">
             {activePlan.addonAvailable ? (
-              <button onClick={onAddonsClick} className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium">
+              <button onClick={() => onAddonsClick && onAddonsClick(activePlan?.id as string)}
+ className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium">
                 Add-on available
                 {icons.linkExternal && (
                   <Image

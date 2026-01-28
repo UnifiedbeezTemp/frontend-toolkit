@@ -8,7 +8,7 @@ import { cn } from "../../lib/utils";
 interface ComparisonTableProps {
   className?: string;
   onSelectPlan?: (planId: string) => void;
-  onAddonsClick?: () => void;
+  onAddonsClick?: (planId?: string) => void;
 }
 
 export default function ComparisonTable({ className, onSelectPlan, onAddonsClick }: ComparisonTableProps) {
