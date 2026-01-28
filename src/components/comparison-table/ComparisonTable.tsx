@@ -16,7 +16,7 @@ export default function ComparisonTable({ className, onSelectPlan, onAddonsClick
 
   if (loading) {
     return (
-      <div className={cn("w-screen h-full py-20 flex justify-center items-center", className)}>
+      <div className={cn("w-full h-full py-20 flex justify-center items-center", className)}>
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
       </div>
     );
