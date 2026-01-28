@@ -24,27 +24,23 @@ export default function AssignChatDropdown({
       triggerRef={triggerRef}
       placement="bottom-end"
       maxHeight="50rem"
-      className="w-[90dvw]! max-w-[40rem]! rounded-[2rem] p-6"
+      className="w-[90dvw]! max-w-[24rem]! rounded-[1.4rem] p-2 border border-input-stroke"
       closeOnClick={false}
     >
-      <div>
-        <div className="mb-5">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-[2rem] font-bold text-dark-base-100">
-              Assigned chat to
-            </h2>
-          </div>
+      <div className="flex flex-col gap-2">
+          <h2 className="text-base font-bold text-dark-base-100">
+            Assigned chat to
+          </h2>
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search"
             leftIcon={<SearchIcon className="w-5 h-5 text-dark-base-40" />}
-            className="w-full rounded-xl border-input-stroke"
+            className=""
           />
-        </div>
         <div className="max-h-[36rem] overflow-y-auto">
           {filteredUsers.length === 0 ? (
-            <div className="text-center py-8 text-dark-base-40">
+            <div className="text-center py-8 text-dark-base-70 text-md">
               No users found
             </div>
           ) : (

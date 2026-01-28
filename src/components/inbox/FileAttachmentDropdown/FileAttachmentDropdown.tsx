@@ -4,7 +4,6 @@ import { RefreshCw, File, Image, MessageSquare } from "lucide-react"
 import SmartDropdown from "../../smart-dropdown/SmartDropdown"
 import { DropdownItem } from "../../smart-dropdown/DropdownItem"
 import { FileAttachmentDropdownProps } from "./types"
-import { cn } from "../../../lib/utils"
 
 export default function FileAttachmentDropdown({
   isOpen,
@@ -22,7 +21,7 @@ export default function FileAttachmentDropdown({
       onClose={onClose}
       triggerRef={triggerRef}
       placement="top-start"
-      className="bg-white rounded-xl shadow-lg border border-gray-200 p-2 min-w-[18rem]"
+      className="bg-white rounded-xl shadow-lg border border-gray-200 p-2 min-w-[22rem] min-h-[20rem]"
       closeOnClick={true}
     >
       <div className="flex flex-col">

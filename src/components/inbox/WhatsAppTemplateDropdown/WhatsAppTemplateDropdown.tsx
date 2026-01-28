@@ -16,6 +16,7 @@ export default function WhatsAppTemplateDropdown({
   triggerRef,
   onTemplateSelect,
   onTemplateHover,
+  onCreateTemplate,
 }: WhatsAppTemplateDropdownProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const templateItemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
@@ -33,7 +34,8 @@ export default function WhatsAppTemplateDropdown({
   }
 
   const handleTemplateHover = (template: WhatsAppTemplate | null) => {
-    onTemplateHover?.(template)
+    const element = template ? templateItemRefs.current.get(template.id) : null
+    onTemplateHover?.(template, element)
   }
 
   return (
@@ -41,17 +43,17 @@ export default function WhatsAppTemplateDropdown({
       isOpen={isOpen}
       onClose={onClose}
       triggerRef={triggerRef}
-      placement="right-start"
+      placement="top-start"
       offset={8}
       className={cn(
         "bg-white rounded-xl shadow-lg border border-gray-200 p-4",
-        "min-w-[28rem] max-w-[32rem] max-h-[60vh] overflow-y-auto",
-        "md:block" // Show side-by-side on desktop
+        "min-w-[28rem] min-h-[40rem] max-w-[32rem] max-h-[60vh] overflow-y-auto",
+        "md:block"
       )}
+      maxHeight="40rem"
       closeOnClick={false}
     >
       <div className="flex flex-col gap-4">
-        {/* Search and Create New */}
         <div className="flex items-center gap-2">
           <div className="flex-1">
             <Input
@@ -66,14 +68,14 @@ export default function WhatsAppTemplateDropdown({
             variant="primary"
             className="h-10 w-10 p-0 flex items-center justify-center shrink-0"
             onClick={() => {
-              // Handle create new template
+              onCreateTemplate?.()
+              onClose()
             }}
           >
             <Plus size={18} />
           </Button>
         </div>
 
-        {/* Template List */}
         <div className="flex flex-col gap-1">
           {filteredTemplates.map((template) => (
             <div
@@ -87,10 +89,6 @@ export default function WhatsAppTemplateDropdown({
               }}
               onMouseEnter={(e) => {
                 handleTemplateHover(template)
-                // Pass the element ref for positioning
-                if (onTemplateHover) {
-                  // The parent will handle positioning based on this element
-                }
               }}
               onMouseLeave={() => handleTemplateHover(null)}
               className="cursor-pointer"

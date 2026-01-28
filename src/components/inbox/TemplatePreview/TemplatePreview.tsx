@@ -17,13 +17,11 @@ export default function TemplatePreview({
     let content = template.content
     const parts: Array<{ text: string; isVariable: boolean }> = []
 
-    // Parse variables in the format {{Variable name}}
     const variableRegex = /\{\{([^}]+)\}\}/g
     let lastIndex = 0
     let match
 
     while ((match = variableRegex.exec(content)) !== null) {
-      // Add text before the variable
       if (match.index > lastIndex) {
         parts.push({
           text: content.substring(lastIndex, match.index),
@@ -31,7 +29,6 @@ export default function TemplatePreview({
         })
       }
 
-      // Add the variable
       parts.push({
         text: match[1],
         isVariable: true,
@@ -39,16 +36,12 @@ export default function TemplatePreview({
 
       lastIndex = match.index + match[0].length
     }
-
-    // Add remaining text
     if (lastIndex < content.length) {
       parts.push({
         text: content.substring(lastIndex),
         isVariable: false,
       })
     }
-
-    // If no variables found, return the content as-is
     if (parts.length === 0) {
       parts.push({ text: content, isVariable: false })
     }
@@ -66,9 +59,9 @@ export default function TemplatePreview({
       placement="right-start"
       offset={8}
       className={cn(
-        "bg-white rounded-xl shadow-lg border border-gray-200 p-4",
+        "bg-white rounded-xl shadow-lg border border-gray-200 p-4 ml-6",
         "min-w-[24rem] max-w-[28rem]",
-        "md:block" // Show side-by-side on desktop
+        "md:block"
       )}
       closeOnClick={false}
       closeOnOutsideClick={false}

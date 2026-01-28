@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Comment } from "../types";
-import Input from "../../../ui/Input";
-import Button from "../../../ui/Button";
 import Text from "../../../ui/Text";
-import Avatar from "../../../ui/Avatar";
+import Textarea from "../../../ui/Textarea";
 
 interface CommentsSectionProps {
   comments: Comment[];
@@ -25,7 +23,7 @@ export default function CommentsSection({
 
   return (
     <div className="flex flex-col gap-4">
-      <Input
+      <Textarea
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Type in comment here"
@@ -40,18 +38,17 @@ export default function CommentsSection({
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className="bg-input-filled rounded-[0.8rem] p-3 hover:bg-black-5 transition-colors"
+            className="bg-input-filled border border-input-stroke rounded-[0.8rem] px-2 py-1  hover:bg-black-5 transition-colors"
           >
-            <div className="flex items-center gap-2 mb-2">
-              <Avatar name={comment.author} alt={comment.author} size="sm" />
-              <Text className="text-[1.4rem] font-medium text-dark-base-70">
+            <div className="flex items-center gap-1 mb-1">
+              <Text className="text-base font-medium text-dark-base-100">
                 {comment.author}
               </Text>
             </div>
-            <Text className="text-[1.4rem] text-dark-base-70 mb-1">
+            <Text className="text-md text-dark-base-70 mb-1">
               {comment.text}
             </Text>
-            <Text className="text-[1.2rem] text-dark-base-40">
+            <Text className="text-[1rem] text-dark-base-40">
               {comment.timestamp}
             </Text>
           </div>

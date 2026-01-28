@@ -10,5 +10,6 @@ export interface WhatsAppTemplateDropdownProps {
   onClose: () => void
   triggerRef: React.RefObject<HTMLElement | null>
   onTemplateSelect?: (template: WhatsAppTemplate) => void
-  onTemplateHover?: (template: WhatsAppTemplate | null) => void
+  onTemplateHover?: (template: WhatsAppTemplate | null, element?: HTMLElement | null) => void
+  onCreateTemplate?: () => void
 }
