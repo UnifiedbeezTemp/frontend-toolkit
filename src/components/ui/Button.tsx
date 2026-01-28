@@ -18,12 +18,12 @@ interface ButtonProps {
   target?: string;
   rel?: string;
   variant?:
-    | "primary"
-    | "secondary"
-    | "outline"
-    | "ghost"
-    | "danger"
-    | "dangerReverse";
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "danger"
+  | "dangerReverse";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   loading?: boolean;
@@ -98,20 +98,17 @@ export default function Button({
 
   if (href) {
     return (
-      <motion.div
+      <motion.a
         whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
-        className="w-full lg:w-fit"
+        href={href}
+        target={target}
+        rel={rel}
+        className={cn("w-full lg:w-fit", classes)}
+        onClick={onClick}
       >
-        <Link
-          href={href}
-          target={target}
-          rel={rel}
-          className={cn(classes, "w-full lg:w-fit")}
-          onClick={onClick}
-        >
-          {content}
-        </Link>
-      </motion.div>
+        {content}
+
+      </motion.a>
     );
   }
 

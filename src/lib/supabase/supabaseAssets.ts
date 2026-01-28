@@ -393,6 +393,7 @@ export const SUPABASE_ICONS = {
   linkedinWhite: "website/linkedin.png",
   instagramWhite: "website/instagram.png",
   youtubeWhite: "website/youtube.png",
+  cookie: "icons/Cookie.svg",
 };
 
 export const SUPABASE_GIFS = {
