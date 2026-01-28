@@ -55,6 +55,7 @@ export const SUPABASE_IMAGES = {
   metaBusinessPartner: "website/meta-business-partner.png",
   dottedBg: "website/dotted-bg.png",
   teamInbox: "website/team-inbox-1.svg",
+  teamInboxAlt: "website/team-inbox-3.png",
   websiteHero: "website/website-herof.png",
   aboutHero1: "website/about-hero-1.svg",
   aboutHero2: "website/about-hero-2.svg",
