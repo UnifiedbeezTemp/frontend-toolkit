@@ -20,14 +20,14 @@ export const useLogoutButton = () => {
 
   const getModalPosition = () => {
     if (!buttonRef.current) return "bottom-left";
-
+    
     // We only care about desktop positioning here
     const rect = buttonRef.current.getBoundingClientRect();
     const spaceRight = window.innerWidth - rect.right;
     const spaceBottom = window.innerHeight - rect.bottom;
 
     const vertical = spaceBottom < 300 ? "bottom-0" : "top-0";
-    const horizontal = spaceRight < 300 ? "right-0" : "left-0";
+    const horizontal = "right-0";
 
     return `${vertical} ${horizontal}`;
   };
