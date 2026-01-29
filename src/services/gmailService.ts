@@ -1,4 +1,5 @@
 import { api } from "../api";
+import { apiBaseUrl } from "../api/rootUrls";
 
 export interface GmailConnectRequest {
   channelId: number;
@@ -16,12 +17,29 @@ export interface GmailConnectResponse {
   message?: string;
 }
 
+export const getGmailAuthUrl = (): string => {
+  return `${apiBaseUrl}/channels/email/google/auth`;
+};
+
+export const initiateGmailAuth = (): void => {
+  window.location.href = getGmailAuthUrl();
+};
+
 export const connectGmail = async (
-  data: GmailConnectRequest
+  data: GmailConnectRequest,
 ): Promise<GmailConnectResponse> => {
   const response = await api.post<GmailConnectRequest, GmailConnectResponse>(
     "/channels/email/google/connect",
-    data
+    data,
   );
   return response;
+};
+
+export const disconnectGmailAccount = async (
+  accountId: number,
+): Promise<{ success: boolean; message?: string }> => {
+  return api.post<
+    { accountId: number },
+    { success: boolean; message?: string }
+  >(`/channels/email/disconnect/gmail`, { accountId });
 };
