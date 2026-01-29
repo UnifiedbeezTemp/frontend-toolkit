@@ -8,14 +8,15 @@ import { cn } from "../../lib/utils";
 interface ComparisonTableProps {
   className?: string;
   onSelectPlan?: (planId: string) => void;
+  onAddonsClick?: (planId?: string) => void;
 }
 
-export default function ComparisonTable({ className, onSelectPlan }: ComparisonTableProps) {
+export default function ComparisonTable({ className, onSelectPlan, onAddonsClick }: ComparisonTableProps) {
   const { plans, loading, error, icons } = useComparisonPlans();
 
   if (loading) {
     return (
-      <div className={cn("w-screen h-full py-20 flex justify-center items-center", className)}>
+      <div className={cn("w-full h-full py-20 flex justify-center items-center", className)}>
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
       </div>
     );
@@ -39,11 +40,13 @@ export default function ComparisonTable({ className, onSelectPlan }: ComparisonT
         plans={plans} 
         features={COMPARISON_FEATURES} 
         icons={icons}
+        onAddonsClick={onAddonsClick}
         onSelectPlan={onSelectPlan}
       />
       <ComparisonMobile 
         plans={plans} 
         features={COMPARISON_FEATURES} 
+        onAddonsClick={onAddonsClick}
         icons={icons}
         onSelectPlan={onSelectPlan}
       />

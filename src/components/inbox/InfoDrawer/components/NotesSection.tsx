@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Note } from "../types";
-import Input from "../../../ui/Input";
-import Button from "../../../ui/Button";
 import Text from "../../../ui/Text";
 import { cn } from "../../../../lib/utils";
+import Textarea from "../../../ui/Textarea";
 
 interface NotesSectionProps {
   notes: Note[];
@@ -11,7 +10,7 @@ interface NotesSectionProps {
 }
 
 const noteColors = [
-  { value: "purple", bg: "bg-purple-100", border: "border-purple-110" },
+  { value: "purple", bg: "bg-purple-100/5", border: "border-purple-100" },
   { value: "yellow", bg: "bg-secondary-5", border: "border-secondary-100" },
   { value: "blue", bg: "bg-primary-blue-50/10", border: "border-primary-blue" },
   {
@@ -32,12 +31,10 @@ export default function NotesSection({ notes, onAddNote }: NotesSectionProps) {
     }
   };
 
-  const selectedColorConfig = noteColors.find((c) => c.value === selectedColor);
-
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <Input
+      <div className="relative flex items-center gap-2">
+        <Textarea
           value={noteText}
           onChange={(e) => setNoteText(e.target.value)}
           placeholder="Type in note here"
@@ -48,19 +45,18 @@ export default function NotesSection({ notes, onAddNote }: NotesSectionProps) {
             }
           }}
         />
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 absolute top-4 right-4">
           {noteColors.map((color) => (
             <button
               key={color.value}
               onClick={() => setSelectedColor(color.value)}
               className={cn(
-                "w-6 h-6 rounded-full border-2 transition-all",
-                color.bg,
+                "w-[1.4rem] h-[1.4rem] rounded-full border transition-all bg-transparent flex justify-center items-center",
                 selectedColor === color.value
                   ? color.border
-                  : "border-transparent",
+                  : "border-input-stroke",
               )}
-            />
+            ><span className={cn("block w-[1rem] h-[1rem] rounded-full", color.bg)} /></button>
           ))}
         </div>
       </div>
@@ -71,7 +67,7 @@ export default function NotesSection({ notes, onAddNote }: NotesSectionProps) {
             <div
               key={note.id}
               className={cn(
-                "rounded-[0.8rem] p-3 border-l-4",
+                "py-1 px-2 border-l",
                 colorConfig?.bg,
                 colorConfig?.border,
               )}

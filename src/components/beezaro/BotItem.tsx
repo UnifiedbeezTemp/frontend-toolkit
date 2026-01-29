@@ -32,12 +32,12 @@ export default function BotItem({
           {botName}
         </p>
         <span className="basis-full sm:hidden" />
-        <BotPersonalityBadge
+        {botPersonality?.trim()?.length > 0 && <BotPersonalityBadge
           className="mt-2 sm:mt-0 sm:basis-auto sm:ml-3 border badge"
           theme={botPersonalityTheme}
         >
           {botPersonality}
-        </BotPersonalityBadge>
+        </BotPersonalityBadge>}
       </div>
       <div className="absolute right-2.75 flex gap-2.5">
         {showEditButton && (

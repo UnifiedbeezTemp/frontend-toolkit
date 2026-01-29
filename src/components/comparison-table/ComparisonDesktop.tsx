@@ -9,6 +9,7 @@ interface ComparisonDesktopProps {
   features: ComparisonFeature[];
   icons: Record<string, string | null>;
   onSelectPlan?: (planId: string) => void;
+  onAddonsClick?: (planId: string) => void;
 }
 
 export default function ComparisonDesktop({
@@ -16,6 +17,7 @@ export default function ComparisonDesktop({
   features,
   icons,
   onSelectPlan,
+  onAddonsClick,
 }: ComparisonDesktopProps) {
   return (
     <div className="hidden lg:block overflow-x-auto">
@@ -43,6 +45,7 @@ export default function ComparisonDesktop({
 
                       {plan.addonAvailable ? (
                         <Button
+                          onClick={() => onAddonsClick && onAddonsClick(plan?.id as string)}
                           variant="secondary"
                           className={cn(
                             "flex items-center gap-2 px-3 py-1.5 rounded-lg border border-input-stroke/50 text-[1.2rem] font-medium",

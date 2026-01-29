@@ -13,9 +13,11 @@ export default function ExpandedPlanCard({
   isYearly,
   isSelected,
   isLowerThanCurrentPlan = false,
+  isCurrentPlan = false,
   onSelect,
   className,
-  isSelectionDisabled
+  isSelectionDisabled,
+  handleAddonClick,
 }: CollapsiblePlanCardProps) {
   const { displayPrice } = useCollapsiblePlanCard(plan, isYearly);
 
@@ -28,7 +30,7 @@ export default function ExpandedPlanCard({
         className
       )}
     >
-      <CollapsiblePlanCardHeader plan={plan} isExpanded={false} showChevron={false} />
+      <CollapsiblePlanCardHeader handleAddonClick={handleAddonClick} plan={plan} isExpanded={false} showChevron={false} />
 
       <div className="mt-4 flex justify-center items-center text-xs sm:text-md text-text-primary py-4 px-5.25 border-t border-t-border/70">
         <span>£{displayPrice}</span>
@@ -49,6 +51,7 @@ export default function ExpandedPlanCard({
         isSelected={isSelected}
         isLowerThanCurrentPlan={isLowerThanCurrentPlan}
         onSelect={onSelect}
+        isCurrentPlan={isCurrentPlan}
         isSelectionDisabled={isSelectionDisabled}
       />
 

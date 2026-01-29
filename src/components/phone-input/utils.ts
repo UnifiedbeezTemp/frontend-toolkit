@@ -39,5 +39,5 @@ export const getCountryByCode = (countryCode: string): Country => {
 };
 
 export const isValidPhoneNumber = (phone: string): boolean => {
-  return /^\+\d{10,15}$/.test(phone.replace(/\s/g, ""));
+  return /^\+\d{7,15}$/.test(phone.replace(/\s/g, ""));
 };

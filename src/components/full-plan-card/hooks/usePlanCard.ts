@@ -14,7 +14,8 @@ export const usePlanCard = (
   const [showFeatures, setShowFeatures] = useState(false);
 
   const calculatedPrice = calculateBillingCyclePrice(
-    formatPriceFromCents(plan.monthlyPrice),
+    // formatPriceFromCents()
+    plan.monthlyPrice,
     isYearly
   );
 

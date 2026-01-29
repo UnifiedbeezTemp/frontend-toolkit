@@ -16,10 +16,12 @@ export default function CollapsiblePlanCard({
   isYearly,
   isSelected,
   isLowerThanCurrentPlan = false,
+  isCurrentPlan = false,
   onSelect,
   defaultExpanded = false,
   className,
-  isSelectionDisabled
+  isSelectionDisabled,
+  handleAddonClick,
 }: CollapsiblePlanCardProps) {
   const { displayPrice } = useCollapsiblePlanCard(plan, isYearly);
   const { value: expanded, toggle: toggleExpanded } = useToggle(defaultExpanded)
@@ -33,6 +35,7 @@ export default function CollapsiblePlanCard({
         containerClassName="p-0"
         summary={     
           <CollapsiblePlanCardHeader
+            handleAddonClick={handleAddonClick}
             plan={plan}
             isExpanded={expanded}
             showChevron
@@ -57,6 +60,7 @@ export default function CollapsiblePlanCard({
             isLowerThanCurrentPlan={isLowerThanCurrentPlan}
             onSelect={onSelect}
             isSelectionDisabled={isSelectionDisabled}
+            isCurrentPlan={isCurrentPlan}
           />
         </div>
       </ExpandableCard>

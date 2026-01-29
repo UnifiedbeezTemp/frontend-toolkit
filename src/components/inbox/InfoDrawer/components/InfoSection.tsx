@@ -2,6 +2,7 @@ import { useState, ReactNode } from "react";
 import { cn } from "../../../../lib/utils";
 import ChevronDownIcon from "../../../../assets/icons/ChevronDownIcon";
 import Text from "../../../ui/Text";
+import Button from "../../../ui/Button";
 
 interface InfoSectionProps {
   title: string;
@@ -25,35 +26,17 @@ export default function InfoSection({
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
-    <div className="border-b border-input-stroke last:border-b-0">
+    <div className={cn("border-b border-input-stroke last:border-b-0 py-4")}>
       <div
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center justify-between py-4 cursor-pointer hover:bg-input-filled transition-colors"
+        className="flex items-center justify-between py-4 cursor-pointer transition-colors"
       >
         <div className="flex items-center gap-3 flex-1">
           <div>{icon}</div>
           <div className="flex-1">
-            <Text className="text-[1.6rem] font-semibold text-dark-base-70">
+            <Text className="text-base text-dark-base-70">
               {title}
             </Text>
-            {subtitle && (
-              <div className="flex items-center justify-between mt-1">
-                <Text className="text-[1.2rem] text-dark-base-40">
-                  {subtitle}
-                </Text>
-                {showAddButton && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAdd?.();
-                    }}
-                    className="text-[1.2rem] text-brand-primary font-medium hover:underline"
-                  >
-                    Add
-                  </button>
-                )}
-              </div>
-            )}
           </div>
         </div>
         <ChevronDownIcon
@@ -65,6 +48,25 @@ export default function InfoSection({
       </div>
       {isExpanded && (
         <div className="pb-4 animate-in slide-in-from-top-2 duration-200">
+          {subtitle && (
+            <div className="flex items-center justify-between mb-2">
+              <Text className="text-base font-bold text-dark-base-100">
+                {subtitle}
+              </Text>
+              {showAddButton && (
+                <Button
+                  variant="secondary"
+                  type="button"
+                  onClick={() => {
+                    onAdd?.();
+                  }}
+                  className="text-md px-2 py-1 text-dark-base-70 font-bold"
+                >
+                  Add
+                </Button>
+              )}
+            </div>
+          )}
           {children}
         </div>
       )}

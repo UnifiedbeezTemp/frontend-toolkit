@@ -29,9 +29,14 @@ export default function useToggleRoute(
     [pathname],
   );
 
+  const back = useCallback(() => {
+    router.back();
+  }, [router]);
+
   return {
     currentRoute,
     goTo,
     isActiveRoute,
+    back,
   };
 }

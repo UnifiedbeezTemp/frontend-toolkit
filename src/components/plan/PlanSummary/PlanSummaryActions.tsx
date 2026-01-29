@@ -6,10 +6,12 @@ import { OriginalPlan } from "../types";
 export default function PlanSummaryActions({
   onUpgradePlan,
   isUpgradePlanDisabled,
+  handleMoreClick
 }: {
   plan: OriginalPlan;
   onUpgradePlan?: () => void;
   isUpgradePlanDisabled?: boolean;
+  handleMoreClick: () => void
 }) {
   const { threeDot } = useSupabaseIcons();
   return (
@@ -23,7 +25,7 @@ export default function PlanSummaryActions({
         >
           Upgrade Plan
         </Button>
-        <Button variant="secondary" className="p-2 w-8.5 h-9.5">
+        <Button onClick={handleMoreClick} variant="secondary" className="p-2 w-8.5 h-9.5">
           <ImageComponent
             width={34}
             height={34}

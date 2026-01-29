@@ -14,6 +14,7 @@ export interface PhoneInputProps {
   className?: string;
   labelClasses?: string
   inputClasses?: string
+  showLabel?: boolean
 }
 
 export interface CountrySelectorProps {
