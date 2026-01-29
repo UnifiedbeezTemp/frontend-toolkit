@@ -8,5 +8,5 @@ export interface MessageOptionsMenuProps {
   onShare?: (messageId: string) => void
   onEdit?: (messageId: string) => void
   onDelete?: (messageId: string) => void
-  triggerRef?: React.RefObject<HTMLElement | null>
+  triggerRef: React.RefObject<HTMLElement | null>
 }

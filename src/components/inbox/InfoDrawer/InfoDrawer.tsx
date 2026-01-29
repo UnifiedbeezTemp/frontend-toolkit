@@ -13,37 +13,20 @@ import ThreadsSection from "./components/ThreadsSection";
 import CommentsSection from "./components/CommentsSection";
 import NotesSection from "./components/NotesSection";
 import FilesSection from "./components/FilesSection";
-import { useState } from "react";
 import { InfoDrawerProps, Comment, Note } from "./types";
-import { mockThreads, mockComments, mockNotes, mockFiles } from "./constants";
+import { mockThreads, mockFiles } from "./constants";
+import { useInfoDrawer } from "./hooks/useInfoDrawer";
 
 export default function InfoDrawer({
   isOpen,
   onClose,
-  conversationId,
 }: InfoDrawerProps) {
-  const [comments, setComments] = useState<Comment[]>(mockComments);
-  const [notes, setNotes] = useState<Note[]>(mockNotes);
-
-  const handleAddComment = (text: string) => {
-    const newComment: Comment = {
-      id: Math.random().toString(36).substr(2, 9),
-      author: "You",
-      text,
-      timestamp: "Just now",
-    };
-    setComments([newComment, ...comments]);
-  };
-
-  const handleAddNote = (text: string, color: string) => {
-    const newNote: Note = {
-      id: Math.random().toString(36).substr(2, 9),
-      text,
-      color,
-      timestamp: ""
-    };
-    setNotes([newNote, ...notes]);
-  };
+  const {
+    comments,
+    notes,
+    handleAddComment,
+    handleAddNote,
+  } = useInfoDrawer();
 
   if (!isOpen) return null;
 

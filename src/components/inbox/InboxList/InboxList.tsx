@@ -5,28 +5,24 @@ import { InboxListTopToolBar } from "./InboxListTopToolBar";
 import { GeneralInboxConversationItem } from "./components/GeneralInboxConversationItem";
 import { TeamInboxConversationItem } from "./components/TeamInboxConversationItem";
 import InboxListContainer from "./InboxListContainer";
-import { useToggle } from "../../../hooks/useToggle";
 import { ReactNode } from "react";
 import PanelShell from "../ChannelsPanel/PanelShell";
 import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon";
 import IconButton from "../../ui/IconButton";
 import Heading from "../../ui/Heading";
-import ChannelsList from "../ChannelsPanel/ChannelsList";
 import { inboxTypeLabels } from "../utils/dummyData";
 import { InboxType, Conversation } from "../types";
-import { useRouter } from "next/navigation";
 import Avatar from "../../ui/Avatar";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import ImageComponent from "../../ui/ImageComponent";
-import { useConversations } from "../../../../../app/inbox/context/ConversationContext";
+import { useInboxList } from "./hooks/useInboxList";
 
 export default function InboxList({
-  sideDrawerContent = <ChannelsList />,
+  sideDrawerContent,
   sideDrawerTitle = "Connect Channels",
   selectedInboxType,
   onInboxTypeChange,
   selectedConversationId,
-  onConversationSelect,
 }: {
   sideDrawerContent?: ReactNode;
   sideDrawerTitle?: string;
@@ -38,25 +34,14 @@ export default function InboxList({
   const {
     filteredGeneralConversations,
     filteredTeamConversations,
-    markAsRead,
-  } = useConversations();
-  const router = useRouter();
-  const {
-    setTrue: openSideDrawer,
-    value: isSideDrawerOpen,
-    setFalse: closeSideDrawer,
-  } = useToggle();
+    isSideDrawerOpen,
+    openSideDrawer,
+    closeSideDrawer,
+    handleInboxTypeChange,
+    handleConversationClick,
+  } = useInboxList({ onInboxTypeChange });
+
   const icons = useSupabaseIcons();
-
-  const handleInboxTypeChange = (type: InboxType) => {
-    onInboxTypeChange(type);
-    router.push("/inbox");
-  };
-
-  const handleConversationClick = (conversationId: string) => {
-    markAsRead(conversationId);
-    router.push(`/inbox/${conversationId}`);
-  };
 
   const conversations =
     selectedInboxType === "general"
@@ -64,6 +49,7 @@ export default function InboxList({
       : filteredTeamConversations;
 
   const currentTitle = inboxTypeLabels[selectedInboxType];
+
   return (
     <div className="absolute flex w-full">
       <PanelShell
@@ -114,17 +100,19 @@ export default function InboxList({
 
               if (selectedInboxType === "general") {
                 const channelIcon = conversation.channel
-                  ? {
-                      whatsapp: icons.whatsappIcon,
-                      instagram: icons.instagramLogo,
-                      facebook: icons.facebookMessengerLogo,
-                      telegram: icons.telegramLogo,
-                      linkedin: icons.linkedinLogo,
-                      sms: icons.twilioSmsIcon,
-                      email: icons.emailRedIcon,
-                      phone: icons.twilioPhoneIcon,
-                      "website-chat": icons.websiteWebChatIcon,
-                    }[conversation.channel]
+                  ? (icons as any)[
+                      {
+                        whatsapp: "whatsappIcon",
+                        instagram: "instagramLogo",
+                        facebook: "facebookMessengerLogo",
+                        telegram: "telegramLogo",
+                        linkedin: "linkedinLogo",
+                        sms: "twilioSmsIcon",
+                        email: "emailRedIcon",
+                        phone: "twilioPhoneIcon",
+                        "website-chat": "websiteWebChatIcon",
+                      }[conversation.channel] || ""
+                    ]
                   : null;
 
                 const generalLeading = channelIcon ? (
