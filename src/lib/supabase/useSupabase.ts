@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import {
   getAssetUrl,
   SUPABASE_GIFS,
+  SUPABASE_ANIMATIONS,
   SUPABASE_ICONS,
   SUPABASE_IMAGES,
 } from "./supabaseAssets"
@@ -44,4 +45,16 @@ export const useSupabaseGifs = () => {
         .reduce((acc, curr) => ({ ...acc, ...curr }), {}),
     []
   ) as Record<keyof typeof SUPABASE_GIFS, string>
+}
+
+export const useSupabaseAnimations = () => {
+  return useMemo(
+    () =>
+      Object.keys(SUPABASE_ANIMATIONS)
+        .map((key) => ({
+          [key]: getAssetUrl(SUPABASE_ANIMATIONS[key as keyof typeof SUPABASE_ANIMATIONS]),
+        }))
+        .reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+    []
+  ) as Record<keyof typeof SUPABASE_ANIMATIONS, string>
 }

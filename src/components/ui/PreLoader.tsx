@@ -6,19 +6,29 @@ import animationData from "../../animations/Preloader.json";
 interface PreLoaderProps {
   className?: string;
   height?: number;
-  isPage?: boolean
+  isPage?: boolean;
 }
 
-export default function PreLoader({ className = "", height = 300, isPage = true }: PreLoaderProps) {
+export default function PreLoader({
+  className = "",
+  height = 300,
+  isPage = true,
+}: PreLoaderProps) {
   return (
-    <div className={`flex items-center justify-center ${isPage ? "min-h-screen" : ""} ${className}`}>
+    <div
+      className={`flex items-center justify-center ${isPage ? "min-h-screen" : ""} ${className}`}
+    >
       <Player
         autoplay
         loop
-        animationData={animationData}
+        animationData={{
+          ...animationData,
+          layers: animationData.layers.filter(
+            (layer) => layer.nm !== "Rectangle 1",
+          ),
+        }}
         style={{ height }}
       />
     </div>
   );
 }
-

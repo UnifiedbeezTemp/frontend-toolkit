@@ -381,3 +381,7 @@ export const SUPABASE_GIFS = {
   copilotSidebarSix: "copilot/copilotSidebarSix.gif",
   copilotSidebarBg: "copilot/copilotSidebarBg.svg",
 } as const;
+
+export const SUPABASE_ANIMATIONS = {
+  preloader: "lottie-animations/Preloader.json",
+} as const;

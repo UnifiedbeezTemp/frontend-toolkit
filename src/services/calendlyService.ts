@@ -33,3 +33,12 @@ export const connectCalendly = async (
     data,
   );
 };
+
+export const disconnectCalendlyAccount = async (
+  accountId: number,
+): Promise<{ success: boolean; message?: string }> => {
+  return api.post<
+    { accountId: number },
+    { success: boolean; message?: string }
+  >(`${apiBaseUrl}/channels/calendly/disconnect`, { accountId });
+};

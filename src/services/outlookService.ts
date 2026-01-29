@@ -25,3 +25,12 @@ export const completeOutlookConnection = async (
     `/channels/email/microsoft/callback?code=${code}&channelId=${channelId}`,
   );
 };
+
+export const disconnectOutlookAccount = async (
+  accountId: number,
+): Promise<{ success: boolean; message?: string }> => {
+  return api.post<
+    { accountId: number },
+    { success: boolean; message?: string }
+  >(`/channels/email/disconnect/outlook`, { accountId });
+};
