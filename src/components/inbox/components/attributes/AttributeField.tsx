@@ -6,6 +6,7 @@ import { isFunction } from "../../../../utils/is"
 import { Icons, IconName } from "./IconsMap"
 import { TagPill } from "../TagPill"
 import ToggleSwitch from "../../../ui/ToggleSwitch"
+import Textarea from "../../../ui/Textarea"
 
 interface AttributeFieldProps {
   field: AttributeFieldType
@@ -44,7 +45,7 @@ export function AttributeField({ field }: AttributeFieldProps) {
           <div className="">
             <ToggleSwitch
               isActive={(field.value as boolean) || true}
-              onToggle={() => {}}
+              onToggle={() => { }}
             />
           </div>
         )
@@ -63,9 +64,8 @@ export function AttributeField({ field }: AttributeFieldProps) {
       default:
         return (
           <span
-            className={`text-sm ${
-              field.value === "Enter" ? "text-dark-base-70" : ""
-            }`}
+            className={`text-sm ${field.value === "Enter" ? "text-dark-base-70" : ""
+              }`}
           >
             {field.value as string}
           </span>
@@ -76,10 +76,10 @@ export function AttributeField({ field }: AttributeFieldProps) {
   const Icon = Icons[field.icon as IconName]
 
   return (
-    <div className="grid grid-cols-2 items-center gap-3 py-2.5 px-2 rounded-sm hover:bg-primary group text-base">
+    <div className="grid grid-cols-2 items-center gap-3 py- px-2 rounded-sm hover:bg-input-filled group text-base">
       <div className="flex items-center gap-3 min-w-0">
         <div className="shrink-0 text-dark-base-70">
-          {Icon && <Icon size={24} />}
+          {Icon && <Icon size={18} />}
         </div>
         <span className="text-sm text-dark-base-70">{field.label}</span>
       </div>
