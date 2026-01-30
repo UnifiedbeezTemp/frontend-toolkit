@@ -5,7 +5,13 @@ import { useAiAssistants } from "../../../hooks/useAiAssistants";
 import { AIAssistant } from "../../../types/aiAssistantTypes";
 
 export function useAssistantSelector() {
-  const { assistants } = useAiAssistants();
+  const { assistants, refetch, isLoading, isFetching } = useAiAssistants({
+    autoFetch: true,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
   const [selectedAssistantId, setSelectedAssistantId] = useState<string | null>(
     null,
   );
@@ -28,5 +34,7 @@ export function useAssistantSelector() {
     assistants,
     selectedAssistantId,
     selectAssistant,
+    isLoading,
+    isFetching,
   };
 }

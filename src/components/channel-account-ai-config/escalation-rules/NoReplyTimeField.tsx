@@ -96,7 +96,7 @@ export default function NoReplyTimeField({
                   {UNIT_OPTIONS.map((option) => (
                     <button
                       key={option.value}
-                      onClick={() => handleUnitChange(option.value)}
+                      onClick={handleUnitChange.bind(null, option.value)}
                       className={cn(
                         "w-full p-[1.2rem] rounded-[0.6rem] text-left",
                         "hover:bg-input-filled transition-colors",
@@ -164,7 +164,7 @@ export default function NoReplyTimeField({
               {OPTIONS.map((option) => (
                 <button
                   key={option}
-                  onClick={() => handleSelect(option)}
+                  onClick={handleSelect.bind(null, option)}
                   className={cn(
                     "w-full p-[1.2rem] rounded-[0.6rem] text-left",
                     "hover:bg-input-filled transition-colors",

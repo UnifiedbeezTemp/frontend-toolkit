@@ -70,7 +70,7 @@ export default function WorkingDaysField({
             return (
               <button
                 key={day}
-                onClick={() => toggleDay(day)}
+                onClick={toggleDay.bind(null, day)}
                 className={cn(
                   "w-full px-[1.2rem] py-[1rem] rounded-[0.6rem]",
                   "hover:bg-input-filled transition-colors",

@@ -1,13 +1,17 @@
+"use client";
+
 import { Channel } from "../../../../store/onboarding/types/channelTypes";
-import ChatHeader from "../../../live-chat-test/ChatHeader";
-import ChatInput from "../../../live-chat-test/ChatInput";
-import ChatMessages from "../../../live-chat-test/ChatMessages";
-import CloseModalButton from "../../../modal/CloseModalButton";
 import Modal from "../../../modal/Modal";
-import Button from "../../../ui/Button";
+import EditChannelHeader from "./components/EditChannelHeader";
+import EditChannelFooter from "./components/EditChannelFooter";
+import EditChannelLiveChat from "./components/EditChannelLiveChat";
+import EditChannelConfiguration from "./components/EditChannelConfiguration";
+import { useChannelConnectionsData } from "../../../channels/hooks/useChannelConnectionsData";
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
 import Heading from "../../../ui/Heading";
-import ImageComponent from "../../../ui/ImageComponent";
 import Text from "../../../ui/Text";
+import ImageComponent from "../../../ui/ImageComponent";
+import Button from "../../../ui/Button";
 
 interface EditChannelModalProps {
   isOpen: boolean;
@@ -20,72 +24,67 @@ export default function EditChannelModal({
   onClose,
   channel,
 }: EditChannelModalProps) {
+  const { connections, isLoading: isLoadingConnections } =
+    useChannelConnectionsData(channel);
+  const icons = useSupabaseIcons();
+
+  const hasConnections = connections.length > 0;
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="lg:p-[4rem] h-[95dvh] rounded-t-[2rem] sm:rounded-[1.6rem] sm:w-[64rem] lg:w-[117rem]"
+      className="h-[95dvh] rounded-t-[2rem] sm:rounded-[1.6rem] sm:w-[64rem] lg:p-[4rem] lg:w-[117rem]"
       bottomSheet
     >
-      <div className="flex items-center justify-between border-b border-input-stroke pb-[1rem] sticky top-[0rem] bg-primary z-[100]">
-        <div className="flex items-center gap-[1rem]">
-          <ImageComponent
-            src={channel.icon}
-            alt={channel.name}
-            width={40}
-            height={40}
-          />
+      <div className="flex flex-col h-full bg-primary overflow-hidden">
+        <EditChannelHeader channel={channel} onClose={onClose} />
 
-          <div className="">
-            <Heading className="text-[2.4rem]">{channel.name}</Heading>
-            <Text className="text-[1.4rem]">
-              Edit your {channel.name} settings
-            </Text>
-          </div>
+        <div className="flex-1 overflow-hidden">
+          {isLoadingConnections ? (
+            <div className="h-full flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary"></div>
+            </div>
+          ) : !hasConnections ? (
+            <div className="h-full flex flex-col items-center justify-center text-center p-[2.4rem] lg:p-[4rem] space-y-[2.4rem]">
+              <div className="w-[12rem] h-[12rem] rounded-full bg-input-filled flex items-center justify-center">
+                <ImageComponent
+                  src={icons.beeZoraWelcome}
+                  alt="No Connection"
+                  width={64}
+                  height={64}
+                />
+              </div>
+              <div className="space-y-[1rem]">
+                <Heading className="text-[2.4rem] text-center">Connection Required</Heading>
+                <Text className="text-[1.6rem] text-text-secondary max-w-[48rem] text-center">
+                  To configure AI behavior and escalation rules for this
+                  channel, you must first connect at least one account.
+                  Connections allow the AI to interact with your platform.
+                </Text>
+              </div>
+              <Button
+                onClick={onClose}
+                variant="secondary"
+                className="px-[4rem]"
+              >
+                Go back to Channels
+              </Button>
+            </div>
+          ) : (
+            <div className="flex flex-col lg:flex-row gap-[2.4rem] h-full">
+              <div className="flex-1 overflow-y-auto py-[2.4rem]">
+                <EditChannelConfiguration channel={channel} />
+              </div>
+
+              <div className="flex-1 overflow-y-auto py-[2.4rem] bg-input-filled/5">
+                <EditChannelLiveChat />
+              </div>
+            </div>
+          )}
         </div>
 
-        <CloseModalButton onClick={onClose} />
-      </div>
-
-      <div className="lg:flex py-[2.4rem]">
-        <div className="w-full h-[100rem]"></div>
-
-        <div className="w-full">
-          <div className="mb-[2.4rem]">
-            <Heading className="text-[2rem]">
-              Test how this AI replies on this channel
-            </Heading>
-            <Text className="text-[1.2rem]">
-              Test how this AI replies on this channel
-            </Text>
-          </div>
-          <div className="flex flex-col h-full max-h-[60rem] border border-input-stroke rounded-[1.6rem]">
-            <ChatHeader assistantName="Beezora" />
-
-            <ChatMessages messages={[]} />
-
-            <ChatInput
-              inputText={""}
-              setInputText={function (text: string): void {
-                throw new Error("Function not implemented.");
-              }}
-              onSendMessage={function (): void {
-                throw new Error("Function not implemented.");
-              }}
-              onKeyPress={function (e: React.KeyboardEvent): void {
-                throw new Error("Function not implemented.");
-              }}
-              disabled={false}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-[1rem] sticky bottom-0">
-        <Button variant="secondary" className="w-full">
-          Go back
-        </Button>
-        <Button className="w-full">Done</Button>
+        <EditChannelFooter onDone={onClose} onBack={onClose} />
       </div>
     </Modal>
   );

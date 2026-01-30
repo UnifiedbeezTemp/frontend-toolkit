@@ -44,7 +44,7 @@ export default function TeamMembersList({
             key={member.id}
             member={member}
             isSelected={selectedMemberIds.includes(member.id)}
-            onToggle={() => onToggleMember(member.id)}
+            onToggle={onToggleMember.bind(null, member.id)}
           />
         ))}
       </div>

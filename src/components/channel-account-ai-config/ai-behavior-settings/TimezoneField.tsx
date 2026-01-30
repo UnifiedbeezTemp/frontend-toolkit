@@ -54,7 +54,7 @@ export default function TimezoneField({ value, onChange }: TimezoneFieldProps) {
           {TIMEZONES.map((timezone) => (
             <button
               key={timezone.value}
-              onClick={() => handleSelect(timezone.value)}
+              onClick={handleSelect.bind(null, timezone.value)}
               className={cn(
                 "w-full px-[1.2rem] py-[1rem] rounded-[0.6rem]",
                 "hover:bg-input-filled transition-colors",
