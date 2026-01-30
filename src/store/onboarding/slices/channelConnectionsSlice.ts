@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ChannelConnection, ChannelConnectionFormData } from "@/shared/src/types/channelConnectionTypes";
+import { ChannelConnection, ChannelConnectionFormData } from "../../../types/channelConnectionTypes";
 
 interface ChannelConnectionsState {
   connections: Record<string, ChannelConnection[]>;

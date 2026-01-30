@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import Button from "../ui/Button";
+import EditChannelModal from "./modals/EditChannelModal/EditChannelModal";
 import ImageComponent from "../ui/ImageComponent";
 import Heading from "../ui/Heading";
 import Text from "../ui/Text";
@@ -68,7 +70,12 @@ export default function ChannelCard({
           <div className="bg-border/20 hidden lg:inline-block border border-border rounded-[0.4rem] p-[0.4rem] font-[700] text-[1rem] text-text-primary">
             {channel.info}
           </div>
-          <Heading className={cn("mt-[0.4rem] text-[1.4rem] lg:text-[2rem] lg:leading-[2.96rem]", comingSoon && "text-inactive-color")}>
+          <Heading
+            className={cn(
+              "mt-[0.4rem] text-[1.4rem] lg:text-[2rem] lg:leading-[2.96rem]",
+              comingSoon && "text-inactive-color",
+            )}
+          >
             {channel.name}
           </Heading>
           <Text size="sm">{channel.description}</Text>
@@ -87,7 +94,7 @@ export default function ChannelCard({
             <Button
               variant={channel.isSelected ? "secondary" : "primary"}
               className={cn(
-                "w-full rounded-[0.8rem]",
+                "w-full rounded-[0.8rem] text-[1.4rem] py-[1rem]",
                 channel.isSelected ? "bg-input-filled" : "",
               )}
               onClick={() => {
@@ -126,6 +133,11 @@ export default function ChannelCard({
           )}
         </div>
       </div>
+      <EditChannelModal
+        isOpen={openEditModal}
+        onClose={() => setOpenEditModal(false)}
+        channel={channel}
+      />
     </>
   );
 }

@@ -20,6 +20,7 @@ export interface DropdownProps {
   dropdownClasses?: string;
   showSearch?: boolean;
   searchPlaceholder?: string;
+  optionClassName?: string
 }
 
 export default function Dropdown({
@@ -35,6 +36,7 @@ export default function Dropdown({
   dropdownClasses,
   showSearch = false,
   searchPlaceholder = "Search...",
+  optionClassName
 }: DropdownProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const {
@@ -149,7 +151,8 @@ export default function Dropdown({
                     "w-full px-4 py-3 text-left text-[1.6rem] transition-all duration-200 hover:text-white flex items-center justify-between hover:bg-brand-primary",
                     value === option.value
                       ? "text-brand-primary font-medium"
-                      : "text-text-primary"
+                      : "text-text-primary",
+                    optionClassName
                   )}
                 >
                   {option.label}
