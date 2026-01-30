@@ -1,10 +1,11 @@
 "use client"
 
-import { useRef, ReactNode } from "react"
-import { useLongPress } from "../../../hooks/useLongPress"
+import { ReactNode } from "react"
 import { IncomingChatBubble } from "../ChatBubbles/IncomingChatBubble"
 import { OwnChatBubble } from "../ChatBubbles/OwnChatBubble"
 import { GroupIncomingBubble } from "../ChatBubbles/GroupIncomingBubble"
+import { useMessageWrapper } from "./hooks/useMessageWrapper"
+import { cn } from "../../../lib/utils"
 
 export type MessageType = "incoming" | "own" | "group"
 
@@ -26,22 +27,10 @@ export default function MessageWrapper({
   message,
   onLongPress,
 }: MessageWrapperProps) {
-  const messageRef = useRef<HTMLDivElement>(null)
-
-  const longPressHandlers = useLongPress({
-    onLongPress: (e) => {
-      if (e.currentTarget instanceof HTMLElement) {
-        onLongPress(message.id, e.currentTarget)
-      }
-    },
-  })
-
-  const handleContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault() // Prevent default browser context menu
-    if (e.currentTarget instanceof HTMLElement) {
-      onLongPress(message.id, e.currentTarget)
-    }
-  }
+  const { longPressHandlers, handleContextMenu } = useMessageWrapper({
+    messageId: message.id,
+    onLongPress,
+  });
 
   const renderBubble = (): ReactNode => {
     if (message.type === "own") {
@@ -61,10 +50,9 @@ export default function MessageWrapper({
 
   return (
     <div
-      ref={messageRef}
       {...longPressHandlers}
       onContextMenu={handleContextMenu}
-      className="relative"
+      className={cn("relative w-fit", message.type === "own" && "ml-auto")}
     >
       {renderBubble()}
     </div>
