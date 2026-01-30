@@ -1,13 +1,13 @@
 import { useState, useRef } from "react";
 
 export const DAYS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+  { value: "MONDAY", label: "Monday" },
+  { value: "TUESDAY", label: "Tuesday" },
+  { value: "WEDNESDAY", label: "Wednesday" },
+  { value: "THURSDAY", label: "Thursday" },
+  { value: "FRIDAY", label: "Friday" },
+  { value: "SATURDAY", label: "Saturday" },
+  { value: "SUNDAY", label: "Sunday" },
 ];
 
 export const useWorkingDaysField = (
@@ -25,11 +25,11 @@ export const useWorkingDaysField = (
     setIsOpen(false);
   };
 
-  const toggleDay = (day: string) => {
-    if (value.includes(day)) {
-      onChange(value.filter((d) => d !== day));
+  const toggleDay = (dayValue: string) => {
+    if (value.includes(dayValue)) {
+      onChange(value.filter((d) => d !== dayValue));
     } else {
-      onChange([...value, day]);
+      onChange([...value, dayValue]);
     }
   };
 

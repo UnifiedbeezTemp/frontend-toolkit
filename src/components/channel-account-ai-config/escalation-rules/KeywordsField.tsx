@@ -31,7 +31,7 @@ export default function KeywordsField({ value, onChange }: KeywordsFieldProps) {
 
   return (
     <div className="flex flex-col gap-[0.8rem]">
-      <Heading className="font-[700] text-[1.4rem] mb-[1.4rem]">
+      <Heading className="font-[700] text-[1.4rem]">
         Escalate on keyword
       </Heading>
       <div className="relative">
@@ -55,10 +55,7 @@ export default function KeywordsField({ value, onChange }: KeywordsFieldProps) {
             >
               <Text className="text-[1.6rem] text-text-primary">{keyword}</Text>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeKeyword(keyword);
-                }}
+                onClick={removeKeyword.bind(null, keyword)}
                 className="ml-[0.4rem] hover:opacity-70"
               >
                 <Text className="text-[1.6rem] text-text-secondary">×</Text>

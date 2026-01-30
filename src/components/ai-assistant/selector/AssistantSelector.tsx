@@ -14,6 +14,7 @@ interface AssistantSelectorProps {
   onSelectAssistant: (id: string) => void;
   noBorder?: boolean;
   allowEmpty?: boolean;
+  isLoading?: boolean;
 }
 
 export default function AssistantSelector({
@@ -22,6 +23,7 @@ export default function AssistantSelector({
   onSelectAssistant,
   noBorder = false,
   allowEmpty = false,
+  isLoading = false,
 }: AssistantSelectorProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -35,6 +37,26 @@ export default function AssistantSelector({
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  if (isLoading) {
+    return (
+      <div
+        className={cn(
+          "w-full px-[1.4rem] py-[1rem] rounded-[0.8rem] border border-input-stroke animate-pulse",
+          "flex items-center justify-between bg-input-filled/50",
+        )}
+      >
+        <div className="flex items-center gap-[1rem]">
+          <div className="w-[3.2rem] h-[3.2rem] rounded-[0.4rem] bg-input-stroke" />
+          <div className="space-y-1">
+            <div className="h-[1.4rem] w-[12rem] bg-input-stroke rounded" />
+            <div className="h-[1.2rem] w-[8rem] bg-input-stroke rounded" />
+          </div>
+        </div>
+        <div className="w-[2rem] h-[2rem] bg-input-stroke rounded" />
+      </div>
+    );
+  }
 
   if (!assistants.length) {
     return (

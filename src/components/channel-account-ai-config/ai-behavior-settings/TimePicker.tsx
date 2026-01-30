@@ -62,7 +62,7 @@ export default function TimePicker({
             placeholder="00"
             maxLength={2}
             className={cn(
-              "px-[1.2rem] py-[1rem] pr-[3.2rem]",
+              "px-[1.2rem] py-[1rem] pr-[2.2rem]",
               "border border-border rounded-[0.8rem]",
               "hover:bg-input-hover transition-colors",
               "text-[1.4rem] lg:text-[1.6rem] text-text-primary",
@@ -76,7 +76,7 @@ export default function TimePicker({
           <button
             ref={hoursDropdownRef}
             onClick={handleHoursToggle}
-            className="absolute right-[1.2rem] top-1/2 -translate-y-1/2 cursor-pointer"
+            className="absolute right-[1rem] top-1/2 -translate-y-1/2 cursor-pointer"
             type="button"
           >
             <ImageComponent
@@ -101,7 +101,7 @@ export default function TimePicker({
               {HOURS.map((hour) => (
                 <button
                   key={hour}
-                  onClick={() => handleHoursSelect(hour)}
+                  onClick={handleHoursSelect.bind(null, hour)}
                   className={cn(
                     "w-full px-[1.2rem] py-[1rem] rounded-[0.6rem]",
                     "hover:bg-input-filled transition-colors",
@@ -132,7 +132,7 @@ export default function TimePicker({
             placeholder="00"
             maxLength={2}
             className={cn(
-              "px-[1.2rem] py-[1rem] pr-[3.2rem]",
+              "px-[1.2rem] py-[1rem] pr-[2.2rem]",
               "border border-border rounded-[0.8rem]",
               "hover:bg-input-hover transition-colors",
               "text-[1.4rem] lg:text-[1.6rem] text-text-primary",
@@ -148,7 +148,7 @@ export default function TimePicker({
           <button
             ref={minutesDropdownRef}
             onClick={handleMinutesToggle}
-            className="absolute right-[1.2rem] top-1/2 -translate-y-1/2 cursor-pointer"
+            className="absolute right-[1rem] top-1/2 -translate-y-1/2 cursor-pointer"
             type="button"
           >
             <ImageComponent
@@ -173,7 +173,7 @@ export default function TimePicker({
               {MINUTES.map((minute) => (
                 <button
                   key={minute}
-                  onClick={() => handleMinutesSelect(minute)}
+                  onClick={handleMinutesSelect.bind(null, minute)}
                   className={cn(
                     "w-full px-[1.2rem] py-[1rem] rounded-[0.6rem]",
                     "hover:bg-input-filled transition-colors",
@@ -225,7 +225,7 @@ export default function TimePicker({
             {PERIODS.map((p) => (
               <button
                 key={p}
-                onClick={() => handlePeriodSelect(p)}
+                onClick={handlePeriodSelect.bind(null, p)}
                 className={cn(
                   "w-full px-[1.2rem] py-[1rem] rounded-[0.6rem]",
                   "hover: transition-colors",

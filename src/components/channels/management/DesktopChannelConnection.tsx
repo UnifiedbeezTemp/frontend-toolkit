@@ -6,12 +6,16 @@ import DesktopSidebar from "./DesktopSidebar";
 import { useDesktopChannelConnection } from "../hooks/useDesktopChannelConnection";
 import Heading from "../../../components/ui/Heading";
 
+import Button from "../../../components/ui/Button";
+
 interface DesktopChannelConnectionProps {
   onRefetchChannels?: () => void;
+  onBack?: () => void;
 }
 
 export default function DesktopChannelConnection({
   onRefetchChannels,
+  onBack,
 }: DesktopChannelConnectionProps) {
   const {
     selectedChannels,
@@ -25,13 +29,20 @@ export default function DesktopChannelConnection({
 
   return (
     <div className="">
-      <div className="">
-        <Heading size="lg" className="text-[2.4rem]">
-          Connect selected channels
-        </Heading>
-        <Text size="sm" className="">
-          Connect as many channels as you like
-        </Text>
+      <div className="flex items-center justify-between">
+        <div>
+          <Heading size="lg" className="text-[2.4rem]">
+            Connect selected channels
+          </Heading>
+          <Text size="sm" className="">
+            Connect as many channels as you like
+          </Text>
+        </div>
+        {onBack && (
+          <Button variant="secondary" onClick={onBack}>
+            Go Back
+          </Button>
+        )}
       </div>
       <div className="grid grid-cols-10 bg-primary rounded-[.8rem] mt-[2.4rem] h -[calc(100vh-10rem)]">
         <div className="col-span-3 border-r border-border flex flex-col overflow-hidden">

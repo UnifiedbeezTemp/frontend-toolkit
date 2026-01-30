@@ -55,7 +55,7 @@ export default function AIReplyDelayField({
           {OPTIONS.map((option) => (
             <button
               key={option}
-              onClick={() => handleSelect(option)}
+              onClick={handleSelect.bind(null, option)}
               className={cn(
                 "w-full px-[1.2rem] py-[1rem] rounded-[0.6rem]",
                 "hover:bg-input-filled transition-colors",

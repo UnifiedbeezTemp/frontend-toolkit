@@ -77,7 +77,7 @@ export default function TeamMembersField({
               return (
                 <button
                   key={member.id}
-                  onClick={() => toggleMember(member.id)}
+                  onClick={toggleMember.bind(null, member.id)}
                   className={cn(
                     "w-full px-[1.2rem] py-[0.8rem] rounded-[0.6rem] text-left",
                     "hover:bg-input-filled transition-colors",

@@ -98,7 +98,7 @@ export default function UnansweredMessagesField({
               {OPTIONS.map((option) => (
                 <button
                   key={option}
-                  onClick={() => handleSelect(option)}
+                  onClick={handleSelect.bind(null, option)}
                   className={cn(
                     "w-full p-[1.2rem] rounded-[0.6rem] text-left",
                     "hover:bg-input-filled transition-colors",

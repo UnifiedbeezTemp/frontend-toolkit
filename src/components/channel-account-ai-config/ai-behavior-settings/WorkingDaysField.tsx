@@ -36,14 +36,18 @@ export default function WorkingDaysField({
       >
         <div className="flex items-center gap-[0.8rem] flex-wrap">
           {value.length > 0 ? (
-            value.map((day) => (
-              <span
-                key={day}
-                className="px-[0.8rem] py-[0.4rem] border border-input-stroke text-text-primary rounded-[0.4rem] text-[1.2rem]"
-              >
-                {day}
-              </span>
-            ))
+            value.map((dayValue) => {
+              const label =
+                DAYS.find((d) => d.value === dayValue)?.label || dayValue;
+              return (
+                <span
+                  key={dayValue}
+                  className="px-[0.8rem] py-[0.4rem] border border-input-stroke text-text-primary rounded-[0.4rem] text-[1.2rem]"
+                >
+                  {label}
+                </span>
+              );
+            })
           ) : (
             <Text className="text-[1.4rem] text-text-primary">
               Select option
@@ -66,11 +70,11 @@ export default function WorkingDaysField({
       >
         <div className="p-[0.8rem]">
           {DAYS.map((day) => {
-            const isSelected = value.includes(day);
+            const isSelected = value.includes(day.value);
             return (
               <button
-                key={day}
-                onClick={() => toggleDay(day)}
+                key={day.value}
+                onClick={toggleDay.bind(null, day.value)}
                 className={cn(
                   "w-full px-[1.2rem] py-[1rem] rounded-[0.6rem]",
                   "hover:bg-input-filled transition-colors",
@@ -78,7 +82,9 @@ export default function WorkingDaysField({
                   isSelected && "bg-input-filled",
                 )}
               >
-                <Text className="text-[1.4rem] text-text-primary">{day}</Text>
+                <Text className="text-[1.4rem] text-text-primary">
+                  {day.label}
+                </Text>
                 {isSelected ? (
                   <ImageComponent
                     src={icons.checkboxBase2}

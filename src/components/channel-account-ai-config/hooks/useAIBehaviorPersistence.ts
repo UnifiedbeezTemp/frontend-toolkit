@@ -53,22 +53,12 @@ export function useAIBehaviorPersistence(
       const opening = to12Hour(apiConfig.openingHour);
       const closing = to12Hour(apiConfig.closingHour);
 
-      const dayMap: Record<WorkingDay, string> = {
-        MONDAY: "Monday",
-        TUESDAY: "Tuesday",
-        WEDNESDAY: "Wednesday",
-        THURSDAY: "Thursday",
-        FRIDAY: "Friday",
-        SATURDAY: "Saturday",
-        SUNDAY: "Sunday",
-      };
-
       return {
         aiReplyDelay: timeToString(
           apiConfig.replyDelayAmount,
           apiConfig.replyDelayUnit,
         ),
-        workingDays: apiConfig.workingDays.map((d) => dayMap[d]),
+        workingDays: apiConfig.workingDays,
         timezone: apiConfig.timezone,
         openingHours: opening.hours,
         openingMinutes: "00", // API only stores hours for now
@@ -89,16 +79,7 @@ export function useAIBehaviorPersistence(
 
       // Day comparison
       const uiDays = [...current.workingDays].sort();
-      const dayMap: Record<WorkingDay, string> = {
-        MONDAY: "Monday",
-        TUESDAY: "Tuesday",
-        WEDNESDAY: "Wednesday",
-        THURSDAY: "Thursday",
-        FRIDAY: "Friday",
-        SATURDAY: "Saturday",
-        SUNDAY: "Sunday",
-      };
-      const apiDays = api.workingDays.map((d) => dayMap[d]).sort();
+      const apiDays = [...api.workingDays].sort();
 
       return (
         current.aiReplyDelay !== apiDelay ||
@@ -117,20 +98,10 @@ export function useAIBehaviorPersistence(
     (current: AIBehaviorSettingsConfig): UpdateAIConfigRequest => {
       const { amount, unit } = parseTimeString(current.aiReplyDelay);
 
-      const reverseDayMap: Record<string, WorkingDay> = {
-        Monday: "MONDAY",
-        Tuesday: "TUESDAY",
-        Wednesday: "WEDNESDAY",
-        Thursday: "THURSDAY",
-        Friday: "FRIDAY",
-        Saturday: "SATURDAY",
-        Sunday: "SUNDAY",
-      };
-
       return {
         replyDelayAmount: amount,
         replyDelayUnit: unit,
-        workingDays: current.workingDays.map((d) => reverseDayMap[d]),
+        workingDays: current.workingDays as WorkingDay[],
         timezone: current.timezone || "UTC",
         openingHour: to24Hour(current.openingHours, current.openingPeriod),
         closingHour: to24Hour(current.closingHours, current.closingPeriod),

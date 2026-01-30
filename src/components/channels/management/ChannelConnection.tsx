@@ -18,10 +18,12 @@ interface ChannelConnectionProps {
       | import("../../../types/channelApiTypes").SelectedChannelsResponse
       | null;
   }> | void;
+  onBack?: () => void;
 }
 
 export default function ChannelConnection({
   onRefetchChannels,
+  onBack,
 }: ChannelConnectionProps) {
   useChannelConnectionToast();
   const { selectedChannels } = useChannelConnection();
@@ -47,8 +49,14 @@ export default function ChannelConnection({
   }
 
   return isDesktop ? (
-    <DesktopChannelConnection onRefetchChannels={handleRefetch} />
+    <DesktopChannelConnection
+      onRefetchChannels={handleRefetch}
+      onBack={onBack}
+    />
   ) : (
-    <MobileChannelConnection onRefetchChannels={handleRefetch} />
+    <MobileChannelConnection
+      onRefetchChannels={handleRefetch}
+      onBack={onBack}
+    />
   );
 }
