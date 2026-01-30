@@ -5,7 +5,7 @@ import { ChannelConnection, ChannelConnectionFormData } from "../../../types/cha
 
 export function useChannelConnections() {
   const dispatch = useAppDispatch();
-  const connections = useAppSelector((state) => state.channelConnections.connections);
+  const connections = useAppSelector((state) => state?.channelConnections?.connections);
 
   const getConnections = useCallback(
     (channelId: string): ChannelConnection[] => {
