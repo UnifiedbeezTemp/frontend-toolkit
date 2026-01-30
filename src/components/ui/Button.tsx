@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createElement } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { cn } from "../../lib/utils";
@@ -32,6 +32,7 @@ interface ButtonProps {
   children: React.ReactNode;
   loadingText?: string;
   ref?: React.RefObject<HTMLButtonElement | null>;
+  as?: string
 }
 
 export default function Button({
@@ -48,6 +49,7 @@ export default function Button({
   children,
   loadingText,
   ref,
+  as,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -96,6 +98,20 @@ export default function Button({
     className
   );
 
+  if (as) {
+    return createElement(
+      motion(as as any),
+      {
+        ...props,
+        className: classes,
+        onClick,
+        whileTap: { scale: disabled || loading ? 1 : 0.98 },
+      },
+      content
+    );
+  }
+
+
   if (href) {
     return (
       <motion.a
@@ -107,7 +123,6 @@ export default function Button({
         onClick={onClick}
       >
         {content}
-
       </motion.a>
     );
   }
