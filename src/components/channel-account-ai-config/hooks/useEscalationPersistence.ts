@@ -23,7 +23,7 @@ function parseThresholdString(value: string | null): number {
   return match ? parseInt(match[1], 10) : 5;
 }
 
-function thresholdToString(value: number): string {
+export function levelToString(value: number): string {
   return `${value} messages`;
 }
 
@@ -65,7 +65,7 @@ export function useEscalationPersistence(
     (apiConfig: AIConfigResponse): Partial<EscalationRulesConfig> => {
       return {
         enabled: apiConfig.escalationEnabled,
-        escalateAfterUnanswered: thresholdToString(
+        escalateAfterUnanswered: levelToString(
           apiConfig.unansweredMessagesThreshold,
         ),
         escalateOnKeywords: apiConfig.escalationKeywords || [],
@@ -84,7 +84,7 @@ export function useEscalationPersistence(
 
   const compareConfigs = useCallback(
     (current: EscalationRulesConfig, api: AIConfigResponse): boolean => {
-      const apiThreshold = thresholdToString(api.unansweredMessagesThreshold);
+      const apiThreshold = levelToString(api.unansweredMessagesThreshold);
       const apiDelay = timeToString(
         api.escalationTimeAmount,
         api.escalationTimeUnit,

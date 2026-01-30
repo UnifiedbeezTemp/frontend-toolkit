@@ -3,9 +3,20 @@ import NoReplyTimeField from "../../../../../channel-account-ai-config/escalatio
 import TeamMembersField from "../../../../../channel-account-ai-config/escalation-rules/TeamMembersField";
 import UnansweredMessagesField from "../../../../../channel-account-ai-config/escalation-rules/UnansweredMessagesField";
 import Heading from "../../../../../ui/Heading";
+import Button from "../../../../../ui/Button";
 import { useEscalationRules } from "../../hooks/useEscalationRules";
+import { AIConfigParams } from "../../../../../channel-account-ai-config/services/aiConfigService";
+import { EscalationRecommendationsResponse } from "../../../../../../services/smartSuggestionsService";
 
-export default function EscalationConfig() {
+interface EscalationConfigProps {
+  params: AIConfigParams;
+  recommendations?: EscalationRecommendationsResponse;
+}
+
+export default function EscalationConfig({
+  params,
+  recommendations,
+}: EscalationConfigProps) {
   const {
     unansweredMessages,
     keywords,
@@ -16,11 +27,25 @@ export default function EscalationConfig() {
     handleKeywordsChange,
     handleNoReplyTimeChange,
     handleBackupContactsChange,
-  } = useEscalationRules();
+    hasChanges,
+    isSaving,
+    save,
+  } = useEscalationRules(params, recommendations);
 
   return (
     <div className="space-y-[2.4rem] border-b border-input-stroke pb-[2.4rem]">
-      <Heading className="text-[2rem]">Escalation Rules</Heading>
+      <div className="flex items-center justify-between">
+        <Heading className="text-[2rem]">Escalation Rules</Heading>
+        {hasChanges && (
+          <Button
+            onClick={save}
+            disabled={isSaving}
+            className="h-[3.2rem] px-[2rem]"
+          >
+            {isSaving ? "Saving..." : "Save Changes"}
+          </Button>
+        )}
+      </div>
 
       <UnansweredMessagesField
         value={unansweredMessages}

@@ -1,8 +1,32 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAppSelector } from "../../../../../store/hooks/useRedux";
 import { useTeamMembers } from "../../../../members/hooks/useTeamMembers";
+import {
+  useEscalationPersistence,
+  EscalationRulesConfig,
+  levelToString,
+} from "../../../../channel-account-ai-config/hooks/useEscalationPersistence";
+import { AIConfigParams } from "../../../../channel-account-ai-config/services/aiConfigService";
+import { EscalationRecommendationsResponse } from "../../../../../services/smartSuggestionsService";
+import { timeToString } from "../../../../channel-account-ai-config/utils/configUtils";
+import { TeamMember } from "../../../../../store/onboarding/types/memberTypes";
 
-export function useEscalationRules() {
+function contactsToTeamMemberIds(
+  contacts: { email: string; fullName: string }[],
+  members: TeamMember[], 
+): string[] {
+  return contacts
+    .map((contact) => {
+      const member = members.find((m) => m.email === contact.email);
+      return member?.id;
+    })
+    .filter((id): id is string => id !== undefined);
+}
+
+export function useEscalationRules(
+  params: AIConfigParams,
+  recommendations?: EscalationRecommendationsResponse,
+) {
   const { refetchMembers } = useTeamMembers();
   const members = useAppSelector((state) => state.members.members);
 
@@ -10,38 +34,86 @@ export function useEscalationRules() {
     refetchMembers();
   }, []);
 
-  const [unansweredMessages, setUnansweredMessages] = useState<string | null>(
-    null,
+  const [localConfig, setLocalConfig] = useState<EscalationRulesConfig>({
+    enabled: true,
+    escalateAfterUnanswered: null,
+    escalateOnKeywords: [],
+    escalateAfterNoReply: null,
+    backupEscalationContacts: [],
+  });
+
+  const updateLocalConfig = useCallback(
+    (updates: Partial<EscalationRulesConfig>) => {
+      setLocalConfig((prev) => ({ ...prev, ...updates }));
+    },
+    [],
   );
-  const [keywords, setKeywords] = useState<string[]>([]);
-  const [noReplyTime, setNoReplyTime] = useState<string | null>(null);
-  const [backupContacts, setBackupContacts] = useState<string[]>([]);
 
-  const handleUnansweredChange = useCallback((value: string) => {
-    setUnansweredMessages(value);
-  }, []);
+  useEffect(() => {
+    if (recommendations && members.length > 0) {
+      updateLocalConfig({
+        enabled: recommendations.escalationEnabled,
+        escalateAfterUnanswered: levelToString(
+          recommendations.unansweredMessagesThreshold,
+        ),
+        escalateOnKeywords: recommendations.escalationKeywords,
+        escalateAfterNoReply: timeToString(
+          recommendations.escalationTimeAmount,
+          recommendations.escalationTimeUnit,
+        ),
+        backupEscalationContacts: contactsToTeamMemberIds(
+          recommendations.escalationContacts || [],
+          members,
+        ),
+      });
+    }
+  }, [recommendations, members, updateLocalConfig]);
 
-  const handleKeywordsChange = useCallback((newKeywords: string[]) => {
-    setKeywords(newKeywords);
-  }, []);
+  const persistence = useEscalationPersistence(
+    params,
+    members,
+    localConfig,
+    updateLocalConfig,
+  );
 
-  const handleNoReplyTimeChange = useCallback((value: string) => {
-    setNoReplyTime(value);
-  }, []);
+  const handleUnansweredChange = useCallback(
+    (value: string) => {
+      updateLocalConfig({ escalateAfterUnanswered: value });
+    },
+    [updateLocalConfig],
+  );
 
-  const handleBackupContactsChange = useCallback((memberIds: string[]) => {
-    setBackupContacts(memberIds);
-  }, []);
+  const handleKeywordsChange = useCallback(
+    (newKeywords: string[]) => {
+      updateLocalConfig({ escalateOnKeywords: newKeywords });
+    },
+    [updateLocalConfig],
+  );
+
+  const handleNoReplyTimeChange = useCallback(
+    (value: string) => {
+      updateLocalConfig({ escalateAfterNoReply: value });
+    },
+    [updateLocalConfig],
+  );
+
+  const handleBackupContactsChange = useCallback(
+    (memberIds: string[]) => {
+      updateLocalConfig({ backupEscalationContacts: memberIds });
+    },
+    [updateLocalConfig],
+  );
 
   return {
-    unansweredMessages,
-    keywords,
-    noReplyTime,
-    backupContacts,
+    unansweredMessages: localConfig.escalateAfterUnanswered,
+    keywords: localConfig.escalateOnKeywords,
+    noReplyTime: localConfig.escalateAfterNoReply,
+    backupContacts: localConfig.backupEscalationContacts,
     members,
     handleUnansweredChange,
     handleKeywordsChange,
     handleNoReplyTimeChange,
     handleBackupContactsChange,
+    ...persistence,
   };
 }

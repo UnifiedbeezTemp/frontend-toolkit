@@ -12,29 +12,35 @@ import { ConnectionDisplayData } from "../../../../channels/connections/types";
 interface AccountSelectorProps {
   channel: Channel;
   connections: ConnectionDisplayData[];
+  selectedConnectionId: string | number | null;
+  onSelect: (id: string | number) => void;
+  isDropdownOpen: boolean;
+  onToggle: () => void;
+  onClose: () => void;
 }
 
 export default function AccountSelector({
   channel,
   connections,
+  selectedConnectionId,
+  onSelect,
+  isDropdownOpen,
+  onToggle,
+  onClose,
 }: AccountSelectorProps) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const icons = useSupabaseIcons();
-  const {
-    isDropdownOpen,
-    selectedConnection,
-    selectedConnectionId,
-    toggleDropdown,
-    closeDropdown,
-    selectConnection,
-  } = useAccountSelector(connections);
+
+  const selectedConnection = connections.find(
+    (c) => c.id === selectedConnectionId,
+  );
 
   return (
     <div className="relative">
       <Heading>Manage Accounts</Heading>
       <button
         ref={triggerRef}
-        onClick={toggleDropdown}
+        onClick={onToggle}
         className="flex items-center justify-between gap-[1rem] w-full px-[1.4rem] py-[1rem] border border-input-stroke rounded-[0.8rem] bg-primary hover:bg-input-filled transition-colors mt-[0.8rem]"
       >
         <div className="flex items-center gap-[.5rem]">
@@ -61,14 +67,14 @@ export default function AccountSelector({
 
       <SmartDropdown
         isOpen={isDropdownOpen}
-        onClose={closeDropdown}
+        onClose={onClose}
         triggerRef={triggerRef}
       >
         <div className="p-[0.5rem] space-y-[0.2rem]">
           {connections.map((connection) => (
             <button
               key={connection.id}
-              onClick={selectConnection.bind(null, connection.id)}
+              onClick={() => onSelect(connection.id)}
               className={cn(
                 "flex flex-col items-start w-full p-[1rem] rounded-[0.6rem] hover:bg-input-filled transition-colors text-left",
                 connection.id === selectedConnectionId && "bg-input-filled",

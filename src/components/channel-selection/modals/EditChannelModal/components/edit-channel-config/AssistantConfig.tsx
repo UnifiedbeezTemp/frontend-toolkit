@@ -1,10 +1,25 @@
-import { useAssistantSelector } from "../../../../../ai-assistant/hooks/useAssistantSelector";
 import AssistantSelector from "../../../../../ai-assistant/selector/AssistantSelector";
+import { AIConfigParams } from "../../../../../channel-account-ai-config/services/aiConfigService";
 import Heading from "../../../../../ui/Heading";
+import { AIAssistant } from "../../../../../../types/aiAssistantTypes";
+import { useAssistantSelection } from "../../hooks/useAssistantSelection";
 
-export default function AssistantConfig() {
-  const { assistants, selectedAssistant, selectAssistant, isLoading } =
-    useAssistantSelector();
+interface AssistantConfigProps {
+  params: AIConfigParams;
+  assistants: AIAssistant[];
+  onAssistantChange: (aiId: number) => void;
+}
+
+export default function AssistantConfig({
+  params,
+  assistants,
+  onAssistantChange,
+}: AssistantConfigProps) {
+  const { selectedAssistant, isLoading, handleSelect } = useAssistantSelection({
+    params,
+    assistants,
+    onAssistantChange,
+  });
 
   return (
     <div className="space-y-[0.8rem]">
@@ -17,7 +32,7 @@ export default function AssistantConfig() {
       <AssistantSelector
         assistants={assistants}
         selectedAssistant={selectedAssistant}
-        onSelectAssistant={selectAssistant}
+        onSelectAssistant={handleSelect}
         noBorder={true}
         isLoading={isLoading}
       />

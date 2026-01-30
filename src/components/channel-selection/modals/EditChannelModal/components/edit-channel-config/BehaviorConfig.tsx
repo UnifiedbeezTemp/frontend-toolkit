@@ -3,9 +3,20 @@ import TimePicker from "../../../../../channel-account-ai-config/ai-behavior-set
 import TimezoneField from "../../../../../channel-account-ai-config/ai-behavior-settings/TimezoneField";
 import WorkingDaysField from "../../../../../channel-account-ai-config/ai-behavior-settings/WorkingDaysField";
 import Heading from "../../../../../ui/Heading";
+import Button from "../../../../../ui/Button";
 import { useAIBehaviourSettings } from "../../hooks/useAIBehaviourSettings";
+import { AIConfigParams } from "../../../../../channel-account-ai-config/services/aiConfigService";
+import { AIBehaviorRecommendationsResponse } from "../../../../../../services/smartSuggestionsService";
 
-export default function BehaviorConfig() {
+interface BehaviorConfigProps {
+  params: AIConfigParams;
+  recommendations?: AIBehaviorRecommendationsResponse;
+}
+
+export default function BehaviorConfig({
+  params,
+  recommendations,
+}: BehaviorConfigProps) {
   const {
     replyDelay,
     workingDays,
@@ -17,11 +28,25 @@ export default function BehaviorConfig() {
     handleTimezoneChange,
     handleOpeningTimeChange,
     handleClosingTimeChange,
-  } = useAIBehaviourSettings();
+    hasChanges,
+    isSaving,
+    save,
+  } = useAIBehaviourSettings(params, recommendations);
 
   return (
     <div className="space-y-[2.4rem] border-b border-input-stroke pb-[2.4rem]">
-      <Heading className="text-[2rem]">AI Behavior Settings (Timing)</Heading>
+      <div className="flex items-center justify-between">
+        <Heading className="text-[2rem]">AI Behavior Settings (Timing)</Heading>
+        {hasChanges && (
+          <Button
+            onClick={save}
+            disabled={isSaving}
+            className="h-[3.2rem] px-[2rem]"
+          >
+            {isSaving ? "Saving..." : "Save Changes"}
+          </Button>
+        )}
+      </div>
 
       <AIReplyDelayField value={replyDelay} onChange={handleReplyDelayChange} />
 
