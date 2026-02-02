@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Conversation } from "@/shared/src/components/inbox/types";
+import { Conversation } from "../types";
 import {
   generalInboxConversations as initialGeneral,
   teamInboxConversations as initialTeam,
