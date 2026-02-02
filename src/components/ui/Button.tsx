@@ -1,5 +1,6 @@
-import React from "react";
+import React, { createElement } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { cn } from "../../lib/utils";
 
 /**
@@ -7,36 +8,22 @@ import { cn } from "../../lib/utils";
  *
  * USAGE:
  * <Button>Click me</Button>
- * <Button variant="secondary">Cancel</Button>
- * <Button loading>Processing...</Button>
- * <Button className="custom-styles">Custom</Button>
- *
- * PROPS:
- * - variant: primary | secondary | outline | ghost | danger (default: primary)
- * - size: sm | md | lg (default: md)
- * - disabled: boolean (default: false)
- * - loading: boolean (default: false)
- * - type: button | submit | reset (default: button)
- * - onClick: Click handler function
- * - className: Add custom styles (overrides defaults)
- * - children: Button content (text, icons, etc.)
- *
- * DEFAULTS:
- * - Smooth hover animations
- * - Scale tap animation
- * - Disabled states
- * - Loading states
+ * <Button href="/path">Link Button</Button>
+ * ...
  */
 
 interface ButtonProps {
   onClick?: () => void;
+  href?: string;
+  target?: string;
+  rel?: string;
   variant?:
-    | "primary"
-    | "secondary"
-    | "outline"
-    | "ghost"
-    | "danger"
-    | "dangerReverse";
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "danger"
+  | "dangerReverse";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   loading?: boolean;
@@ -45,10 +32,14 @@ interface ButtonProps {
   children: React.ReactNode;
   loadingText?: string;
   ref?: React.RefObject<HTMLButtonElement | null>;
+  as?: string
 }
 
 export default function Button({
   onClick,
+  href,
+  target,
+  rel,
   variant = "primary",
   size = "md",
   disabled = false,
@@ -58,6 +49,7 @@ export default function Button({
   children,
   loadingText,
   ref,
+  as,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -87,32 +79,65 @@ export default function Button({
     loading: "cursor-wait",
   };
 
+  const content = loading ? (
+    <div className="flex items-center gap-2">
+      <div className="w-[2rem] h-[2rem] border border-current border-t-transparent rounded-full animate-spin" />
+      {loadingText}
+    </div>
+  ) : (
+    children
+  );
+
+  const classes = cn(
+    baseClasses,
+    variantClasses[variant],
+    sizeClasses[size],
+    (disabled || loading) && stateClasses.disabled,
+    loading && stateClasses.loading,
+    !disabled && !loading && "active:scale-90",
+    className
+  );
+
+  if (as) {
+    return createElement(
+      motion(as as any),
+      {
+        ...props,
+        className: classes,
+        onClick,
+        whileTap: { scale: disabled || loading ? 1 : 0.98 },
+      },
+      content
+    );
+  }
+
+
+  if (href) {
+    return (
+      <motion.a
+        whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
+        href={href}
+        target={target}
+        rel={rel}
+        className={cn("w-full lg:w-fit", classes)}
+        onClick={onClick}
+      >
+        {content}
+      </motion.a>
+    );
+  }
+
   return (
     <motion.button
       {...props}
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={cn(
-        baseClasses,
-        variantClasses[variant],
-        sizeClasses[size],
-        (disabled || loading) && stateClasses.disabled,
-        loading && stateClasses.loading,
-        !disabled && !loading && "active:scale-90",
-        className
-      )}
+      className={classes}
       whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
       ref={ref}
     >
-      {loading ? (
-        <div className="flex items-center gap-2">
-          <div className="w-[2rem] h-[2rem] border border-current border-t-transparent rounded-full animate-spin" />
-          {loadingText}
-        </div>
-      ) : (
-        children
-      )}
+      {content}
     </motion.button>
   );
 }

@@ -11,12 +11,12 @@ export default function ThreadsSection({ threads }: ThreadsSectionProps) {
       {threads.map((thread) => (
         <div
           key={thread.id}
-          className="bg-input-filled rounded-[0.8rem] p-3 hover:bg-black-5 transition-colors cursor-pointer"
+          className="bg-input-filled border-input-stroke border px-2 py-1 rounded-[0.8rem] hover:bg-black-5 transition-colors cursor-pointer"
         >
-          <Text className="text-[1.4rem] font-medium text-dark-base-70 mb-1">
+          <Text className="text-base font-medium text-dark-base-100 mb-1">
             {thread.title}
           </Text>
-          <Text className="text-[1.2rem] text-dark-base-40">
+          <Text className="text-[1.2rem] text-dark-base-70">
             {thread.replyCount} replies • {thread.lastActivity}
           </Text>
         </div>

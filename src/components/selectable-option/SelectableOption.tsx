@@ -32,7 +32,7 @@ export default function SelectableOption({
       disabled={disabled}
       onClick={onSelect}
       className={cn(
-        "w-full flex items-center justify-between rounded-2xl border px-2 py-3.5 transition relative text-dark-base-100 gap-2 text-md md:text-base",
+        "w-full bg-primary flex items-center justify-between rounded-2xl border px-2 py-3.5 transition relative text-dark-base-100 gap-2 text-md md:text-base",
         selected
           ? "border-primary-100 font-bold"
           : "border-input-stroke font-normal",
@@ -41,7 +41,7 @@ export default function SelectableOption({
           : "flex-row",
         selected
           ? selectedBgClassName
-            ? `${selectedBgClassName} bg-primary`
+            ? `${selectedBgClassName}`
             : "bg-gradient-yellow-1"
           : "bg-primary",
         className

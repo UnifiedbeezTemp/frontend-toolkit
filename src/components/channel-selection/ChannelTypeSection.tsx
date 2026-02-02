@@ -8,6 +8,7 @@ interface ChannelTypeSectionProps {
   isLast: boolean;
   onToggleChannel: (channel: string) => void;
   isChannelLoading?: (channelId: string) => boolean;
+  canEdit?: boolean;
 }
 
 export default function ChannelTypeSection({
@@ -16,6 +17,7 @@ export default function ChannelTypeSection({
   isLast,
   onToggleChannel,
   isChannelLoading,
+  canEdit = false,
 }: ChannelTypeSectionProps) {
   return (
     <div
@@ -32,7 +34,7 @@ export default function ChannelTypeSection({
             key={channel.id}
             channel={channel}
             onToggle={() => onToggleChannel(channel.id)}
-            canEdit={false}
+            canEdit={canEdit}
             isLoading={isChannelLoading?.(channel.id) || false}
           />
         ))}

@@ -1,5 +1,5 @@
 import { api } from "../api";
-import { AccountType } from "../../../components/onboarding/setup/steps/step-6/smart-suggestions/api/switchAIAssistant";
+import { AccountType } from "../components/channel-account-ai-config/types/api";
 
 export interface SmartSuggestionsParams {
   timezone: string;
@@ -55,7 +55,7 @@ export type SmartSuggestionsResponse =
 export const getSmartSuggestions = async (
   channelId: number,
   aiId: number,
-  params: SmartSuggestionsParams
+  params: SmartSuggestionsParams,
 ): Promise<SmartSuggestionsResponse> => {
   const queryParams = new URLSearchParams();
   queryParams.append("timezone", params.timezone);

@@ -42,15 +42,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      value,
       onChange,
       placeholder = "",
       type = "text",
       leftIcon,
       rightIcon,
       className = "",
-      disabled = false,
-      onKeyDown,
       ...props
     },
     ref,
@@ -64,12 +61,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         <input
           ref={ref}
-          value={value}
           onChange={onChange}
-          onKeyDown={onKeyDown}
           placeholder={placeholder}
           type={type}
-          disabled={disabled}
           {...props}
           className={cn(
             "w-full border border-input-stroke rounded-[0.8rem] px-[1.4rem] py-[1rem]",

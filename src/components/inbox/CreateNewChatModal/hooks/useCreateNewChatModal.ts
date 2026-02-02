@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
 import { channelOptions } from "../constants";
-import { ChannelOption } from "../types";
 import { useRouter } from "next/navigation";
-import { useConversations } from "../../../../../../app/inbox/context/ConversationContext";
+import { useConversations } from "../../context/ConversationContext";
 
 export function useCreateNewChatModal() {
   const [toValue, setToValue] = useState("");

@@ -1,3 +1,7 @@
+import { getPlansData } from "../../../data/plansData";
+import { useToggle } from "../../../hooks/useToggle";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import PlanPreviewModal from "../../plancard-preview/components/PlanPreviewModal";
 import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
 import { PlanSummaryCardProps } from "../types";
@@ -14,64 +18,80 @@ export default function PlanSummaryCTATop({
   isOwnPlan,
   className,
   isLoading,
-  onUpgradePlan,
   isUpgradePlanDisabled,
+  onAddonsClick = () => {},
+  onSelect = () => {}
 }: PlanSummaryCardProps) {
+  const icons = useSupabaseIcons()
+  const { value: showDetails, setFalse: handleClose, setTrue: handleOpen } = useToggle()
   if (isLoading) return <PlanSummarySkeleton />;
   return (
-    <PlanSummaryContainer className={className}>
-      <div className="flex flex-wrap justify-between w-full gap-8">
-        <div className="flex flex-col justify-between items-start gap-11 lg:gap-13.5 w-full">
-          <div className="flex justify-between items-start w-full">
-            <div className="flex flex-col mr-auto">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <PlanIcon
-                  planType={plan.planType}
-                  className="-mt-2 -ml-1.5 w-max scale-[0.6666]"
-                />
-                <div className="flex items-center gap-4.5 -mt-1.5">
-                  <Heading
-                    as="h4"
-                    className="capitalize text-[1.8rem] text-dark-base-100"
-                  >
-                    {plan.name} Plan
-                  </Heading>
-                  <PlanTag plan={plan} isOwnPlan={isOwnPlan} />
+    <>
+      <PlanPreviewModal 
+        isOpen={showDetails} 
+        onClose={handleClose} 
+        plan={getPlansData([plan], icons)[0]} 
+        isYearly={false} 
+        totalPrice={plan.priceEur} 
+        onAddonsClick={onAddonsClick} 
+        onSelect={onSelect}
+      />
+      <PlanSummaryContainer className={className}>
+        <div className="flex flex-wrap justify-between w-full gap-8">
+          <div className="flex flex-col justify-between items-start gap-11 lg:gap-13.5 w-full">
+            <div className="flex justify-between items-start w-full">
+              <div className="flex flex-col mr-auto">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <PlanIcon
+                    planType={plan.planType}
+                    className="-mt-2 -ml-1.5 w-max scale-[0.6666]"
+                  />
+                  <div className="flex items-center gap-4.5 -mt-1.5">
+                    <Heading
+                      as="h4"
+                      className="capitalize text-[1.8rem] text-dark-base-100"
+                    >
+                      {plan.name} Plan
+                    </Heading>
+                    <PlanTag plan={plan} isOwnPlan={isOwnPlan} />
+                  </div>
                 </div>
+                <PlanPricingAndInterval plan={plan} />
               </div>
-              <PlanPricingAndInterval plan={plan} />
+              <div className="hidden md:block">
+                <PlanSummaryActions
+                  plan={plan}
+                  onUpgradePlan={onSelect}
+                  isUpgradePlanDisabled={isUpgradePlanDisabled}
+                  handleMoreClick={handleOpen}
+                />
+              </div>
             </div>
-            <div className="hidden md:block">
+
+            <div>
+              {plan.addons && plan.addons.length > 0 && (
+                <>
+                  <Button
+                    variant="secondary"
+                    className="bg-primary text-[1rem] font-bold leading-base py-1.5 px-2.25 mt-auto mb-2"
+                  >
+                    Add-ons
+                  </Button>
+                  <PlanAddOns plan={plan} />
+                </>
+              )}
+            </div>
+            <div className="block md:hidden w-full">
               <PlanSummaryActions
                 plan={plan}
-                onUpgradePlan={onUpgradePlan}
+                onUpgradePlan={onSelect}
                 isUpgradePlanDisabled={isUpgradePlanDisabled}
+                handleMoreClick={handleOpen}
               />
             </div>
           </div>
-
-          <div>
-            {plan.addons && plan.addons.length > 0 && (
-              <>
-                <Button
-                  variant="secondary"
-                  className="bg-primary text-[1rem] font-bold leading-base py-1.5 px-2.25 mt-auto mb-2"
-                >
-                  Add-ons
-                </Button>
-                <PlanAddOns plan={plan} />
-              </>
-            )}
-          </div>
-          <div className="block md:hidden w-full">
-            <PlanSummaryActions
-              plan={plan}
-              onUpgradePlan={onUpgradePlan}
-              isUpgradePlanDisabled={isUpgradePlanDisabled}
-            />
-          </div>
         </div>
-      </div>
-    </PlanSummaryContainer>
+      </PlanSummaryContainer>
+    </>
   );
 }

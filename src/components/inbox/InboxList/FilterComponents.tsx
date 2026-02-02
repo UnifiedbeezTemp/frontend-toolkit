@@ -10,7 +10,7 @@ import { CRMTags } from "../components/crm-tags/CRMTags";
 import { useInboxFilters } from "./hooks/useInboxFilters";
 import { MAIN_FILTER_OPTIONS } from "./constants";
 import { InboxSearchAndFiltersProps } from "./types";
-import { useConversations } from "@/app/inbox/context/ConversationContext";
+import { useConversations } from "../context/ConversationContext";
 import { useEffect } from "react";
 
 export const InboxSearchAndFilters = ({
@@ -34,7 +34,7 @@ export const InboxSearchAndFilters = ({
   } = useInboxFilters(inboxType);
 
   useEffect(() => {
-    setActiveFilter(activeFilter.label);
+    setActiveFilter(activeFilter.label as string);
   }, [activeFilter, setActiveFilter]);
 
   return (

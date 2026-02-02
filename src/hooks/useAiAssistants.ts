@@ -65,7 +65,7 @@ const computeUsage = (prev: AiUsage | null, remaining?: number) => {
 };
 
 export function useAiAssistants(
-  options: { autoFetch?: boolean; showToasts?: boolean } = {}
+  options: { autoFetch?: boolean; showToasts?: boolean } = {},
 ) {
   const showToasts = options.showToasts ?? true;
   const dispatch = useAppDispatch();
@@ -78,7 +78,7 @@ export function useAiAssistants(
     fetchAiAssistants,
     {
       enabled: options.autoFetch ?? true,
-    }
+    },
   );
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export function useAiAssistants(
   >(
     (payload) =>
       import("../api/aiAssistants").then((api) =>
-        api.updateAiAssistantPersonality(payload)
+        api.updateAiAssistantPersonality(payload),
       ),
     {
       onSuccess: (data) => {
@@ -181,7 +181,7 @@ export function useAiAssistants(
           });
         }
       },
-    }
+    },
   );
 
   const updateInstructionMutation = useAppMutation<
@@ -191,7 +191,7 @@ export function useAiAssistants(
   >(
     (payload) =>
       import("../api/aiAssistants").then((api) =>
-        api.updateAiAssistantInstruction(payload)
+        api.updateAiAssistantInstruction(payload),
       ),
     {
       onSuccess: (data) => {
@@ -215,7 +215,7 @@ export function useAiAssistants(
           });
         }
       },
-    }
+    },
   );
 
   const deleteAssistantMutation = useAppMutation<
@@ -255,9 +255,17 @@ export function useAiAssistants(
     return usage.remaining > 0;
   }, [usage]);
 
+  const currentAssistants = useMemo(() => {
+    if (assistants.length > 0) return assistants;
+    if (assistantsQuery.data?.aiAssistants) {
+      return assistantsQuery.data.aiAssistants.map(normalizeAssistant);
+    }
+    return [];
+  }, [assistants, assistantsQuery.data]);
+
   return {
-    assistants,
-    usage,
+    assistants: currentAssistants,
+    usage: usage || assistantsQuery.data?.usage || null,
     isLoading: assistantsQuery.isLoading,
     isFetching: assistantsQuery.isFetching,
     error: assistantsQuery.error,

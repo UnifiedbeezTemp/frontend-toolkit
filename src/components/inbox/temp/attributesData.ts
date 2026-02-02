@@ -8,11 +8,11 @@ export const attributesData: AttributeSection[] = [
     defaultExpanded: true,
     fields: [
       { id: 'internal-name', icon: 'User', label: 'Internal name', value: 'Bfake', type: 'text' },
-      { id: 'first-name', icon: 'FileText', label: 'First name', value: 'Sirio', type: 'text' },
-      { id: 'last-name', icon: 'FileText', label: 'Last name', value: 'Sirio', type: 'text' },
+      { id: 'first-name', icon: 'User', label: 'First name', value: 'Sirio', type: 'text' },
+      { id: 'last-name', icon: 'User', label: 'Last name', value: 'Sirio', type: 'text' },
       { id: 'email', icon: 'Mail', label: 'Email', value: 'tradevan@gmail.com', type: 'text' },
       { id: 'phone', icon: 'Phone', label: 'Phone number', value: 'Enter', type: 'text' },
-      { id: 'gender', icon: 'User', label: 'Gender', value: 'Male', type: 'dropdown', hasDropdown: true },
+      { id: 'gender', icon: 'BadgeCheckIcon', label: 'Gender', value: 'Male', type: 'dropdown', hasDropdown: true },
       { id: 'company', icon: 'Building2', label: 'Company', value: 'Enter', type: 'text' },
       { 
         id: 'conversation-access', 

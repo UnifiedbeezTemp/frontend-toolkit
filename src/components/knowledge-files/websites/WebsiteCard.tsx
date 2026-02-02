@@ -13,7 +13,7 @@ interface WebsiteCardProps {
   onTogglePageStatus?: (websiteIndex: number, pageUrl: string) => void;
   onToggleAllPagesStatus?: (
     websiteIndex: number,
-    status: "active" | "inactive"
+    status: "active" | "inactive",
   ) => void;
   onOpenInactiveModal?: (websiteIndex: number) => void;
   onDelete?: (websiteId: number) => void;
@@ -43,7 +43,7 @@ export default function WebsiteCard({
 
   const activePages = website.pages.filter((page) => page.status === "active");
   const inactivePages = website.pages.filter(
-    (page) => page.status === "inactive"
+    (page) => page.status === "inactive",
   );
   const handleTabClick = (tab: ActiveTab) => {
     setActiveTab(tab);

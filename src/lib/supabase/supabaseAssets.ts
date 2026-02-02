@@ -50,10 +50,12 @@ export const SUPABASE_IMAGES = {
   uploadLogo: "website/upload-logo.png",
   typo: "website/typo.png",
   hiveHero: "website/hive-hero.webp",
+  hiveHeroMobile: "website/hive-hero-mobile.png",
   gdprCompliant: "website/gdpr-compliant.png",
   metaBusinessPartner: "website/meta-business-partner.png",
   dottedBg: "website/dotted-bg.png",
   teamInbox: "website/team-inbox-1.svg",
+  teamInboxAlt: "website/team-inbox-3.png",
   websiteHero: "website/website-herof.png",
   aboutHero1: "website/about-hero-1.svg",
   aboutHero2: "website/about-hero-2.svg",
@@ -61,6 +63,31 @@ export const SUPABASE_IMAGES = {
   aboutHero4: "website/about-hero-4.svg",
   aboutHero5: "website/about-hero-5.svg",
   productScreenshot: "website/product-screenshot.svg",
+  step1ScreenshotDesktop: "website/step-01.svg",
+  step2ScreenshotDesktop: "website/step-02.svg",
+  step3ScreenshotDesktop: "website/step-03.svg",
+  step4ScreenshotDesktop: "website/step-04.svg",
+  step5ScreenshotDesktop: "website/step-05.svg",
+  step6ScreenshotDesktop: "website/step-06.svg",
+  step7ScreenshotDesktop: "website/step-07.svg",
+  step8ScreenshotDesktop: "website/step-08.svg",
+  step1ScreenshotMobile: "website/step-01-mobile.svg",
+  step2ScreenshotMobile: "website/step-02-mobile.svg",
+  step3ScreenshotMobile: "website/step-03-mobile.svg",
+  step4ScreenshotMobile: "website/step-04-mobile.svg",
+  step5ScreenshotMobile: "website/step-05-mobile.svg",
+  step6ScreenshotMobile: "website/step-06-mobile.svg",
+  step7ScreenshotMobile: "website/step-07-mobile.svg",
+  step8ScreenshotMobile: "website/step-08-mobile.svg",
+  patternSide: "website/pattern-side.svg",
+  solopreneur: "website/solopreneur.jpg",
+  supportIllustration: "website/support-illustration.svg",
+  channelsWhole: "website/channels-whole.svg",
+  realEstateDemo: "website/real-estate-demo.png",
+  orgsAndTeamsDemo: "website/orgs-and-teams-demo.png",
+  customerSupportDemo: "website/customer-support-demo.jpg",
+  blog1: "website/blog-1.svg",
+  blog2: "website/blog-2.svg",
 } as const;
 
 export const SUPABASE_ICONS = {
@@ -367,6 +394,7 @@ export const SUPABASE_ICONS = {
   linkedinWhite: "website/linkedin.png",
   instagramWhite: "website/instagram.png",
   youtubeWhite: "website/youtube.png",
+  cookie: "icons/Cookie.svg",
 };
 
 export const SUPABASE_GIFS = {
@@ -380,4 +408,8 @@ export const SUPABASE_GIFS = {
   copilotSidebarFive: "copilot/copilotSidebarFive.gif",
   copilotSidebarSix: "copilot/copilotSidebarSix.gif",
   copilotSidebarBg: "copilot/copilotSidebarBg.svg",
+} as const;
+
+export const SUPABASE_ANIMATIONS = {
+  preloader: "lottie-animations/Preloader.json",
 } as const;
