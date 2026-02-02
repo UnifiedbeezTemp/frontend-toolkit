@@ -24,7 +24,13 @@ export default function PlanPreviewModal({
   onSelect,
 }: PlanPreviewModalProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md" isBlur>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isBlur
+      className="!overflow-visible"
+      overflow={false}
+    >
       <PlanCard
         plan={plan}
         isYearly={isYearly}
@@ -34,7 +40,7 @@ export default function PlanPreviewModal({
         onClose={onClose}
         onAddonsClick={onAddonsClick}
         isCompact={true}
-        className={"layout-body max-w-[30rem] border-0"}
+        className={"layout-body w-[30rem] border-0"}
       />
     </Modal>
   );

@@ -53,15 +53,15 @@ export default function PlanPreviewPricing({
 
       <div className="flex gap-[1rem] w-full">
         {planType?.toLowerCase() === "organisation" ? (
-          <div className="w-full px-[1.6rem] py-[1.2rem] bg-brand-primary text-white text-center rounded-[0.8rem] font-[700] text-[1.4rem]">
+          <div className="w-full px-[1.6rem] py-[1.2rem] bg-brand-primary text-primary text-center rounded-[0.8rem] font-[700] text-[1.4rem]">
             Talk to Sales
           </div>
         ) : (
           <Button
-            className={cn(" px-[1.6rem]", isOneSided ? "w-full" : "w-full")}
+            className={cn(" px-[1.6rem] whitespace-nowrap", isOneSided ? "w-full" : "w-full")}
             onClick={onUpgradeClick}
           >
-            Upgrade Plan
+            Upgrade plan
           </Button>
         )}
         <div className="relative" ref={menuRef}>

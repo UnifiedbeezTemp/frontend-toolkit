@@ -26,7 +26,8 @@ export default function PlanCardFooter({
   isHero,
 }: PlanCardFooterProps) {
   const icons = useSupabaseIcons();
-  const iconSrc = icons[plan.footerIcon as keyof typeof icons] || plan.footerIcon;
+  const iconSrc =
+    icons[plan.footerIcon as keyof typeof icons] || plan.footerIcon;
 
   return (
     <div className="mt-auto pt-[2rem]">
@@ -38,18 +39,20 @@ export default function PlanCardFooter({
             ? "bg-muted text-dark-base-70 border-muted cursor-not-allowed hover:bg-muted"
             : "",
         )}
-        variant={isSelected || plan.id === "business" ? "primary" : "secondary"}
+        variant={isSelected ? "primary" : "secondary"}
         onClick={() => !isCurrentPlan && onSelect(plan.id)}
         disabled={isCurrentPlan}
       >
-        {isCurrentPlan ? "Current Plan" : ctaText || plan.ctaText || "Talk to Sales"}
+        {isCurrentPlan
+          ? "Current Plan"
+          : ctaText || plan.ctaText || "Talk to Sales"}
       </Button>
 
       {onClose && (
         <Button
           className={cn(
             "w-full mt-[-1rem] mb-[4rem] border",
-            isCompact && "text-[1.2rem] py-[1rem]"
+            isCompact && "text-[1.2rem] py-[1rem]",
           )}
           variant="secondary"
           onClick={onClose}

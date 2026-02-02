@@ -155,7 +155,7 @@ export default function PlanCardPreview({
           >
             <p
               className={cn(
-                "",
+                "whitespace-nowrap",
                 isOneSided
                   ? "sm:flex-col lg:flex lg:flex-row"
                   : "sm:flex sm:flex-row gap-[0.4rem] text-[1.4rem]",

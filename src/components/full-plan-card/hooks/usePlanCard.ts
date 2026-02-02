@@ -4,18 +4,19 @@ import { Plan } from "../../../api/services/plan/types";
 import {
   formatPriceFromCents,
   calculateBillingCyclePrice,
+  formatPriceRaw,
 } from "../../../utils/priceUtils";
 
 export const usePlanCard = (
   plan: Plan,
   isYearly: boolean,
-  overridePrice?: number
+  overridePrice?: number,
 ) => {
   const [showFeatures, setShowFeatures] = useState(false);
 
   const calculatedPrice = calculateBillingCyclePrice(
-    formatPriceFromCents(plan.monthlyPrice),
-    isYearly
+    formatPriceRaw(plan.monthlyPrice),
+    isYearly,
   );
 
   const displayPrice =

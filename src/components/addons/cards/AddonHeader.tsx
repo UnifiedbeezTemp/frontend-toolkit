@@ -49,13 +49,14 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
         <div className="relative">
           <Tooltip
             isInteractive
+            contentClassName="w-[15rem]"
             content={
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onRemove?.();
                 }}
-                className="flex items-center gap-[0.8rem] hover:bg-destructive/10 p-[0.4rem] px-[0.8rem] rounded-[0.4rem] transition-colors w-full text-text-primary text-[1.4rem]"
+                className="flex items-center gap-[0.8rem] hover:bg-destructive/10 p-[0.4rem] px-[0.8rem] rounded-[0.4rem] transition-colors w-full text-text-primary text-[1.4rem] "
               >
                 <ImageComponent
                   src={icons.trash3}
