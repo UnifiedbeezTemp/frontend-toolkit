@@ -19,13 +19,14 @@ export const useAddonsPage = () => {
     isLoading: loading,
     error,
     refetch,
+    isFetching,
   } = useAvailableAddons();
 
   const addonsHook = useAddons(planType);
 
   const addons = rawAddons.filter(
     (addon) =>
-      !addonsHook.selectedAddons.some((selected) => selected.id === addon.id)
+      !addonsHook.selectedAddons.some((selected) => selected.id === addon.id),
   );
 
   const handleContinue = () => {
@@ -41,6 +42,7 @@ export const useAddonsPage = () => {
     loading,
     error,
     refetch,
+    isFetching,
 
     ...addonsHook,
 

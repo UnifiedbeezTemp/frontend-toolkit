@@ -3,6 +3,7 @@ import ImageComponent from "next/image";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
 import Loader from "../../ui/Loader";
+import { useUser } from "../../../contexts/UserContext";
 
 interface AddonActionsProps {
   addon: Addon;
@@ -22,6 +23,8 @@ export const AddonActions: React.FC<AddonActionsProps> = ({
   isRemoving = false,
 }) => {
   const icons = useSupabaseIcons();
+  const { user } = useUser();
+  const isHighestPlan = user?.plan?.toUpperCase() === "ORGANISATION";
 
   if (variant === "add") {
     return (
@@ -36,7 +39,7 @@ export const AddonActions: React.FC<AddonActionsProps> = ({
 
   return (
     <div className="mt-[2.4rem]">
-      {!canIncrease && addon.limit !== 9999 && (
+      {!canIncrease && addon.limit !== 9999 && !isHighestPlan && (
         <div className="border border-border text-[1.4rem] text-text-primary px-[0.61rem] py-[0.31rem] font-[700] bg-input-filled rounded-[0.4rem] inline-block mb-2">
           Upgrade plan for extra {addon.name}
         </div>
@@ -56,7 +59,7 @@ export const AddonActions: React.FC<AddonActionsProps> = ({
           onClick={onRemove}
           disabled={isRemoving}
         >
-          {isRemoving ? <Loader/> : "Remove Add-on"}
+          {isRemoving ? <Loader /> : "Remove Add-on"}
           {!isRemoving && (
             <ImageComponent
               src={icons.xCancelRed}

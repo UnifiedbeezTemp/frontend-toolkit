@@ -6,18 +6,21 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { CHECKOUT_FORM_SCHEMA } from "../utils/checkoutSchema";
 import { authService, StartTrialPayload } from "../../../api/services/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "../../ui/toast/useToast";
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 import { useUser } from "../../../contexts/UserContext";
 
 export type CheckoutFormData = z.infer<typeof CHECKOUT_FORM_SCHEMA>;
 
+const CHECKOUT_STORAGE_KEY = "unifiedbeez_checkout_data";
+
 export const useCheckoutForm = () => {
   const [clientSecret, setClientSecret] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [trialEndsAt, setTrialEndsAt] = useState<string>("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const { showToast } = useToast();
 
   const form = useForm<CheckoutFormData>({
@@ -36,6 +39,30 @@ export const useCheckoutForm = () => {
 
   const { user } = useUser();
   const router = useRouter();
+
+  useEffect(() => {
+    const savedData = localStorage.getItem(CHECKOUT_STORAGE_KEY);
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        Object.entries(parsed).forEach(([key, value]) => {
+          if (key !== "agreeToTerms") {
+            form.setValue(key as any, value);
+          }
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    setIsReady(true);
+  }, [form]);
+
+  const watchedValues = form.watch();
+  useEffect(() => {
+    if (!isReady) return;
+    const { agreeToTerms, ...dataToSave } = watchedValues;
+    localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(dataToSave));
+  }, [watchedValues, isReady]);
 
   const onSubmit = async (data: CheckoutFormData) => {
     const planType = user?.plan?.toUpperCase();
@@ -71,6 +98,7 @@ export const useCheckoutForm = () => {
       if (response.clientSecret) {
         setClientSecret(response.clientSecret);
         setTrialEndsAt(response.trialEndsAt);
+        localStorage.removeItem(CHECKOUT_STORAGE_KEY);
       } else {
         showToast({
           title: "Setup Failed",
@@ -82,7 +110,7 @@ export const useCheckoutForm = () => {
     } catch (err: unknown) {
       const errorMessage = extractErrorMessage(
         err,
-        "Failed to setup trial. Please try again."
+        "Failed to setup trial. Please try again.",
       );
       showToast({
         title: "Trial Setup Failed",

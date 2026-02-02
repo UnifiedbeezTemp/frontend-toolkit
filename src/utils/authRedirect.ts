@@ -36,7 +36,6 @@ export function getOnboardingRedirect(user: UserProfile | null) {
   const nextStep = getNextStepAfterHighest(completedSteps);
 
   if (highest >= TOTAL_ONBOARDING_STEPS || nextStep > TOTAL_ONBOARDING_STEPS) {
-
     const beehiveUrl = process.env.NEXT_PUBLIC_BEEHIVE_URL;
     return beehiveUrl ? `${beehiveUrl}/get-started` : "/";
   }

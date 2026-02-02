@@ -27,7 +27,7 @@ interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> {
 }
 
 export default function FormField<
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 >({
   name,
   control,
@@ -74,7 +74,7 @@ export default function FormField<
           labelClassName={labelClassName}
           showRequired={showRequired}
           autoComplete={autoComplete}
-          value={value}
+          value={value ?? field.value}
           onInput={onInput}
           onChange={(e) => {
             field.onChange(e);
