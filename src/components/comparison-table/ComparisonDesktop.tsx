@@ -123,12 +123,11 @@ export default function ComparisonDesktop({
                 >
                   <div className="flex flex-col items-center gap-4">
                     <Button
-                      variant={plan.id === "business" ? "primary" : "secondary"}
+                      variant={plan.isCurrentPlan ? "primary" : "secondary"}
                       className={cn(
                         "w-full py-2 text-sm font-bold",
-                        plan.id === "business" &&
-                          "btn-gradient text-primary border-0",
-                        plan.isCurrentPlan && "opacity-50 cursor-not-allowed",
+                        plan.isCurrentPlan &&
+                          "btn-gradient text-primary border-0 opacity-50 cursor-not-allowed",
                       )}
                       disabled={plan.isCurrentPlan}
                       onClick={() =>

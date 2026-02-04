@@ -142,12 +142,11 @@ export default function ComparisonMobile({
         <div className="px-5.25 pt-4 pb-1.25">
           <div className="flex items-center gap-2 mb-3.25">
             <Button
-              variant={activePlan.id === "business" ? "primary" : "secondary"}
+              variant={activePlan.isCurrentPlan ? "primary" : "secondary"}
               className={cn(
                 "flex-1 py-2.5 text-sm font-bold",
-                activePlan.id === "business" &&
-                  "btn-gradient text-primary border-0",
-                activePlan.isCurrentPlan && "opacity-50 cursor-not-allowed",
+                activePlan.isCurrentPlan &&
+                  "btn-gradient text-primary border-0 opacity-50 cursor-not-allowed",
               )}
               disabled={activePlan.isCurrentPlan}
               onClick={() =>

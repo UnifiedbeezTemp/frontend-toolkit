@@ -4,6 +4,10 @@ import ComparisonMobile from "./ComparisonMobile";
 import { useComparisonPlans } from "./useComparisonPlans";
 import { COMPARISON_FEATURES } from "./constants";
 import { cn } from "../../lib/utils";
+import ComparisonSkeleton from "./ComparisonSkeleton";
+import Heading from "../ui/Heading";
+import Text from "../ui/Text";
+import Button from "../ui/Button";
 
 interface ComparisonTableProps {
   className?: string;
@@ -11,41 +15,60 @@ interface ComparisonTableProps {
   onAddonsClick?: (planId?: string) => void;
 }
 
-export default function ComparisonTable({ className, onSelectPlan, onAddonsClick }: ComparisonTableProps) {
-  const { plans, loading, error, icons } = useComparisonPlans();
+export default function ComparisonTable({
+  className,
+  onSelectPlan,
+  onAddonsClick,
+}: ComparisonTableProps) {
+  const { plans, loading, error, retry, icons } = useComparisonPlans();
 
   if (loading) {
-    return (
-      <div className={cn("w-full h-full py-20 flex justify-center items-center", className)}>
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
-      </div>
-    );
+    return <ComparisonSkeleton />;
   }
 
   if (error) {
     return (
-      <div className={cn("w-full py-20 text-center text-red-500", className)}>
-        Failed to load comparison data.
+      <div
+        className={cn(
+          "w-full py-32 flex flex-col items-center justify-center text-center px-6",
+          className,
+        )}
+      >
+        <div className="bg-destructive/10 p-6 rounded-full mb-6">
+          <div className="w-12 h-12 text-destructive border-4 border-destructive rounded-full flex items-center justify-center font-bold text-2xl">
+            !
+          </div>
+        </div>
+        <Heading size="lg" className="mb-2 text-dark-base-100">
+          Unable to Load Comparison
+        </Heading>
+        <Text color="muted" align="center" className="max-w-[40rem] mb-8">
+          Something went wrong while fetching the plan data. This could be due
+          to a connection issue. Please try again.
+        </Text>
+        <Button
+          onClick={() => retry?.()}
+          variant="secondary"
+          className="px-12 py-3 rounded-xl border-input-stroke"
+        >
+          Try Again
+        </Button>
       </div>
     );
   }
 
-  if (!plans || plans.length === 0) {
-    return null;
-  }
-
   return (
     <div className={cn("w-full", className)}>
-      <ComparisonDesktop 
-        plans={plans} 
-        features={COMPARISON_FEATURES} 
+      <ComparisonDesktop
+        plans={plans}
+        features={COMPARISON_FEATURES}
         icons={icons}
         onAddonsClick={onAddonsClick}
         onSelectPlan={onSelectPlan}
       />
-      <ComparisonMobile 
-        plans={plans} 
-        features={COMPARISON_FEATURES} 
+      <ComparisonMobile
+        plans={plans}
+        features={COMPARISON_FEATURES}
         onAddonsClick={onAddonsClick}
         icons={icons}
         onSelectPlan={onSelectPlan}

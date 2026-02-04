@@ -48,14 +48,16 @@ export default function MarqueeContainer({
   return (
     <div
       className={cn(
-        "relative flex overflow-hidden mask-fade-x pb-[1.4rem]",
-        className
+        "relative flex overflow-hidden mask-fade-x py-[2rem]",
+        className,
       )}
     >
       <div
         className="flex animate-marquee-infinite"
-        style={{ animationDuration: `${icons.length * 4}s` }}
+        style={{ animationDuration: `${icons.length * 5}s` }}
       >
+        <MarqueeContent />
+        <MarqueeContent />
         <MarqueeContent />
         <MarqueeContent />
         <MarqueeContent />
@@ -64,16 +66,16 @@ export default function MarqueeContainer({
 
       <style>{`
         .mask-fade-x {
-          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+          mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
         }
         @keyframes marquee-infinite {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-25%); }
+          100% { transform: translateX(-16.666%); }
         }
         @keyframes pop {
           0% { transform: scale(1); }
-          50% { transform: scale(1.2); }
+          50% { transform: scale(1.15); }
           100% { transform: scale(1); }
         }
         .animate-marquee-infinite {
