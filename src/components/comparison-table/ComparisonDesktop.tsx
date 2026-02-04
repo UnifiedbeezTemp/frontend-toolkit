@@ -45,7 +45,9 @@ export default function ComparisonDesktop({
 
                       {plan.addonAvailable ? (
                         <Button
-                          onClick={() => onAddonsClick && onAddonsClick(plan?.id as string)}
+                          onClick={() =>
+                            onAddonsClick && onAddonsClick(plan?.id as string)
+                          }
                           variant="secondary"
                           className={cn(
                             "flex items-center gap-2 px-3 py-1.5 rounded-lg border border-input-stroke/50 text-[1.2rem] font-medium",
@@ -98,13 +100,13 @@ export default function ComparisonDesktop({
           <tbody>
             {features.map((feature) => (
               <tr key={feature.key}>
-                <td className="p-4 xl:p-[2.8rem] text-base text-dark-base-70 border-b border-r border-input-stroke/50 bg-gray-50 sticky left-0 z-20">
+                <td className="p-4 xl:p-[2.8rem] text-base text-dark-base-70 border-b border-r border-input-stroke/50 bg-gray-50 sticky left-0 z-20 transition-colors duration-200 hover:bg-gray-100">
                   {feature.label}
                 </td>
                 {plans.map((plan) => (
                   <td
                     key={`${plan.id}-${feature.key}`}
-                    className="p-8 text-base text-center border-b border-r border-input-stroke/50 last:border-r-0 text-dark-base-100 capitalize"
+                    className="p-8 text-base text-center border-b border-r border-input-stroke/50 last:border-r-0 text-dark-base-100 capitalize transition-colors duration-200 hover:bg-brand-primary/[0.04]"
                   >
                     {plan.values[feature.key]}
                   </td>

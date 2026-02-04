@@ -47,16 +47,18 @@ export default function ComparisonMobile({
 
   return (
     <div className="block lg:hidden px-4 mb-20 relative">
-      <div className="absolute -top-2 right-2 z-10">
-        {activePlan.tag}
-      </div>
+      <div className="absolute -top-2 right-2 z-10">{activePlan.tag}</div>
 
       <Card className="pt-6 pb-4 px-0 rounded-[1.2rem] w-full transition-all duration-300 relative">
         <div className="absolute top-6 right-5.25">
           <div className="*:border *:border-border *:rounded-[0.325rem] *:px-1.25 *:py-0.5">
             {activePlan.addonAvailable ? (
-              <button onClick={() => onAddonsClick && onAddonsClick(activePlan?.id as string)}
- className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium">
+              <button
+                onClick={() =>
+                  onAddonsClick && onAddonsClick(activePlan?.id as string)
+                }
+                className="inline-flex items-center gap-1.25 text-dark-base-70 text-md font-medium"
+              >
                 Add-on available
                 {icons.linkExternal && (
                   <Image
@@ -125,7 +127,10 @@ export default function ComparisonMobile({
 
         <div className="bg-input-filled divide-y divide-border">
           {features.slice(3).map((feature) => (
-            <div key={feature.key} className="py-4 px-5.25">
+            <div
+              key={feature.key}
+              className="py-4 px-5.25 transition-all duration-200 hover:bg-brand-primary/[0.03] hover:translate-x-1"
+            >
               <p className="text-md text-dark-base-70">
                 <span className="font-medium">{feature.label}:</span>{" "}
                 {activePlan.values[feature.key]}
@@ -140,11 +145,14 @@ export default function ComparisonMobile({
               variant={activePlan.id === "business" ? "primary" : "secondary"}
               className={cn(
                 "flex-1 py-2.5 text-sm font-bold",
-                activePlan.id === "business" && "btn-gradient text-primary border-0",
-                activePlan.isCurrentPlan && "opacity-50 cursor-not-allowed"
+                activePlan.id === "business" &&
+                  "btn-gradient text-primary border-0",
+                activePlan.isCurrentPlan && "opacity-50 cursor-not-allowed",
               )}
               disabled={activePlan.isCurrentPlan}
-              onClick={() => !activePlan.isCurrentPlan && onSelectPlan?.(activePlan.id)}
+              onClick={() =>
+                !activePlan.isCurrentPlan && onSelectPlan?.(activePlan.id)
+              }
             >
               {activePlan.isCurrentPlan ? "Current Plan" : activePlan.ctaText}
             </Button>
@@ -192,7 +200,9 @@ export default function ComparisonMobile({
                 height={16}
               />
             )}
-            <span className="text-xs text-dark-base-70">{activePlan.footerText}</span>
+            <span className="text-xs text-dark-base-70">
+              {activePlan.footerText}
+            </span>
           </div>
         </div>
       </Card>

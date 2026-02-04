@@ -1,10 +1,12 @@
 "use client";
 import { PropsWithChildren } from "react";
+import { useEffect } from "react";
 import PreLoader from "../components/ui/PreLoader";
 import useSession from "./hooks/useSession";
 import { UserContext } from "../contexts/UserContext";
 import ErrorDisplay from "../components/error-display/ErrorDisplay";
 import SessionExpiredModal from "../components/session/SessionExpiredModal";
+import { redirectToLogin } from "../utils/redirectToLogin";
 
 export default function SessionProvider({ children }: PropsWithChildren) {
   const {
@@ -17,10 +19,20 @@ export default function SessionProvider({ children }: PropsWithChildren) {
     showSessionExpired,
   } = useSession();
 
+  useEffect(() => {
+    if (authStatus === "unauthenticated" && !showSessionExpired) {
+      redirectToLogin();
+    }
+  }, [authStatus, showSessionExpired]);
+
   if (isPending) return <PreLoader />;
 
-  if (authStatus === "unauthenticated" || showSessionExpired) {
+  if (showSessionExpired) {
     return <SessionExpiredModal isOpen={true} />;
+  }
+
+  if (authStatus === "unauthenticated") {
+    return <PreLoader />;
   }
 
   if (isError && error?.status !== 401) {

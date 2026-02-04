@@ -41,6 +41,9 @@ export function getOnboardingRedirect(user: UserProfile | null) {
   }
 
   if (completedSteps.length === 0) {
+    if (user.hasActiveSubscription) {
+      return "/";
+    }
     return "/auth/account-setup";
   }
 
