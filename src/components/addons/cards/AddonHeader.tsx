@@ -29,8 +29,8 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
       <div className="flex items-center gap-[1rem]">
         <div className="border border-input-stroke rounded-[1rem] p-[0.9rem] relative">
           {variant === "manage" && (addon.used || 0) > 0 && (
-            <div className="absolute top-[-0.8rem] right-[-0.8rem] bg-destructive text-white text-[1.2rem] font-[700] w-[1.9rem] h-[1.9rem] rounded-full flex items-center justify-center border border-white">
-              <div className="mt-[-.2rem] ml -[-.2rem]">
+            <div className="absolute top-[-0.8rem] right-[-0.8rem] bg-destructive text-white text-[1.2rem] font-[700] w-[2.3rem] h-[2.3rem] rounded-full flex items-center justify-center border border-white">
+              <div className="mt-[-.2rem] ml -[-.2rem] text-[1rem]">
                 {addon.used}
               </div>
             </div>
@@ -49,7 +49,7 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
         <div className="relative">
           <Tooltip
             isInteractive
-            contentClassName="w-[15rem]"
+            contentClassName="w-[18rem]"
             content={
               <button
                 onClick={(e) => {
