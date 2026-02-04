@@ -10,6 +10,7 @@ export const useLogout = () => {
     () => api.post("/auth/logout"),
     {
       onSuccess: () => {
+        localStorage.removeItem("hb_session_active");
         showToast({
           title: "Logged out successfully",
           variant: "success",
@@ -24,7 +25,7 @@ export const useLogout = () => {
           variant: "error",
         });
       },
-    }
+    },
   );
 
   return {

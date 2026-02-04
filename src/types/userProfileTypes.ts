@@ -36,6 +36,7 @@ export interface UserProfile {
     setupRequired: boolean;
   };
   twoFactorEnabled?: boolean;
+  hasActiveSubscription?: boolean;
 }
 
 export const createEmptyUser = (): UserProfile => {
@@ -53,5 +54,6 @@ export const createEmptyUser = (): UserProfile => {
     planFeatures: { maxAiAssistants: 0, maxSeats: 0 },
     industry: "",
     twoFactorEnabled: false,
+    hasActiveSubscription: false,
   };
 };

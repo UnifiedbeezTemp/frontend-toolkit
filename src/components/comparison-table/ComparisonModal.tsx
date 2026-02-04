@@ -25,12 +25,10 @@ export default function ComparisonModal({
       isOpen={isOpen}
       onClose={onClose}
       size="fullscreen"
-      className="h-[96dvh] rounded-[2.5rem] flex lg:block items-center justify-center"
+      className="max-w-[144rem] h -[94dvh] rounded-[2.5rem] mx-auto overflow-hidden"
     >
-      <div className="">
-        <div className="max-w-[138rem] mx-auto my-auto">
+        <div className="max-w-[138rem] mx-auto">
           <ComparisonTable onSelectPlan={onSelectPlan} />
-        </div>
       </div>
     </Modal>
   );

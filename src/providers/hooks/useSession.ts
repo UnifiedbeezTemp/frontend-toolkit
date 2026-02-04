@@ -21,6 +21,13 @@ export default function useSession() {
     else if (isPending) return "loading";
     else return "error";
   }, [isError, error, isPending, data]);
+
+  useEffect(() => {
+    if (!isPending && data) {
+      localStorage.setItem("hb_session_active", "true");
+    }
+  }, [data, isPending]);
+
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -35,7 +42,11 @@ export default function useSession() {
       }
 
       if (error.status === 401) {
-        setShowSessionExpired(true);
+        const wasSessionActive =
+          localStorage.getItem("hb_session_active") === "true";
+        if (wasSessionActive) {
+          setShowSessionExpired(true);
+        }
       }
     }
   }, [isError, error, showToast]);
