@@ -1,4 +1,5 @@
 import React from "react";
+import { formatEnumString } from "./formatEnumString";
 
 /**
  * Parses simple markdown syntax and returns React elements.
@@ -6,9 +7,15 @@ import React from "react";
  * - Bold: **text** or __text__
  * - Links: URLs are auto-linked
  * - Italic: *text* or _text_
+ * - Enum strings: SCREAMING_SNAKE_CASE -> Formatted Text
  */
 export function parseSimpleMarkdown(text: string): React.ReactNode {
   if (!text) return text;
+
+  // First, replace any SCREAMING_SNAKE_CASE enum values with formatted strings
+  // This pattern matches words that are ALL_CAPS with underscores (2+ chars per segment)
+  const enumPattern = /\b([A-Z]{2,}(?:_[A-Z]{2,})+)\b/g;
+  text = text.replace(enumPattern, (match) => formatEnumString(match));
 
   // Split by markdown patterns and rebuild as React elements
   const parts: React.ReactNode[] = [];
