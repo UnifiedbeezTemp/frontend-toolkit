@@ -3,13 +3,17 @@ import { cn } from "../../../lib/utils"
 import { TagPillProps } from "../types";
 import { allTags } from "../temp/crmTags"
 import { CATEGORY_CONFIG } from "./crm-tags/config"
+import TimesIcon from "../../../assets/icons/TimesIcon";
 
 export function TagPill({
   label = "Wishlist-user",
   showIcon = true,
   className,
+  isDismissable,
+  onDismiss,
+  tagIconSize,
+  dismissIconSize
 }: TagPillProps) {
-  // Find the tag by label to get its category
   const tag = allTags.find((t) => t.label === label)
 
   // Get the color from the category config
@@ -25,8 +29,9 @@ export function TagPill({
         className
       )}
     >
-      {showIcon && <TagIcon />}
+      {showIcon && <TagIcon size={tagIconSize || 10} />}
       <span className="leading-none">{label}</span>
+      {isDismissable && <button onClick={onDismiss} className="leading-none"><TimesIcon size={ dismissIconSize || 10}/></button>}
     </span>
   )
 }

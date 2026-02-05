@@ -54,6 +54,10 @@ export interface TagPillProps {
   label: string
   showIcon?: boolean
   className?: string
+  isDismissable?: boolean
+  onDismiss?: () => void
+  tagIconSize?: number,
+  dismissIconSize?: number
 }
 
 export type FieldType =
