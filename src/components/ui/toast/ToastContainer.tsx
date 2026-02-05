@@ -16,7 +16,7 @@ interface ToastContainerProps {
 
 export function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
   return (
-    <div className="pointer-events-none fixed top-[1.6rem] right-[1.6rem] z-[9999] flex flex-col gap-[1.2rem] sm:right-[2.4rem] sm:top-[2.4rem] w-[calc(100%-3.2rem)] sm:w-auto max-w-[36rem]">
+    <div className="pointer-events-none fixed top-[1.6rem] right-[1.6rem] z-[99999999] flex flex-col gap-[1.2rem] sm:right-[2.4rem] sm:top-[2.4rem] w-[calc(100%-3.2rem)] sm:w-auto max-w-[36rem]">
       <AnimatePresence>
         {toasts.map((toast) => (
           <motion.div
