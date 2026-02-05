@@ -1,7 +1,7 @@
 import { ToastVariant } from "./types";
 
 export const variantClasses: Record<ToastVariant, string> = {
-  success: "bg-success/10 border-success/40 text-success",
+  success: "bg-success/10 border-success/40 text-brand-primary",
   error: "bg-destructive/10 border-destructive/40 text-destructive",
   info: "bg-brand-primary/10 border-brand-primary/40 text-brand-primary",
   warning: "bg-warning/10 border-warning/40 text-warning",
