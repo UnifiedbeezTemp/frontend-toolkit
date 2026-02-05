@@ -13,6 +13,7 @@ interface SelectableOptionProps {
   disabled?: boolean
   selectedBgClassName?: string
   centerCheckIndicator?: boolean
+  as?: any
 }
 
 export default function SelectableOption({
@@ -25,14 +26,20 @@ export default function SelectableOption({
   indicatorSize = "sm",
   disabled,
   selectedBgClassName,
-  centerCheckIndicator
+  centerCheckIndicator,
+  as: Component = "button"
 }: SelectableOptionProps) {
+  const isButton = Component === "button";
+
   return (
-    <button
-      disabled={disabled}
+    <Component
+      disabled={isButton ? disabled : undefined}
       onClick={onSelect}
+      type={isButton ? "button" : undefined}
       className={cn(
         "w-full bg-primary flex items-center justify-between rounded-2xl border px-2 py-3.5 transition relative text-dark-base-100 gap-2 text-md md:text-base",
+        isButton && "cursor-pointer",
+        !isButton && "cursor-pointer", // Ensure cursor remains pointer if not a button but clickable
         selected
           ? "border-primary-100 font-bold"
           : "border-input-stroke font-normal",
@@ -57,6 +64,6 @@ export default function SelectableOption({
           )}
         </>
       )}
-    </button>
+    </Component>
   );
 }
