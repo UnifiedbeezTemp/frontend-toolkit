@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 export interface DropdownOption {
   label: string;
   value: string;
+  icon?: string;
 }
 
 interface UseDropdownProps {
