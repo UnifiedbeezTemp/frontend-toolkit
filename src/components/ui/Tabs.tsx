@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ReactNode } from "react";
 import { cn } from "../../lib/utils";
 import { motion } from "framer-motion";
 
@@ -42,7 +42,7 @@ import { motion } from "framer-motion";
  */
 
 export interface Tab {
-  label: string;
+  label: string | ReactNode;
   value: string | number;
   disabled?: boolean;
 }

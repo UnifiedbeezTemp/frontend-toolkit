@@ -58,6 +58,7 @@ export interface TagPillProps {
   onDismiss?: () => void
   tagIconSize?: number,
   dismissIconSize?: number
+  labelClassName?: string
 }
 
 export type FieldType =

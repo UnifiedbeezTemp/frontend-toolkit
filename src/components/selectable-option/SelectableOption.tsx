@@ -54,7 +54,7 @@ export default function SelectableOption({
         className
       )}
     >
-      <div className="flex items-center gap-2 grow">{label}</div>
+      <div className="flex items-center gap-2 grow w-[calc(100%-4rem)]">{label}</div>
       {!hideIndicator && (
         <>
           {variant === "check" ? (

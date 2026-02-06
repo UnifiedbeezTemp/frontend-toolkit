@@ -2,7 +2,7 @@ import { IconProps } from "./types";
 
 export default function MessageDotsIcon({
   size = 20,
-  color = "#0B1012",
+  color = "currentColor",
   className,
   ...props
 }: IconProps) {
