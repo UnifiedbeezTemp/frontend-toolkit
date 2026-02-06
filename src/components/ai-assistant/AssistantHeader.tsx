@@ -18,6 +18,7 @@ export default function AssistantHeader({
   onSelect,
   onToggle,
   variant = "mobile",
+  rightElement,
 }: AssistantHeaderProps) {
   const icons = useSupabaseIcons();
   const selectionText = getSelectionText(assistant);
@@ -54,12 +55,13 @@ export default function AssistantHeader({
               </div>
             )}
           </div>
-          <div className="flex items-center justify-between xl:justify-end">
+          <div className="flex items-center gap-[1rem] justify-between xl:justify-end">
             {showChip && selectionText && (
               <div className="xl:hidden">
                 <SelectionChip text={selectionText} colorScheme={colorScheme} />
               </div>
             )}
+            {rightElement && <div>{rightElement}</div>}
             <Checkbox
               checked={isSelected || false}
               onChange={() => onSelect?.()}
@@ -92,6 +94,7 @@ export default function AssistantHeader({
               <SelectionChip text={selectionText} colorScheme={colorScheme} />
             )}
           </div>
+          {rightElement && <div>{rightElement}</div>}
           <button className="flex items-center justify-center w-[2rem] h-[2rem] shrink-0">
             {isExpanded ? (
               <ImageComponent
