@@ -435,6 +435,13 @@ button:disabled {
     var(--brand-secondary) 125.17%
   );
 }
+.gradient-button-primary-secondary {
+  background: linear-gradient(
+    267deg,
+    var(--brand-secondary) -12.17%  ,
+    var(--brand-primary)  125.17%
+  );
+}
 
 @layer components {
   .btn-gradient {
