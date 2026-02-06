@@ -185,7 +185,7 @@ export const transformBackendChannelToUI = (
       ...backendChannel,
       icon,
     },
-  } as Channel;
+  } as unknown as Channel;
 };
 
 export const transformChannelsResponse = (
