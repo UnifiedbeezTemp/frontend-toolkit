@@ -66,6 +66,7 @@ export default function SearchSection({
         onSelect={setFilter}
         placeholder="Filter by"
         icon={filterIcon}
+        dropdownClassName="min-w-[25rem]"
       />
     </div>
   );
