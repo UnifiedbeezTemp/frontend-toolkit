@@ -3,13 +3,14 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
 import Checkbox from "../../ui/CheckBox";
 import DotsMenu from "../../ui/DotsMenu";
-import Tooltip from "../../ui/Tooltip";
 import ImageComponent from "../../ui/ImageComponent";
 import Heading from "../../ui/Heading";
+import { cn } from "../../../lib/utils";
+import { useAddonHeader } from "./hooks/useAddonHeader";
 
 interface AddonHeaderProps {
   addon: Addon;
-  isSelected: boolean;
+  isSelected?: boolean;
   showCheckbox?: boolean;
   onRemove?: () => void;
   variant?: "add" | "manage";
@@ -17,12 +18,19 @@ interface AddonHeaderProps {
 
 export const AddonHeader: React.FC<AddonHeaderProps> = ({
   addon,
-  isSelected,
+  isSelected = false,
   showCheckbox = true,
   onRemove,
   variant = "add",
 }) => {
   const icons = useSupabaseIcons();
+  const { isMenuOpen, menuRef, toggleMenu, closeMenu } = useAddonHeader();
+
+  const handleRemoveClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRemove?.();
+    closeMenu();
+  };
 
   return (
     <div className="flex items-center justify-between">
@@ -30,7 +38,7 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
         <div className="border border-input-stroke rounded-[1rem] p-[0.9rem] relative">
           {variant === "manage" && (addon.used || 0) > 0 && (
             <div className="absolute top-[-0.8rem] right-[-0.8rem] bg-destructive text-white text-[1.2rem] font-[700] w-[2.3rem] h-[2.3rem] rounded-full flex items-center justify-center border border-white">
-              <div className="mt-[-.2rem] ml -[-.2rem] text-[1rem]">
+              <div className="mt-[-.2rem] ml-[-.2rem] text-[1rem]">
                 {addon.used}
               </div>
             </div>
@@ -46,17 +54,22 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
       </div>
 
       {variant === "manage" ? (
-        <div className="relative">
-          <Tooltip
-            isInteractive
-            contentClassName="w-[18rem]"
-            content={
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={toggleMenu}
+            className={cn(
+              "p-[0.5rem] py-[1.4rem] border border-input-stroke rounded-[.8rem] transition-colors flex items-center",
+              isMenuOpen ? "bg-input-filled" : "hover:bg-input-filled",
+            )}
+          >
+            <DotsMenu />
+          </button>
+
+          {isMenuOpen && (
+            <div className="absolute right-0 top-full mt-[0.5rem] bg-primary border border-input-stroke p-[0.4rem] rounded-[0.8rem] shadow-xl z-[100] min-w-[18rem]">
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemove?.();
-                }}
-                className="flex items-center gap-[0.8rem] hover:bg-destructive/10 p-[0.4rem] px-[0.8rem] rounded-[0.4rem] transition-colors w-full text-text-primary text-[1.4rem] "
+                onClick={handleRemoveClick}
+                className="flex items-center gap-[0.8rem] hover:bg-destructive/10 p-[0.8rem] rounded-[0.4rem] transition-colors w-full text-text-primary text-[1.4rem]"
               >
                 <ImageComponent
                   src={icons.trash3}
@@ -66,14 +79,8 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
                 />
                 Delete Add-on
               </button>
-            }
-            position="bottom"
-            className="w-auto"
-          >
-            <button className="p-[0.5rem] py-[1.4rem] border border-input-stroke hover:bg-input-filled rounded-[.8rem] transition-colors flex items-center">
-              <DotsMenu />
-            </button>
-          </Tooltip>
+            </div>
+          )}
         </div>
       ) : (
         showCheckbox && (
