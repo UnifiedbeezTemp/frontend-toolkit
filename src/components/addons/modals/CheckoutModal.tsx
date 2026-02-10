@@ -32,7 +32,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     vat,
     total,
     hasLimitReachedAddons,
-    handleProceedToPayment,
+    isPurchasing,
+    handleConfirmPurchase,
   } = useCheckoutModal({
     selectedAddons,
     planType,
@@ -70,12 +71,17 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
         <PriceSummary subtotal={subtotal} vat={vat} total={total} />
 
+        <p className="text-[1.3rem] text-text-secondary text-center mb-[0.8rem]">
+          This amount will be added to your billing cycle.
+        </p>
+
         <LimitWarning hasLimitReachedAddons={hasLimitReachedAddons} />
       </div>
 
       <CheckoutActions
         onClose={onClose}
-        onProceedToPayment={handleProceedToPayment}
+        onConfirmPurchase={handleConfirmPurchase}
+        isLoading={isPurchasing}
       />
     </Modal>
   );
