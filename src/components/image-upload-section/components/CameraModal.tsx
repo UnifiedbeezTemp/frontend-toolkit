@@ -42,7 +42,7 @@ export default function CameraModal({
           </button>
         </div>
 
-        <div className="relative w-full aspect-video bg-secondary rounded-xl overflow-hidden mb-6 flex items-center justify-center border border-border">
+        <div className="relative w-full h-[40rem] bg-secondary rounded-xl overflow-hidden mb-6 flex items-center justify-center border border-border">
           {error ? (
             <div className="p-6 text-center">
               <Text className="text-primary mb-4">{error}</Text>

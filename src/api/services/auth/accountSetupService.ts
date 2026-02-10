@@ -10,7 +10,7 @@ import {
 
 export const accountSetupService = {
   async setupProfile(
-    data: AccountSetupFormData
+    data: AccountSetupFormData,
   ): Promise<ProfileSetupResponse> {
     return await api.patch("/auth/setup/profile", data);
   },
@@ -22,7 +22,7 @@ export const accountSetupService = {
   },
 
   async initiatePhoneVerification(
-    phone: string
+    phone: string,
   ): Promise<PhoneVerificationResponse> {
     return await api.post("/auth/phone/send-verification", { phone });
   },
@@ -34,8 +34,12 @@ export const accountSetupService = {
   },
 
   async updateOnboardingMethod(
-    data: UpdateOnboardingMethodPayload
+    data: UpdateOnboardingMethodPayload,
   ): Promise<UpdateOnboardingMethodResponse> {
     return await api.patch("/auth/onboarding/method", data);
+  },
+
+  async switchPreview(planType: string): Promise<any> {
+    return await api.get(`/plan/switch-preview/${planType.toUpperCase()}`);
   },
 };

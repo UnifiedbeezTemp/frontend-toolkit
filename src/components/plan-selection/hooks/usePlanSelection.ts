@@ -17,7 +17,7 @@ export const usePlanSelection = () => {
   const { plans: backendPlans, loading, error, retry } = usePlans();
 
   const handleContinue = async (
-    onSuccess?: (isNewUpgrade: boolean) => void
+    onSuccess?: (isNewUpgrade: boolean) => void,
   ) => {
     if (!selectedPlan) {
       showToast({
@@ -31,6 +31,16 @@ export const usePlanSelection = () => {
     setIsSelecting(true);
 
     try {
+      if (user?.trialInfo) {
+        try {
+          const previewResponse =
+            await accountSetupService.switchPreview(selectedPlan);
+          console.log("Switch Preview Response:", previewResponse);
+        } catch (error) {
+          console.error("Failed to fetch switch preview:", error);
+        }
+      }
+
       await accountSetupService.selectPlan(selectedPlan);
       refetch();
 

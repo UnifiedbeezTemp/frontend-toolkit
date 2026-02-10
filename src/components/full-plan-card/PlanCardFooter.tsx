@@ -37,7 +37,7 @@ export default function PlanCardFooter({
           isCompact && "text-[1.2rem] py-[1rem]",
           isCurrentPlan
             ? "bg-muted text-dark-base-70 border-muted cursor-not-allowed hover:bg-muted"
-            : "",
+            : "border-brand-primary",
         )}
         variant={isSelected ? "primary" : "secondary"}
         onClick={() => !isCurrentPlan && onSelect(plan.id)}
