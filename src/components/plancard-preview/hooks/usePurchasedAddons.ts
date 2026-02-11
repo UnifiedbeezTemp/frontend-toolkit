@@ -33,7 +33,7 @@ interface PurchasedAddonsResponse {
 
 const getUiIdAndIcon = (
   addonType: string,
-  icons: ReturnType<typeof useSupabaseIcons>
+  icons: ReturnType<typeof useSupabaseIcons>,
 ): {
   uiId: string;
   icon: string;
@@ -144,11 +144,11 @@ const getUiIdAndIcon = (
 
 const transformPurchasedAddonToAddon = (
   purchasedAddon: PurchasedAddon,
-  icons: ReturnType<typeof useSupabaseIcons>
+  icons: ReturnType<typeof useSupabaseIcons>,
 ): Addon => {
   const { uiId, icon, limitText } = getUiIdAndIcon(
     purchasedAddon.addonDefinition.type,
-    icons
+    icons,
   );
   const price = purchasedAddon.addonDefinition.priceEur / 100;
 
@@ -174,13 +174,13 @@ export const usePurchasedAddons = () => {
       () => api.get("/addon/purchased"),
       {
         enabled: true,
-      }
+      },
     );
 
   const purchasedAddons: Addon[] = useMemo(() => {
     if (!data?.addons) return [];
     return data.addons.map((addon) =>
-      transformPurchasedAddonToAddon(addon, icons)
+      transformPurchasedAddonToAddon(addon, icons),
     );
   }, [data, icons]);
 
