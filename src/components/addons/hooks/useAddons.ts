@@ -30,10 +30,6 @@ export const useAddons = (planType?: string) => {
 
   const { purchasedAddons, refetch: refetchPurchased } = usePurchasedAddons();
 
-  const storageKey = planType
-    ? `selected_addons_${planType.toUpperCase()}`
-    : "selected_addons";
-
   const cancelAddonMutation = useAppMutation(
     async ({
       addonType,
@@ -61,54 +57,22 @@ export const useAddons = (planType?: string) => {
           duration: 3000,
         });
       },
-    }
+    },
   );
 
   useEffect(() => {
     if (selectedAddons.length > 0) return;
 
-    let initialAddons: Addon[] = [];
-
-    const savedAddons = sessionStorage.getItem(storageKey);
-    if (savedAddons) {
-      try {
-        const parsed = JSON.parse(savedAddons);
-        if (Array.isArray(parsed)) {
-          initialAddons = parsed;
-        }
-      } catch (e) {
-        console.error("Failed to parse saved addons", e);
-      }
-    }
-
     if (purchasedAddons.length > 0) {
-      purchasedAddons.forEach((purchased) => {
-        if (!initialAddons.some((a) => a.id === purchased.id)) {
-          initialAddons.push(purchased);
-        }
-      });
+      dispatch(hydrateAddons(purchasedAddons));
     }
-
-    if (initialAddons.length > 0) {
-      dispatch(hydrateAddons(initialAddons));
-    }
-  }, [dispatch, selectedAddons.length, purchasedAddons, storageKey]);
-
-  useEffect(() => {
-    if (selectedAddons.length > 0) {
-      sessionStorage.setItem(storageKey, JSON.stringify(selectedAddons));
-    } else {
-      if (sessionStorage.getItem(storageKey)) {
-        sessionStorage.removeItem(storageKey);
-      }
-    }
-  }, [selectedAddons, storageKey]);
+  }, [dispatch, selectedAddons.length, purchasedAddons]);
 
   const handleOpenAddModal = useCallback(
     (addon: Addon) => {
       dispatch(openAddModal(addon));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleCloseAddModal = useCallback(() => {
@@ -119,7 +83,7 @@ export const useAddons = (planType?: string) => {
     (quantity: number) => {
       dispatch(updateTempQuantity(quantity));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleAddAddon = useCallback(
@@ -127,7 +91,7 @@ export const useAddons = (planType?: string) => {
       dispatch(addAddon({ addon, quantity }));
       dispatch(closeAddModal());
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleRemoveAddon = useCallback(
@@ -152,14 +116,14 @@ export const useAddons = (planType?: string) => {
         dispatch(removeAddon(id));
       }
     },
-    [dispatch, selectedAddons, purchasedAddons, cancelAddonMutation]
+    [dispatch, selectedAddons, purchasedAddons, cancelAddonMutation],
   );
 
   const handleUpdateAddonQuantity = useCallback(
     (id: string, quantity: number) => {
       dispatch(updateAddonQuantity({ id, quantity }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleOpenCheckoutModal = useCallback(() => {
@@ -180,7 +144,7 @@ export const useAddons = (planType?: string) => {
         handleOpenCheckoutModal();
       }
     },
-    [handleOpenCheckoutModal]
+    [handleOpenCheckoutModal],
   );
 
   const getTotalPrice = useCallback((selectedAddons: Addon[]) => {

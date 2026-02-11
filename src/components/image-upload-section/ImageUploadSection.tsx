@@ -9,6 +9,7 @@ import React from "react";
 import ImageComponent from "../ui/ImageComponent";
 import CameraModal from "./components/CameraModal";
 import { ImagePreview } from "./components/ImagePreview";
+import ImageCropper from "./components/ImageCropper";
 
 const sizeClasses = {
   sm: "w-[6rem] h-[6rem]",
@@ -42,6 +43,10 @@ export default function ImageUploadSection({
     closeCameraModal,
     handleFileSelect,
     handleRemoveImage,
+    isCropperOpen,
+    imageToCrop,
+    closeCropper,
+    handleCropComplete,
   } = useImageUpload({ onImageSelect, selectedFile, createObjectURL });
 
   const hasImage = previewUrl || image;
@@ -115,6 +120,14 @@ export default function ImageUploadSection({
             </button>
           )}
         </div>
+
+        {isCropperOpen && imageToCrop && (
+          <ImageCropper
+            imageSrc={imageToCrop}
+            onCropComplete={handleCropComplete}
+            onCancel={closeCropper}
+          />
+        )}
 
         <div className="flex-1">
           <Heading size="sm">

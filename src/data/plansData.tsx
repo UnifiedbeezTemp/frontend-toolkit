@@ -8,24 +8,38 @@ export const transformOriginalPlan = (
 ): Plan => {
   const planType = originalPlan.planType.toLowerCase();
 
-  const formatSeats = (seats: number | null) =>
-    seats === null
+  const formatSeats = (seats: number | null) => {
+    if (planType === "organisation") {
+      return "50 Seats - Unlimited";
+    }
+    return seats === null
       ? "Unlimited Seats"
       : `${seats} Seat${seats !== 1 ? "s" : ""}`;
+  };
 
-  const formatAiAssistants = (assistants: number | null) =>
-    assistants === null
+  const formatAiAssistants = (assistants: number | null) => {
+    if (planType === "premium") {
+      return "AI Assistant: 5 Included (Unlimited Add-ons with £25/extra)";
+    }
+    if (planType === "organisation") {
+      return "AI Assistant: 10 Included (Unlimited Add-ons with £25/extra)";
+    }
+    return assistants === null
       ? "Unlimited AI Assistants"
       : `${assistants} AI Assistant${assistants !== 1 ? "s" : ""}`;
+  };
 
   const getChannels = (plan: OriginalPlan) => {
+    if (["premium", "organisation"].includes(planType)) {
+      return "Channels: All supported channels";
+    }
     const channels = [];
     if (plan.hasFacebookMessenger) channels.push("Facebook");
     if (plan.hasLinkedinMessenger) channels.push("LinkedIn");
     if (plan.hasTelegram) channels.push("Telegram");
     if (plan.hasWebchat) channels.push("Web Chat");
     if (plan.maxWhatsappChannels > 0) channels.push("WhatsApp");
-    return channels.join(", ");
+    return `Channels: ${channels.join(", ")}`;
   };
   const planConfigs = {
     individual: {
@@ -91,18 +105,31 @@ export const transformOriginalPlan = (
     formatSeats(originalPlan.maxSeats),
     formatAiAssistants(originalPlan.maxAiAssistants),
     getChannels(originalPlan),
-    originalPlan.supportLevel.replace("_", " "),
-    ...(originalPlan.hasCrmCalendarSync ? ["CRM/Calendar\nIncluded"] : []),
-    ...(originalPlan.hasEcommercePack ? ["E-commerce Pack\nIncluded"] : []),
-    ...(originalPlan.canPurchaseAddons ? ["Add-ons allowed"] : []),
+    `Support: ${originalPlan.supportLevel
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/^\w/, (c) => c.toUpperCase())}`,
+    ...(originalPlan.hasCrmCalendarSync
+      ? ["CRM / Calendar Sync: Included"]
+      : planType === "business"
+        ? ["CRM / Calendar Sync: Optional ( £20/month )"]
+        : []),
+    ...(originalPlan.hasEcommercePack
+      ? ["E-commerce Pack: Included"]
+      : planType === "business"
+        ? ["Ecommerce Pack: Optional ( £25/month )"]
+        : []),
+    ...(originalPlan.canPurchaseAddons ? ["Add-Ons: Allowed"] : []),
   ];
 
   const unAvailableFeatures = [
-    ...(!originalPlan.hasCrmCalendarSync ? ["CRM/Calendar\nNot Included"] : []),
-    ...(!originalPlan.hasEcommercePack
-      ? ["E-commerce Pack\nNot Included"]
+    ...(!originalPlan.hasCrmCalendarSync && planType !== "business"
+      ? ["CRM / Calendar Sync: Not Included"]
       : []),
-    ...(!originalPlan.canPurchaseAddons ? ["No Add-ons"] : []),
+    ...(!originalPlan.hasEcommercePack && planType !== "business"
+      ? ["E-commerce Pack: Not Included"]
+      : []),
+    ...(!originalPlan.canPurchaseAddons ? ["Add-Ons: No access"] : []),
   ];
 
   return {

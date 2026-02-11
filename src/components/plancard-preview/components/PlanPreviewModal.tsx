@@ -41,6 +41,7 @@ export default function PlanPreviewModal({
         onAddonsClick={onAddonsClick}
         isCompact={true}
         className={"layout-body w-[30rem] border-0"}
+        ctaText="Change plan"
       />
     </Modal>
   );
