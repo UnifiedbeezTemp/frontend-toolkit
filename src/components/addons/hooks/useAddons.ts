@@ -68,14 +68,26 @@ export const useAddons = (planType?: string) => {
     }
   }, [dispatch, selectedAddons.length, purchasedAddons]);
 
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
+
   const handleOpenAddModal = useCallback(
     (addon: Addon) => {
-      dispatch(openAddModal(addon));
+      if (addon.addonType === "MULTI_LANGUAGE_AI") {
+        setIsLanguageModalOpen(true);
+        dispatch(openAddModal(addon));
+      } else {
+        dispatch(openAddModal(addon));
+      }
     },
     [dispatch],
   );
 
   const handleCloseAddModal = useCallback(() => {
+    dispatch(closeAddModal());
+  }, [dispatch]);
+
+  const handleCloseLanguageModal = useCallback(() => {
+    setIsLanguageModalOpen(false);
     dispatch(closeAddModal());
   }, [dispatch]);
 
@@ -90,6 +102,7 @@ export const useAddons = (planType?: string) => {
     (addon: Addon, quantity: number) => {
       dispatch(addAddon({ addon, quantity }));
       dispatch(closeAddModal());
+      setIsLanguageModalOpen(false);
     },
     [dispatch],
   );
@@ -162,6 +175,8 @@ export const useAddons = (planType?: string) => {
 
     handleOpenAddModal,
     handleCloseAddModal,
+    handleCloseLanguageModal,
+    isLanguageModalOpen,
     handleUpdateTempQuantity,
     handleAddAddon,
     handleRemoveAddon,

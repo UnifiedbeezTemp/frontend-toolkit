@@ -35,7 +35,10 @@ export const usePlanCardPreview = ({
   const { purchasedAddons, isLoading: isPurchasedAddonsLoading } =
     usePurchasedAddons();
 
-  const addonsToUse = selectedAddons || purchasedAddons;
+  const addonsToUse =
+    selectedAddons && selectedAddons.length > 0
+      ? selectedAddons
+      : purchasedAddons;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

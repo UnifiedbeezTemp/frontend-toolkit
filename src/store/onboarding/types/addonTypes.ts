@@ -8,4 +8,5 @@ export interface Addon {
   icon: string;
   addonType: string;
   used?: number;
+  selectedLanguages?: string[];
 }
