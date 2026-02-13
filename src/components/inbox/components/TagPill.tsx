@@ -12,7 +12,8 @@ export function TagPill({
   isDismissable,
   onDismiss,
   tagIconSize,
-  dismissIconSize
+  dismissIconSize,
+  labelClassName
 }: TagPillProps) {
   const tag = allTags.find((t) => t.label === label)
 
@@ -30,7 +31,7 @@ export function TagPill({
       )}
     >
       {showIcon && <TagIcon size={tagIconSize || 10} />}
-      <span className="leading-none">{label}</span>
+      <span className={cn("leading-none", labelClassName)}>{label}</span>
       {isDismissable && <button onClick={onDismiss} className="leading-none"><TimesIcon size={ dismissIconSize || 10}/></button>}
     </span>
   )

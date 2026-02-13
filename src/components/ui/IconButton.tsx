@@ -1,6 +1,7 @@
 import React, { useMemo } from "react"
 import { motion } from "framer-motion"
 import { cn } from "../../lib/utils"
+import { BackgroundIcon } from "../../assets/icons/BackgroundIcon"
 
 /**
  * REUSABLE BUTTON COMPONENT
@@ -38,6 +39,7 @@ interface IconButtonProps {
   ref?: React.RefObject<HTMLButtonElement | null>
   ariaLabel: string
   as?: string
+  useBgIcon?: boolean
 }
 
 export default function IconButton({
@@ -52,10 +54,11 @@ export default function IconButton({
   icon,
   ref,
   as = "button",
+  useBgIcon,
   ...props
 }: IconButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-[0.8rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]";
+    "relative overflow-hidden inline-flex items-center justify-center font-medium rounded-[0.8rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]";
 
   const variantClasses = {
     primary:
@@ -104,12 +107,17 @@ export default function IconButton({
   return (
     <MotionComponent {...componentProps}>
       {loading ? (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative z-20">
           <div className="w-[2rem] h-[2rem] border border-current border-t-transparent rounded-full animate-spin" />
         </div>
       ) : (
-        icon
+        <div className="relative z-20">
+          {icon}
+        </div>
       )}
+      {useBgIcon && <div className="absolute top-0 right-0 overflow-visible z-10">
+        <BackgroundIcon />
+      </div>}
     </MotionComponent>
   )
 }
