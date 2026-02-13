@@ -9,12 +9,14 @@ interface LanguageHeaderProps {
   addon: Addon;
   onClose: () => void;
   maxLanguages: number;
+  isUnlimited?: boolean;
 }
 
 export const LanguageHeader: React.FC<LanguageHeaderProps> = ({
   addon,
   onClose,
   maxLanguages,
+  isUnlimited = false,
 }) => {
   return (
     <div className="flex items-center justify-between mb-[2.4rem]">
@@ -32,7 +34,9 @@ export const LanguageHeader: React.FC<LanguageHeaderProps> = ({
             {addon.name}
           </Heading>
           <Text className="text-text-secondary text-[1.4rem]">
-            Select up to {maxLanguages} languages for AI translation support.
+            {isUnlimited
+              ? "Select any number of languages for AI translation support."
+              : `Select up to ${maxLanguages} languages for AI translation support.`}
           </Text>
         </div>
       </div>

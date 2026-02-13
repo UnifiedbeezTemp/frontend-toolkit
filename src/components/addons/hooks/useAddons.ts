@@ -18,6 +18,7 @@ import {
   closeCheckoutModal,
   hydrateAddons,
 } from "../../../store/onboarding/slices/addonSlice";
+import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 
 export const useAddons = (planType?: string) => {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ export const useAddons = (planType?: string) => {
   const { showToast } = useToast();
   const { refetch: refetchUser } = useUser();
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [addonErrors, setAddonErrors] = useState<Record<string, string | null>>(
+    {},
+  );
 
   const { purchasedAddons, refetch: refetchPurchased } = usePurchasedAddons();
 
@@ -48,11 +52,9 @@ export const useAddons = (planType?: string) => {
         refetchUser();
       },
       onError: (err: unknown) => {
-        const errorMessage =
-          err instanceof Error ? err.message : "Something went wrong.";
         showToast({
           title: "Failed to remove add-on",
-          description: errorMessage,
+          description: extractErrorMessage(err, "Something went wrong."),
           variant: "error",
           duration: 3000,
         });
@@ -61,12 +63,10 @@ export const useAddons = (planType?: string) => {
   );
 
   useEffect(() => {
-    if (selectedAddons.length > 0) return;
-
     if (purchasedAddons.length > 0) {
       dispatch(hydrateAddons(purchasedAddons));
     }
-  }, [dispatch, selectedAddons.length, purchasedAddons]);
+  }, [dispatch, purchasedAddons]);
 
   const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
 
@@ -121,7 +121,6 @@ export const useAddons = (planType?: string) => {
             addonType: addonToRemove.addonType,
             quantity: addonToRemove.used || 1,
           });
-          dispatch(removeAddon(id));
         } finally {
           setRemovingId(null);
         }
@@ -134,9 +133,24 @@ export const useAddons = (planType?: string) => {
 
   const handleUpdateAddonQuantity = useCallback(
     (id: string, quantity: number) => {
+      const purchasedAddon = purchasedAddons.find((a) => a.id === id);
+      const purchasedQuantity = purchasedAddon?.used || 0;
+
+      if (quantity < purchasedQuantity) {
+        setAddonErrors((prev) => ({
+          ...prev,
+          [id]: "You cannot reduce this add-on below what is already saved. You can only schedule it for cancellation.",
+        }));
+        return;
+      }
+
+      setAddonErrors((prev) => ({
+        ...prev,
+        [id]: null,
+      }));
       dispatch(updateAddonQuantity({ id, quantity }));
     },
-    [dispatch],
+    [dispatch, purchasedAddons],
   );
 
   const handleOpenCheckoutModal = useCallback(() => {
@@ -151,13 +165,39 @@ export const useAddons = (planType?: string) => {
     router.back();
   }, [router]);
 
+  const { user } = useUser();
+
   const handleContinueToCheckout = useCallback(
     (selectedAddons: Addon[]) => {
       if (selectedAddons.length > 0) {
+        if (user?.trialInfo) {
+          const currentPurchases = purchasedAddons.map((a) => ({
+            type: a.addonType,
+            qty: a.used || 1,
+          }));
+          const nextPurchases = selectedAddons.map((a) => ({
+            type: a.addonType,
+            qty: a.used || 1,
+          }));
+
+          const hasChanged =
+            currentPurchases.length !== nextPurchases.length ||
+            nextPurchases.some((next) => {
+              const current = currentPurchases.find(
+                (c) => c.type === next.type,
+              );
+              return !current || current.qty !== next.qty;
+            });
+
+          if (!hasChanged) {
+            router.back();
+            return;
+          }
+        }
         handleOpenCheckoutModal();
       }
     },
-    [handleOpenCheckoutModal],
+    [handleOpenCheckoutModal, user?.trialInfo, purchasedAddons, router],
   );
 
   const getTotalPrice = useCallback((selectedAddons: Addon[]) => {
@@ -190,5 +230,6 @@ export const useAddons = (planType?: string) => {
     canAddMore,
     removingId,
     isRemoving: !!removingId,
+    addonErrors,
   };
 };

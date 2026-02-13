@@ -3,11 +3,13 @@ import Text from "../../../ui/Text";
 import ImageComponent from "../../../ui/ImageComponent";
 import { Addon } from "../../../../store/onboarding/types/addonTypes";
 
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
+
 interface LanguageSummaryProps {
   selectedCount: number;
   totalPrice: number;
   addon: Addon;
-  icons: any;
+  icons: ReturnType<typeof useSupabaseIcons>;
 }
 
 export const LanguageSummary: React.FC<LanguageSummaryProps> = ({

@@ -3,12 +3,15 @@ import Input from "../../../forms/Input";
 import ImageComponent from "../../../ui/ImageComponent";
 import Text from "../../../ui/Text";
 
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
+
 interface LanguageSearchProps {
   query: string;
   onSearch: (value: string) => void;
   selectedCount: number;
   maxCount: number;
-  icons: any;
+  isUnlimited?: boolean;
+  icons: ReturnType<typeof useSupabaseIcons>;
 }
 
 export const LanguageSearch: React.FC<LanguageSearchProps> = ({
@@ -16,6 +19,7 @@ export const LanguageSearch: React.FC<LanguageSearchProps> = ({
   onSearch,
   selectedCount,
   maxCount,
+  isUnlimited = false,
   icons,
 }) => {
   return (
@@ -37,7 +41,9 @@ export const LanguageSearch: React.FC<LanguageSearchProps> = ({
 
       <div className="flex justify-between items-center">
         <Text className="text-[1.4rem] text-text-primary">
-          {selectedCount} of {maxCount} languages selected
+          {isUnlimited
+            ? `${selectedCount} languages selected`
+            : `${selectedCount} of ${maxCount} languages selected`}
         </Text>
       </div>
     </div>

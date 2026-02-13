@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
-export const useAddonHeader = () => {
+export const useAddonHeader = (onRemove?: () => void) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -21,13 +21,26 @@ export const useAddonHeader = () => {
     };
   }, [isMenuOpen]);
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const closeMenu = () => setIsMenuOpen(false);
+  const toggleMenu = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMenuOpen((prev) => !prev);
+  }, []);
+
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
+
+  const handleRemoveClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onRemove?.();
+      closeMenu();
+    },
+    [onRemove, closeMenu],
+  );
 
   return {
     isMenuOpen,
     menuRef,
     toggleMenu,
-    closeMenu,
+    handleRemoveClick,
   };
 };
