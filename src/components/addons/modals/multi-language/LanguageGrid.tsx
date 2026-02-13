@@ -4,11 +4,13 @@ import { Language } from "../../../../data/languages";
 import ImageComponent from "../../../ui/ImageComponent";
 import { cn } from "../../../../lib/utils";
 
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
+
 interface LanguageGridProps {
   languages: Language[];
   selectedLanguages: string[];
   onToggle: (code: string) => void;
-  icons: any;
+  icons: ReturnType<typeof useSupabaseIcons>;
 }
 
 export const LanguageGrid: React.FC<LanguageGridProps> = ({

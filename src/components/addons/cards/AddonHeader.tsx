@@ -24,13 +24,8 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
   variant = "add",
 }) => {
   const icons = useSupabaseIcons();
-  const { isMenuOpen, menuRef, toggleMenu, closeMenu } = useAddonHeader();
-
-  const handleRemoveClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onRemove?.();
-    closeMenu();
-  };
+  const { isMenuOpen, menuRef, toggleMenu, handleRemoveClick } =
+    useAddonHeader(onRemove);
 
   return (
     <div className="flex items-center justify-between">
@@ -53,7 +48,7 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
         <Heading size="sm">{addon.name}</Heading>
       </div>
 
-      {variant === "manage" ? (
+      {variant === "manage" && (addon.scheduledForCancellation || 0) === 0 ? (
         <div className="relative" ref={menuRef}>
           <button
             onClick={toggleMenu}
@@ -82,7 +77,7 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
             </div>
           )}
         </div>
-      ) : (
+      ) : variant === "manage" ? null : (
         showCheckbox && (
           <Checkbox
             className="rounded-full"

@@ -74,7 +74,20 @@ const addonSlice = createSlice({
       state.isCheckoutModalOpen = false;
     },
     hydrateAddons: (state, action: PayloadAction<Addon[]>) => {
-      state.selectedAddons = action.payload;
+      const purchased = action.payload;
+      const localNew = state.selectedAddons.filter(
+        (a) => !purchased.some((p) => p.id === a.id),
+      );
+      state.selectedAddons = [...purchased, ...localNew];
+
+      if (state.tempAddon) {
+        const updated = state.selectedAddons.find(
+          (a) => a.id === state.tempAddon?.id,
+        );
+        if (updated) {
+          state.tempAddon = updated;
+        }
+      }
     },
   },
 });

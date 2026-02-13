@@ -1,111 +1,148 @@
-# Addon Selection Module
+# Addon Module Usage Guide
 
-This module provides a decoupled and reusable set of components and hooks for implementing addon selection flows, mirroring the `PlanSelection` architecture.
+This module is designed using the **"Shared Ingredients, Local Recipe"** pattern.
 
-## Directory Structure
+- **Shared Ingredients**: Pure UI components (`BaseAddonCard`, `AddAddonModal`, `MultiLanguageModal`) and logical orchestration hooks (`useAddons`, `useMultiLanguage`) reside in `@/shared`.
+- **Local Recipe**: Your project's local page (e.g., `AddonsPage.tsx`) and its custom hook orchestration these ingredients to fit your specific billing and trial rules.
 
-```
-addons/                 # Flow-specific building blocks in shared/src/components/addons
-├── cards/              # Individual Addon UI cards
-│   ├── AddonCard.tsx
-│   ├── SelectedAddonCard.tsx
-│   └── ...
-├── modals/             # Purchase & Quantity Modals
-│   ├── AddAddonModal.tsx
-│   ├── CheckoutModal.tsx
-│   └── ...
-├── hooks/              # Selection & Business Logic
-│   ├── useAddonsPage.ts
-│   ├── useAddons.ts
-│   └── ...
-└── index.ts            # Public API exports
-```
+---
 
-## Typical Implementation Flow
+## 🚀 How to Implement
 
-To implement an addons selection page, you should follow this pattern:
+### Step 1: Create your Local Orchestration Hook
 
-1. Create a **pure UI component** (acting as a Container) that calls the **shared orchestration hook**.
-2. Compose the UI using the granular components exported from `@/shared`.
-
-### 1. The Orchestration Hook (`useAddonsPage.ts`)
-
-This shared hook encapsulates all business logic: fetching available addons, managing selected state, calculating totals, and handling checkout navigation.
+Create a hook in your project to manage the logic between the different modals and the addon list.
 
 ```tsx
-import { useAddonsPage } from "@/shared/src/components/addons";
+// hooks/useAddonsPage.ts
+import { useAddons } from "@/shared/src/components/addons/hooks/useAddons";
+import { Addon } from "@/shared/src/store/onboarding/types/addonTypes";
 
-// Inside your component:
-const {
-  addons, // List of available addons
-  selectedAddons, // List of user-selected addons
-  loading,
-  error,
-  handleContinue,
-  // ... and many granular handlers
-} = useAddonsPage();
+export const useAddonsPage = () => {
+  const {
+    selectedAddons,
+    handleOpenAddModal,
+    handleCloseAddModal,
+    handleAddAddon,
+    handleRemoveAddon,
+    handleUpdateAddonQuantity,
+    isAddModalOpen,
+    tempAddon,
+    tempQuantity,
+    handleUpdateTempQuantity,
+    // ...
+  } = useAddons();
+
+  return {
+    addons: selectedAddons,
+    isAddModalOpen,
+    tempAddon,
+    tempQuantity,
+    onOpenAdd: handleOpenAddModal,
+    onCloseAdd: handleCloseAddModal,
+    onConfirmAdd: handleAddAddon,
+    onRemove: handleRemoveAddon,
+    onQuantityChange: handleUpdateAddonQuantity,
+    onTempQuantityChange: handleUpdateTempQuantity,
+  };
+};
 ```
 
-### 2. The UI Component (e.g., `AddonsPage.tsx` in your app)
+### Step 2: Compose your Local Page
 
-A clean, structural component that retrieves logic from the hook and renders the layout.
+Use the shared UI components and pass them the state from your local hook.
 
 ```tsx
-import {
-  AddonCard,
-  SelectedAddonCard,
-  AddAddonModal,
-  CheckoutModal,
-  useAddonsPage,
-} from "@/shared/src/components/addons";
+// AddonsPage.tsx
+import { useAddonsPage } from "./hooks/useAddonsPage";
+import { BaseAddonCard } from "@/shared/src/components/addons/cards/BaseAddonCard";
+import { AddAddonModal } from "@/shared/src/components/addons/modals/AddAddonModal";
 
 export default function AddonsPage() {
   const {
-    icons,
     addons,
-    selectedAddons,
-    handleOpenAddModal,
-    // ... destructure all needed state/handlers
+    onOpenAdd,
+    onRemove,
+    onQuantityChange,
+    isAddModalOpen,
+    onCloseAdd,
+    tempAddon,
+    tempQuantity,
+    onTempQuantityChange,
+    onConfirmAdd,
   } = useAddonsPage();
 
   return (
-    <div className="layout-wrapper">
-      {/* 1. Page Header / Wrapper */}
-
-      {/* 2. Selected Addons Section */}
-      {selectedAddons.map((addon) => (
-        <SelectedAddonCard key={addon.id} addon={addon} />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* 1. Render the Addon Cards */}
+      {addons.map((addon) => (
+        <BaseAddonCard
+          key={addon.id}
+          addon={addon}
+          variant="manage"
+          onAdd={() => onOpenAdd(addon)}
+          onRemove={() => onRemove(addon.id)}
+          onQuantityChange={(qty) => onQuantityChange(addon.id, qty)}
+        />
       ))}
 
-      {/* 3. Available Addons Grid */}
-      <div className="grid">
-        {addons.map((addon) => (
-          <AddonCard
-            key={addon.id}
-            addon={addon}
-            onAdd={() => handleOpenAddModal(addon)}
-          />
-        ))}
-      </div>
-
-      {/* 4. Modals (controlled by hook state) */}
-      <AddAddonModal />
-      <CheckoutModal />
+      {/* 2. Render the Configuration Modal */}
+      <AddAddonModal
+        isOpen={isAddModalOpen}
+        onClose={onCloseAdd}
+        addon={tempAddon}
+        currentQuantity={tempQuantity}
+        onQuantityChange={onTempQuantityChange}
+        onAdd={() => tempAddon && onConfirmAdd(tempAddon, tempQuantity)}
+        canAddMore={tempAddon ? tempQuantity < tempAddon.limit : true}
+      />
     </div>
   );
 }
 ```
 
-## Key Exports
+---
 
-### Components
+## 📦 Shared API Reference
 
-- **`AddonCard`**: Displays an available addon with "Add" button.
-- **`SelectedAddonCard`**: Displays a selected addon with "Remove" and quantity controls.
-- **`AddAddonModal`**: Modal interface for selecting quantity before adding.
-- **`CheckoutModal`**: Summary view before proceeding to payment.
+### `useAddons()`
 
-### Hooks
+The primary hook for managing the addon lifecycle.
 
-- **`useAddonsPage`**: The primary entry point. Orchestrates the entire flow.
-- **`useAddons`**: Lower-level hook for Redux manipulation (add/remove/update).
+**Returns:**
+
+- `selectedAddons`: Current list of addons (merged with backend purchases).
+- `handleRemoveAddon(id)`: Handles local removal OR backend cancellation.
+- `updateAddonQuantity(id, qty)`: Updates quantity with validation against purchased counts.
+- `hydrateAddons(purchased)`: Essential for syncing backend data with Redux.
+
+### `BaseAddonCard`
+
+The standard display unit for an addon.
+
+- **Props**: `addon`, `variant` ("add" | "manage"), `onAdd`, `onRemove`, `onQuantityChange`.
+- **Features**: Automatically displays "Scheduled for cancellation" status and hides actions when applicable.
+
+### `AddAddonModal`
+
+Modal for configuring an addon before adding/updating.
+
+- **Features**: Handles quantity selection and integrates `MultiLanguageManager` automatically for language-based addons.
+
+### `MultiLanguageModal`
+
+Specialized modal for managing AI Language instances.
+
+- **Logic**: Uses `useMultiLanguageModal` to handle search, selection quotas, and backend preference updates.
+
+---
+
+## 🔧 Multi-Language Pattern
+
+When implementing Multi-Language AI, the component uses `useMultiLanguage` internally to:
+
+1. Fetch available languages.
+2. Track cancellation requests per instance.
+3. Sync preferences to the backend.
+
+Developers should ensure that `updatePreferences` is called only when the user confirms their selection, to maintain a "draft" state until the final action.
