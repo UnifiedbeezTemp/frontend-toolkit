@@ -1,15 +1,17 @@
-import Heading from "@/shared/src/components/ui/Heading";
-import Text from "@/shared/src/components/ui/Text";
-import ImageComponent from "next/image";
 import Link from "next/link";
-import { useSupabaseIcons } from "@/shared/src/lib/supabase/useSupabase";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import Heading from "../../ui/Heading";
+import Text from "../../ui/Text";
+import ImageComponent from "../../ui/ImageComponent";
 
 interface LimitWarningProps {
   hasLimitReachedAddons: boolean;
+  planType?: string;
 }
 
 export const LimitWarning: React.FC<LimitWarningProps> = ({
   hasLimitReachedAddons,
+  planType,
 }) => {
   const icons = useSupabaseIcons();
 
@@ -26,13 +28,19 @@ export const LimitWarning: React.FC<LimitWarningProps> = ({
       <div className="">
         <Heading size="sm">You've reached your limit for some plans</Heading>
         <Text size="sm">
-          Upgrade your plan to get access to more.{" "}
-          <Link
-            className="underline text-brand-primary font-[700] transition-all hover:scale-98"
-            href="/plans"
-          >
-            Upgrade Plan
-          </Link>
+          {!planType || planType.toLowerCase() !== "organisation" ? (
+            <>
+              Upgrade your plan to get access to more.{" "}
+              <Link
+                className="underline text-brand-primary font-[700] transition-all hover:scale-98"
+                href="/plans"
+              >
+                Upgrade Plan
+              </Link>
+            </>
+          ) : (
+            "You have reached the maximum limit for this add-on."
+          )}
         </Text>
       </div>
     </div>

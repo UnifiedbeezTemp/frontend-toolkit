@@ -81,7 +81,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </p>
           )}
 
-          <LimitWarning hasLimitReachedAddons={hasLimitReachedAddons} />
+          <LimitWarning
+            hasLimitReachedAddons={hasLimitReachedAddons}
+            planType={planType}
+          />
         </div>
       </div>
 

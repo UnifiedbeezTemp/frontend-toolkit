@@ -9,6 +9,7 @@ import { MultiLanguageManager } from "./multi-language/MultiLanguageManager";
 import { useMultiLanguage } from "../hooks/useMultiLanguage";
 import { useToast } from "../../ui/toast/ToastProvider";
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
+import { useUser } from "../../../contexts/UserContext";
 import { useAddAddonModal } from "./hooks/useAddAddonModal";
 
 interface AddAddonModalProps {
@@ -50,6 +51,9 @@ export const AddAddonModal: React.FC<AddAddonModalProps> = ({
   const isDisabled =
     isAddDisabled || isLanguageSelectionIncomplete || isUpdatingPreferences;
 
+  const { user } = useUser();
+  const planType = user?.plan;
+
   return (
     <Modal
       isOpen={isOpen}
@@ -84,7 +88,11 @@ export const AddAddonModal: React.FC<AddAddonModalProps> = ({
           </div>
 
           <div className="md:w-full md:h-full">
-            <InfoSection addon={addon} canAddMore={canAddMore} />
+            <InfoSection
+              addon={addon}
+              canAddMore={canAddMore}
+              planType={planType}
+            />
           </div>
         </div>
       </div>
