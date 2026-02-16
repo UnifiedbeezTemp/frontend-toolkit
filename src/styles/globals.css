@@ -444,6 +444,29 @@ button:disabled {
   );
 }
 
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 2.4rem;
+  width: 2.4rem;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid currentColor;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  margin-top: -1px;
+}
+
+/* Firefox support */
+.custom-slider::-moz-range-thumb {
+  height: 2.4rem;
+  width: 2.4rem;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid currentColor;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
 @layer components {
   .btn-gradient {
     @apply bg-[linear-gradient(143deg,#053D27_21.47%,#FAB403_289.64%)] shadow-[0_0_0_1px_rgba(0,0,0,0.20),0_1px_4px_0_rgba(0,0,0,0.50),inset_0_2px_3.2px_0_rgba(255,255,255,0.35),0_8px_20px_0_rgba(56,86,32,0.30)] hover:text-white!;

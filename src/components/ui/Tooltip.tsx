@@ -11,6 +11,7 @@ interface TooltipProps {
   contentClassName?: string;
   position?: "top" | "bottom" | "left" | "right";
   isInteractive?: boolean;
+  arrowClassNames?: string
 }
 
 export default function Tooltip({
@@ -20,6 +21,7 @@ export default function Tooltip({
   contentClassName = "",
   position = "top",
   isInteractive = false,
+  arrowClassNames
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -68,6 +70,7 @@ export default function Tooltip({
                 className={cn(
                   "absolute w-0 h-0 border-[.6rem] border-transparent max-w-[2rem]",
                   arrowClasses[position],
+                  arrowClassNames
                 )}
               />
             </div>
