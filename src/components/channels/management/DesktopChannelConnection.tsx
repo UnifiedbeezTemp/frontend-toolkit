@@ -7,15 +7,18 @@ import { useDesktopChannelConnection } from "../hooks/useDesktopChannelConnectio
 import Heading from "../../../components/ui/Heading";
 
 import Button from "../../../components/ui/Button";
+import { cn } from "../../../lib/utils";
 
 interface DesktopChannelConnectionProps {
   onRefetchChannels?: () => void;
   onBack?: () => void;
+  hideHeader?: boolean;
 }
 
 export default function DesktopChannelConnection({
   onRefetchChannels,
   onBack,
+  hideHeader = false,
 }: DesktopChannelConnectionProps) {
   const {
     selectedChannels,
@@ -30,16 +33,22 @@ export default function DesktopChannelConnection({
   return (
     <div className="">
       <div className="flex items-center justify-between">
-        <div>
-          <Heading size="lg" className="text-[2.4rem]">
-            Connect selected channels
-          </Heading>
-          <Text size="sm" className="">
-            Connect as many channels as you like
-          </Text>
-        </div>
+        {!hideHeader && (
+          <div>
+            <Heading size="lg" className="text-[2.4rem]">
+              Connect selected channels
+            </Heading>
+            <Text size="sm" className="">
+              Connect as many channels as you like
+            </Text>
+          </div>
+        )}
         {onBack && (
-          <Button variant="secondary" onClick={onBack}>
+          <Button
+            variant="secondary"
+            onClick={onBack}
+            className={cn(!hideHeader ? "ml-auto" : "")}
+          >
             Go Back
           </Button>
         )}

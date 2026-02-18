@@ -10,25 +10,29 @@ import Button from "../../../components/ui/Button";
 interface MobileChannelConnectionProps {
   onRefetchChannels?: () => void;
   onBack?: () => void;
+  hideHeader?: boolean;
 }
 
 export default function MobileChannelConnection({
   onRefetchChannels,
   onBack,
+  hideHeader = false,
 }: MobileChannelConnectionProps) {
   const { selectedChannels } = useChannelConnection();
 
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <div className="">
-          <Heading size="lg" className="text-[1.8rem] sm:text-center">
-            Connect selected channels
-          </Heading>
-          <Text size="sm" className="sm:text-center">
-            Connect as many channels as you like
-          </Text>
-        </div>
+        {!hideHeader && (
+          <div className="">
+            <Heading size="lg" className="text-[1.8rem] sm:text-center">
+              Connect selected channels
+            </Heading>
+            <Text size="sm" className="sm:text-center">
+              Connect as many channels as you like
+            </Text>
+          </div>
+        )}
         {onBack && (
           <Button variant="secondary" onClick={onBack} className="w-full">
             Go Back

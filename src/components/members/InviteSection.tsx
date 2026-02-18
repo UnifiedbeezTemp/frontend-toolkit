@@ -68,7 +68,7 @@ export const InviteSection = ({
           <div className="text-secondary text-[14px]">
             Need more seats?{" "}
             <Link
-              href={`${process.env.NEXT_PUBLIC_BASE}addons`}
+              href={`${process.env.NEXT_PUBLIC_BASE}/addons`}
               className="text-brand-primary text-[14px] font-[700] underline"
             >
               Add seats from the pricing tab

@@ -18,9 +18,9 @@ export function useChannelsQuery() {
     () => api.get("/channels/available"),
     {
       enabled: true,
-      refetchOnMount: false,
+      refetchOnMount: true,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const {
@@ -34,9 +34,9 @@ export function useChannelsQuery() {
     () => api.get("/channels/selected"),
     {
       enabled: true,
-      refetchOnMount: false,
+      refetchOnMount: true,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const isLoading = isLoadingAvailable || isLoadingSelected;
