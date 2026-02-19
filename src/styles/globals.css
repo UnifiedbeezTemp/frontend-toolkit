@@ -155,7 +155,8 @@
   --radius-md: 0.8rem;
   --radius-lg: 1rem;
   --shadow-sm: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
-  --shadow-card: 0 20px 24px -4px rgba(16, 24, 40, 0.08),
+  --shadow-card:
+    0 20px 24px -4px rgba(16, 24, 40, 0.08),
     0 8px 8px -4px rgba(16, 24, 40, 0.03);
 }
 
@@ -191,13 +192,13 @@
   --warning: #fab404;
   --destructive: #cc0e11;
   --success: #29953e;
-  --success-500: #12B76A;
+  --success-500: #12b76a;
   --primary-blue: #155dfc;
   --success-500: #12b76a;
   --primary-blue: #155dfc;
   --primary-blue-100: #2186f8;
-  --primary-blue-50: #15C0E6;
-  --dark-green-100: #003B1A;
+  --primary-blue-50: #15c0e6;
+  --dark-green-100: #003b1a;
 
   --input-stroke: #d0d5dd;
   --input-stroke-1: #dedede;
@@ -214,7 +215,7 @@
   --mid-green: #e8fff6;
   --light-green: #e9f7f2;
   --solid-green: #219165;
-  --fresh-green:#29953E;
+  --fresh-green: #29953e;
   --card-gradient: 165deg, #e6faf2 -11.22%, #e3cf9b 219.35%;
 
   --black-110: #1b1b1b;
@@ -271,7 +272,7 @@
   --purple: #c837ab;
   --yellow-100-alt: #facc15;
   --gray-900: #101828;
-  --gray-800: #1D2939;
+  --gray-800: #1d2939;
   --gray-600: #475467;
   --gray-250: #71717a;
   --gray-200: #eaecf0;
@@ -289,11 +290,11 @@
   /* CRM Specific Status Colors */
   --crm-status-active-text: #027a48;
   --crm-status-active-bg: #ecfdf3;
-  --crm-status-unconfirmed-text: #ECB22D;
+  --crm-status-unconfirmed-text: #ecb22d;
   --crm-status-unconfirmed-bg: #fffaeb;
-  --crm-status-unsubscribed-text: #CC0E11;
+  --crm-status-unsubscribed-text: #cc0e11;
   --crm-status-unsubscribed-bg: #fef3f2;
-  --crm-status-bounced-text: #9D9FA0;
+  --crm-status-bounced-text: #9d9fa0;
   --crm-status-bounced-bg: #f2f4f7;
 }
 
@@ -390,8 +391,8 @@ button:disabled {
 }
 
 .highlight-inside {
-  box-shadow: inset 2px 0 4px
-      color-mix(in srgb, var(--primary) 40%, transparent),
+  box-shadow:
+    inset 2px 0 4px color-mix(in srgb, var(--primary) 40%, transparent),
     inset 0 0 1px color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
@@ -439,8 +440,8 @@ button:disabled {
 .gradient-button-primary-secondary {
   background: linear-gradient(
     267deg,
-    var(--brand-secondary) -12.17%  ,
-    var(--brand-primary)  125.17%
+    var(--brand-secondary) -12.17%,
+    var(--brand-primary) 125.17%
   );
 }
 

@@ -4,4 +4,5 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
   size?: number
   color?: string
   className?: string
+  isActive?: boolean
 }

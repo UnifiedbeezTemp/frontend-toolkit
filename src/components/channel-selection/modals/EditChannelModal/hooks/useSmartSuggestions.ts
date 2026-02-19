@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   getSmartSuggestions,
-  MainConfigRecommendationsResponse,
+  SmartSuggestionsResponse,
 } from "../../../../../services/smartSuggestionsService";
 import { AIConfigParams } from "../../../../channel-account-ai-config/services/aiConfigService";
 import { useToast } from "../../../../ui/toast/ToastProvider";
@@ -31,7 +31,7 @@ export function useSmartSuggestions({ params }: UseSmartSuggestionsProps) {
           ),
         },
       );
-      return response as MainConfigRecommendationsResponse;
+      return response as SmartSuggestionsResponse;
     },
     onSuccess: (data) => {
       showToast({
