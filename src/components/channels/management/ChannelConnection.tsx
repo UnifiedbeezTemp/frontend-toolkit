@@ -19,11 +19,13 @@ interface ChannelConnectionProps {
       | null;
   }> | void;
   onBack?: () => void;
+  hideHeader?: boolean;
 }
 
 export default function ChannelConnection({
   onRefetchChannels,
   onBack,
+  hideHeader = false,
 }: ChannelConnectionProps) {
   useChannelConnectionToast();
   const { selectedChannels } = useChannelConnection();
@@ -52,11 +54,13 @@ export default function ChannelConnection({
     <DesktopChannelConnection
       onRefetchChannels={handleRefetch}
       onBack={onBack}
+      hideHeader={hideHeader}
     />
   ) : (
     <MobileChannelConnection
       onRefetchChannels={handleRefetch}
       onBack={onBack}
+      hideHeader={hideHeader}
     />
   );
 }

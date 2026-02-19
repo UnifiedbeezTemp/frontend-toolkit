@@ -18,11 +18,16 @@ export interface GmailConnectResponse {
 }
 
 export const getGmailAuthUrl = (): string => {
-  return `${apiBaseUrl}/channels/email/google/auth`;
+  const currentPath = window.location.pathname + window.location.search;
+  const encodedPath = encodeURIComponent(currentPath);
+  return `${apiBaseUrl}/channels/email/google/auth?redirect_path=${encodedPath}`;
 };
 
 export const initiateGmailAuth = (): void => {
-  window.location.href = getGmailAuthUrl();
+   const currentPath = window.location.pathname + window.location.search;
+  const encodedPath = encodeURIComponent(currentPath);
+  window.location.href = `${apiBaseUrl}/channels/email/google/auth?redirect_path=${encodedPath}`
+  // window.location.href = getGmailAuthUrl();
 };
 
 export const connectGmail = async (

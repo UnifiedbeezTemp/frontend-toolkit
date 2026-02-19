@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, useAppMutation } from "../../../api";
 import { usePurchasedAddons } from "../../plancard-preview/hooks/usePurchasedAddons";
@@ -167,29 +167,29 @@ export const useAddons = (planType?: string) => {
 
   const { user } = useUser();
 
+  const hasChanges = useMemo(() => {
+    const currentPurchases = purchasedAddons.map((a) => ({
+      type: a.addonType,
+      qty: a.used || 1,
+    }));
+    const nextPurchases = selectedAddons.map((a) => ({
+      type: a.addonType,
+      qty: a.used || 1,
+    }));
+
+    if (currentPurchases.length !== nextPurchases.length) return true;
+
+    return nextPurchases.some((next) => {
+      const current = currentPurchases.find((c) => c.type === next.type);
+      return !current || current.qty !== next.qty;
+    });
+  }, [selectedAddons, purchasedAddons]);
+
   const handleContinueToCheckout = useCallback(
     (selectedAddons: Addon[]) => {
       if (selectedAddons.length > 0) {
         if (user?.trialInfo) {
-          const currentPurchases = purchasedAddons.map((a) => ({
-            type: a.addonType,
-            qty: a.used || 1,
-          }));
-          const nextPurchases = selectedAddons.map((a) => ({
-            type: a.addonType,
-            qty: a.used || 1,
-          }));
-
-          const hasChanged =
-            currentPurchases.length !== nextPurchases.length ||
-            nextPurchases.some((next) => {
-              const current = currentPurchases.find(
-                (c) => c.type === next.type,
-              );
-              return !current || current.qty !== next.qty;
-            });
-
-          if (!hasChanged) {
+          if (!hasChanges) {
             router.back();
             return;
           }
@@ -197,7 +197,7 @@ export const useAddons = (planType?: string) => {
         handleOpenCheckoutModal();
       }
     },
-    [handleOpenCheckoutModal, user?.trialInfo, purchasedAddons, router],
+    [handleOpenCheckoutModal, user?.trialInfo, hasChanges, router],
   );
 
   const getTotalPrice = useCallback((selectedAddons: Addon[]) => {
@@ -231,5 +231,6 @@ export const useAddons = (planType?: string) => {
     removingId,
     isRemoving: !!removingId,
     addonErrors,
+    hasChanges,
   };
 };
