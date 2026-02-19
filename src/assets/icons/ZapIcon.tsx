@@ -4,6 +4,7 @@ export function ZapIcon({
   size = 20,
   color = "currentColor",
   className,
+  isActive,
   ...props
 }: IconProps) {
   const height = (size * 32) / 36;

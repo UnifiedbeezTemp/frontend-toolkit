@@ -4,6 +4,7 @@ export default function DataFlow({
   size = 22,
   color = "white",
   className,
+  isActive,
   ...props
 }: IconProps) {
   return (

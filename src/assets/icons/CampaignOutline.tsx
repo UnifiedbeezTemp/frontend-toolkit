@@ -4,6 +4,7 @@ export default function CampaignOutline({
   size = 32,
   color = "white",
   className,
+  isActive,
   ...props
 }: IconProps) {
   return (

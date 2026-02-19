@@ -4,6 +4,7 @@ export default function UsersO2({
   size = 24,
   color = "white",
   className,
+  isActive,
   ...props
 }: IconProps) {
   return (
