@@ -27,7 +27,7 @@ export function useChannelSelection({
 }: UseChannelSelectionProps = {}) {
   const { assets, channelsToUse } = useChannelsData(
     backendData,
-    selectedChannels
+    selectedChannels,
   );
   const {
     selectedChannels: selectedChannelsList,
@@ -37,7 +37,7 @@ export function useChannelSelection({
   const { filteredChannels, typeEntries } = useChannelFilters(
     channelsToUse,
     searchQuery,
-    filter
+    filter,
   );
 
   const { handleSelectChannel, handleUnselectChannel, isChannelLoading } =
