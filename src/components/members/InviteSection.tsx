@@ -66,9 +66,9 @@ export const InviteSection = ({
         </Text>{" "}
         <div className="flex">
           <div className="text-secondary text-[14px]">
-            Need more users?{" "}
+            Need more seats?{" "}
             <Link
-              href={"#"}
+              href={`${process.env.NEXT_PUBLIC_BASE}/addons`}
               className="text-brand-primary text-[14px] font-[700] underline"
             >
               Add seats from the pricing tab

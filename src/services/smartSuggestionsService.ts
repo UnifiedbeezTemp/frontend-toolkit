@@ -1,5 +1,8 @@
 import { api } from "../api";
-import { AccountType } from "../components/channel-account-ai-config/types/api";
+import {
+  AccountType,
+  TimeUnit,
+} from "../components/channel-account-ai-config/types/api";
 
 export interface SmartSuggestionsParams {
   timezone: string;
@@ -17,7 +20,7 @@ export interface MainConfigRecommendationsResponse {
   escalationEnabled: boolean;
   followUpEnabled: boolean;
   replyDelayAmount: number;
-  replyDelayUnit: string;
+  replyDelayUnit: TimeUnit;
   teamAccess: string[];
 }
 
@@ -25,7 +28,7 @@ export interface EscalationRecommendationsResponse {
   escalationEnabled: boolean;
   unansweredMessagesThreshold: number;
   escalationTimeAmount: number;
-  escalationTimeUnit: string;
+  escalationTimeUnit: TimeUnit;
   escalationKeywords: string[];
   escalationContacts: { email: string; fullName: string }[];
 }
@@ -33,13 +36,13 @@ export interface EscalationRecommendationsResponse {
 export interface FollowUpRecommendationsResponse {
   followUpEnabled: boolean;
   followUpDelayAmount: number;
-  followUpDelayUnit: string;
+  followUpDelayUnit: TimeUnit;
   followUpContentType: string;
 }
 
 export interface AIBehaviorRecommendationsResponse {
   replyDelayAmount: number;
-  replyDelayUnit: string;
+  replyDelayUnit: TimeUnit;
   openingHour: number;
   closingHour: number;
   timezone: string;

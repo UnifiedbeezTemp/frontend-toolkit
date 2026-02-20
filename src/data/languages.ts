@@ -1,4 +1,3 @@
-
 export interface Language {
   code: string;
   name: string;
@@ -19,4 +18,13 @@ export const languages: Language[] = [
   { code: "zh", name: "Chinese", nativeName: "中文", flag: "🇨🇳" },
   { code: "ar", name: "Arabic", nativeName: "العربية", flag: "🇸🇦" },
   { code: "hi", name: "Hindi", nativeName: "हिन्दी", flag: "🇮🇳" },
+  { code: "nl", name: "Dutch", nativeName: "Nederlands", flag: "🇳🇱" },
+  { code: "pl", name: "Polish", nativeName: "Polski", flag: "🇵🇱" },
+  { code: "tr", name: "Turkish", nativeName: "Türkçe", flag: "🇹🇷" },
+  { code: "sv", name: "Swedish", nativeName: "Svenska", flag: "🇸🇪" },
+  { code: "da", name: "Danish", nativeName: "Dansk", flag: "🇩🇰" },
+  { code: "fi", name: "Finnish", nativeName: "Suomi", flag: "🇫🇮" },
+  { code: "no", name: "Norwegian", nativeName: "Norsk", flag: "🇳🇴" },
+  { code: "el", name: "Greek", nativeName: "Ελληνικά", flag: "🇬🇷" },
+  { code: "cs", name: "Czech", nativeName: "Čeština", flag: "🇨🇿" },
 ];

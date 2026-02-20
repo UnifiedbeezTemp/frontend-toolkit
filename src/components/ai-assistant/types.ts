@@ -9,6 +9,7 @@ export interface AssistantHeaderProps {
   onSelect?: () => void;
   onToggle?: () => void;
   variant?: "desktop" | "mobile";
+  rightElement?: React.ReactNode;
 }
 
 export interface PersonalityFields {

@@ -35,7 +35,10 @@ export const usePlanCardPreview = ({
   const { purchasedAddons, isLoading: isPurchasedAddonsLoading } =
     usePurchasedAddons();
 
-  const addonsToUse = selectedAddons || purchasedAddons;
+  const addonsToUse =
+    selectedAddons && selectedAddons.length > 0
+      ? selectedAddons
+      : purchasedAddons;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -125,6 +128,9 @@ export const usePlanCardPreview = ({
     ? Math.floor(monthlyPrice * 12 * 0.85)
     : monthlyPrice;
 
+  const isHighestPlan =
+    plan?.originalPlan?.planType?.toLowerCase() === "organisation";
+
   return {
     isMenuOpen,
     setIsMenuOpen,
@@ -146,5 +152,6 @@ export const usePlanCardPreview = ({
     router,
     addonsToUse,
     isPurchasedAddonsLoading,
+    isHighestPlan,
   };
 };

@@ -11,6 +11,7 @@ interface TooltipProps {
   contentClassName?: string;
   position?: "top" | "bottom" | "left" | "right";
   isInteractive?: boolean;
+  arrowClassNames?: string
 }
 
 export default function Tooltip({
@@ -20,6 +21,7 @@ export default function Tooltip({
   contentClassName = "",
   position = "top",
   isInteractive = false,
+  arrowClassNames
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -39,7 +41,7 @@ export default function Tooltip({
 
   return (
     <div
-      className="relative inline-block a"
+      className="relative inline-block"
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
     >
@@ -54,15 +56,21 @@ export default function Tooltip({
               "absolute z-50",
               !isInteractive && "pointer-events-none",
               positionClasses[position],
-              className
+              className,
             )}
           >
-            <div className={cn("bg-primary text-text-primary p-[0.6rem] rounded-[0.8rem] shadow-xl text-[1.2rem] font-medium border border-border/10", contentClassName)}>
+            <div
+              className={cn(
+                "bg-primary text-text-primary p-[0.6rem] rounded-[0.8rem] shadow-xl text-[1.2rem] font-medium border border-border/10",
+                contentClassName,
+              )}
+            >
               {content}
               <div
                 className={cn(
                   "absolute w-0 h-0 border-[.6rem] border-transparent max-w-[2rem]",
-                  arrowClasses[position]
+                  arrowClasses[position],
+                  arrowClassNames
                 )}
               />
             </div>

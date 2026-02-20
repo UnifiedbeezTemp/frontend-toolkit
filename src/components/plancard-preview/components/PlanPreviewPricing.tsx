@@ -39,7 +39,7 @@ export default function PlanPreviewPricing({
         "flex flex-col sm:flex-col-reverse gap-[1rem] sm:justify-between",
         isOneSided
           ? "w-full sm:w-[50%] lg:w-[40%] sm:flex-col lg:items-end"
-          : "sm:flex-col-reverse"
+          : "sm:flex-col-reverse",
       )}
     >
       <div className="sm:mb-[-1rem] md:text-right">
@@ -52,18 +52,15 @@ export default function PlanPreviewPricing({
       </div>
 
       <div className="flex gap-[1rem] w-full">
-        {planType?.toLowerCase() === "organisation" ? (
-          <div className="w-full px-[1.6rem] py-[1.2rem] bg-brand-primary text-primary text-center rounded-[0.8rem] font-[700] text-[1.4rem]">
-            Talk to Sales
-          </div>
-        ) : (
-          <Button
-            className={cn(" px-[1.6rem] whitespace-nowrap", isOneSided ? "w-full" : "w-full")}
-            onClick={onUpgradeClick}
-          >
-            Upgrade plan
-          </Button>
-        )}
+        <Button
+          className={cn(
+            " px-[1.6rem] whitespace-nowrap",
+            isOneSided ? "w-full" : "w-full",
+          )}
+          onClick={onUpgradeClick}
+        >
+          Change plan
+        </Button>
         <div className="relative" ref={menuRef}>
           <Button variant="secondary" className="h-full" onClick={onMenuToggle}>
             <DotsMenu />

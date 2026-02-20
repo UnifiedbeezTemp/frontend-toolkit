@@ -5,7 +5,7 @@ interface ChannelIconMap {
   [key: string]: string;
 }
 
-const getChannelIconKey = (channelName: string): string => {
+export const getChannelIconKey = (channelName: string): string => {
   const iconMap: ChannelIconMap = {
     whatsapp: "whatsappIcon",
     webchat: "websiteWebChat",
@@ -180,6 +180,7 @@ export const transformBackendChannelToUI = (
       categoryLimits
     ),
     isSelected: false, // Not selected yet
+
     // Preserve availableChannel
     availableChannel: {
       ...backendChannel,

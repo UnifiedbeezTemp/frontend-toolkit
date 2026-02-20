@@ -46,12 +46,19 @@ export default function ComparisonMobile({
   const aiAssistants = aiMatch ? parseInt(aiMatch[1]) : 0;
 
   return (
-    <div className="block lg:hidden px-4 mb-20 relative">
+    <div className="block lg:hidden px-4 mb-20 relative mt-8">
       <div className="absolute -top-2 right-2 z-10">{activePlan.tag}</div>
 
       <Card className="pt-6 pb-4 px-0 rounded-[1.2rem] w-full transition-all duration-300 relative">
-        <div className="absolute top-6 right-5.25">
-          <div className="*:border *:border-border *:rounded-[0.325rem] *:px-1.25 *:py-0.5">
+        <div className="px-5.25 w-full">
+          <div className="flex items-center gap-3.5 mb-2">
+            {activePlan.badge}
+            <h3 className="text-brand-primary font-bold text-base truncate max-w-[15rem]">
+              {activePlan.name}
+            </h3>
+          </div>
+
+          <div className="*:border *:border-border *:rounded-[0.325rem] *:px-1.25 *:py-0.5 w-fit">
             {activePlan.addonAvailable ? (
               <button
                 onClick={() =>
@@ -74,15 +81,6 @@ export default function ComparisonMobile({
                 Add-on not available
               </span>
             )}
-          </div>
-        </div>
-
-        <div className="px-5.25 w-full">
-          <div className="flex items-center gap-3.5">
-            {activePlan.badge}
-            <h3 className="text-brand-primary font-bold text-base">
-              {activePlan.name}
-            </h3>
           </div>
         </div>
 

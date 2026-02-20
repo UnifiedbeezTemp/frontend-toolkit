@@ -32,7 +32,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     vat,
     total,
     hasLimitReachedAddons,
-    handleProceedToPayment,
+    isPurchasing,
+    handleConfirmPurchase,
+    hasTrialInfo,
   } = useCheckoutModal({
     selectedAddons,
     planType,
@@ -53,29 +55,43 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
       <CheckoutHeader />
 
-      <div className="mt-[4rem]">
-        <div className="flex items-center justify-between text-[1.6rem] text-inactive-color mb-[2.4rem] font-bold">
-          <span>Plan Fee</span>
-          <span>£{planFee}</span>
-        </div>
+      <div className="flex-1 overflow-y-auto px-[2.5rem] custom-scrollbar min-h-0">
+        <div className="mt-[1rem] pb-[2.4rem]">
+          {hasTrialInfo && (
+            <div className="flex items-center justify-between text-[1.6rem] text-inactive-color mb-[2.4rem] font-bold">
+              <span>Plan Fee</span>
+              <span>£{planFee}</span>
+            </div>
+          )}
 
-        {selectedAddons.map((addon) => (
-          <AddonItem
-            key={addon.id}
-            addon={addon}
-            onQuantityChange={onQuantityChange}
-            calculateAddonPrice={calculateAddonPrice}
+          {selectedAddons.map((addon) => (
+            <AddonItem
+              key={addon.id}
+              addon={addon}
+              onQuantityChange={onQuantityChange}
+              calculateAddonPrice={calculateAddonPrice}
+            />
+          ))}
+
+          <PriceSummary subtotal={subtotal} vat={vat} total={total} />
+
+          {hasTrialInfo && (
+            <p className="text-[1.3rem] text-text-secondary text-center mb-[0.8rem]">
+              This amount will be added to your billing cycle.
+            </p>
+          )}
+
+          <LimitWarning
+            hasLimitReachedAddons={hasLimitReachedAddons}
+            planType={planType}
           />
-        ))}
-
-        <PriceSummary subtotal={subtotal} vat={vat} total={total} />
-
-        <LimitWarning hasLimitReachedAddons={hasLimitReachedAddons} />
+        </div>
       </div>
 
       <CheckoutActions
         onClose={onClose}
-        onProceedToPayment={handleProceedToPayment}
+        onConfirmPurchase={handleConfirmPurchase}
+        isLoading={isPurchasing}
       />
     </Modal>
   );

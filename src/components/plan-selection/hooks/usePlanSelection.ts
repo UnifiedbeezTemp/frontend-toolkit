@@ -1,23 +1,65 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "../../../components/ui/toast/useToast";
 import { usePlans } from "../../../api/services/plan/hooks/usePlans";
 import { accountSetupService } from "../../../api/services/auth/accountSetupService";
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 import { useUser } from "../../../contexts/UserContext";
+import { useSwitchPreview } from "../../downgrade-warning/hooks/useSwitchPreview";
 
 export const usePlanSelection = () => {
   const [isYearly, setIsYearly] = useState(false);
   const [showCelebrationModal, setShowCelebrationModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [isSelecting, setIsSelecting] = useState(false);
+  const [showDowngradeWarning, setShowDowngradeWarning] = useState(false);
+  const [isProceedingDowngrade, setIsProceedingDowngrade] = useState(false);
+  const [pendingOnSuccess, setPendingOnSuccess] = useState<
+    ((isNewUpgrade: boolean) => void) | undefined
+  >(undefined);
 
   const { user, refetch } = useUser();
   const { showToast } = useToast();
   const { plans: backendPlans, loading, error, retry } = usePlans();
+  const {
+    data: switchPreviewData,
+    loading: switchPreviewLoading,
+    fetchPreview,
+    reset: resetSwitchPreview,
+  } = useSwitchPreview();
+
+  const executePlanChange = useCallback(
+    async (onSuccess?: (isNewUpgrade: boolean) => void) => {
+      if (!selectedPlan) return;
+
+      try {
+        await accountSetupService.selectPlan(selectedPlan);
+        refetch();
+
+        const hasPlanChanged =
+          user?.plan?.toLowerCase() !== selectedPlan.toLowerCase();
+
+        if (hasPlanChanged) {
+          setShowCelebrationModal(true);
+        }
+
+        if (onSuccess) {
+          onSuccess(hasPlanChanged);
+        }
+      } catch (err) {
+        const errorMessage = extractErrorMessage(err, "Failed to select plan");
+        showToast({
+          title: "Selection failed",
+          description: errorMessage,
+          variant: "error",
+        });
+      }
+    },
+    [selectedPlan, refetch, user?.plan, showToast],
+  );
 
   const handleContinue = async (
-    onSuccess?: (isNewUpgrade: boolean) => void
+    onSuccess?: (isNewUpgrade: boolean) => void,
   ) => {
     if (!selectedPlan) {
       showToast({
@@ -31,19 +73,18 @@ export const usePlanSelection = () => {
     setIsSelecting(true);
 
     try {
-      await accountSetupService.selectPlan(selectedPlan);
-      refetch();
+      if (user?.trialInfo) {
+        const previewResponse = await fetchPreview(selectedPlan);
 
-      const hasPlanChanged =
-        user?.plan?.toLowerCase() !== selectedPlan.toLowerCase();
-
-      if (hasPlanChanged) {
-        setShowCelebrationModal(true);
+        if (previewResponse && !previewResponse.isUpgrade) {
+          setPendingOnSuccess(() => onSuccess);
+          setShowDowngradeWarning(true);
+          setIsSelecting(false);
+          return;
+        }
       }
 
-      if (onSuccess) {
-        onSuccess(hasPlanChanged);
-      }
+      await executePlanChange(onSuccess);
     } catch (err) {
       const errorMessage = extractErrorMessage(err, "Failed to select plan");
       showToast({
@@ -55,6 +96,32 @@ export const usePlanSelection = () => {
       setIsSelecting(false);
     }
   };
+
+  const handleDowngradeProceed = useCallback(async () => {
+    setIsProceedingDowngrade(true);
+
+    try {
+      await executePlanChange(pendingOnSuccess);
+      setShowDowngradeWarning(false);
+      resetSwitchPreview();
+      setPendingOnSuccess(undefined);
+    } catch (err) {
+      const errorMessage = extractErrorMessage(err, "Failed to change plan");
+      showToast({
+        title: "Plan change failed",
+        description: errorMessage,
+        variant: "error",
+      });
+    } finally {
+      setIsProceedingDowngrade(false);
+    }
+  }, [executePlanChange, pendingOnSuccess, resetSwitchPreview, showToast]);
+
+  const handleCloseDowngradeWarning = useCallback(() => {
+    setShowDowngradeWarning(false);
+    resetSwitchPreview();
+    setPendingOnSuccess(undefined);
+  }, [resetSwitchPreview]);
 
   const handleCloseCelebration = () => {
     setShowCelebrationModal(false);
@@ -75,5 +142,11 @@ export const usePlanSelection = () => {
     retry,
     handleContinue,
     handleCloseCelebration,
+    showDowngradeWarning,
+    switchPreviewData,
+    switchPreviewLoading,
+    isProceedingDowngrade,
+    handleDowngradeProceed,
+    handleCloseDowngradeWarning,
   };
 };

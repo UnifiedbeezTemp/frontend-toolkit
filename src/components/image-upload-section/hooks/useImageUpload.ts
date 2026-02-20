@@ -33,6 +33,8 @@ export function useImageUpload({
   createObjectURL,
 }: UseImageUploadProps) {
   const uploadRef = useRef<HTMLInputElement>(null);
+  const [isCropperOpen, setIsCropperOpen] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
   const [isCameraModalOpen, setIsCameraModalOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
@@ -56,15 +58,31 @@ export function useImageUpload({
     }
   }, [selectedFile, createObjectURL]);
 
+  useEffect(() => {
+    return () => {
+      if (imageToCrop) {
+        URL.revokeObjectURL(imageToCrop);
+      }
+    };
+  }, [imageToCrop]);
+
   const handleUploadClick = useCallback(() => uploadRef.current?.click(), []);
   const handleCameraCapture = useCallback(() => setIsCameraModalOpen(true), []);
   const closeCameraModal = useCallback(() => setIsCameraModalOpen(false), []);
 
-  const handleSelectImage = useCallback(
-    (file?: File | null) => {
-      onImageSelect(file || null);
+  const closeCropper = useCallback(() => {
+    setIsCropperOpen(false);
+    setImageToCrop(null);
+    if (uploadRef.current) uploadRef.current.value = "";
+  }, []);
+
+  const handleCropComplete = useCallback(
+    (croppedFile: File) => {
+      onImageSelect(croppedFile);
+      closeCropper();
+      closeCameraModal();
     },
-    [onImageSelect],
+    [onImageSelect, closeCropper, closeCameraModal],
   );
 
   const handleFileSelect = useCallback(
@@ -75,7 +93,7 @@ export function useImageUpload({
 
       if (!isValidImageFile(file)) {
         setFileError(
-          "Please select a valid image file (JPEG, PNG, GIF, WebP, BMP, TIFF). SVG files are not allowed.",
+          "Please select a valid image file (JPEG, PNG, GIF, WebP).",
         );
         return;
       }
@@ -88,9 +106,11 @@ export function useImageUpload({
         return;
       }
 
-      handleSelectImage(file);
+      const url = createObjectURL(file);
+      setImageToCrop(url);
+      setIsCropperOpen(true);
     },
-    [handleSelectImage],
+    [createObjectURL],
   );
 
   const handleRemoveImage = useCallback(() => {
@@ -111,5 +131,9 @@ export function useImageUpload({
     closeCameraModal,
     handleFileSelect,
     handleRemoveImage,
+    isCropperOpen,
+    imageToCrop,
+    closeCropper,
+    handleCropComplete,
   };
 }

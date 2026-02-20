@@ -17,7 +17,8 @@ export interface DropdownProps {
   buttonClassName?: string;
   labelClassName?: string;
   hideLabelOnMobile?: boolean;
-  dropdownClasses?: string;
+  hideLabel?: boolean;
+  dropdownClassName?: string;
   showSearch?: boolean;
   searchPlaceholder?: string;
   optionClassName?: string
@@ -33,7 +34,8 @@ export default function Dropdown({
   buttonClassName,
   labelClassName,
   hideLabelOnMobile = true,
-  dropdownClasses,
+  hideLabel = false,
+  dropdownClassName,
   showSearch = false,
   searchPlaceholder = "Search...",
   optionClassName
@@ -89,32 +91,36 @@ export default function Dropdown({
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span
-            className={cn(
-              "text-left",
-              hideLabelOnMobile && "hidden lg:block",
-              labelClassName
-            )}
-          >
-            {getCurrentLabel()}
-          </span>
+          {!hideLabel && (
+            <span
+              className={cn(
+                "text-left",
+                hideLabelOnMobile && "hidden lg:block",
+                labelClassName
+              )}
+            >
+              {getCurrentLabel()}
+            </span>
+          )}
         </div>
 
-        <ImageComponent
-          alt=""
-          src={icons.chevronDown}
-          width={25}
-          height={25}
-          className={cn(
-            "object-cover transition-transform",
-            hideLabelOnMobile && "hidden lg:block",
-            isOpen ? "rotate-180" : ""
-          )}
-        />
+        {!hideLabel && (
+          <ImageComponent
+            alt=""
+            src={icons.chevronDown}
+            width={25}
+            height={25}
+            className={cn(
+              "object-cover transition-transform",
+              hideLabelOnMobile && "hidden lg:block",
+              isOpen ? "rotate-180" : ""
+            )}
+          />
+        )}
       </button>
 
       {isOpen && (
-        <div className={cn("absolute top-full right-0 mt-2 w-full bg-primary border border-input-stroke rounded-[1.2rem] shadow-lg z-[50] overflow-hidden", dropdownClasses)}>
+        <div className={cn("absolute top-full right-0 mt-2 w-full bg-primary border border-input-stroke rounded-[1.2rem] shadow-lg z-[50] overflow-hidden", dropdownClassName)}>
           {showSearch && (
             <div className="p-[1.4rem] border-b border-input-stroke">
               <div className="relative">
@@ -148,19 +154,33 @@ export default function Dropdown({
                     setSearchQuery("");
                   }}
                   className={cn(
-                    "w-full px-4 py-3 text-left text-[1.6rem] transition-all duration-200 hover:text-white flex items-center justify-between hover:bg-brand-primary",
+                    "w-full px-4 py-3 text-left text-[1.6rem] transition-all duration-200 hover:text-white flex items-center justify-between hover:bg-brand-primary group/item",
                     value === option.value
                       ? "text-brand-primary font-medium"
                       : "text-text-primary",
                     optionClassName
                   )}
                 >
-                  {option.label}
+                  <div className="flex items-center gap-[1.2rem]">
+                    {option.icon && (
+                      <ImageComponent
+                        src={option.icon}
+                        alt={option.label}
+                        width={20}
+                        height={20}
+                        className={cn(
+                          "transition-all duration-200 group-hover/item:brightness-0 group-hover/item:invert",
+                          value === option.value && "brightness-100"
+                        )}
+                      />
+                    )}
+                    <span>{option.label}</span>
+                  </div>
 
                   {value === option.value && (
                     <ImageComponent
                       alt="Selected"
-                      src={icons.chevronDown}
+                      src={icons.checkbox}
                       width={20}
                       height={20}
                       className="object-cover"

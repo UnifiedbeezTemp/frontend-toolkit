@@ -1,39 +1,18 @@
 import { api, useAppQuery } from "../../../api";
-import { Addon } from "../../../store/onboarding/types/addonTypes";
+import {
+  Addon,
+  PurchasedAddonResponse,
+} from "../../../store/onboarding/types/addonTypes";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import { useMemo } from "react";
 
-interface PurchasedAddon {
-  id: number;
-  userId: number;
-  addonDefinitionId: number;
-  quantity: number;
-  isActive: boolean;
-  stripeProductId: string | null;
-  stripePriceId: string;
-  purchasedAt: string;
-  expiresAt: string;
-  addonDefinition: {
-    id: number;
-    type: string;
-    name: string;
-    description: string;
-    priceEur: number;
-    billingType: string;
-    isActive: boolean;
-    maxQuantity: number | null;
-    createdAt: string;
-    updatedAt: string;
-  };
-}
-
 interface PurchasedAddonsResponse {
-  addons: PurchasedAddon[];
+  addons: PurchasedAddonResponse[];
 }
 
 const getUiIdAndIcon = (
   addonType: string,
-  icons: ReturnType<typeof useSupabaseIcons>
+  icons: ReturnType<typeof useSupabaseIcons>,
 ): {
   uiId: string;
   icon: string;
@@ -143,25 +122,30 @@ const getUiIdAndIcon = (
 };
 
 const transformPurchasedAddonToAddon = (
-  purchasedAddon: PurchasedAddon,
-  icons: ReturnType<typeof useSupabaseIcons>
+  purchasedAddon: PurchasedAddonResponse,
+  icons: ReturnType<typeof useSupabaseIcons>,
 ): Addon => {
-  const { uiId, icon, limitText } = getUiIdAndIcon(
-    purchasedAddon.addonDefinition.type,
-    icons
-  );
-  const price = purchasedAddon.addonDefinition.priceEur / 100;
+  const { uiId, icon, limitText } = getUiIdAndIcon(purchasedAddon.type, icons);
+  const price = purchasedAddon.priceEur / 100;
 
   return {
     id: uiId,
-    name: purchasedAddon.addonDefinition.name,
+    name: purchasedAddon.name,
     price: price,
     priceText: `Price: £${price}/month`,
-    limit: purchasedAddon.addonDefinition.maxQuantity || 9999,
+    limit: 9999, // Max quantity is generally handled by 'available' endpoint logic or hard limits
     limitText: limitText,
     icon: icon,
-    addonType: purchasedAddon.addonDefinition.type,
+    addonType: purchasedAddon.type,
     used: purchasedAddon.quantity,
+    active: purchasedAddon.active,
+    scheduledForCancellation: purchasedAddon.scheduledForCancellation,
+    instances: purchasedAddon.instances?.map((instance) => ({
+      id: instance.id,
+      language: instance.language,
+      scheduledForCancellation: instance.scheduledForCancellation,
+      expiresAt: instance.expiresAt,
+    })),
   };
 };
 
@@ -174,13 +158,13 @@ export const usePurchasedAddons = () => {
       () => api.get("/addon/purchased"),
       {
         enabled: true,
-      }
+      },
     );
 
   const purchasedAddons: Addon[] = useMemo(() => {
     if (!data?.addons) return [];
     return data.addons.map((addon) =>
-      transformPurchasedAddonToAddon(addon, icons)
+      transformPurchasedAddonToAddon(addon, icons),
     );
   }, [data, icons]);
 

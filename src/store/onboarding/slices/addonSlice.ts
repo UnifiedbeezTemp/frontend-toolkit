@@ -35,27 +35,31 @@ const addonSlice = createSlice({
     },
     addAddon: (
       state,
-      action: PayloadAction<{ addon: Addon; quantity: number }>
+      action: PayloadAction<{ addon: Addon; quantity: number }>,
     ) => {
       const { addon, quantity } = action.payload;
       const existingIndex = state.selectedAddons.findIndex(
-        (a) => a.id === addon.id
+        (a) => a.id === addon.id,
       );
 
       if (existingIndex >= 0) {
-        state.selectedAddons[existingIndex].used = quantity;
+        state.selectedAddons[existingIndex] = {
+          ...state.selectedAddons[existingIndex],
+          ...addon,
+          used: quantity,
+        };
       } else {
         state.selectedAddons.push({ ...addon, used: quantity });
       }
     },
     removeAddon: (state, action: PayloadAction<string>) => {
       state.selectedAddons = state.selectedAddons.filter(
-        (addon) => addon.id !== action.payload
+        (addon) => addon.id !== action.payload,
       );
     },
     updateAddonQuantity: (
       state,
-      action: PayloadAction<{ id: string; quantity: number }>
+      action: PayloadAction<{ id: string; quantity: number }>,
     ) => {
       const { id, quantity } = action.payload;
       const addon = state.selectedAddons.find((a) => a.id === id);
@@ -70,7 +74,20 @@ const addonSlice = createSlice({
       state.isCheckoutModalOpen = false;
     },
     hydrateAddons: (state, action: PayloadAction<Addon[]>) => {
-      state.selectedAddons = action.payload;
+      const purchased = action.payload;
+      const localNew = state.selectedAddons.filter(
+        (a) => !purchased.some((p) => p.id === a.id),
+      );
+      state.selectedAddons = [...purchased, ...localNew];
+
+      if (state.tempAddon) {
+        const updated = state.selectedAddons.find(
+          (a) => a.id === state.tempAddon?.id,
+        );
+        if (updated) {
+          state.tempAddon = updated;
+        }
+      }
     },
   },
 });
