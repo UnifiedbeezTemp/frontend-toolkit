@@ -1,0 +1,52 @@
+import { Notification } from "../types";
+
+export const NOTIFICATIONS_DATA: Notification[] = [
+  {
+    id: "1",
+    title: "File uploaded",
+    content: "Your file has successfully been uploaded",
+    category: "system",
+    timestamp: "1 day",
+    isRead: false,
+    channel: "system",
+  },
+  {
+    id: "2",
+    title: "Carmen Parksouth",
+    content: "Hey, can you check the latest documents posted in the group?",
+    category: "channels",
+    timestamp: "1 day",
+    isRead: false,
+    imageUrl: "https://i.pravatar.cc/150?u=carmen", 
+    channel: "instagram",
+  },
+  {
+    id: "3",
+    title: "Password reset",
+    content: "Your password has been restored successfully",
+    category: "system",
+    timestamp: "13:57",
+    isRead: true,
+    channel: "system",
+  },
+  {
+    id: "4",
+    title: "Carmen Parksouth",
+    content: "Hey, can you check the latest documents posted in the group?",
+    category: "channels",
+    timestamp: "1 day",
+    isRead: true,
+    imageUrl: "https://i.pravatar.cc/150?u=carmen2",
+    channel: "whatsapp",
+  },
+  {
+    id: "5",
+    title: "Zubimendi Garcia",
+    content: "Discussed pricing and contract terms for 45...",
+    category: "channels",
+    timestamp: "13:57",
+    isRead: true,
+    imageUrl: "https://i.pravatar.cc/150?u=zubimendi",
+    channel: "linkedin",
+  },
+];
