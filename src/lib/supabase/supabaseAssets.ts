@@ -18,6 +18,7 @@ export const SUPABASE_IMAGES = {
   footerBg: "images/footer-bg.png",
   bgImage: "images/bg-frame.webp",
   phoneFrame: "images/phone-frame.png",
+  iphone13: "images/iphone-13.png",
   whatsappLayer: "images/whatsappLayer.png",
   img1: "images/img1.jpg",
   img2: "images/img2.jpg",
