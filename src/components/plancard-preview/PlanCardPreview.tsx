@@ -4,16 +4,12 @@ import ImageComponent from "next/image";
 import Link from "next/link";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Button from "../ui/Button";
-import DotsMenu from "../ui/DotsMenu";
 import { useCheckoutPlan } from "./hooks/useCheckoutPlan";
 import Heading from "../ui/Heading";
 import Text from "../ui/Text";
-import { useRouter } from "next/navigation";
 import { usePlan } from "../../api/services/plan/hooks/usePlan";
 import PlanCardPreviewSkeleton from "./PlanCardPreviewSkeleton";
 import { cn } from "../../lib/utils";
-import { Addon } from "../../store/onboarding/types/addonTypes";
-
 import { usePlanCardPreview } from "./hooks/usePlanCardPreview";
 import { PlanCardPreviewProps } from "./types";
 import PlanSelectionRequiredModal from "../plan-selection/modals/PlanSelectionRequiredModal";

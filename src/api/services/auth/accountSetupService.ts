@@ -7,6 +7,7 @@ import {
   UpdateOnboardingMethodPayload,
   UpdateOnboardingMethodResponse,
 } from ".";
+import { SwitchPreviewResponse } from "../../../components/downgrade-warning/types";
 
 export const accountSetupService = {
   async setupProfile(
@@ -39,7 +40,7 @@ export const accountSetupService = {
     return await api.patch("/auth/onboarding/method", data);
   },
 
-  async switchPreview(planType: string): Promise<any> {
+  async switchPreview(planType: string): Promise<SwitchPreviewResponse> {
     return await api.get(`/plan/switch-preview/${planType.toUpperCase()}`);
   },
 };

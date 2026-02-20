@@ -29,6 +29,8 @@ export const BaseAddonCard: React.FC<BaseAddonCardProps> = ({
   className = "",
 }) => {
   const progressPercentage = ((addon.used || 1) / addon.limit) * 100;
+  const activeCount = addon.active || 0;
+  const cancellingCount = addon.scheduledForCancellation || 0;
 
   return (
     <Card className={`p-[2.4rem] rounded-[1.6rem] ${className}`}>

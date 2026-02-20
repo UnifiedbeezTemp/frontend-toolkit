@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, useAppMutation } from "../../../api";
 import { usePurchasedAddons } from "../../plancard-preview/hooks/usePurchasedAddons";
@@ -18,6 +18,7 @@ import {
   closeCheckoutModal,
   hydrateAddons,
 } from "../../../store/onboarding/slices/addonSlice";
+import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 
 export const useAddons = (planType?: string) => {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ export const useAddons = (planType?: string) => {
   const { showToast } = useToast();
   const { refetch: refetchUser } = useUser();
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [addonErrors, setAddonErrors] = useState<Record<string, string | null>>(
+    {},
+  );
 
   const { purchasedAddons, refetch: refetchPurchased } = usePurchasedAddons();
 
@@ -48,11 +52,9 @@ export const useAddons = (planType?: string) => {
         refetchUser();
       },
       onError: (err: unknown) => {
-        const errorMessage =
-          err instanceof Error ? err.message : "Something went wrong.";
         showToast({
           title: "Failed to remove add-on",
-          description: errorMessage,
+          description: extractErrorMessage(err, "Something went wrong."),
           variant: "error",
           duration: 3000,
         });
@@ -61,21 +63,31 @@ export const useAddons = (planType?: string) => {
   );
 
   useEffect(() => {
-    if (selectedAddons.length > 0) return;
-
     if (purchasedAddons.length > 0) {
       dispatch(hydrateAddons(purchasedAddons));
     }
-  }, [dispatch, selectedAddons.length, purchasedAddons]);
+  }, [dispatch, purchasedAddons]);
+
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
 
   const handleOpenAddModal = useCallback(
     (addon: Addon) => {
-      dispatch(openAddModal(addon));
+      if (addon.addonType === "MULTI_LANGUAGE_AI") {
+        setIsLanguageModalOpen(true);
+        dispatch(openAddModal(addon));
+      } else {
+        dispatch(openAddModal(addon));
+      }
     },
     [dispatch],
   );
 
   const handleCloseAddModal = useCallback(() => {
+    dispatch(closeAddModal());
+  }, [dispatch]);
+
+  const handleCloseLanguageModal = useCallback(() => {
+    setIsLanguageModalOpen(false);
     dispatch(closeAddModal());
   }, [dispatch]);
 
@@ -90,6 +102,7 @@ export const useAddons = (planType?: string) => {
     (addon: Addon, quantity: number) => {
       dispatch(addAddon({ addon, quantity }));
       dispatch(closeAddModal());
+      setIsLanguageModalOpen(false);
     },
     [dispatch],
   );
@@ -108,7 +121,6 @@ export const useAddons = (planType?: string) => {
             addonType: addonToRemove.addonType,
             quantity: addonToRemove.used || 1,
           });
-          dispatch(removeAddon(id));
         } finally {
           setRemovingId(null);
         }
@@ -121,9 +133,24 @@ export const useAddons = (planType?: string) => {
 
   const handleUpdateAddonQuantity = useCallback(
     (id: string, quantity: number) => {
+      const purchasedAddon = purchasedAddons.find((a) => a.id === id);
+      const purchasedQuantity = purchasedAddon?.used || 0;
+
+      if (quantity < purchasedQuantity) {
+        setAddonErrors((prev) => ({
+          ...prev,
+          [id]: "You cannot reduce this add-on below what is already saved. You can only schedule it for cancellation.",
+        }));
+        return;
+      }
+
+      setAddonErrors((prev) => ({
+        ...prev,
+        [id]: null,
+      }));
       dispatch(updateAddonQuantity({ id, quantity }));
     },
-    [dispatch],
+    [dispatch, purchasedAddons],
   );
 
   const handleOpenCheckoutModal = useCallback(() => {
@@ -138,13 +165,39 @@ export const useAddons = (planType?: string) => {
     router.back();
   }, [router]);
 
+  const { user } = useUser();
+
+  const hasChanges = useMemo(() => {
+    const currentPurchases = purchasedAddons.map((a) => ({
+      type: a.addonType,
+      qty: a.used || 1,
+    }));
+    const nextPurchases = selectedAddons.map((a) => ({
+      type: a.addonType,
+      qty: a.used || 1,
+    }));
+
+    if (currentPurchases.length !== nextPurchases.length) return true;
+
+    return nextPurchases.some((next) => {
+      const current = currentPurchases.find((c) => c.type === next.type);
+      return !current || current.qty !== next.qty;
+    });
+  }, [selectedAddons, purchasedAddons]);
+
   const handleContinueToCheckout = useCallback(
     (selectedAddons: Addon[]) => {
       if (selectedAddons.length > 0) {
+        if (user?.trialInfo) {
+          if (!hasChanges) {
+            router.back();
+            return;
+          }
+        }
         handleOpenCheckoutModal();
       }
     },
-    [handleOpenCheckoutModal],
+    [handleOpenCheckoutModal, user?.trialInfo, hasChanges, router],
   );
 
   const getTotalPrice = useCallback((selectedAddons: Addon[]) => {
@@ -162,6 +215,8 @@ export const useAddons = (planType?: string) => {
 
     handleOpenAddModal,
     handleCloseAddModal,
+    handleCloseLanguageModal,
+    isLanguageModalOpen,
     handleUpdateTempQuantity,
     handleAddAddon,
     handleRemoveAddon,
@@ -175,5 +230,7 @@ export const useAddons = (planType?: string) => {
     canAddMore,
     removingId,
     isRemoving: !!removingId,
+    addonErrors,
+    hasChanges,
   };
 };

@@ -8,11 +8,13 @@ import Text from "../../ui/Text";
 interface InfoSectionProps {
   addon: Addon | null;
   canAddMore: boolean;
+  planType?: string;
 }
 
 export const InfoSection: React.FC<InfoSectionProps> = ({
   addon,
   canAddMore,
+  planType,
 }) => {
   const icons = useSupabaseIcons();
 
@@ -52,13 +54,19 @@ export const InfoSection: React.FC<InfoSectionProps> = ({
           You reached your limit for {addon?.name} for this plan
         </Heading>
         <Text size="sm">
-          Upgrade your plan to get access to extra {addon?.name}.{" "}
-          <Link
-            className="underline text-brand-primary font-[700] transition-all hover:scale-98"
-            href="/plans"
-          >
-            Upgrade Plan
-          </Link>
+          {!planType || planType.toUpperCase() !== "ORGANISATION" ? (
+            <>
+              Upgrade your plan to get access to extra {addon?.name}.{" "}
+              <Link
+                className="underline text-brand-primary font-[700] transition-all hover:scale-98"
+                href="/plans"
+              >
+                Upgrade Plan
+              </Link>
+            </>
+          ) : (
+            `You have reached the maximum limit of ${addon?.name} for your plan.`
+          )}
         </Text>
       </div>
     </div>

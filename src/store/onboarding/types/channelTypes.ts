@@ -16,7 +16,7 @@ export interface Channel extends Omit<SelectedChannel, 'id' | 'availableChannel'
   // Keep all backend fields from SelectedChannel
   // userId, availableChannelId, channelName, isActive, isConnected, credentials, etc.
   // Also keep availableChannel as nested object
-  availableChannel: BackendChannel & {
+  availableChannel?: BackendChannel & {
     icon?: string; // Add icon to availableChannel too
   };
 }
