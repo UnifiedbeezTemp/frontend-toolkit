@@ -2,6 +2,7 @@
 
 import ImageComponent from "../ui/ImageComponent";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
+import MarkdownText from "../../utils/MarkdownText";
 
 interface TypingIndicatorProps {
   typingText: string;
@@ -30,7 +31,7 @@ export default function TypingIndicator({
 
         <div className="flex flex-col gap-[0.7rem]">
           <div className="bg-soft-green border border-border rounded-[1.2rem] rounded-tl-none p-[1.2rem] max-w-[85%]">
-            <p className="text-[1.6rem] text-text-secondary">{typingText}</p>
+            <div className="text-[1.6rem] text-text-secondary"><MarkdownText text={typingText} /></div>
           </div>
 
           <span className="text-[1.4rem] text-black font-[700]">BeeZora</span>
