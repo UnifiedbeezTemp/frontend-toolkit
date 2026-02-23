@@ -6,6 +6,7 @@ import { Plan } from "../../../api/services/plan/types";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
 import { usePurchasedAddons } from "./usePurchasedAddons";
 import { calculateTotalWithAddons } from "../../../utils/priceUtils";
+import { useAddonsAccess } from "../../../hooks/useAddonsAccess";
 
 interface UsePlanCardPreviewProps {
   plan: Plan | null;
@@ -55,8 +56,14 @@ export const usePlanCardPreview = ({
     };
   }, [isMenuOpen]);
 
-  const handleAddonsClick = () => {
+  const { verifyAccess } = useAddonsAccess();
+
+  const handleAddonsClick = (targetPlanId?: string) => {
+    if (!verifyAccess(targetPlanId)) return;
+
     if (plan) {
+      setIsModalOpen(false);
+      setIsComparisonModalOpen(false);
       const params = new URLSearchParams();
       if (isYearly) {
         params.set("isYearly", "true");
