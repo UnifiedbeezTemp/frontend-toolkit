@@ -355,6 +355,7 @@ export const SUPABASE_ICONS = {
   education: "website/education.png",
   automotives: "website/automotives.png",
   tech: "website/tech.png",
+  tech2: "icons/tech-2.png",
   beauty: "website/beauty.png",
   events: "website/events.png",
   legal: "website/legal.png",

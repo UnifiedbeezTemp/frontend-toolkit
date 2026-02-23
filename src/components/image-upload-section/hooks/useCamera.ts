@@ -27,7 +27,7 @@ export function useCamera({ isOpen, onCapture, onClose }: UseCameraProps) {
         setError(
           "Your browser does not support camera access or it is disabled.",
         );
-        return;
+        return null;
       }
       const constraints = {
         video: {
