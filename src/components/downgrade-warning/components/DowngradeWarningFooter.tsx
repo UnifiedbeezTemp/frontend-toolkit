@@ -27,7 +27,7 @@ export default function DowngradeWarningFooter({
         Cancel
       </Button>
       <Button
-        variant="danger"
+        variant="primary"
         className="flex-1 py-[1.2rem]"
         onClick={onProceed}
         disabled={disabled}

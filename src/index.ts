@@ -6,3 +6,4 @@ export { default as PlanCardSkeleton } from "./components/full-plan-card/PlanCar
 export { default as PlanCard } from "./components/full-plan-card/PlanCard";
 export { default as PlanSelectionTabs } from "./components/plan-selection/tabs/PlanSelectionTabs";
 export { getPlansData } from "./data/plansData";
+export { useAddonsAccess } from "./hooks/useAddonsAccess";

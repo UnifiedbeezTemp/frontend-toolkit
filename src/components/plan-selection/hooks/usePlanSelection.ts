@@ -70,12 +70,23 @@ export const usePlanSelection = () => {
       return;
     }
 
+    const currentPlanId = user?.plan?.toLowerCase();
+    const targetPlanId = selectedPlan.toLowerCase();
+
+    // If no plan change, just trigger success (which handles redirection)
+    if (currentPlanId === targetPlanId) {
+      if (onSuccess) onSuccess(false);
+      return;
+    }
+
     setIsSelecting(true);
 
     try {
+      // Only check for downgrade warning if user is on a trial
       if (user?.trialInfo) {
         const previewResponse = await fetchPreview(selectedPlan);
 
+        // Only show warning if it's strictly NOT an upgrade (i.e., a downgrade)
         if (previewResponse && !previewResponse.isUpgrade) {
           setPendingOnSuccess(() => onSuccess);
           setShowDowngradeWarning(true);
@@ -84,6 +95,7 @@ export const usePlanSelection = () => {
         }
       }
 
+      // Proceed with plan change for non-trial users or upgrades
       await executePlanChange(onSuccess);
     } catch (err) {
       const errorMessage = extractErrorMessage(err, "Failed to select plan");

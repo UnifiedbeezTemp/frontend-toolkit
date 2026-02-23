@@ -11,12 +11,14 @@ interface ComparisonModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelectPlan?: (planId: string) => void;
+  onAddonsClick?: (planId?: string) => void;
 }
 
 export default function ComparisonModal({
   isOpen,
   onClose,
   onSelectPlan,
+  onAddonsClick,
 }: ComparisonModalProps) {
   const icons = useSupabaseIcons();
 
@@ -28,7 +30,10 @@ export default function ComparisonModal({
       className="w-[calc(100vw-2rem)] lg:w-fit rounded-[2.5rem] mx-auto overflow-hidden"
     >
       <div className="max-w-[138rem] mx-auto">
-        <ComparisonTable onSelectPlan={onSelectPlan} />
+        <ComparisonTable
+          onSelectPlan={onSelectPlan}
+          onAddonsClick={onAddonsClick}
+        />
       </div>
     </Modal>
   );
