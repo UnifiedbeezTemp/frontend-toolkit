@@ -179,7 +179,7 @@ export default function PlanCardPreview({
             planType={planType}
             addonsTotal={addonsTotal}
             selectedAddons={addonsToUse}
-            onAddonsClick={handleAddonsClick}
+            onAddonsClick={() => handleAddonsClick(planType)}
           />
         </div>
 
@@ -203,7 +203,7 @@ export default function PlanCardPreview({
         plan={plan}
         isYearly={isYearly}
         totalPrice={totalPrice}
-        onAddonsClick={handleAddonsClick}
+        onAddonsClick={() => handleAddonsClick(planType)}
         onSelect={handleUpgradeClick}
       />
 
@@ -216,6 +216,7 @@ export default function PlanCardPreview({
         isOpen={isComparisonModalOpen}
         onClose={() => setIsComparisonModalOpen(false)}
         onSelectPlan={handlePlanSelect}
+        onAddonsClick={handleAddonsClick}
       />
     </>
   );
