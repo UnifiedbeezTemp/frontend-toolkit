@@ -8,6 +8,7 @@ import {
 import { ChatMessage } from "./types";
 import { cn } from "../../lib/utils";
 import { useUser } from "../../contexts/UserContext";
+import MarkdownText from "../../utils/MarkdownText";
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -75,7 +76,7 @@ export default function MessageBubble({
                 isUser && "text-right"
               )}
             >
-              {message.text}
+              <MarkdownText text={message.text} />
             </p>
             <p
               className={cn(

@@ -47,8 +47,8 @@ export function useTestChat({
 
       typingIntervalRef.current = setInterval(() => {
         if (currentIndex < words.length) {
-          setTypingText(words.slice(0, currentIndex + 1).join(" "));
-          currentIndex++;
+          setTypingText(words.slice(0, currentIndex + 20).join(" "));
+          currentIndex = currentIndex + 20;
         } else {
           cleanupTyping();
           onComplete();
