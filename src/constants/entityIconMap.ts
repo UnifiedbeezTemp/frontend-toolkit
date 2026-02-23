@@ -13,7 +13,7 @@ import OfficeBuildingIcon from "../assets/icons/OfficeBuildingIcon";
 // ─── Contact Icons ──────────────────────────────────────────────────
 import { UserIcon } from "../assets/icons/UserIcon";
 import TagIcon from "../assets/icons/TagIcon";
-import { TargetIcon } from "../assets/icons/TargetIcon";
+import TargetIcon from "../assets/icons/TargetAltIcon";
 
 // ─── Sending Icons ──────────────────────────────────────────────────
 import MailIcon from "../assets/icons/MailIcon";
