@@ -119,7 +119,7 @@ export default function EditChannelModal({
                   <EditChannelConfiguration
                     channel={channel}
                     connections={connections}
-                    selectedConnectionId={selectedConnectionId}
+                    selectedConnectionId={selectedConnectionId ?? ""}
                     onSelectConnection={selectConnection}
                     isDropdownOpen={isDropdownOpen}
                     onToggleDropdown={toggleDropdown}

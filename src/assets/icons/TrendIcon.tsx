@@ -18,14 +18,14 @@ export default function TrendIcon({
       <path
         d="M18.3346 5.8335L11.2513 12.9168L7.08464 8.75016L1.66797 14.1668"
         stroke={color}
-        stroke-width="1.66667"
+        strokeWidth="1.66667"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M13.332 5.8335H18.332V10.8335"
         stroke={color}
-        stroke-width="1.66667"
+        strokeWidth="1.66667"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
