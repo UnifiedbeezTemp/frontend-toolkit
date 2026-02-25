@@ -9,6 +9,7 @@ import {
   toggleTaskStatus,
   setTasks,
   setIsAddTaskModalOpen,
+  setDiaryGroupBy,
   DiaryEntry,
 } from "../../../store/slices/diarySlice";
 import { generateDiaryData } from "../utils/generateDiaryData";
@@ -25,6 +26,7 @@ export const useDiary = () => {
     editingEntryId,
     selectedEntryForDetails,
     isAddTaskModalOpen,
+    groupBy,
   } = useAppSelector((state: RootState) => state.diary);
 
   useEffect(() => {
@@ -47,6 +49,10 @@ export const useDiary = () => {
     dispatch(setDiarySearchQuery(query));
   };
 
+  const handleGroupBy = (group: "date" | "mood" | "alphabetical") => {
+    dispatch(setDiaryGroupBy(group));
+  };
+
   const toggleTask = (id: string) => {
     dispatch(toggleTaskStatus(id));
   };
@@ -64,11 +70,24 @@ export const useDiary = () => {
     dispatch(setSelectedEntryForDetails(null));
   };
 
-  const filteredEntries = entries.filter(
-    (entry) =>
-      entry.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entry.content.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredEntries = [...entries]
+    .filter(
+      (entry) =>
+        entry.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        entry.content.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+    .sort((a, b) => {
+      if (groupBy === "date") {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+      if (groupBy === "mood") {
+        return (a.mood || "").localeCompare(b.mood || "");
+      }
+      if (groupBy === "alphabetical") {
+        return a.name.localeCompare(b.name);
+      }
+      return 0;
+    });
 
   return {
     entries: filteredEntries,
@@ -76,10 +95,12 @@ export const useDiary = () => {
     tasks,
     activeTab,
     searchQuery,
+    groupBy,
     editingEntryId,
     selectedEntryForDetails,
     handleTabChange,
     handleSearch,
+    handleGroupBy,
     handleEditEntry,
     handleViewDetails,
     handleCloseDetails,
