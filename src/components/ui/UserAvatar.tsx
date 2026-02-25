@@ -32,7 +32,7 @@ export default function UserAvatar({
 
   return (
     <div
-      className={`bg-purple text-brand-primary font-[700] flex items-center justify-center rounded-full ${className} ${textClassName}`}
+      className={`text-brand-primary font-[700] flex items-center justify-center rounded-full ${className} ${textClassName}`}
     >
       {initials}
     </div>

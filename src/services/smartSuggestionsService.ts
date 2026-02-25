@@ -49,7 +49,15 @@ export interface AIBehaviorRecommendationsResponse {
   workingDays: string[];
 }
 
+export interface UnifiedSmartSuggestionsResponse
+  extends
+    MainConfigRecommendationsResponse,
+    EscalationRecommendationsResponse,
+    FollowUpRecommendationsResponse,
+    AIBehaviorRecommendationsResponse {}
+
 export type SmartSuggestionsResponse =
+  | UnifiedSmartSuggestionsResponse
   | MainConfigRecommendationsResponse
   | EscalationRecommendationsResponse
   | FollowUpRecommendationsResponse
