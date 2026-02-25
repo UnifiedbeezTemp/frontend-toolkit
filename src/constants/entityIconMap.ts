@@ -43,9 +43,12 @@ import { FileCheckIcon } from "../assets/icons/FileCheckIcon";
 import TextFieldFocusIcon from "../assets/icons/TextFieldFocusIcon";
 import { BriefcaseIcon } from "../assets/icons/BriefcaseIcon";
 import FormIcon from "../assets/icons/FormIcon";
+import FormOutlineIcon from "../assets/icons/FormOutline";
 
 // ─── Apps Icons ─────────────────────────────────────────────────────
 import { AppsIcon } from "../assets/icons/AppsIcon";
+import TablerAppsIcon from "../assets/icons/TablerAppsIcon";
+import QuestionMarkIcon from "../assets/icons/QuestionMarkIcon";
 
 /**
  * Universal icon map — keyed by entity ID.
@@ -99,6 +102,15 @@ export const ENTITY_ICON_MAP: Record<string, IconDescriptor> = {
   "webhook":                 { iconType: "component", component: LinkIcon, label: "Webhook" },
   "beebot-prompt":           { iconType: "component", component: BeezoraCreateIcon, label: "Beebot prompt" },
   "format-data":             { iconType: "component", component: DatabaseIcon, label: "Format data" },
+
+  // ── Template Steps ────────────────────────────────────────────────────
+  "consent":                  { iconType: "component", component: SitemapIcon, label: "Add smart consent" },
+  "channels":                 { iconType: "component", component: TablerAppsIcon, label: "Select Channels" },
+  "add-beebot-to-your-website": { iconType: "component", component: GlobeIcon, label: "Add BeeBot to your website" },
+  "form":                     { iconType: "component", component: FormOutlineIcon, label: "Form" },
+  "faq":                      { iconType: "component", component: QuestionMarkIcon, label: "FAQ" },
+  "campaign-list":                      { iconType: "component", component: FormOutlineIcon, label: "FAQ" },
+  "beebot-handler":           { iconType: "component", component: BeezoraCreateIcon, label: "Beebot Handler" },
 
   // ── Triggers ────────────────────────────────────────────────────
   "subscribes-to-list":      { iconType: "component", component: DotPointsIcon, label: "Subscribes to list" },

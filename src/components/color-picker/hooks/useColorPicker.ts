@@ -86,12 +86,18 @@ export const useColorPicker = (initialValue: string, onChange: (color: string) =
 
     setHexInput(newHex);
 
+    // Update the visual picker as user types (if valid)
     if (/^#[0-9A-Fa-f]{6}$/i.test(newHex)) {
       const { h, s, l } = hexToHsl(newHex);
       setHue(h);
       setSaturation(s);
       setLightness(l);
-      onChange(newHex);
+    }
+  };
+
+  const handleHexCommit = (hex: string) => {
+    if (/^#[0-9A-Fa-f]{6}$/i.test(hex)) {
+      onChange(hex);
     }
   };
 
@@ -152,5 +158,6 @@ export const useColorPicker = (initialValue: string, onChange: (color: string) =
     handleHueDrag,
     setupDrag,
     handleHexChange,
+    handleHexCommit,
   };
 };
