@@ -13,6 +13,7 @@ interface SelectableOptionProps {
   disabled?: boolean
   selectedBgClassName?: string
   centerCheckIndicator?: boolean
+  selectedIndicatorClassName?: string
   as?: any
 }
 
@@ -27,7 +28,9 @@ export default function SelectableOption({
   disabled,
   selectedBgClassName,
   centerCheckIndicator,
+  selectedIndicatorClassName,
   as: Component = "button"
+
 }: SelectableOptionProps) {
   const isButton = Component === "button";
 
@@ -58,7 +61,7 @@ export default function SelectableOption({
       {!hideIndicator && (
         <>
           {variant === "check" ? (
-            <CheckboxVisual centerVertically={centerCheckIndicator} selected={selected} size={indicatorSize} />
+            <CheckboxVisual centerVertically={centerCheckIndicator} selected={selected} size={indicatorSize} selectedClassName={selectedIndicatorClassName} />
           ) : (
             <RadioVisual selected={selected} size={indicatorSize} />
           )}

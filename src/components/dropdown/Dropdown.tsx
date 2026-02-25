@@ -21,7 +21,8 @@ export interface DropdownProps {
   dropdownClassName?: string;
   showSearch?: boolean;
   searchPlaceholder?: string;
-  optionClassName?: string
+  optionClassName?: string;
+  children?: React.ReactNode;
 }
 
 export default function Dropdown({
@@ -38,7 +39,8 @@ export default function Dropdown({
   dropdownClassName,
   showSearch = false,
   searchPlaceholder = "Search...",
-  optionClassName
+  optionClassName,
+  children
 }: DropdownProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const {
@@ -78,46 +80,52 @@ export default function Dropdown({
 
   return (
     <div className={cn("relative", className)} ref={dropdownRef}>
-      <button
-        type="button"
-        onClick={handleToggle}
-        className={cn(
-          "group flex items-center justify-between w-full py-[.8rem] px-[1.4rem] rounded-[.8rem] border transition-all text-[1.6rem] duration-300 font-medium",
-          value
-            ? "text-text-primary border-input-stroke bg-primary"
-            : "bg-primary text-text-primary border-input-stroke",
-          buttonClassName
-        )}
-      >
-        <div className="flex items-center gap-2">
-          {icon}
-          {!hideLabel && (
-            <span
-              className={cn(
-                "text-left",
-                hideLabelOnMobile && "hidden lg:block",
-                labelClassName
-              )}
-            >
-              {getCurrentLabel()}
-            </span>
-          )}
+      {children ? (
+        <div onClick={handleToggle} className={cn("cursor-pointer", buttonClassName)}>
+          {children}
         </div>
-
-        {!hideLabel && (
-          <ImageComponent
-            alt=""
-            src={icons.chevronDown}
-            width={25}
-            height={25}
-            className={cn(
-              "object-cover transition-transform",
-              hideLabelOnMobile && "hidden lg:block",
-              isOpen ? "rotate-180" : ""
+      ) : (
+        <button
+          type="button"
+          onClick={handleToggle}
+          className={cn(
+            "group flex items-center justify-between w-full py-[.8rem] px-[1.4rem] rounded-[.8rem] border transition-all text-[1.6rem] duration-300 font-medium",
+            value
+              ? "text-text-primary border-input-stroke bg-primary"
+              : "bg-primary text-text-primary border-input-stroke",
+            buttonClassName
+          )}
+        >
+          <div className="flex items-center gap-2">
+            {icon}
+            {!hideLabel && (
+              <span
+                className={cn(
+                  "text-left",
+                  hideLabelOnMobile && "hidden lg:block",
+                  labelClassName
+                )}
+              >
+                {getCurrentLabel()}
+              </span>
             )}
-          />
-        )}
-      </button>
+          </div>
+
+          {!hideLabel && (
+            <ImageComponent
+              alt=""
+              src={icons.chevronDown}
+              width={25}
+              height={25}
+              className={cn(
+                "object-cover transition-transform",
+                hideLabelOnMobile && "hidden lg:block",
+                isOpen ? "rotate-180" : ""
+              )}
+            />
+          )}
+        </button>
+      )}
 
       {isOpen && (
         <div className={cn("absolute top-full right-0 mt-2 w-full bg-primary border border-input-stroke rounded-[1.2rem] shadow-lg z-[50] overflow-hidden", dropdownClassName)}>

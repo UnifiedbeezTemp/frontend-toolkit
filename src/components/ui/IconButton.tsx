@@ -98,6 +98,7 @@ export default function IconButton({
       (disabled || loading) && stateClasses.disabled,
       loading && stateClasses.loading,
       !disabled && !loading && "active:scale-90",
+      "overflow-hidden",
       className
     ),
     whileTap: { scale: disabled || loading ? 1 : 0.98 },
@@ -115,8 +116,8 @@ export default function IconButton({
           {icon}
         </div>
       )}
-      {useBgIcon && <div className="absolute top-0 right-0 overflow-visible z-10">
-        <BackgroundIcon />
+      {useBgIcon && <div className="absolute -top-5 right-2 overflow-visible z-10 scale-200">
+        <BackgroundIcon  />
       </div>}
     </MotionComponent>
   )
