@@ -1,11 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 const isValidImageFile = (file: File): boolean => {
   if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
@@ -92,9 +87,7 @@ export function useImageUpload({
       if (!file) return;
 
       if (!isValidImageFile(file)) {
-        setFileError(
-          "Please select a valid image file (JPEG, PNG, GIF, WebP).",
-        );
+        setFileError("Please select a valid image file (JPEG, PNG).");
         return;
       }
 

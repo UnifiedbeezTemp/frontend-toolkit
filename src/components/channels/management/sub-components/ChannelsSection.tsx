@@ -1,13 +1,11 @@
 "use client";
 
-import { Channel } from "@/shared/src/store/slices/channelsSlice"; // Adjusted path
-import Text from "@/shared/src/components/ui/Text";
-import {
-  ChannelsApiResponse,
-  SelectedChannelsResponse,
-} from "@/shared/src/types/channelApiTypes";
-import { useChannelSelection } from "@/shared/src/components/channel-selection/hooks/useChannelSelection";
-import ChannelTypeSection from "@/shared/src/components/channel-selection/ChannelTypeSection";
+import { Channel } from "../../../../store/onboarding/types/channelTypes";
+import { ChannelsApiResponse, SelectedChannelsResponse } from "../../../../types/channelApiTypes";
+import ChannelTypeSection from "../../../channel-selection/ChannelTypeSection";
+import { useChannelSelection } from "../../../channel-selection/hooks/useChannelSelection";
+import Text from "../../../ui/Text";
+
 
 interface ChildProps {
   searchQuery: string;

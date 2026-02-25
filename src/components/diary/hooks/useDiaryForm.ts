@@ -7,25 +7,35 @@ import {
   DiaryEntry,
 } from "../../../store/slices/diarySlice";
 import { RootState } from "../../../store";
+import { useTags } from "../../tags/hooks/useTags";
 
 export const useDiaryForm = () => {
   const dispatch = useAppDispatch();
+  useTags();
   const editingEntryId = useAppSelector(
     (state: RootState) => state.diary.editingEntryId,
   );
   const entries = useAppSelector((state: RootState) => state.diary.entries);
 
   const [content, setContent] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedMood, setSelectedMood] = useState<string>("Neutral");
   const isEditing = !!editingEntryId;
+
+  const allTags = useAppSelector((state: RootState) => state.tag.tags);
 
   useEffect(() => {
     if (editingEntryId) {
       const entry = entries.find((e) => e.id === editingEntryId);
       if (entry) {
         setContent(entry.content);
+        setSelectedTags(entry.tags || []);
+        setSelectedMood(entry.mood || "Neutral");
       }
     } else {
       setContent("");
+      setSelectedTags([]);
+      setSelectedMood("Neutral");
     }
   }, [editingEntryId, entries]);
 
@@ -39,6 +49,8 @@ export const useDiaryForm = () => {
           updateDiaryEntry({
             ...entry,
             content,
+            tags: selectedTags,
+            mood: selectedMood,
           }),
         );
       }
@@ -49,21 +61,40 @@ export const useDiaryForm = () => {
         name: "New Entry",
         date: new Date().toISOString(),
         content,
-        mood: "Neutral",
+        mood: selectedMood,
+        tags: selectedTags,
       };
       dispatch(addDiaryEntry(newEntry));
     }
     setContent("");
+    setSelectedTags([]);
+    setSelectedMood("Neutral");
   };
 
   const handleCancelEdit = () => {
     dispatch(setEditingEntryId(null));
     setContent("");
+    setSelectedTags([]);
+    setSelectedMood("Neutral");
+  };
+
+  const toggleTag = (tagId: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId],
+    );
   };
 
   return {
     content,
     setContent,
+    selectedTags,
+    setSelectedTags,
+    toggleTag,
+    selectedMood,
+    setSelectedMood,
+    allTags,
     handleSave,
     handleCancelEdit,
     isEditing,
