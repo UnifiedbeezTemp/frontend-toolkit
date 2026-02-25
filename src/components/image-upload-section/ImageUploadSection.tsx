@@ -184,7 +184,7 @@ export default function ImageUploadSection({
           <input
             ref={uploadRef}
             type="file"
-            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/bmp,image/tiff"
+            accept="image/jpeg,image/jpg,image/png"
             className="hidden"
             onChange={(e) => handleFileSelect(e.target.files?.[0])}
           />
