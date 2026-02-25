@@ -9,7 +9,7 @@ export const generateDiaryData = (): DiaryEntry[] => {
       content:
         "Today was highly productive. Successfully completed the team training session and received excellent feedback from all participants. We discussed the roadmap for Q4 and identified key performance indicators.",
       mood: "Productive",
-      tags: ["Work", "Team"],
+      tags: ["tag-0", "tag-1"],
     },
     {
       id: "2",
@@ -18,7 +18,7 @@ export const generateDiaryData = (): DiaryEntry[] => {
       content:
         "Deep dive into the new feature set. Re-trained the support team on user onboarding flows. Need to follow up on the API documentation gaps identified during the session.",
       mood: "Focused",
-      tags: ["Training", "Support"],
+      tags: ["tag-2", "tag-3"],
     },
   ];
 };

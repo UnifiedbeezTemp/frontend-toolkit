@@ -98,3 +98,27 @@ export function getCurrentTime(): string {
   const minutes = now.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
 }
+
+export function formatTime(dateString: string | Date): string {
+  try {
+    return new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(new Date(dateString));
+  } catch {
+    return typeof dateString === "string" ? dateString : "";
+  }
+}
+
+export function formatShortDate(dateString: string | Date): string {
+  try {
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(new Date(dateString));
+  } catch {
+    return typeof dateString === "string" ? dateString : "";
+  }
+}

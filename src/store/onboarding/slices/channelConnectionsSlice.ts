@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ChannelConnection, ChannelConnectionFormData } from "../../../types/channelConnectionTypes";
+import {
+  ChannelConnection,
+  ChannelConnectionFormData,
+} from "../../../types/channelConnectionTypes";
 
 interface ChannelConnectionsState {
   connections: Record<string, ChannelConnection[]>;
@@ -18,7 +21,7 @@ const channelConnectionsSlice = createSlice({
       action: PayloadAction<{
         channelId: string;
         connection: ChannelConnection;
-      }>
+      }>,
     ) => {
       const { channelId, connection } = action.payload;
       if (!state.connections[channelId]) {
@@ -32,20 +35,22 @@ const channelConnectionsSlice = createSlice({
         channelId: string;
         connectionId: string;
         data: ChannelConnectionFormData;
-      }>
+      }>,
     ) => {
       const { channelId, connectionId, data } = action.payload;
       const channelConnections = state.connections[channelId];
       if (channelConnections) {
-        const index = channelConnections.findIndex((conn) => conn.id === connectionId);
+        const index = channelConnections.findIndex(
+          (conn) => conn.id === connectionId,
+        );
         if (index !== -1) {
           const existingConnection = channelConnections[index];
           const connectionName =
-            data.name ||
-            data.displayName ||
-            data.internalName ||
+            (data.name as string) ||
+            (data.displayName as string) ||
+            (data.internalName as string) ||
             existingConnection.name;
-          
+
           state.connections[channelId][index] = {
             ...existingConnection,
             name: connectionName,
@@ -63,13 +68,13 @@ const channelConnectionsSlice = createSlice({
       action: PayloadAction<{
         channelId: string;
         connectionId: string;
-      }>
+      }>,
     ) => {
       const { channelId, connectionId } = action.payload;
       const channelConnections = state.connections[channelId];
       if (channelConnections) {
         state.connections[channelId] = channelConnections.filter(
-          (conn) => conn.id !== connectionId
+          (conn) => conn.id !== connectionId,
         );
       }
     },
@@ -78,7 +83,7 @@ const channelConnectionsSlice = createSlice({
       action: PayloadAction<{
         channelId: string;
         connections: ChannelConnection[];
-      }>
+      }>,
     ) => {
       const { channelId, connections } = action.payload;
       state.connections[channelId] = connections;
@@ -98,4 +103,3 @@ export const {
 } = channelConnectionsSlice.actions;
 
 export default channelConnectionsSlice.reducer;
-

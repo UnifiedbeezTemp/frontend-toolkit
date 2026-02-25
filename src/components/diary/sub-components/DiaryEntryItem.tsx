@@ -12,7 +12,7 @@ interface DiaryEntryItemProps {
 }
 
 export default function DiaryEntryItem({ entry, isLast }: DiaryEntryItemProps) {
-  const { handleEditEntry } = useDiary();
+  const { handleViewDetails } = useDiary();
   const formattedDate = formatDate(entry?.date);
 
   return (
@@ -33,7 +33,7 @@ export default function DiaryEntryItem({ entry, isLast }: DiaryEntryItemProps) {
         </div>
 
         <button
-          onClick={() => handleEditEntry(entry?.id)}
+          onClick={() => handleViewDetails(entry)}
           className="flex items-center gap-2 px-[1.2rem] py-[0.2rem] border border-input-stroke rounded-lg hover:bg-input-filled transition-colors"
         >
           <PencilIcon className="w-4 h-4 text-text-primary/60 outline-none" />

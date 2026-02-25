@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface DiaryEntry {
   id: string;
   name: string;
-  date: string; 
+  date: string;
   content: string;
   mood?: string;
   tags?: string[];
@@ -12,8 +12,16 @@ export interface DiaryEntry {
 export interface TaskItem {
   id: string;
   title: string;
+  description?: string;
+  priority: "Low" | "Medium" | "High";
+  category: string;
+  dueDate: string;
+  reminder?: string;
   completed: boolean;
-  dueDate?: string;
+  assignee?: {
+    name: string;
+    avatar: string;
+  };
 }
 
 export interface DiaryState {
@@ -21,7 +29,9 @@ export interface DiaryState {
   tasks: TaskItem[];
   activeTab: "diary" | "tasks";
   editingEntryId: string | null;
+  selectedEntryForDetails: DiaryEntry | null;
   searchQuery: string;
+  isAddTaskModalOpen: boolean;
 }
 
 const initialState: DiaryState = {
@@ -29,7 +39,9 @@ const initialState: DiaryState = {
   tasks: [],
   activeTab: "diary",
   editingEntryId: null,
+  selectedEntryForDetails: null,
   searchQuery: "",
+  isAddTaskModalOpen: false,
 };
 
 const diarySlice = createSlice({
@@ -57,11 +69,26 @@ const diarySlice = createSlice({
     setDiarySearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
     },
+    setSelectedEntryForDetails: (
+      state,
+      action: PayloadAction<DiaryEntry | null>,
+    ) => {
+      state.selectedEntryForDetails = action.payload;
+    },
     toggleTaskStatus: (state, action: PayloadAction<string>) => {
       const task = state.tasks.find((t) => t.id === action.payload);
       if (task) {
         task.completed = !task.completed;
       }
+    },
+    setTasks: (state, action: PayloadAction<TaskItem[]>) => {
+      state.tasks = action.payload;
+    },
+    addTask: (state, action: PayloadAction<TaskItem>) => {
+      state.tasks.unshift(action.payload);
+    },
+    setIsAddTaskModalOpen: (state, action: PayloadAction<boolean>) => {
+      state.isAddTaskModalOpen = action.payload;
     },
   },
 });
@@ -73,7 +100,11 @@ export const {
   setEditingEntryId,
   setActiveTab,
   setDiarySearchQuery,
+  setSelectedEntryForDetails,
   toggleTaskStatus,
+  setTasks,
+  addTask,
+  setIsAddTaskModalOpen,
 } = diarySlice.actions;
 
 export default diarySlice.reducer;

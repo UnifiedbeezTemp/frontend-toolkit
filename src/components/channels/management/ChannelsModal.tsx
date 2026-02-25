@@ -1,27 +1,33 @@
 "use client";
 
-import { useChannelsSettings } from "@/shared/src/components/channels/hooks/useChannelsSettings";
-import ChannelConnection from "@/shared/src/components/channels/management/ChannelConnection";
-import { RedirectModalProvider } from "@/shared/src/components/channels/context/RedirectModalContext";
-import RedirectModal from "@/shared/src/components/channels/management/RedirectModal";
-import Modal from "@/shared/src/components/modal/Modal";
-import ModalHeader from "@/shared/src/components/modal/ModalHeader";
-import Button from "@/shared/src/components/ui/Button";
+import { cn } from "../../../lib/utils";
+import SearchSection from "../../channel-selection/SearchSection";
+import CloseModalButton from "../../modal/CloseModalButton";
+import Modal from "../../modal/Modal";
+import ModalHeader from "../../modal/ModalHeader";
+import Button from "../../ui/Button";
+import Loader from "../../ui/Loader";
+import { RedirectModalProvider } from "../context/RedirectModalContext";
+import { useChannelsSettings } from "../hooks/useChannelsSettings";
+import ChannelConnection from "./ChannelConnection";
+import RedirectModal from "./RedirectModal";
 import ChannelsSection from "./sub-components/ChannelsSection";
-import CloseModalButton from "@/shared/src/components/modal/CloseModalButton";
-import SearchSection from "@/shared/src/components/channel-selection/SearchSection";
-import Loader from "@/shared/src/components/ui/Loader";
-import Text from "@/shared/src/components/ui/Text";
-import { cn } from "@/shared/src/lib/utils"; // Adjusted path
+import Text from "../../ui/Text";
 
 interface ChildProps {
   isMinimal?: boolean;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export default function ChannelsModal({ isMinimal = false }: ChildProps) {
+export default function ChannelsModal({
+  isMinimal = false,
+  isOpen: propsIsOpen,
+  onClose: propsOnClose,
+}: ChildProps) {
   const {
-    isOpen,
-    onClose,
+    isOpen: hookIsOpen,
+    onClose: hookOnClose,
     searchQuery,
     setSearchQuery,
     filter,
@@ -38,6 +44,9 @@ export default function ChannelsModal({ isMinimal = false }: ChildProps) {
     handleContinueToConnection,
     handleExitConnectionMode,
   } = useChannelsSettings();
+
+  const isOpen = propsIsOpen ?? hookIsOpen;
+  const onClose = propsOnClose ?? hookOnClose;
 
   return (
     <Modal

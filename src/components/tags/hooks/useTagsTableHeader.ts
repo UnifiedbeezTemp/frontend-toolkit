@@ -48,8 +48,6 @@ export const useTagsTableHeader = () => {
   };
 
   const handleStatusChange = (status: string) => {
-    // This could be for additional filtering like "Active/Inactive" tags if required
-    console.log("Filter status changed:", status);
     setIsFilterOpen(false);
   };
 

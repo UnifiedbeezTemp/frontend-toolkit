@@ -1,25 +1,43 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
 import {
   setDiaryEntries,
   setActiveTab,
   setDiarySearchQuery,
   setEditingEntryId,
+  setSelectedEntryForDetails,
+  toggleTaskStatus,
+  setTasks,
+  setIsAddTaskModalOpen,
   DiaryEntry,
 } from "../../../store/slices/diarySlice";
 import { generateDiaryData } from "../utils/generateDiaryData";
+import { generateTaskData } from "../utils/generateTaskData";
 import { RootState } from "../../../store";
 
 export const useDiary = () => {
   const dispatch = useAppDispatch();
-  const { entries, tasks, activeTab, searchQuery, editingEntryId } =
-    useAppSelector((state: RootState) => state.diary);
+  const {
+    entries,
+    tasks,
+    activeTab,
+    searchQuery,
+    editingEntryId,
+    selectedEntryForDetails,
+    isAddTaskModalOpen,
+  } = useAppSelector((state: RootState) => state.diary);
 
   useEffect(() => {
     if (entries.length === 0) {
       dispatch(setDiaryEntries(generateDiaryData()));
     }
   }, [dispatch, entries.length]);
+
+  useEffect(() => {
+    if (tasks.length === 0) {
+      dispatch(setTasks(generateTaskData()));
+    }
+  }, [dispatch, tasks.length]);
 
   const handleTabChange = (tab: "diary" | "tasks") => {
     dispatch(setActiveTab(tab));
@@ -29,8 +47,21 @@ export const useDiary = () => {
     dispatch(setDiarySearchQuery(query));
   };
 
+  const toggleTask = (id: string) => {
+    dispatch(toggleTaskStatus(id));
+  };
+
   const handleEditEntry = (id: string) => {
     dispatch(setEditingEntryId(id));
+    dispatch(setSelectedEntryForDetails(null));
+  };
+
+  const handleViewDetails = (entry: DiaryEntry) => {
+    dispatch(setSelectedEntryForDetails(entry));
+  };
+
+  const handleCloseDetails = () => {
+    dispatch(setSelectedEntryForDetails(null));
   };
 
   const filteredEntries = entries.filter(
@@ -46,8 +77,15 @@ export const useDiary = () => {
     activeTab,
     searchQuery,
     editingEntryId,
+    selectedEntryForDetails,
     handleTabChange,
     handleSearch,
     handleEditEntry,
+    handleViewDetails,
+    handleCloseDetails,
+    toggleTask,
+    isAddTaskModalOpen,
+    setIsAddTaskModalOpen: (open: boolean) =>
+      dispatch(setIsAddTaskModalOpen(open)),
   };
 };
