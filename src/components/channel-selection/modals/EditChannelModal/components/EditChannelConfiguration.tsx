@@ -10,6 +10,12 @@ import FollowupConfig from "./edit-channel-config/FollowupConfig";
 import PreLoader from "../../../../ui/PreLoader";
 import { ConnectionDisplayData } from "../../../../channels/connections/types";
 import { AIConfigParams } from "../../../../channel-account-ai-config/services/aiConfigService";
+import {
+  UnifiedSmartSuggestionsResponse,
+  EscalationRecommendationsResponse,
+  FollowUpRecommendationsResponse,
+  AIBehaviorRecommendationsResponse,
+} from "../../../../../services/smartSuggestionsService";
 import { AIAssistant } from "../../../../../types/aiAssistantTypes";
 
 interface EditChannelConfigurationProps {
@@ -74,15 +80,27 @@ export default function EditChannelConfiguration({
 
       <EscalationConfig
         params={params}
-        recommendations={smartSuggestionsEnabled ? recommendations : undefined}
+        recommendations={
+          smartSuggestionsEnabled
+            ? (recommendations as EscalationRecommendationsResponse)
+            : undefined
+        }
       />
       <FollowupConfig
         params={params}
-        recommendations={smartSuggestionsEnabled ? recommendations : undefined}
+        recommendations={
+          smartSuggestionsEnabled
+            ? (recommendations as FollowUpRecommendationsResponse)
+            : undefined
+        }
       />
       <BehaviorConfig
         params={params}
-        recommendations={smartSuggestionsEnabled ? recommendations : undefined}
+        recommendations={
+          smartSuggestionsEnabled
+            ? (recommendations as AIBehaviorRecommendationsResponse)
+            : undefined
+        }
       />
       <AccessConfig channel={channel} params={params} />
     </div>

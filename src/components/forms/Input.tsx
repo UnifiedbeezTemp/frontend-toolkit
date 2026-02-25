@@ -54,7 +54,15 @@ interface InputProps extends Omit<
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  type?: "text" | "email" | "password" | "number" | "tel" | "url";
+  type?:
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "tel"
+    | "url"
+    | "date"
+    | "time";
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   error?: string;
