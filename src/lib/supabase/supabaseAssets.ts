@@ -7,6 +7,8 @@ export const getAssetUrl = (path: string): string => {
 export const SUPABASE_IMAGES = {
   chatBg: "images/chat-bg.svg",
   websiteWebChat: "images/website-webchat.png",
+  cybersecurityInCloud: "website/cybersecurity-in-cloud.png",
+  aiAutomationEngine: "website/ai-automation-engine.png",
   avatar: "images/avatar.png",
   investorXWebsiteImage: "images/beehive-hero-img.png",
   beehiveImg: "images/beehive-img.png",
