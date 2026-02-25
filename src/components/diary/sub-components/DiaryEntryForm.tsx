@@ -65,7 +65,7 @@ export default function DiaryEntryForm() {
           className="bg-input-filled"
         />
 
-        <div className="flex items-center justify-between mt-[1.6rem]">
+        <div className="flex flex-col gap-[1rem] sm:flex-row sm:items-center justify-between mt-[1.6rem]">
           <DiaryEntryActions
             tagsRef={tagsRef}
             moodRef={moodRef}
@@ -78,7 +78,7 @@ export default function DiaryEntryForm() {
           <Button
             onClick={handleSave}
             disabled={!isValid}
-            className="w-fit ml-auto flex items-center gap-[1rem]"
+            className="w-full sm:w-fit sm:ml-auto flex items-center gap-[1rem] bg-success border-succcess"
           >
             <SaveIcon size={16} color="white" />
             <span className="text-[1.4rem]">

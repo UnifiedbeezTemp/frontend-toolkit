@@ -32,6 +32,7 @@ export interface DiaryState {
   selectedEntryForDetails: DiaryEntry | null;
   searchQuery: string;
   isAddTaskModalOpen: boolean;
+  groupBy: "date" | "mood" | "alphabetical";
 }
 
 const initialState: DiaryState = {
@@ -42,6 +43,7 @@ const initialState: DiaryState = {
   selectedEntryForDetails: null,
   searchQuery: "",
   isAddTaskModalOpen: false,
+  groupBy: "date",
 };
 
 const diarySlice = createSlice({
@@ -90,6 +92,12 @@ const diarySlice = createSlice({
     setIsAddTaskModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isAddTaskModalOpen = action.payload;
     },
+    setDiaryGroupBy: (
+      state,
+      action: PayloadAction<"date" | "mood" | "alphabetical">,
+    ) => {
+      state.groupBy = action.payload;
+    },
   },
 });
 
@@ -105,6 +113,7 @@ export const {
   setTasks,
   addTask,
   setIsAddTaskModalOpen,
+  setDiaryGroupBy,
 } = diarySlice.actions;
 
 export default diarySlice.reducer;

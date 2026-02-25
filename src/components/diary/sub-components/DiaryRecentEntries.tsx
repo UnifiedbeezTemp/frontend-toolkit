@@ -7,7 +7,11 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import Input from "../../forms/Input";
 import DiaryEntryItem from "./DiaryEntryItem";
 
-export default function DiaryRecentEntries() {
+interface Props {
+  limit?: number;
+}
+
+export default function DiaryRecentEntries({ limit }: Props) {
   const { entries, searchQuery, handleSearch } = useDiary();
   const supabaseIcons = useSupabaseIcons();
 
@@ -35,7 +39,7 @@ export default function DiaryRecentEntries() {
               }
             />
           </div>
-{/* 
+          {/* 
           <button className="flex items-center gap-2 px-[1.2rem] py-[0.8rem] border border-input-stroke rounded-lg hover:bg-input-filled transition-colors">
             <span className="text-[1.4rem] font-medium text-text-primary">
               Group by: <span className="font-bold">Date</span>
@@ -51,16 +55,17 @@ export default function DiaryRecentEntries() {
         </div>
       </div>
 
-      {/* List */}
       <div className="flex flex-col border-b last:border-0 border-input-stroke overflow-hidden">
         {entries?.length > 0 ? (
-          entries?.map((entry, index) => (
-            <DiaryEntryItem
-              key={entry.id}
-              entry={entry}
-              isLast={index === entries?.length - 1}
-            />
-          ))
+          (limit ? entries.slice(0, limit) : entries).map(
+            (entry, index, array) => (
+              <DiaryEntryItem
+                key={entry.id}
+                entry={entry}
+                isLast={index === array.length - 1}
+              />
+            ),
+          )
         ) : (
           <div className="py-12 text-center text-text-primary/50 text-[1.4rem]">
             No diary entries found.

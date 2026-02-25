@@ -10,7 +10,7 @@ import MiBook from "../../assets/icons/MiBook";
 import TaskList from "./sub-components/TaskList";
 import AddTaskModal from "./modals/AddTaskModal";
 
-export default function Diary() {
+export default function Diary({ limit }: { limit?: number }) {
   const {
     activeTab,
     handleTabChange,
@@ -58,7 +58,7 @@ export default function Diary() {
         {activeTab === "diary" ? (
           <div className="flex flex-col gap-[1rem]">
             <DiaryEntryForm />
-            <DiaryRecentEntries />
+            <DiaryRecentEntries limit={limit} />
           </div>
         ) : (
           <TaskList />

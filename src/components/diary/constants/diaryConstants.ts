@@ -47,3 +47,16 @@ export const TASK_ASSIGNEES = [
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
   },
 ];
+
+export const TASK_VIEW_FILTERS = [
+  { label: "Total Task", value: "all" },
+  { label: "In Progress", value: "in-progress" },
+  { label: "Completed Tasks", value: "completed" },
+  { label: "To-Do Tasks", value: "to-do" },
+] as const;
+
+export const TASK_GROUP_OPTIONS = [
+  { label: "Status", value: "status" },
+  { label: "Priority", value: "priority" },
+  { label: "Date", value: "date" },
+] as const;
