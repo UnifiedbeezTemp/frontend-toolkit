@@ -20,7 +20,7 @@ export default function AutomationTypeSelect({
             type === automationType
               ? "text-text-primary border-input-stroke shadow bg-white"
               : "text-inactive-color border-transparent"
-          } text-[14px] border rounded-[0.8rem] text-[1.4rem] transition-all duration-300 leading-[2.7rem] font-[700] py-[0.5rem] px-[1.6rem] shrink-0`}
+          } text-[1.4rem] border rounded-[0.8rem] text-[1.4rem] transition-all duration-300 leading-[2.7rem] font-[700] py-[0.5rem] px-[1.6rem] shrink-0`}
           key={idx}
           onClick={() => setAutomationType(type)}
         >

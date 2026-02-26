@@ -8,6 +8,8 @@ import Image from "next/image";
 import AutomationHeaderDropdown from "./AutomationHeaderDropdown";
 import AutomationHeaderFilterDropdown from "./AutomationHeaderFilterDropdown";
 
+import { useAutomationRedirection } from "../hooks/useAutomationRedirection";
+
 interface AutomationTableHeaderProps {
   automationType: string;
 }
@@ -17,6 +19,7 @@ export default function AutomationTableHeader({
 }: AutomationTableHeaderProps) {
   const { searchQuery, handleSearchChange, supabaseIcons } =
     useAutomationTableHeader();
+  const { handleRedirection } = useAutomationRedirection();
 
   return (
     <div className="flex flex-col sm:flex-row gap-[2.2rem] sm:items-center justify-between px-[1.6rem] py-[0.8rem]">
@@ -29,22 +32,32 @@ export default function AutomationTableHeader({
         </p>
       </div>
 
-      <div className="flex items-center gap-[10px]">
-        <Input
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder="Search contacts"
-          className="placeholder:text-inactive-color py-[1rem] px-[1.4rem] pl-[4rem] placeholder:text-[1.4rem] text-[1.4rem]"
-          leftIcon={
-            <Image
-              alt="search"
-              src={supabaseIcons.searchIg}
-              width={20}
-              height={20}
-              className="object-cover"
-            />
-          }
-        />
+      <div className="flex items-center gap-[10px] w-full sm:w-auto">
+        <Button
+          size="sm"
+          className="whitespace-nowrap px-[1.6rem] py-[1rem] h-full flex items-center gap-[.5rem]"
+          onClick={() => handleRedirection(automationType)}
+        >
+          <span className="">+</span>
+          <span className="hidden sm:inline">New Automation</span>
+        </Button>
+        <div className="flex-1 sm:flex-initial">
+          <Input
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Search contacts"
+            className="placeholder:text-inactive-color py-[1rem] px-[1.4rem] pl-[4rem] placeholder:text-[1.4rem] text-[1.4rem] w-full"
+            leftIcon={
+              <Image
+                alt="search"
+                src={supabaseIcons.searchIg}
+                width={20}
+                height={20}
+                className="object-cover"
+              />
+            }
+          />
+        </div>
 
         <div className="flex items-center gap-2">
           <AutomationHeaderFilterDropdown />
