@@ -39,7 +39,7 @@ export default function AutomationTableHeader({
           onClick={() => handleRedirection(automationType)}
         >
           <span className="">+</span>
-          <span className="hidden sm:inline">New Automation</span>
+          <span className="hidden sm:block">New Automation</span>
         </Button>
         <div className="flex-1 sm:flex-initial">
           <Input
