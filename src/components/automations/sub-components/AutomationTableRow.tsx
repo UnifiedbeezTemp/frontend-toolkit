@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import {
   Automation,
@@ -10,6 +9,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
 import Checkbox from "../../ui/CheckBox";
 import ImageComponent from "../../ui/ImageComponent";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import { useRouter } from "next/navigation";
 
 interface AutomationTableRowProps {
   automation: Automation;
@@ -21,10 +22,19 @@ export default function AutomationTableRow({
   isLast,
 }: AutomationTableRowProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const selectedAutomations = useAppSelector(
     (state) => state.automation.selectedAutomations,
   );
   const isSelected = selectedAutomations.includes(automation.id);
+  const supabaseIcons = useSupabaseIcons();
+
+  const handleEdit = () => {
+    const baseUrl = process.env.NEXT_PUBLIC_AUTOMATIONS_LIBRARY_URL || "";
+    if (baseUrl) {
+      router.push(`${baseUrl}/automations/${automation.id}`);
+    }
+  };
 
   return (
     <tr className={isLast ? "" : "border-b border-border"}>
@@ -54,7 +64,7 @@ export default function AutomationTableRow({
           className={`px-[0.8rem] py-[0.2rem] rounded-full text-[1.1rem] font-medium ${
             automation.status === "active"
               ? "bg-success/10 text-success"
-              : "bg-inactive-color/10 text-inactive-color"
+              : "bg-destructive/10 text-destructive"
           }`}
         >
           {automation.status.charAt(0).toUpperCase() +
@@ -72,40 +82,29 @@ export default function AutomationTableRow({
       </td>
       <td className="py-4 px-4 text-center">
         <div className="flex items-center justify-center gap-2">
-          <button className="p-2 hover:bg-brand-primary/10 rounded-lg transition-colors">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-              <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-            </svg>
+          <button
+            onClick={handleEdit}
+            className="p-2 hover:bg-brand-primary/10 rounded-lg transition-colors"
+          >
+            <Image
+              alt={"edit"}
+              src={supabaseIcons.editPen}
+              width={20}
+              height={20}
+              className="object-cover"
+            />
           </button>
           <button
             onClick={() => dispatch(deleteAutomation(automation.id))}
             className="p-2 hover:bg-destructive/10 rounded-lg transition-colors text-destructive"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              <line x1="10" y1="11" x2="10" y2="17"></line>
-              <line x1="14" y1="11" x2="14" y2="17"></line>
-            </svg>
+            <Image
+              alt={"delete"}
+              src={supabaseIcons.trashRed}
+              width={20}
+              height={20}
+              className="object-cover"
+            />
           </button>
         </div>
       </td>
