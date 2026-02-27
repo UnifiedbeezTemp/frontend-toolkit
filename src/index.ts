@@ -5,5 +5,6 @@ export { default as PlanSelectionRequiredModal } from "./components/plan-selecti
 export { default as PlanCardSkeleton } from "./components/full-plan-card/PlanCardSkeleton";
 export { default as PlanCard } from "./components/full-plan-card/PlanCard";
 export { default as PlanSelectionTabs } from "./components/plan-selection/tabs/PlanSelectionTabs";
+export { default as PaymentConfirmationModal } from "./components/plan-selection/modals/PaymentConfirmationModal";
 export { getPlansData } from "./data/plansData";
 export { useAddonsAccess } from "./hooks/useAddonsAccess";

@@ -28,9 +28,13 @@ export const accountSetupService = {
     return await api.post("/auth/phone/send-verification", { phone });
   },
 
-  async selectPlan(planType: string): Promise<ProfileSetupResponse> {
-    return await api.post("/auth/setup/plan", {
+  async selectPlan(
+    planType: string,
+    billingInterval: "MONTHLY" | "YEARLY" = "MONTHLY",
+  ): Promise<ProfileSetupResponse> {
+    return await api.post("/auth/setup/trial", {
       planType: planType.toUpperCase(),
+      billingInterval,
     });
   },
 

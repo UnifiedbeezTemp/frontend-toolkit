@@ -17,6 +17,7 @@ import PlanPreviewModal from "./components/PlanPreviewModal";
 import PlanPreviewAddons from "./components/PlanPreviewAddons";
 import PlanPreviewPricing from "./components/PlanPreviewPricing";
 import ComparisonModal from "../comparison-table/ComparisonModal";
+import { useUser } from "../../contexts/UserContext";
 
 export default function PlanCardPreview({
   isAddons,
@@ -27,10 +28,14 @@ export default function PlanCardPreview({
   enableReturnTo = false,
   onSelectPlan,
 }: PlanCardPreviewProps) {
+  const { user } = useUser();
+  const effectiveIsYearly =
+    user?.planBillingInterval === "YEARLY" ? true : isYearly;
+
   const { plan: backendPlan, loading, error, retry } = usePlan({ planType });
   const { plan, displayPrice, monthlyPrice } = useCheckoutPlan({
     backendPlan,
-    isYearly,
+    isYearly: effectiveIsYearly,
   });
   const icons = useSupabaseIcons();
 
@@ -56,7 +61,7 @@ export default function PlanCardPreview({
     plan,
     selectedAddons,
     monthlyPrice,
-    isYearly,
+    isYearly: effectiveIsYearly,
     enableReturnTo,
     onSelectPlan,
   });
@@ -186,7 +191,7 @@ export default function PlanCardPreview({
         <PlanPreviewPricing
           totalPrice={totalPrice}
           addonsTotal={addonsTotal}
-          isYearly={isYearly}
+          isYearly={effectiveIsYearly}
           isOneSided={isOneSided}
           planType={planType}
           isMenuOpen={isMenuOpen}
@@ -201,7 +206,7 @@ export default function PlanCardPreview({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         plan={plan}
-        isYearly={isYearly}
+        isYearly={effectiveIsYearly}
         totalPrice={totalPrice}
         onAddonsClick={() => handleAddonsClick(planType)}
         onSelect={handleUpgradeClick}

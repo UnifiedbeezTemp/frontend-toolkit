@@ -188,7 +188,7 @@ export const useAddons = (planType?: string) => {
   const handleContinueToCheckout = useCallback(
     (selectedAddons: Addon[]) => {
       if (selectedAddons.length > 0) {
-        if (user?.trialInfo) {
+        if (user?.paymentMethod) {
           if (!hasChanges) {
             router.back();
             return;
@@ -197,7 +197,7 @@ export const useAddons = (planType?: string) => {
         handleOpenCheckoutModal();
       }
     },
-    [handleOpenCheckoutModal, user?.trialInfo, hasChanges, router],
+    [handleOpenCheckoutModal, user?.paymentMethod, hasChanges, router],
   );
 
   const getTotalPrice = useCallback((selectedAddons: Addon[]) => {
