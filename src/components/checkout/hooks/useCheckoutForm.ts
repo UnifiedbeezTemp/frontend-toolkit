@@ -15,7 +15,9 @@ export type CheckoutFormData = z.infer<typeof CHECKOUT_FORM_SCHEMA>;
 
 const CHECKOUT_STORAGE_KEY = "unifiedbeez_checkout_data";
 
-export const useCheckoutForm = () => {
+export const useCheckoutForm = ({
+  isYearly = false,
+}: { isYearly?: boolean } = {}) => {
   const [clientSecret, setClientSecret] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [trialEndsAt, setTrialEndsAt] = useState<string>("");
@@ -65,7 +67,7 @@ export const useCheckoutForm = () => {
   }, [watchedValues, isReady]);
 
   const onSubmit = async (data: CheckoutFormData) => {
-    const planType = user?.plan?.toUpperCase();
+    const planType = user?.plan?.toUpperCase() as StartTrialPayload["planType"];
 
     if (!planType) {
       showToast({
@@ -90,7 +92,8 @@ export const useCheckoutForm = () => {
 
     try {
       const payload: StartTrialPayload = {
-        planType: planType,
+        planType,
+        billingInterval: isYearly ? "YEARLY" : "MONTHLY",
       };
 
       const response = await authService.confirmTrialStart(payload);

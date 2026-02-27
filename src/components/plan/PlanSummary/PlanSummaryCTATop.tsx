@@ -13,6 +13,8 @@ import PlanSummaryContainer from "./PlanSummaryContainer";
 import PlanSummarySkeleton from "./PlanSummarySkeleton";
 import PlanTag from "./PlanTag";
 
+import { useUser } from "../../../contexts/UserContext";
+
 export default function PlanSummaryCTATop({
   plan,
   isOwnPlan,
@@ -20,20 +22,29 @@ export default function PlanSummaryCTATop({
   isLoading,
   isUpgradePlanDisabled,
   onAddonsClick = () => {},
-  onSelect = () => {}
+  onSelect = () => {},
 }: PlanSummaryCardProps) {
-  const icons = useSupabaseIcons()
-  const { value: showDetails, setFalse: handleClose, setTrue: handleOpen } = useToggle()
+  const icons = useSupabaseIcons();
+  const { user } = useUser();
+  const {
+    value: showDetails,
+    setFalse: handleClose,
+    setTrue: handleOpen,
+  } = useToggle();
+
+  const isYearly = user?.planBillingInterval === "YEARLY";
+  const totalPrice = isYearly ? plan.yearlyPriceEur || 0 : plan.priceEur;
+
   if (isLoading) return <PlanSummarySkeleton />;
   return (
     <>
-      <PlanPreviewModal 
-        isOpen={showDetails} 
-        onClose={handleClose} 
-        plan={getPlansData([plan], icons)[0]} 
-        isYearly={false} 
-        totalPrice={plan.priceEur} 
-        onAddonsClick={onAddonsClick} 
+      <PlanPreviewModal
+        isOpen={showDetails}
+        onClose={handleClose}
+        plan={getPlansData([plan], icons)[0]}
+        isYearly={isYearly}
+        totalPrice={totalPrice}
+        onAddonsClick={onAddonsClick}
         onSelect={onSelect}
       />
       <PlanSummaryContainer className={className}>
@@ -56,7 +67,11 @@ export default function PlanSummaryCTATop({
                     <PlanTag plan={plan} isOwnPlan={isOwnPlan} />
                   </div>
                 </div>
-                <PlanPricingAndInterval plan={plan} />
+                <PlanPricingAndInterval
+                  plan={plan}
+                  isYearly={isYearly}
+                  price={totalPrice}
+                />
               </div>
               <div className="hidden md:block">
                 <PlanSummaryActions
