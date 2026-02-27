@@ -69,7 +69,7 @@ export const useCheckoutModal = ({
   }, [selectedAddons]);
 
   const { user } = useUser();
-  const hasTrialInfo = !!user?.trialInfo;
+  const hasTrialInfo = !!user?.paymentMethod;
 
   const handleConfirmPurchase = useCallback(async () => {
     if (selectedAddons.length === 0) return;
