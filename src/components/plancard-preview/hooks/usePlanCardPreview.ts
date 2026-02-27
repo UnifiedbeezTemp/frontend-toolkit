@@ -126,14 +126,17 @@ export const usePlanCardPreview = ({
     }, 0);
   }, [addonsToUse]);
 
-  const totalPrice = calculateTotalWithAddons(
-    monthlyPrice,
-    addonsTotal,
-    isYearly,
-  );
+  const yearlyPriceEur = plan?.originalPlan?.yearlyPriceEur;
+
   const displayPrice = isYearly
-    ? Math.floor(monthlyPrice * 12 * 0.85)
+    ? yearlyPriceEur
+      ? yearlyPriceEur
+      : Math.floor(monthlyPrice * 12 * 0.85)
     : monthlyPrice;
+
+  const totalPrice = isYearly
+    ? displayPrice + addonsTotal * 12
+    : displayPrice + addonsTotal;
 
   const isHighestPlan =
     plan?.originalPlan?.planType?.toLowerCase() === "organisation";

@@ -6,6 +6,7 @@ export interface OriginalPlan {
   maxWhatsappChannels: number;
   supportLevel: string;
   priceEur: number;
+  yearlyPriceEur: number;
   hasFacebookMessenger: boolean;
   hasLinkedinMessenger: boolean;
   hasTelegram: boolean;
@@ -29,7 +30,7 @@ export interface OriginalPlan {
   createdAt: string;
   updatedAt: string;
   name: string;
-  addons: []
+  addons: [];
 }
 
 export interface Plan {
@@ -39,6 +40,7 @@ export interface Plan {
   tag: React.ReactNode;
   badge: React.ReactNode;
   monthlyPrice: number;
+  yearlyPrice: number;
   addonAvailable: boolean;
   availableFeatures: string[];
   unAvailableFeatures: string[];

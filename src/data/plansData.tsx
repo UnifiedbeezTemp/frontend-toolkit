@@ -112,12 +112,12 @@ export const transformOriginalPlan = (
     ...(originalPlan.hasCrmCalendarSync
       ? ["CRM / Calendar Sync: Included"]
       : planType === "business"
-        ? ["CRM / Calendar Sync: Optional ( £20/month )"]
+        ? ["CRM / Calendar Sync:  £25/month - Optional"]
         : []),
     ...(originalPlan.hasEcommercePack
       ? ["E-commerce Pack: Included"]
       : planType === "business"
-        ? ["Ecommerce Pack: Optional ( £25/month )"]
+        ? ["Ecommerce Pack: £25/month - Optional"]
         : []),
     ...(originalPlan.canPurchaseAddons ? ["Add-Ons: Allowed"] : []),
   ];
@@ -139,6 +139,7 @@ export const transformOriginalPlan = (
     tag: config.tag,
     badge: config.badge,
     monthlyPrice: originalPlan.priceEur / 100,
+    yearlyPrice: (originalPlan.yearlyPriceEur || 0) / 100,
     addonAvailable: originalPlan.canPurchaseAddons,
     availableFeatures,
     unAvailableFeatures,

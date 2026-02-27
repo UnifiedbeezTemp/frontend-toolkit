@@ -1,6 +1,7 @@
 import { BusinessObjective } from "./businessObjectiveTypes";
 import { BusinessGoal } from "./businessGoalTypes";
 import { UserWebsite } from "./websiteTypes";
+import { PaymentMethodData } from "../api/services/auth/types";
 
 export interface UserProfile {
   id: string;
@@ -21,6 +22,8 @@ export interface UserProfile {
   businessOverview?: string;
   businessLogo?: string;
   billing_cycle?: string;
+  planBillingInterval?: "MONTHLY" | "YEARLY";
+  paymentMethod?: PaymentMethodData | null;
   businessFiles?: Array<{
     id: number;
     originalName: string;
