@@ -2,7 +2,10 @@
 
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../store/hooks/useRedux";
-import { setAutomations } from "../../../store/slices/automationSlice";
+import {
+  setAutomations,
+  setSelectedType,
+} from "../../../store/slices/automationSlice";
 import { Automation } from "../../../store/slices/automationSlice";
 
 import { useSupabaseImages } from "../../../lib/supabase/useSupabase";
@@ -15,5 +18,6 @@ export const useAutomations = (automationType: string) => {
   useEffect(() => {
     const data = generateAutomationsData(icons);
     dispatch(setAutomations(data));
+    dispatch(setSelectedType(automationType));
   }, [dispatch, automationType, icons]);
 };

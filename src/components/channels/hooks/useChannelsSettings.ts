@@ -1,9 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
-import { useChannelsQuery } from "@/shared/src/components/channel-selection/hooks/useChannelsQuery";
-import { ChannelsApiResponse } from "@/shared/src/types/channelApiTypes";
-import { useChannelConnectionToast } from "@/shared/src/components/channels/hooks/useChannelConnectionToast";
-import { useUpdateChannelsInRedux } from "@/shared/src/components/channels/hooks/useUpdateChannelsInRedux";
 import { useChannels } from "../context/ChannelsContext";
+import { ChannelsApiResponse } from "../../../types/channelApiTypes";
+import { useChannelsQuery } from "../../channel-selection/hooks/useChannelsQuery";
+import { useChannelConnectionToast } from "./useChannelConnectionToast";
+import { useUpdateChannelsInRedux } from "./useUpdateChannelsInRedux";
 
 const STORAGE_KEY = "channels_settings_state";
 
