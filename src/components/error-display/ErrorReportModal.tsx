@@ -13,12 +13,13 @@ export default function ErrorReportModal({
   onSubmit,
   isSubmitting,
   iconSrc,
+  icon,
 }: ErrorReportModalProps) {
   return (
     <ErrorModalLayout
       isOpen={isOpen}
       onClose={onClose}
-      icon={<ErrorIcon iconSrc={iconSrc} size="sm" />}
+      icon={icon || <ErrorIcon iconSrc={iconSrc ?? ""} size="sm" />}
       closeOnOverlayClick={true}
     >
       <ModalContent
