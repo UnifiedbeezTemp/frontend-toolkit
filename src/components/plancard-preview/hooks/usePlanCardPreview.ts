@@ -74,7 +74,12 @@ export const usePlanCardPreview = ({
       }
       const baseUrl = enableReturnTo ? process.env.NEXT_PUBLIC_BASE || "" : "";
       const queryString = params.toString();
-      router.push(`${baseUrl}/addons${queryString ? `?${queryString}` : ""}`);
+      const url = `${baseUrl}/addons${queryString ? `?${queryString}` : ""}`;
+      if (baseUrl || enableReturnTo) {
+        window.location.href = url;
+      } else {
+        router.push(url);
+      }
     } else {
       setIsAddonsModalOpen(true);
     }
@@ -84,7 +89,7 @@ export const usePlanCardPreview = ({
     if (enableReturnTo && typeof window !== "undefined") {
       const fullUrl = window.location.href;
       const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
-      router.push(`${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`);
+      window.location.href = `${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`;
     } else {
       router.push("/plans");
     }
@@ -112,7 +117,7 @@ export const usePlanCardPreview = ({
       if (enableReturnTo && typeof window !== "undefined") {
         const fullUrl = window.location.href;
         const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
-        router.push(`${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`);
+        window.location.href = `${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`;
       } else {
         router.push("/plans");
       }
