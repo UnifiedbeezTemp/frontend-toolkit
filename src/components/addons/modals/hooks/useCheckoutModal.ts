@@ -42,9 +42,13 @@ export const useCheckoutModal = ({
 
   const { addons: availableAddons } = useAddonsPage();
 
-  const calculateAddonPrice = useCallback((addon: Addon): number => {
-    return addon.price * (addon.used || 1);
-  }, []);
+  const calculateAddonPrice = useCallback(
+    (addon: Addon): number => {
+      const basePrice = addon.price * (addon.used || 1);
+      return isYearly ? basePrice * 12 : basePrice;
+    },
+    [isYearly],
+  );
 
   const subtotalAddons = useMemo(() => {
     return selectedAddons?.reduce((total, addon) => {
@@ -112,7 +116,7 @@ export const useCheckoutModal = ({
 
     if (!hasChanged) {
       handleCloseCheckoutModal();
-      router.back();
+      window.history.back();
       return;
     }
 
@@ -164,7 +168,7 @@ export const useCheckoutModal = ({
 
       sessionStorage.removeItem("unifiedbeez_checkout_addons");
       handleCloseCheckoutModal();
-      router.back();
+      window.history.back();
     } catch (error) {
       console.error("Update failed", error);
       showToast({

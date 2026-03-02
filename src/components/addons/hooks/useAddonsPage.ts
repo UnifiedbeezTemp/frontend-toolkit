@@ -12,7 +12,7 @@ export const useAddonsPage = () => {
   const planType = user?.plan?.toUpperCase();
   const isYearly =
     searchParams.get("isYearly") === "true" ||
-    user?.billing_cycle?.toLowerCase() === "yearly";
+    user?.planBillingInterval === "YEARLY";
 
   const {
     addons: rawAddons,
@@ -22,7 +22,7 @@ export const useAddonsPage = () => {
     isFetching,
   } = useAvailableAddons();
 
-  const addonsHook = useAddons(planType);
+  const addonsHook = useAddons(planType, isYearly);
 
   const addons = rawAddons.filter(
     (addon) =>
