@@ -26,7 +26,9 @@ export const useAddonsPage = () => {
 
   const addons = rawAddons.filter(
     (addon) =>
-      !addonsHook.selectedAddons.some((selected) => selected.id === addon.id),
+      !addonsHook.selectedAddons.some(
+        (selected) => selected.addonType === addon.addonType,
+      ),
   );
 
   const handleContinue = () => {
