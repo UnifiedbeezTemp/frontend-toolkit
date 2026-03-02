@@ -185,6 +185,7 @@ export default function PlanCardPreview({
             addonsTotal={addonsTotal}
             selectedAddons={addonsToUse}
             onAddonsClick={() => handleAddonsClick(planType)}
+            isYearly={effectiveIsYearly}
           />
         </div>
 

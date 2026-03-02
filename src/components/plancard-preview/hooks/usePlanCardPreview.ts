@@ -121,10 +121,11 @@ export const usePlanCardPreview = ({
 
   const addonsTotal = useMemo(() => {
     if (!addonsToUse || addonsToUse.length === 0) return 0;
-    return addonsToUse.reduce((total, addon) => {
+    const monthlyTotal = addonsToUse.reduce((total, addon) => {
       return total + addon.price * (addon.used || 1);
     }, 0);
-  }, [addonsToUse]);
+    return isYearly ? monthlyTotal * 12 : monthlyTotal;
+  }, [addonsToUse, isYearly]);
 
   const yearlyPriceEur = plan?.originalPlan?.yearlyPriceEur;
 
@@ -134,9 +135,7 @@ export const usePlanCardPreview = ({
       : Math.floor(monthlyPrice * 12 * 0.85)
     : monthlyPrice;
 
-  const totalPrice = isYearly
-    ? displayPrice + addonsTotal * 12
-    : displayPrice + addonsTotal;
+  const totalPrice = displayPrice + addonsTotal;
 
   const isHighestPlan =
     plan?.originalPlan?.planType?.toLowerCase() === "organisation";

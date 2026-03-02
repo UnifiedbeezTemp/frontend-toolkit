@@ -20,7 +20,7 @@ import {
 } from "../../../store/onboarding/slices/addonSlice";
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 
-export const useAddons = (planType?: string) => {
+export const useAddons = (planType?: string, isYearly?: boolean) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const addonState = useSelector((state: RootState) => state.addons);
@@ -162,8 +162,8 @@ export const useAddons = (planType?: string) => {
   }, [dispatch]);
 
   const handleBackNavigation = useCallback(() => {
-    router.back();
-  }, [router]);
+    window.history.back();
+  }, []);
 
   const { user } = useUser();
 
@@ -190,7 +190,7 @@ export const useAddons = (planType?: string) => {
       if (selectedAddons.length > 0) {
         if (user?.paymentMethod) {
           if (!hasChanges) {
-            router.back();
+            window.history.back();
             return;
           }
         }
@@ -200,11 +200,15 @@ export const useAddons = (planType?: string) => {
     [handleOpenCheckoutModal, user?.paymentMethod, hasChanges, router],
   );
 
-  const getTotalPrice = useCallback((selectedAddons: Addon[]) => {
-    return selectedAddons.reduce((total, addon) => {
-      return total + addon.price * (addon.used || 1);
-    }, 0);
-  }, []);
+  const getTotalPrice = useCallback(
+    (selectedAddons: Addon[]) => {
+      return selectedAddons.reduce((total, addon) => {
+        const base = addon.price * (addon.used || 1);
+        return total + (isYearly ? base * 12 : base);
+      }, 0);
+    },
+    [isYearly],
+  );
 
   const canAddMore = useCallback((addon: Addon, currentQuantity: number) => {
     return currentQuantity < addon.limit;
