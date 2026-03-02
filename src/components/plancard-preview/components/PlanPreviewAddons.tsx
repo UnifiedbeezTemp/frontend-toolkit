@@ -31,6 +31,7 @@ export default function PlanPreviewAddons({
 
   return (
     <div className="mt-[3rem] sm:mt-[5rem]">
+
       <Button
         variant="secondary"
         onClick={onAddonsClick}
@@ -57,6 +58,7 @@ export default function PlanPreviewAddons({
           </div>
         ))}
       </div>
+      
     </div>
   );
 }
