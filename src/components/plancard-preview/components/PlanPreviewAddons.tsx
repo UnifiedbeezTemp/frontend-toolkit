@@ -38,7 +38,7 @@ export default function PlanPreviewAddons({
         className="text-[1.3rem] font-[700] border-border bg-primary transition-all hover:scale-98 border rounded-[.3rem] px-[0.6rem] py-[.3rem]"
       >
         Add-ons{" "}
-        {addonsTotal > 0 ? `£${addonsTotal}${isYearly ? "/yr" : "/mo"}` : ""}
+        {addonsTotal > 0 ? `£${addonsTotal}` : ""}
       </Button>
 
       <div className="flex flex-wrap items-center mt-[1rem] gap-[1rem]">
@@ -58,7 +58,7 @@ export default function PlanPreviewAddons({
           </div>
         ))}
       </div>
-      
+
     </div>
   );
 }
