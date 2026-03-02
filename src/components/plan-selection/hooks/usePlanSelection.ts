@@ -92,8 +92,8 @@ export const usePlanSelection = () => {
             variant: "success",
           });
 
-          // Redirect back for existing users
-          router.back();
+          // so the page fully reloads and refetches fresh data
+          window.history.back();
         } else {
           // USER HAS NO CARD: Use trial activation (redirects to checkout)
           await accountSetupService.selectPlan(selectedPlan, billingInterval);
@@ -183,13 +183,12 @@ export const usePlanSelection = () => {
 
         // Only show warning if it's strictly NOT an upgrade (i.e., a downgrade)
         if (previewResponse && !previewResponse.isUpgrade) {
-          // If the plan is the same but we are upgrading from Monthly to Yearly, skip downgrade warning
-          const isIntervalUpgrade =
+          // If the plan is the same but only the billing interval changed, skip downgrade warning
+          const isIntervalChangeOnly =
             currentPlanId === targetPlanId &&
-            user?.planBillingInterval === "MONTHLY" &&
-            targetBillingInterval === "YEARLY";
+            user?.planBillingInterval !== targetBillingInterval;
 
-          if (!isIntervalUpgrade) {
+          if (!isIntervalChangeOnly) {
             setPendingOnSuccess(() => onSuccess);
             setShowDowngradeWarning(true);
             setIsSelecting(false);
