@@ -33,6 +33,8 @@ export const useAddonsPage = () => {
     addonsHook.handleContinueToCheckout(addonsHook.selectedAddons);
   };
 
+  const returnTo = searchParams.get("returnTo");
+
   return {
     backendPlan: null,
     planType,
@@ -47,5 +49,6 @@ export const useAddonsPage = () => {
     ...addonsHook,
 
     handleContinue,
+    returnTo,
   };
 };

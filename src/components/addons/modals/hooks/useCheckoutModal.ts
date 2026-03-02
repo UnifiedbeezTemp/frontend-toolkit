@@ -30,7 +30,7 @@ export const useCheckoutModal = ({
   const { refetch: refetchUser } = useUser();
   const { purchasedAddons, refetch: refetchPurchased } = usePurchasedAddons();
 
-  const { handleCloseCheckoutModal } = useAddonsPage();
+  const { handleCloseCheckoutModal, returnTo } = useAddonsPage();
 
   const { plan: backendPlan } = usePlan({ planType });
   const { displayPrice: planFee } = useCheckoutPlan({
@@ -116,7 +116,11 @@ export const useCheckoutModal = ({
 
     if (!hasChanged) {
       handleCloseCheckoutModal();
-      window.history.back();
+      if (returnTo) {
+        window.location.href = decodeURIComponent(returnTo);
+      } else {
+        window.history.back();
+      }
       return;
     }
 
@@ -168,7 +172,11 @@ export const useCheckoutModal = ({
 
       sessionStorage.removeItem("unifiedbeez_checkout_addons");
       handleCloseCheckoutModal();
-      window.history.back();
+      if (returnTo) {
+        window.location.href = decodeURIComponent(returnTo);
+      } else {
+        window.history.back();
+      }
     } catch (error) {
       console.error("Update failed", error);
       showToast({
