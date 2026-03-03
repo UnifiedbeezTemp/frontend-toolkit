@@ -9,6 +9,8 @@ export const SUPABASE_IMAGES = {
   websiteWebChat: "images/website-webchat.png",
   cybersecurityInCloud: "website/cybersecurity-in-cloud.png",
   aiAutomationEngine: "website/ai-automation-engine.png",
+  aiPowered: "website/ai-powered.png",
+  aiPoweredMobile: "website/ai-powered-mobile.png",
   avatar: "images/avatar.png",
   investorXWebsiteImage: "images/beehive-hero-img.png",
   beehiveImg: "images/beehive-img.png",
