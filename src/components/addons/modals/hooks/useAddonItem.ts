@@ -16,17 +16,19 @@ export const useAddonItem = ({
   purchasedQuantity = 0,
 }: UseAddonItemProps) => {
   const icons = useSupabaseIcons();
-  const canIncrease = (addon.used || 1) < addon.limit;
+  const isLimitReached = (addon.used || 1) >= addon.limit;
+  const canIncrease = !isLimitReached;
+  const isDestructive = (isLimitReached || !!errorText) && addon.limit !== 1;
 
   const getButtonIcons = useCallback(
     (type: "plus" | "minus") => {
-      if ((!canIncrease && type === "plus") || errorText) {
+      if ((isDestructive && type === "plus") || errorText) {
         return type === "plus" ? icons.plusRed : icons.minusRed;
       }
       return type === "plus" ? icons.plus : icons.minus;
     },
     [
-      canIncrease,
+      isDestructive,
       icons.plusRed,
       icons.minusRed,
       icons.plus,
@@ -36,9 +38,9 @@ export const useAddonItem = ({
   );
 
   const buttonVariant =
-    !canIncrease || errorText ? "dangerReverse" : "secondary";
+    isDestructive || errorText ? "dangerReverse" : "secondary";
   const textColor =
-    !canIncrease || errorText ? "text-destructive" : "text-text-secondary";
+    isDestructive || errorText ? "text-destructive" : "text-text-secondary";
 
   const handleDecrease = useCallback(() => {
     onQuantityChange(addon.id, (addon.used || 1) - 1);
