@@ -3,6 +3,7 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import Heading from "../../ui/Heading";
 import Text from "../../ui/Text";
 import ImageComponent from "../../ui/ImageComponent";
+import { cn } from "../../../lib/utils";
 
 interface LimitWarningProps {
   hasLimitReachedAddons: boolean;
@@ -17,20 +18,30 @@ export const LimitWarning: React.FC<LimitWarningProps> = ({
 
   if (!hasLimitReachedAddons) return null;
 
+  const isNeutral = !planType || planType.toLowerCase() !== "organisation";
+
   return (
-    <div className="border border-border p-[1.6rem] sm:flex items-start gap-[1.6rem] rounded-[0.8rem] space-y-[1rem] mb-[4.8rem] sm:mb-[4rem]">
+    <div
+      className={cn(
+        "border p-[1.6rem] sm:flex items-start gap-[1.6rem] rounded-[0.8rem] space-y-[1rem] mb-[4.8rem] sm:mb-[4rem]",
+        isNeutral ? "border-brand-primary" : "border-border",
+      )}
+    >
       <ImageComponent
-        src={icons.infoRed}
-        alt="Warning"
+        src={isNeutral ? icons.infoGreen : icons.infoRed}
+        alt="Information"
         width={20}
         height={20}
       />
       <div className="">
-        <Heading size="sm">You've reached your limit for some plans</Heading>
+        <Heading size="sm">
+          {isNeutral ? "Plan add-on information" : "Add-on limit reached"}
+        </Heading>
         <Text size="sm">
-          {!planType || planType.toLowerCase() !== "organisation" ? (
+          {isNeutral ? (
             <>
-              Upgrade your plan to get access to more.{" "}
+              Some add-ons have a single quantity limit on your current plan.
+              Upgrade to get access to more.{" "}
               <Link
                 className="underline text-brand-primary font-[700] transition-all hover:scale-98"
                 href="/plans"
@@ -39,7 +50,7 @@ export const LimitWarning: React.FC<LimitWarningProps> = ({
               </Link>
             </>
           ) : (
-            "You have reached the maximum limit for this add-on."
+            "You have reached the maximum limit for one or more add-ons on your current plan."
           )}
         </Text>
       </div>
