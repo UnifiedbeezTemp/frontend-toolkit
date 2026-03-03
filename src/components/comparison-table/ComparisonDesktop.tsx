@@ -31,13 +31,13 @@ export default function ComparisonDesktop({
                 </h3>
                 <p className="text-md text-dark-base-70 font-normal">
                   Choose your unifiedbeez plan according to your organisational
-                  needs
+                  plan
                 </p>
               </th>
               {plans.map((plan) => (
                 <th
                   key={plan.id}
-                  className="w-[20%] p-2 xl:p-[2.8rem] text-left border-b border-r border-input-stroke/50 last:border-r-0 relative bg-primary"
+                  className="w-[20%] p-2 xl:p-[2.8rem] text-left border-b border-r border-input-stroke/50 last:border-r-0 relative"
                 >
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between">
@@ -106,7 +106,7 @@ export default function ComparisonDesktop({
                 {plans.map((plan) => (
                   <td
                     key={`${plan.id}-${feature.key}`}
-                    className="p-8 text-base text-center border-b border-r border-input-stroke/50 last:border-r-0 text-dark-base-100 capitalize transition-colors duration-200 hover:bg-brand-primary/[0.04]"
+                    className="p-8 text-base text-center border-b border-r border-input-stroke/50 last:border-r-0 text-dark-base-100 transition-colors duration-200 hover:bg-brand-primary/[0.04]"
                   >
                     {plan.values[feature.key]}
                   </td>

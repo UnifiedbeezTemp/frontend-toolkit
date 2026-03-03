@@ -43,39 +43,43 @@ export const AddonItem: React.FC<AddonItemProps> = ({
           </span>
 
           <div className="flex gap-[.5rem]">
-            <Button
-              //@ts-ignore
-              variant={buttonVariant}
-              className="font-[700] p-[0.8rem] min-w-[3.2rem] h-[3.2rem] flex items-center justify-center"
-              onClick={handleDecrease}
-              disabled={isAtMinimum}
-            >
-              <ImageComponent
-                src={getButtonIcons("minus")}
-                alt="Decrease"
-                width={12}
-                height={12}
-              />
-            </Button>
+            {addon.limit !== 1 && (
+              <Button
+                //@ts-ignore
+                variant={buttonVariant}
+                className="font-[700] p-[0.8rem] min-w-[3.2rem] h-[3.2rem] flex items-center justify-center"
+                onClick={handleDecrease}
+                disabled={isAtMinimum}
+              >
+                <ImageComponent
+                  src={getButtonIcons("minus")}
+                  alt="Decrease"
+                  width={12}
+                  height={12}
+                />
+              </Button>
+            )}
             <span
               className={`text-[1.6rem] sm:text-[2rem] font-[700] min-w-[2rem] text-center ${textColor}`}
             >
               {addon.used}
             </span>
-            <Button
-              //@ts-ignore
-              variant={buttonVariant}
-              className="font-[700] p-[0.8rem] min-w-[3.2rem] h-[3.2rem] flex items-center justify-center"
-              onClick={handleIncrease}
-              disabled={!canIncrease}
-            >
-              <ImageComponent
-                src={getButtonIcons("plus")}
-                alt="Increase"
-                width={12}
-                height={12}
-              />
-            </Button>
+            {addon.limit !== 1 && (
+              <Button
+                //@ts-ignore
+                variant={buttonVariant}
+                className="font-[700] p-[0.8rem] min-w-[3.2rem] h-[3.2rem] flex items-center justify-center"
+                onClick={handleIncrease}
+                disabled={!canIncrease}
+              >
+                <ImageComponent
+                  src={getButtonIcons("plus")}
+                  alt="Increase"
+                  width={12}
+                  height={12}
+                />
+              </Button>
+            )}
           </div>
         </div>
       </div>
