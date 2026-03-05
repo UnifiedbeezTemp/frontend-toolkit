@@ -68,6 +68,21 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
     }
   }, [dispatch, purchasedAddons]);
 
+  // Sync staged addons to sessionStorage for users without a payment method
+  // This ensures that removals/changes are reflected on the checkout page
+  useEffect(() => {
+    if (typeof window !== "undefined" && !user?.paymentMethod) {
+      if (selectedAddons.length > 0) {
+        sessionStorage.setItem(
+          "unifiedbeez_checkout_addons",
+          JSON.stringify(selectedAddons),
+        );
+      } else {
+        sessionStorage.removeItem("unifiedbeez_checkout_addons");
+      }
+    }
+  }, [selectedAddons]);
+
   const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
 
   const handleOpenAddModal = useCallback(
@@ -186,16 +201,22 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
   }, [selectedAddons, purchasedAddons]);
 
   const handleContinueToCheckout = useCallback(
-    (selectedAddons: Addon[]) => {
-      if (selectedAddons.length > 0) {
+    (selectedAddons: Addon[], returnTo?: string | null) => {
+      if (!hasChanges) {
         if (user?.paymentMethod) {
-          if (!hasChanges) {
+          if (returnTo) {
+            window.location.href = decodeURIComponent(returnTo);
+          } else {
             window.history.back();
-            return;
           }
+        } else {
+          router.push("/checkout");
         }
-        handleOpenCheckoutModal();
+        return;
       }
+
+      // If there are changes, we show the checkout modal regardless of payment method
+      handleOpenCheckoutModal();
     },
     [handleOpenCheckoutModal, user?.paymentMethod, hasChanges, router],
   );

@@ -32,7 +32,7 @@ export const useAddonsPage = () => {
   );
 
   const handleContinue = () => {
-    addonsHook.handleContinueToCheckout(addonsHook.selectedAddons);
+    addonsHook.handleContinueToCheckout(addonsHook.selectedAddons, returnTo);
   };
 
   const returnTo = searchParams.get("returnTo");

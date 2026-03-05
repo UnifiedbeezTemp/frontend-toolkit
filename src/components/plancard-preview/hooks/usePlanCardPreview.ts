@@ -32,6 +32,9 @@ export const usePlanCardPreview = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddonsModalOpen, setIsAddonsModalOpen] = useState(false);
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
+  const [isPreviewAddonsModalOpen, setIsPreviewAddonsModalOpen] =
+    useState(false);
+  const [previewPlanType, setPreviewPlanType] = useState<string | null>(null);
 
   const { purchasedAddons, isLoading: isPurchasedAddonsLoading } =
     usePurchasedAddons();
@@ -59,7 +62,13 @@ export const usePlanCardPreview = ({
   const { verifyAccess } = useAddonsAccess();
 
   const handleAddonsClick = (targetPlanId?: string) => {
-    if (!verifyAccess(targetPlanId)) return;
+    if (!verifyAccess(targetPlanId)) {
+      if (targetPlanId) {
+        setPreviewPlanType(targetPlanId.toUpperCase());
+        setIsPreviewAddonsModalOpen(true);
+      }
+      return;
+    }
 
     if (plan) {
       setIsModalOpen(false);
@@ -161,6 +170,9 @@ export const usePlanCardPreview = ({
     handlePlanSelect,
     isComparisonModalOpen,
     setIsComparisonModalOpen,
+    isPreviewAddonsModalOpen,
+    setIsPreviewAddonsModalOpen,
+    previewPlanType,
     addonsTotal,
     totalPrice,
     router,
