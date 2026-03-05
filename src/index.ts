@@ -8,3 +8,4 @@ export { default as PlanSelectionTabs } from "./components/plan-selection/tabs/P
 export { default as PaymentConfirmationModal } from "./components/plan-selection/modals/PaymentConfirmationModal";
 export { getPlansData } from "./data/plansData";
 export { useAddonsAccess } from "./hooks/useAddonsAccess";
+export * from "./components/plan-selection/modals/AvailableAddonsPreviewModal";

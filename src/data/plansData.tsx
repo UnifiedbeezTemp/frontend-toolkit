@@ -139,6 +139,7 @@ export const transformOriginalPlan = (
       ? ["E-commerce Pack: Not Included"]
       : []),
     ...(!originalPlan.canPurchaseAddons ? ["Add-Ons: No access"] : []),
+    ...(planType === "individual" || planType === "business"? ["Automation Dashboard: No Access"] : []),
   ];
 
   return {

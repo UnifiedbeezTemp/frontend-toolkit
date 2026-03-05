@@ -55,9 +55,9 @@ export default function PaymentConfirmationModal({
 
           <Heading
             align="center"
-            className="text-[2.4rem] sm:text-[3.2rem] lg:text-[3.5rem] mb-[0.8rem]"
+            className="text-[2.4rem]  mb-[0.8rem]"
           >
-            Confirm Upgrade
+            Confirm Plan switch
           </Heading>
 
           <Text
@@ -117,7 +117,7 @@ export default function PaymentConfirmationModal({
             onClick={onConfirm}
             loading={loading}
           >
-            Confirm & Upgrade
+            Confirm & Switch
           </Button>
           <Button
             variant="secondary"
