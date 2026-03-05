@@ -85,4 +85,9 @@ export const addonService = {
   }> {
     return api.get("/addon/available-languages");
   },
+  async getAvailableAddonsByPlan(
+    planType: string,
+  ): Promise<{ addons: ApiAddon[] }> {
+    return api.get(`/addon/available-for-plan?planType=${planType}`);
+  },
 };

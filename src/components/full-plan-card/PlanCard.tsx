@@ -46,8 +46,8 @@ export default function PlanCard({
 
   return (
     <Card
-      className={`p-[1.6rem] rounded-[1.1rem] w-full transition-all duration-300 sm:flex flex-col gap-[8rem] border ${
-        isSelected ? "border-brand-primary" : "border-inactive-color"
+      className={`p-[1.6rem] rounded-[1.1rem] w-full transition-all duration-300 sm:flex flex-col gap-[8rem] border cursor-auto ${
+        isSelected ? "border-inactive-color layout-body" : "border-inactive-color"
       } ${className}`}
     >
       <div>
