@@ -10,9 +10,14 @@ import AddTaskModalFooter from "./sub-components/AddTaskModalFooter";
 interface AddTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
+  contactId?: string;
 }
 
-export default function AddTaskModal({ isOpen, onClose }: AddTaskModalProps) {
+export default function AddTaskModal({
+  isOpen,
+  onClose,
+  contactId,
+}: AddTaskModalProps) {
   const {
     formData,
     setField,
@@ -22,10 +27,10 @@ export default function AddTaskModal({ isOpen, onClose }: AddTaskModalProps) {
     handleSave,
     refs,
     isValid,
-  } = useAddTask();
+  } = useAddTask(contactId, onClose);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="p-0 sm:w-[52.7rem]">
+    <Modal isOpen={isOpen} onClose={onClose} className="p-0 sm:w-[52.7rem]" bottomSheet>
       <div className="flex flex-col">
         <AddTaskModalHeader onClose={onClose} />
 

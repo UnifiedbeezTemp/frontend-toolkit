@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "../../lib/utils";
-import { ContactStatus } from "../../../../components/crm/types";
+import { ContactStatus } from "../crm/contacts/types";
 
 interface StatusPillProps {
   status: ContactStatus;
