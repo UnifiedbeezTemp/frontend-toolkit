@@ -18,9 +18,15 @@ export const InfoSection: React.FC<InfoSectionProps> = ({
 }) => {
   const icons = useSupabaseIcons();
 
-  const borderColor = canAddMore ? "border-brand-primary" : "border-border";
-  const iconSrc = canAddMore ? icons.infoGreen : icons.infoRed;
-  const iconAlt = canAddMore ? "Info" : "Warning";
+  const isSingleLimitReached = !canAddMore && addon?.limit === 1;
+
+  const borderColor =
+    canAddMore || isSingleLimitReached
+      ? "border-brand-primary"
+      : "border-border";
+  const iconSrc =
+    canAddMore || isSingleLimitReached ? icons.infoGreen : icons.infoRed;
+  const iconAlt = canAddMore || isSingleLimitReached ? "Info" : "Warning";
 
   if (canAddMore) {
     return (
@@ -51,12 +57,15 @@ export const InfoSection: React.FC<InfoSectionProps> = ({
       </div>
       <div className="">
         <Heading size="sm">
-          You reached your limit for {addon?.name} for this plan
+          {isSingleLimitReached
+            ? `Single ${addon?.name} included on this plan`
+            : `You reached your limit for ${addon?.name} for this plan`}
         </Heading>
         <Text size="sm">
           {!planType || planType.toUpperCase() !== "ORGANISATION" ? (
             <>
-              Upgrade your plan to get access to extra {addon?.name}.{" "}
+              Upgrade your plan to get access to{" "}
+              {isSingleLimitReached ? "more" : `extra ${addon?.name}`}.{" "}
               <Link
                 className="underline text-brand-primary font-[700] transition-all hover:scale-98"
                 href="/plans"

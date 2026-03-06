@@ -17,13 +17,14 @@ export const usePlanCard = (
   const calculatedPrice = calculateBillingCyclePrice(
     formatPriceRaw(plan.monthlyPrice),
     isYearly,
-    // formatPriceFromCents()
-    // plan.monthlyPrice,
-    // isYearly
   );
 
   const displayPrice =
-    overridePrice !== undefined ? overridePrice : calculatedPrice;
+    overridePrice !== undefined
+      ? overridePrice
+      : isYearly && plan.yearlyPrice
+        ? plan.yearlyPrice
+        : calculatedPrice;
 
   const toggleFeatures = () => setShowFeatures(!showFeatures);
 

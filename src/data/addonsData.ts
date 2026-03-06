@@ -4,7 +4,8 @@ import { ApiAddon } from "../types/apiAddonTypes";
 
 export const transformApiAddonsToUiAddons = (
   apiAddons: ApiAddon[],
-  icons: ReturnType<typeof useSupabaseIcons>
+  icons: ReturnType<typeof useSupabaseIcons>,
+  isYearly?: boolean,
 ): Addon[] => {
   return apiAddons.map((addon) => {
     let uiId = "";
@@ -87,18 +88,21 @@ export const transformApiAddonsToUiAddons = (
         limitText = `Limit: ${addon.maxQuantity || "Unlimited"}`;
     }
 
-    const price = addon.priceEur / 100;
-    const priceText = `Price: £${price}/month`;
+    const monthlyPrice = addon.priceEur / 100;
+    const displayPrice = isYearly ? monthlyPrice * 12 : monthlyPrice;
+    const priceSuffix = isYearly ? "/year" : "/month";
+    const priceText = `Price: £${displayPrice}${priceSuffix}`;
 
     return {
-      id: uiId,
+      id: String(addon.id),
       name: addon.name,
-      price: price,
+      price: monthlyPrice,
       priceText: priceText,
       limit: addon.maxQuantity || 9999, // Fallback for sort/logic
       limitText: limitText,
       icon: icon,
       addonType: addon.type,
+      billingType: addon.billingInterval || addon.billingType,
       used: 0,
     };
   });

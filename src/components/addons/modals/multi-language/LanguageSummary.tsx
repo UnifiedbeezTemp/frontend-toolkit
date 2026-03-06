@@ -10,6 +10,7 @@ interface LanguageSummaryProps {
   totalPrice: number;
   addon: Addon;
   icons: ReturnType<typeof useSupabaseIcons>;
+  isYearly?: boolean;
 }
 
 export const LanguageSummary: React.FC<LanguageSummaryProps> = ({
@@ -17,8 +18,13 @@ export const LanguageSummary: React.FC<LanguageSummaryProps> = ({
   totalPrice,
   addon,
   icons,
+  isYearly,
 }) => {
   if (selectedCount === 0) return null;
+
+  const unitPrice = isYearly ? addon.price * 12 : addon.price;
+  const displayTotal = isYearly ? totalPrice * 12 : totalPrice;
+  const suffix = isYearly ? "/year" : "/month";
 
   return (
     <div className="mt-[2.4rem] p-[1.7rem] bg-success/10 rounded-[.8rem] flex items-start gap-[1.6rem]">
@@ -36,8 +42,8 @@ export const LanguageSummary: React.FC<LanguageSummaryProps> = ({
         </Text>
         <Text className="text-[1.3rem] text-brand-primary">
           Your AI will automatically translate conversations in the selected
-          languages. Cost <br /> £{totalPrice}/month (£{addon.price} x{" "}
-          {selectedCount}).
+          languages. Cost <br /> £{displayTotal}
+          {suffix} (£{unitPrice} x {selectedCount}).
         </Text>
       </div>
     </div>
