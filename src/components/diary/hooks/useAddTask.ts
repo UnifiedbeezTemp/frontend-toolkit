@@ -39,7 +39,7 @@ export type SetFieldType = <K extends keyof AddTaskFormData>(
   value: AddTaskFormData[K],
 ) => void;
 
-export const useAddTask = () => {
+export const useAddTask = (contactId?: string, onSaveSuccess?: () => void) => {
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState<AddTaskFormData>({
@@ -74,14 +74,15 @@ export const useAddTask = () => {
       dueDate: `${formData.dueDate}T${formData.dueTime || "00:00"}:00Z`,
       reminder: formData.reminder,
       completed: false,
+      contactId,
       assignee: formData.assignee,
     };
 
     dispatch(addTask(newTask));
     dispatch(setIsAddTaskModalOpen(false));
+    onSaveSuccess?.();
     resetForm();
   };
-
   const resetForm = () => {
     setFormData({
       title: "",

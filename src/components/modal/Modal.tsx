@@ -11,6 +11,7 @@ import { useModalStack } from "./hooks/useModalStack";
 import {
   bottomSheetVariants,
   regularModalVariants,
+  sidePanelVariants,
 } from "./utils/modalVariants";
 
 interface ModalProps {
@@ -28,6 +29,7 @@ interface ModalProps {
   priority?: number;
   isBlur?: boolean;
   bottomSheet?: boolean;
+  sidePanel?: boolean;
   maxHeight?: string;
   overflow?: boolean;
 }
@@ -45,6 +47,7 @@ export default function Modal({
   priority = 0,
   isBlur = false,
   bottomSheet = false,
+  sidePanel = false,
   maxHeight = "90vh",
   overflow = true,
 }: ModalProps) {
@@ -66,6 +69,7 @@ export default function Modal({
           className={cn(
             "fixed inset-0 flex items-center justify-center",
             bottomSheet && "items-end sm:items-center",
+            sidePanel && "justify-end",
           )}
           role="dialog"
           aria-modal="true"
@@ -91,19 +95,26 @@ export default function Modal({
             className={cn(
               "outline-none ring-none relative bg-primary shadow-xl flex flex-col overflow-hidden",
               bottomSheet ? "w-full sm:w-auto sm:rounded-xl" : "rounded-xl m-4",
-              bottomSheet ? "" : getSizeClasses(size),
+              sidePanel && "h-full m-0 rounded-none w-full sm:w-[45rem]",
+              bottomSheet ? "" : sidePanel ? "" : getSizeClasses(size),
               size === "fullscreen" && "rounded-none",
               className,
             )}
             style={{
               maxHeight: bottomSheet
                 ? maxHeight
-                : size === "fullscreen"
+                : size === "fullscreen" || sidePanel
                   ? "100vh"
                   : "90vh",
               zIndex: getZIndex(),
             }}
-            variants={bottomSheet ? bottomSheetVariants : regularModalVariants}
+            variants={
+              sidePanel
+                ? sidePanelVariants
+                : bottomSheet
+                  ? bottomSheetVariants
+                  : regularModalVariants
+            }
             initial="hidden"
             animate="visible"
             exit="exit"

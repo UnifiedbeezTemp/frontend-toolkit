@@ -18,6 +18,7 @@ export interface TaskItem {
   dueDate: string;
   reminder?: string;
   completed: boolean;
+  contactId?: string;
   assignee?: {
     name: string;
     avatar: string;
