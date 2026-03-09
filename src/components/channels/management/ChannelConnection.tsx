@@ -8,6 +8,8 @@ import { useChannelConnectionToast } from "../hooks/useChannelConnectionToast";
 import Heading from "../../../components/ui/Heading";
 import Text from "../../../components/ui/Text";
 import { useRefetchChannels } from "../hooks/useRefetchChannels";
+import { cn } from "../../../lib/utils";
+import Button from "../../ui/Button";
 
 interface ChannelConnectionProps {
   onRefetchChannels?: () => Promise<{
@@ -41,11 +43,25 @@ export default function ChannelConnection({
 
   if (selectedChannels.length === 0) {
     return (
-      <div className="text-center py-8">
-        <Heading size="lg" className="text-[1.8rem] mb-2">
-          No channels selected
-        </Heading>
-        <Text size="sm">Go back to select channels to connect</Text>
+      <div className="text-center py-8 flex items-center">
+        <div className="">
+          <Heading size="lg" className="text-[1.8rem]  mb-2">
+            No channels selected
+          </Heading>
+          <Text size="sm" className="">
+            Go back to select channels to connect
+          </Text>
+        </div>
+
+        {onBack && (
+          <Button
+            variant="secondary"
+            onClick={onBack}
+            className={cn(!hideHeader ? "ml-auto" : "")}
+          >
+            Go Back
+          </Button>
+        )}
       </div>
     );
   }
