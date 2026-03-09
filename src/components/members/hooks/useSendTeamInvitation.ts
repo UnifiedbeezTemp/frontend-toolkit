@@ -15,7 +15,7 @@ export const useSendTeamInvitation = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const [sendingInvitationId, setSendingInvitationId] = useState<string | null>(
-    null
+    null,
   );
 
   const { mutate: sendInvitation, isPending: isSendingInvitation } =
@@ -33,7 +33,7 @@ export const useSendTeamInvitation = () => {
         onSuccess: (data, variables) => {
           const currentState = store.getState();
           const draftInvitation = currentState.members.invitedUsers.find(
-            (u) => u.email === variables.email && u.status === "draft"
+            (u) => u.email === variables.email && u.status === "draft",
           );
 
           const apiInvitationIdRaw =
@@ -61,7 +61,7 @@ export const useSendTeamInvitation = () => {
               markInvitationAsSent({
                 id: draftInvitation.id,
                 apiInvitationId,
-              })
+              }),
             );
 
             if (apiRoleId !== null) {
@@ -69,7 +69,7 @@ export const useSendTeamInvitation = () => {
                 updateInvitedUserRoleId({
                   id: String(apiInvitationId),
                   roleId: apiRoleId,
-                })
+                }),
               );
             }
           }
@@ -119,13 +119,13 @@ export const useSendTeamInvitation = () => {
 
           setSendingInvitationId(null);
         },
-      }
+      },
     );
 
   const handleSendInvitation = (
     invitationId: string,
     email: string,
-    roleId: number
+    roleId: number,
   ) => {
     setSendingInvitationId(invitationId);
     const message =
@@ -140,5 +140,6 @@ export const useSendTeamInvitation = () => {
   return {
     handleSendInvitation,
     isSendingInvite,
+    isAnySendingInvite: isSendingInvitation,
   };
 };
