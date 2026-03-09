@@ -53,7 +53,9 @@ export default function WebsiteCard({
     website.crawlType === "ENTIRE_SITE" &&
     website.discoveryStatus === "PENDING";
 
-  useWebsitePolling(isEntireAndPending);
+  useWebsitePolling(
+    isEntireAndPending || website.discoveryStatus === "DISCOVERING",
+  );
 
   return (
     <div
@@ -67,19 +69,20 @@ export default function WebsiteCard({
         isDeleting={isDeleting}
       />
 
-      {isEntireAndPending && (
-        <div className="mb-4">
-          <Player
-            autoplay
-            loop
-            animationData={animationData}
-            style={{ height: 100 }}
-          />
-          <p className="text-[1.2rem] text-text-primary mt-[0.6rem] text-center">
-            Discovering pages... this might take a while!
-          </p>
-        </div>
-      )}
+      {isEntireAndPending ||
+        (website.discoveryStatus === "DISCOVERING" && (
+          <div className="mb-4">
+            <Player
+              autoplay
+              loop
+              animationData={animationData}
+              style={{ height: 100 }}
+            />
+            <p className="text-[1.2rem] text-text-primary mt-[0.6rem] text-center">
+              Discovering pages... this might take a while!
+            </p>
+          </div>
+        ))}
 
       {website.pages.length > 0 && (
         <div className="lg:hidden py-[2rem] flex items-center">

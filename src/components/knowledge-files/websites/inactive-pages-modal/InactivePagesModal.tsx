@@ -43,9 +43,9 @@ export default function InactivePagesModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="w-full max-w-[37.4rem] sm:max-w-[57.4rem] lg:max-w-[69.6rem] rounded-t-[2.4rem] sm:rounded-[0.8rem] flex flex-col max-h-[98vh]"
+      className="w-full max-w-[37.4rem] sm:max-w-[57.4rem] lg:w-[69.6rem] rounded-t-[2.4rem] sm:rounded-[0.8rem] flex flex-col max-h-[98vh]"
       overflow={false}
-      bottomSheet={bottomSheet}
+      bottomSheet={true}
     >
       <div className="flex-shrink-0">
         <InactivePagesModalHeader onClose={onClose} />
