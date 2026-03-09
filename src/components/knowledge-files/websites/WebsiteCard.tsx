@@ -6,6 +6,7 @@ import ImageComponent from "../../ui/ImageComponent";
 import WebsiteDropdown from "./components/WebsiteDropdown";
 import Player from "lottie-react";
 import animationData from "../../../animations/Preloader.json";
+import { useWebsitePolling } from "./hooks/useWebsitePolling";
 
 interface WebsiteCardProps {
   website: Website;
@@ -51,6 +52,8 @@ export default function WebsiteCard({
   const isEntireAndPending =
     website.crawlType === "ENTIRE_SITE" &&
     website.discoveryStatus === "PENDING";
+
+  useWebsitePolling(isEntireAndPending);
 
   return (
     <div

@@ -45,7 +45,7 @@ export default function FileItem({
               {file.type}
             </div>
           </div>
-          <Text className="text-[1.2rem] sm:text-[1.6rem] truncate whitespace-nowrap max-w-[20rem] sm:max-w-[200rem]">{file.name}</Text>
+          <Text className="text-[1.2rem] sm:text-[1.6rem] truncate whitespace-nowrap max-w-[20rem] sm:max-w-[30rem]">{file.name}</Text>
         </div>
 
         {isDeleting ? (
