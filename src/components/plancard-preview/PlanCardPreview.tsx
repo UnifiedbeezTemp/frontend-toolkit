@@ -17,6 +17,7 @@ import PlanPreviewModal from "./components/PlanPreviewModal";
 import PlanPreviewAddons from "./components/PlanPreviewAddons";
 import PlanPreviewPricing from "./components/PlanPreviewPricing";
 import ComparisonModal from "../comparison-table/ComparisonModal";
+import { AvailableAddonsPreviewModal } from "../plan-selection/modals/AvailableAddonsPreviewModal";
 import { useUser } from "../../contexts/UserContext";
 
 export default function PlanCardPreview({
@@ -54,6 +55,9 @@ export default function PlanCardPreview({
     handlePlanSelect,
     isComparisonModalOpen,
     setIsComparisonModalOpen,
+    isPreviewAddonsModalOpen,
+    setIsPreviewAddonsModalOpen,
+    previewPlanType,
     addonsTotal,
     totalPrice,
     addonsToUse,
@@ -223,6 +227,12 @@ export default function PlanCardPreview({
         onClose={() => setIsComparisonModalOpen(false)}
         onSelectPlan={handlePlanSelect}
         onAddonsClick={handleAddonsClick}
+      />
+
+      <AvailableAddonsPreviewModal
+        isOpen={isPreviewAddonsModalOpen}
+        onClose={() => setIsPreviewAddonsModalOpen(false)}
+        planType={previewPlanType}
       />
     </>
   );
