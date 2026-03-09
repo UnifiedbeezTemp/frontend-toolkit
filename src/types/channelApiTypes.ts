@@ -32,6 +32,7 @@ export interface ChannelsApiResponse {
     crmCalendar: ChannelCategory;
     ecommerce: ChannelCategory;
     upcoming: ChannelCategory;
+    upcomingchannels?: ChannelCategory;
   };
 }
 

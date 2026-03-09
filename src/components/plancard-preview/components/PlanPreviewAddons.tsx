@@ -12,6 +12,7 @@ interface PlanPreviewAddonsProps {
   addonsTotal: number;
   selectedAddons?: Addon[];
   onAddonsClick: () => void;
+  isYearly?: boolean;
 }
 
 export default function PlanPreviewAddons({
@@ -20,6 +21,7 @@ export default function PlanPreviewAddons({
   addonsTotal,
   selectedAddons,
   onAddonsClick,
+  isYearly,
 }: PlanPreviewAddonsProps) {
   const icons = useSupabaseIcons();
 
@@ -29,12 +31,14 @@ export default function PlanPreviewAddons({
 
   return (
     <div className="mt-[3rem] sm:mt-[5rem]">
+
       <Button
         variant="secondary"
         onClick={onAddonsClick}
         className="text-[1.3rem] font-[700] border-border bg-primary transition-all hover:scale-98 border rounded-[.3rem] px-[0.6rem] py-[.3rem]"
       >
-        Add-ons {addonsTotal > 0 ? `£${addonsTotal}` : ""}
+        Add-ons{" "}
+        {addonsTotal > 0 ? `£${addonsTotal}` : ""}
       </Button>
 
       <div className="flex flex-wrap items-center mt-[1rem] gap-[1rem]">
@@ -54,6 +58,7 @@ export default function PlanPreviewAddons({
           </div>
         ))}
       </div>
+
     </div>
   );
 }

@@ -32,6 +32,9 @@ export const usePlanCardPreview = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddonsModalOpen, setIsAddonsModalOpen] = useState(false);
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
+  const [isPreviewAddonsModalOpen, setIsPreviewAddonsModalOpen] =
+    useState(false);
+  const [previewPlanType, setPreviewPlanType] = useState<string | null>(null);
 
   const { purchasedAddons, isLoading: isPurchasedAddonsLoading } =
     usePurchasedAddons();
@@ -59,7 +62,13 @@ export const usePlanCardPreview = ({
   const { verifyAccess } = useAddonsAccess();
 
   const handleAddonsClick = (targetPlanId?: string) => {
-    if (!verifyAccess(targetPlanId)) return;
+    if (!verifyAccess(targetPlanId)) {
+      if (targetPlanId) {
+        setPreviewPlanType(targetPlanId.toUpperCase());
+        setIsPreviewAddonsModalOpen(true);
+      }
+      return;
+    }
 
     if (plan) {
       setIsModalOpen(false);
@@ -74,7 +83,12 @@ export const usePlanCardPreview = ({
       }
       const baseUrl = enableReturnTo ? process.env.NEXT_PUBLIC_BASE || "" : "";
       const queryString = params.toString();
-      router.push(`${baseUrl}/addons${queryString ? `?${queryString}` : ""}`);
+      const url = `${baseUrl}/addons${queryString ? `?${queryString}` : ""}`;
+      if (baseUrl || enableReturnTo) {
+        window.location.href = url;
+      } else {
+        router.push(url);
+      }
     } else {
       setIsAddonsModalOpen(true);
     }
@@ -84,7 +98,7 @@ export const usePlanCardPreview = ({
     if (enableReturnTo && typeof window !== "undefined") {
       const fullUrl = window.location.href;
       const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
-      router.push(`${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`);
+      window.location.href = `${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`;
     } else {
       router.push("/plans");
     }
@@ -112,7 +126,7 @@ export const usePlanCardPreview = ({
       if (enableReturnTo && typeof window !== "undefined") {
         const fullUrl = window.location.href;
         const baseUrl = process.env.NEXT_PUBLIC_BASE || "";
-        router.push(`${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`);
+        window.location.href = `${baseUrl}/plans?returnTo=${encodeURIComponent(fullUrl)}`;
       } else {
         router.push("/plans");
       }
@@ -121,10 +135,11 @@ export const usePlanCardPreview = ({
 
   const addonsTotal = useMemo(() => {
     if (!addonsToUse || addonsToUse.length === 0) return 0;
-    return addonsToUse.reduce((total, addon) => {
+    const monthlyTotal = addonsToUse.reduce((total, addon) => {
       return total + addon.price * (addon.used || 1);
     }, 0);
-  }, [addonsToUse]);
+    return isYearly ? monthlyTotal * 12 : monthlyTotal;
+  }, [addonsToUse, isYearly]);
 
   const yearlyPriceEur = plan?.originalPlan?.yearlyPriceEur;
 
@@ -134,9 +149,7 @@ export const usePlanCardPreview = ({
       : Math.floor(monthlyPrice * 12 * 0.85)
     : monthlyPrice;
 
-  const totalPrice = isYearly
-    ? displayPrice + addonsTotal * 12
-    : displayPrice + addonsTotal;
+  const totalPrice = displayPrice + addonsTotal;
 
   const isHighestPlan =
     plan?.originalPlan?.planType?.toLowerCase() === "organisation";
@@ -157,6 +170,9 @@ export const usePlanCardPreview = ({
     handlePlanSelect,
     isComparisonModalOpen,
     setIsComparisonModalOpen,
+    isPreviewAddonsModalOpen,
+    setIsPreviewAddonsModalOpen,
+    previewPlanType,
     addonsTotal,
     totalPrice,
     router,

@@ -1,4 +1,5 @@
 export const CARD_ELEMENT_OPTIONS = {
+  hidePostalCode: true,
   style: {
     base: {
       fontSize: "16px",

@@ -12,6 +12,12 @@ export const transformOriginalPlan = (
     if (planType === "organisation") {
       return "50 Seats - Unlimited";
     }
+    if (planType === "premium") {
+      return "20 Seats";
+    }
+    if (planType === "business") {
+      return "5 Seats";
+    }
     return seats === null
       ? "Unlimited Seats"
       : `${seats} Seat${seats !== 1 ? "s" : ""}`;
@@ -23,6 +29,9 @@ export const transformOriginalPlan = (
     }
     if (planType === "organisation") {
       return "AI Assistant: 10 Included (Unlimited Add-ons with £25/extra)";
+    }
+    if (planType === "business") {
+      return "2 AI Assistants";
     }
     return assistants === null
       ? "Unlimited AI Assistants"
@@ -130,6 +139,7 @@ export const transformOriginalPlan = (
       ? ["E-commerce Pack: Not Included"]
       : []),
     ...(!originalPlan.canPurchaseAddons ? ["Add-Ons: No access"] : []),
+    ...(planType === "individual" || planType === "business"? ["Automation Dashboard: No Access"] : []),
   ];
 
   return {

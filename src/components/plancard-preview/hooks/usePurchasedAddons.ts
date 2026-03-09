@@ -5,6 +5,8 @@ import {
 } from "../../../store/onboarding/types/addonTypes";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import { useUser } from "../../../contexts/UserContext";
 
 interface PurchasedAddonsResponse {
   addons: PurchasedAddonResponse[];
@@ -124,19 +126,23 @@ const getUiIdAndIcon = (
 const transformPurchasedAddonToAddon = (
   purchasedAddon: PurchasedAddonResponse,
   icons: ReturnType<typeof useSupabaseIcons>,
+  isYearly?: boolean,
 ): Addon => {
   const { uiId, icon, limitText } = getUiIdAndIcon(purchasedAddon.type, icons);
-  const price = purchasedAddon.priceEur / 100;
+  const monthlyPrice = purchasedAddon.priceEur / 100;
+  const displayPrice = isYearly ? monthlyPrice * 12 : monthlyPrice;
+  const priceSuffix = isYearly ? "/year" : "/month";
 
   return {
-    id: uiId,
+    id: purchasedAddon.id ? String(purchasedAddon.id) : uiId,
     name: purchasedAddon.name,
-    price: price,
-    priceText: `Price: £${price}/month`,
-    limit: 9999, // Max quantity is generally handled by 'available' endpoint logic or hard limits
+    price: monthlyPrice,
+    priceText: `Price: £${displayPrice}${priceSuffix}`,
+    limit: 9999,
     limitText: limitText,
     icon: icon,
     addonType: purchasedAddon.type,
+    billingType: purchasedAddon.billingInterval || purchasedAddon.billingType,
     used: purchasedAddon.quantity,
     active: purchasedAddon.active,
     scheduledForCancellation: purchasedAddon.scheduledForCancellation,
@@ -151,6 +157,11 @@ const transformPurchasedAddonToAddon = (
 
 export const usePurchasedAddons = () => {
   const icons = useSupabaseIcons();
+  const { user } = useUser();
+  const searchParams = useSearchParams();
+  const isYearly =
+    searchParams.get("isYearly") === "true" ||
+    user?.planBillingInterval === "YEARLY";
 
   const { data, isLoading, error, refetch, isFetching } =
     useAppQuery<PurchasedAddonsResponse>(
@@ -164,9 +175,9 @@ export const usePurchasedAddons = () => {
   const purchasedAddons: Addon[] = useMemo(() => {
     if (!data?.addons) return [];
     return data.addons.map((addon) =>
-      transformPurchasedAddonToAddon(addon, icons),
+      transformPurchasedAddonToAddon(addon, icons, isYearly),
     );
-  }, [data, icons]);
+  }, [data, icons, isYearly]);
 
   return {
     purchasedAddons,

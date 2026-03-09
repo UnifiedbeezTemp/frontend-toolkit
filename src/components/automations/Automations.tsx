@@ -13,7 +13,7 @@ export default function Automations({ automationType }: ChildProps) {
   useAutomations(automationType);
 
   return (
-    <div className="mt-[1.6rem] rounded-[.99rem] sm:border border-input-stroke">
+    <div className="mt-[1.6rem] rounded-[.99rem] sm:border border-input-stroke bg-primary">
       <AutomationTableHeader automationType={automationType} />
 
       <AutomationTable />
