@@ -402,6 +402,8 @@ export const SUPABASE_ICONS = {
   instagramWhite: "website/instagram.png",
   youtubeWhite: "website/youtube.png",
   cookie: "icons/Cookie.svg",
+  notFoundIllustration: "icons/404illustration.svg",
+  noInternet: "icons/noInternet.svg",
 };
 
 export const SUPABASE_GIFS = {

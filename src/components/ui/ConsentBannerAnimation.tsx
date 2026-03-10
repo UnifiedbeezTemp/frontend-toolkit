@@ -8,12 +8,25 @@ import { cn } from "../../lib/utils";
 interface ConsentBannerAnimationProps {
   className?: string;
   height?: number | string;
+  isPaused?: boolean;
 }
 
 export default function ConsentBannerAnimation({
   className = "",
   height = "100%",
+  isPaused = false,
 }: ConsentBannerAnimationProps) {
+  const playerRef = React.useRef<any>(null);
+
+  React.useEffect(() => {
+    if (!playerRef.current) return;
+    if (isPaused) {
+      playerRef.current.pause();
+    } else {
+      playerRef.current.play();
+    }
+  }, [isPaused]);
+
   return (
     <div
       className={cn(
@@ -22,7 +35,10 @@ export default function ConsentBannerAnimation({
       )}
     >
       <Player
-        autoplay
+        lottieRef={(instance) => {
+          playerRef.current = instance;
+        }}
+        autoplay={!isPaused}
         loop
         animationData={animationData}
         style={{ height, width: "100%", maxWidth: "100%" }}

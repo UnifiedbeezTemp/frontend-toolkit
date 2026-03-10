@@ -20,7 +20,10 @@ export const useCheckoutPlan = ({
   const plan = backendPlan ? getPlanByType(backendPlan, icons) : null;
 
   const monthlyPrice = backendPlan ? backendPlan.priceEur : 0;
-  const displayPrice = calculateBillingCyclePrice(monthlyPrice, isYearly);
+  const displayPrice =
+    isYearly && backendPlan?.yearlyPriceEur
+      ? backendPlan.yearlyPriceEur
+      : calculateBillingCyclePrice(monthlyPrice, isYearly);
 
   return {
     plan,

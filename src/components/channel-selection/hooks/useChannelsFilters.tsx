@@ -4,7 +4,7 @@ import { Channel } from "../../../store/onboarding/types/channelTypes";
 export const useChannelFilters = (
   channels: Channel[],
   searchQuery: string,
-  filter: string
+  filter: string,
 ) => {
   const filteredChannels = useMemo(() => {
     return channels.filter((channel) => {
@@ -16,7 +16,9 @@ export const useChannelFilters = (
         !filter ||
         (filter === "popular"
           ? channel.tags?.includes("popular")
-          : channel.type === filter);
+          : filter === "upcoming"
+            ? channel.type === "Coming Soon"
+            : channel.type === filter);
 
       return matchesSearch && matchesFilter;
     });
@@ -24,19 +26,21 @@ export const useChannelFilters = (
 
   const channelsByType = useMemo(() => {
     if (filter === "popular") {
-      return { "Popular Channels": filteredChannels } as Record<
-        string,
-        Channel[]
-      >;
+      return filteredChannels.length > 0
+        ? ({ "Most Popular": filteredChannels } as Record<string, Channel[]>)
+        : ({} as Record<string, Channel[]>);
     }
 
-    return filteredChannels.reduce((acc, channel) => {
-      if (!acc[channel.type]) {
-        acc[channel.type] = [];
-      }
-      acc[channel.type].push(channel);
-      return acc;
-    }, {} as Record<string, Channel[]>);
+    return filteredChannels.reduce(
+      (acc, channel) => {
+        if (!acc[channel.type]) {
+          acc[channel.type] = [];
+        }
+        acc[channel.type].push(channel);
+        return acc;
+      },
+      {} as Record<string, Channel[]>,
+    );
   }, [filteredChannels, filter]);
 
   return {

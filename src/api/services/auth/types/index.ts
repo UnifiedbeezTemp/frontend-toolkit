@@ -85,7 +85,8 @@ export interface AccountSetupFormData {
 }
 
 export interface StartTrialPayload {
-  planType?: string;
+  planType: "INDIVIDUAL" | "BUSINESS" | "PREMIUM" | "ORGANISATION";
+  billingInterval?: "MONTHLY" | "YEARLY";
 }
 
 export interface TrialResponseData {
@@ -206,4 +207,17 @@ export interface TwoFactorStatusResponse {
 
 export interface RegenerateBackupCodesResponse {
   backupCodes: string[];
+}
+
+export interface PaymentMethodData {
+  last4: string;
+  brand: string;
+  expMonth: number;
+  expYear: number;
+}
+
+export interface PaymentMethodResponse {
+  success: boolean;
+  data: PaymentMethodData;
+  message?: string;
 }

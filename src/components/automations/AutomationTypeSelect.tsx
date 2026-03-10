@@ -13,7 +13,7 @@ export default function AutomationTypeSelect({
   automationType,
 }: ChildProps) {
   return (
-    <div className="px-[0.8rem] py-[1.6rem] lg:rounded-[0.9rem] border border-input-stroke flex items-center justify-between overflow-x-auto w-screen lg:w-auto">
+    <div className="px-[0.8rem] bg-primary py-[1.6rem] lg:rounded-[0.9rem] border border-input-stroke flex items-center justify-between overflow-x-auto w-screen lg:w-auto">
       {AUTOMATION_TYPES.map((type, idx) => (
         <button
           className={`${

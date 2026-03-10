@@ -72,6 +72,7 @@ export const AddAddonModal: React.FC<AddAddonModalProps> = ({
               onQuantityChange={onQuantityChange}
               canAddMore={canAddMore}
               isLimitReached={isLimitReached}
+              limit={addon?.limit}
               errorText={errorText}
             />
             {isMultiLanguage && addon && (

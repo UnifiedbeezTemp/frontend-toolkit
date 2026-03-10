@@ -5,7 +5,7 @@ export const getFileTypeColor = (type: string): string => {
     case "png":
     case "jpg":
     case "jpeg":
-      return "bg-[#1671D9]";
+      return "bg-primary-blue";
     default:
       return "bg-muted";
   }
