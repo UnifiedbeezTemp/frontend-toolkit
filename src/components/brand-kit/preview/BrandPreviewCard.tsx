@@ -15,7 +15,7 @@ import EmailFeatureText from "./sub-components/EmailFeatureText";
 import EmailProductGrid from "./sub-components/EmailProductGrid";
 import EmailFooter from "./sub-components/EmailFooter";
 import { EMAIL_PREVIEW_PRODUCTS } from "./constants/previewConstants";
-import { useBrandKit } from "../BrandKitContext";
+import { useBrandKit } from "../context/BrandKitContext";
 import ImageComponent from "../../ui/ImageComponent";
 import Heading from "../../ui/Heading";
 import { motion } from "framer-motion";
@@ -23,7 +23,6 @@ import { motion } from "framer-motion";
 interface Props {
   onBack?: () => void;
 }
-
 
 export default function BrandPreviewCard({ onBack }: Props) {
   const icons = useSupabaseIcons();

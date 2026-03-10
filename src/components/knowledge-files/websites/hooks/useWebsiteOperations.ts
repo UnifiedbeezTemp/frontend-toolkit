@@ -1,23 +1,8 @@
 import { useCallback } from "react";
-import { useAppMutation } from "@/shared/src/api/query";
-import { useToast } from "@/shared/src/components/ui/toast/useToast";
-import {
-  deleteWebsite,
-  deactivateAllPages,
-  togglePageStatus,
-  bulkUpdatePages,
-  reactivatePage,
-  deactivatePage,
-} from "@/shared/src/api/websites";
-import type {
-  DeleteWebsiteParams,
-  DeactivateAllPagesParams,
-  TogglePageStatusParams,
-  BulkUpdatePagesParams,
-  ReactivatePageParams,
-  DeactivatePageParams,
-  WebsiteErrorResponse,
-} from "@/shared/src/types/websiteTypes";
+import { useAppMutation } from "../../../../api";
+import { deleteWebsite, deactivateAllPages, togglePageStatus, bulkUpdatePages, reactivatePage, deactivatePage } from "../../../../api/websites";
+import { DeleteWebsiteParams, WebsiteErrorResponse, DeactivateAllPagesParams, TogglePageStatusParams, BulkUpdatePagesParams, ReactivatePageParams, DeactivatePageParams } from "../../../../types/websiteTypes";
+import { useToast } from "../../../ui/toast/ToastProvider";
 
 interface UseWebsiteOperationsParams {
   onSuccess?: () => void;

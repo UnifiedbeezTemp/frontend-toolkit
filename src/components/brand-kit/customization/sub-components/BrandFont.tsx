@@ -4,7 +4,7 @@ import React from "react";
 import Heading from "../../../ui/Heading";
 import Text from "../../../ui/Text";
 import FontPickerItem from "./fonts/FontPickerItem";
-import { useBrandKit } from "../../BrandKitContext";
+import { useBrandKit } from "../../context/BrandKitContext";
 
 export default function BrandFont() {
   const { fontHandlers } = useBrandKit();

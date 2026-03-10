@@ -8,24 +8,17 @@ import Heading from "../../../ui/Heading";
 import Text from "../../../ui/Text";
 import Input from "../../../forms/Input";
 import Card from "../../../ui/Card";
-import { useBrandKit } from "../../BrandKitContext";
+import { useBrandKit } from "../../context/BrandKitContext";
 import { MOCK_BRAND_DATA } from "../../constants/mockBrandData";
 
 export default function WebsiteImport() {
   const icons = useSupabaseIcons();
-  const { onImportBrandKit } = useBrandKit();
+  const { detectBrand, isDetecting } = useBrandKit();
   const [websiteUrl, setLocalWebsiteUrl] = useState("");
-  const [isImporting, setIsImporting] = useState(false);
 
   const handleImport = async () => {
     if (!websiteUrl) return;
-    setIsImporting(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      onImportBrandKit(MOCK_BRAND_DATA);
-    } finally {
-      setIsImporting(false);
-    }
+    await detectBrand(websiteUrl);
   };
 
   return (
@@ -64,9 +57,10 @@ export default function WebsiteImport() {
           <Button
             className="px-[1.5rem] py-[0.5rem]"
             onClick={handleImport}
-            disabled={isImporting || !websiteUrl}
+            loading={isDetecting}
+            disabled={isDetecting || !websiteUrl}
           >
-            {isImporting ? "Importing..." : "Import Brand Kit"}
+            {isDetecting ? "Importing..." : "Import Brand Kit"}
           </Button>
         </div>
       </Card>
