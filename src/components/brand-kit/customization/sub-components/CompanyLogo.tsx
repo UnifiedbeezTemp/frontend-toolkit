@@ -6,11 +6,13 @@ import Heading from "../../../ui/Heading";
 import Text from "../../../ui/Text";
 import ImageComponent from "../../../ui/ImageComponent";
 import Button from "../../../ui/Button";
-import { useBrandKit } from "../../BrandKitContext";
+import { useBrandKit } from "../../context/BrandKitContext";
+import CloseIcon from "../../../../assets/icons/CloseIcon";
+import Loader from "../../../ui/Loader";
 
 export default function CompanyLogo() {
   const icons = useSupabaseIcons();
-  const { logo, logoHandlers } = useBrandKit();
+  const { logo, logoHandlers, isDeletingLogo } = useBrandKit();
 
   return (
     <div className="flex flex-col gap-[1.6rem] border-b border-input-stroke pb-[4rem]">
@@ -54,17 +56,32 @@ export default function CompanyLogo() {
             className="hidden"
           />
 
-          <button
-            onClick={logoHandlers.triggerUpload}
-            className="absolute bottom-[.1rem] right-[-.5rem] bg-border p-[.2rem] rounded-full border-[.3rem] border-primary"
-          >
-            <ImageComponent
-              alt="upload"
-              src={icons.upload}
-              width={14}
-              height={14}
-            />
-          </button>
+          {logo ? (
+            <button
+              onClick={logoHandlers.onRemove}
+              className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full border-2 border-primary hover:bg-red-600 transition-colors z-10 flex items-center justify-center min-w-[2.4rem] min-h-[2.4rem]"
+              title="Remove logo"
+              disabled={isDeletingLogo}
+            >
+              {isDeletingLogo ? (
+                <Loader className="w-[1.2rem] h-[1.2rem] border-white border-t-transparent" />
+              ) : (
+                <CloseIcon />
+              )}
+            </button>
+          ) : (
+            <button
+              onClick={logoHandlers.triggerUpload}
+              className="absolute bottom-[.1rem] right-[-.5rem] bg-border p-[.2rem] rounded-full border-[.3rem] border-primary"
+            >
+              <ImageComponent
+                alt="upload"
+                src={icons.upload}
+                width={14}
+                height={14}
+              />
+            </button>
+          )}
         </div>
 
         <Button

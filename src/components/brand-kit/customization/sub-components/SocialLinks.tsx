@@ -2,7 +2,7 @@
 
 import React from "react";
 import SocialLinkItem from "./social/SocialLinkItem";
-import { useBrandKit } from "../../BrandKitContext";
+import { useBrandKit } from "../../context/BrandKitContext";
 import Heading from "../../../ui/Heading";
 import ImageComponent from "../../../ui/ImageComponent";
 import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
@@ -14,7 +14,7 @@ export default function SocialLinks() {
   const icons = useSupabaseIcons();
 
   return (
-    <div className="pb-[4rem] flex flex-col gap-[2.4rem]">
+    <div className="pb-[4rem] flex flex-col gap-[2.4rem] pt-[1.6rem]">
       <div className="flex flex-col gap-[0.8rem]">
         <Heading size="sm">Social Links</Heading>
       </div>
