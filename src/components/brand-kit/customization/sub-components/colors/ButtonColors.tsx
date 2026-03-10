@@ -13,7 +13,7 @@ export default function ButtonColors({
   onColorChange,
 }: ButtonColorsProps) {
   return (
-    <div className="flex flex-col gap-[2.4rem] mt-[3.2rem]">
+    <div className="flex flex-col gap-[2.4rem] mt-[1.6rem]">
       <div className="flex flex-col gap-[0.8rem]">
         <Heading size="sm">Buttons</Heading>
         <Text size="sm">Edit button appearance and interactions.</Text>
