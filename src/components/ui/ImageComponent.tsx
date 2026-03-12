@@ -1,11 +1,21 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState, useMemo, useRef, useCallback, startTransition, memo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+  useCallback,
+  startTransition,
+  memo,
+} from "react";
 import Image, { ImageProps } from "next/image";
 import { cn } from "../../lib/utils";
 
-interface ImageComponentProps
-  extends Omit<ImageProps, "className" | "onError"> {
+interface ImageComponentProps extends Omit<
+  ImageProps,
+  "className" | "onError"
+> {
   className?: string;
   containerClassName?: string;
   fallbackSrc?: string;
@@ -38,7 +48,7 @@ function ImageComponent({
 
   const shouldUseUnoptimized = useMemo(
     () => isExternalUrl(props.src),
-    [props.src]
+    [props.src],
   );
 
   useEffect(() => {
@@ -50,7 +60,7 @@ function ImageComponent({
 
   useEffect(() => {
     if (!isMountedRef.current) return;
-    
+
     const timer = setTimeout(() => {
       if (isMountedRef.current) {
         startTransition(() => {
@@ -63,18 +73,21 @@ function ImageComponent({
     return () => clearTimeout(timer);
   }, [props.src]);
 
-  const handleError = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    if (isMountedRef.current) {
-      requestAnimationFrame(() => {
-        if (isMountedRef.current) {
-          startTransition(() => {
-            setHasError(true);
-          });
-        }
-      });
-    }
-    onError?.(e);
-  }, [onError]);
+  const handleError = useCallback(
+    (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+      if (isMountedRef.current) {
+        requestAnimationFrame(() => {
+          if (isMountedRef.current) {
+            startTransition(() => {
+              setHasError(true);
+            });
+          }
+        });
+      }
+      onError?.(e);
+    },
+    [onError],
+  );
 
   const handleLoad = useCallback(() => {
     if (isMountedRef.current) {
@@ -93,7 +106,7 @@ function ImageComponent({
       <Image
         {...props}
         src={hasError ? fallbackSrc : props.src}
-        loading={loading}
+        loading={props.priority ? undefined : loading}
         unoptimized={shouldUseUnoptimized}
         onError={handleError}
         onLoad={handleLoad}
@@ -101,10 +114,10 @@ function ImageComponent({
           "object-cover transition-opacity duration-300",
           // isLoading && "opacity-0",
           // !isLoading && "opacity-100",
-          className
+          className,
         )}
       />
-      
+
       {/* {isLoading && (
         <div className="absolute inset-0 bg-muted animate-pulse rounded" />
       )} */}
