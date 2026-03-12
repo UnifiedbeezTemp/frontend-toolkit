@@ -28,12 +28,22 @@ export const BaseAddonCard: React.FC<BaseAddonCardProps> = ({
   isRemoving = false,
   className = "",
 }) => {
-  const progressPercentage = ((addon.used || 1) / addon.limit) * 100;
+  const isUnlimited = addon.limit === -1;
+  const progressPercentage =
+    !isUnlimited && addon.limit > 0
+      ? ((addon.used || 0) / addon.limit) * 100
+      : 0;
   const activeCount = addon.active || 0;
   const cancellingCount = addon.scheduledForCancellation || 0;
 
   return (
-    <Card className={`p-[2.4rem] rounded-[1.6rem] ${className}`}>
+    <Card
+      className={`p-[2.4rem] rounded-[1.6rem] overflow-hidden ${className} ${
+        addon.isIncludedInPlan
+          ? "pointer-events-none"
+          : ""
+      }`}
+    >
       <AddonHeader
         addon={addon}
         isSelected={isSelected}
@@ -43,8 +53,8 @@ export const BaseAddonCard: React.FC<BaseAddonCardProps> = ({
       />
 
       {showProgress && (
-        <div className="mt-[1.6rem]">
-          {addon.limit !== 9999 ? (
+        <div className="mt-[1.6rem] ">
+          {!isUnlimited ? (
             <ProgressBar
               progressPercentage={progressPercentage}
               className="border-none shadow-none h-[0.7rem]"

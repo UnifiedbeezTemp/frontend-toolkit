@@ -1,13 +1,20 @@
 "use client";
 
-import { CardElement } from "@stripe/react-stripe-js";
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+} from "@stripe/react-stripe-js";
 import { Control } from "react-hook-form";
 import { CheckoutFormData } from "../hooks/useCheckoutForm";
 import Button from "../../ui/Button";
 import { useStripePayment } from "../hooks/useStripePayment";
 import Loader from "../../ui/Loader";
-
-import { CARD_ELEMENT_OPTIONS } from "../../plan-selection/constants/stripeConstants";
+import {
+  CARD_NUMBER_OPTIONS,
+  CARD_EXPIRY_OPTIONS,
+  CARD_CVC_OPTIONS,
+} from "../../plan-selection/constants/stripeConstants";
 import { cn } from "../../../lib/utils";
 
 interface StripePaymentFormProps {
@@ -27,7 +34,9 @@ export default function StripePaymentForm({
     cardComplete,
     processing,
     error,
-    handleCardChange,
+    handleCardNumberChange,
+    handleCardExpiryChange,
+    handleCardCvcChange,
     handlePaymentSubmit,
   } = useStripePayment({
     control,
@@ -36,52 +45,12 @@ export default function StripePaymentForm({
   });
 
   return (
-    <div className="space-y-[3rem] mt-[3rem]">
-      {/* Billing Information Section */}
-      <div className="bg-white border border-input-stroke rounded-[1.2rem] p-[2rem] shadow-sm">
-        <h3 className="font-[700] text-brand-primary mb-[1.5rem] text-[1.8rem] flex items-center gap-[0.8rem]">
-          <span className="w-[0.4rem] h-[1.8rem] bg-brand-primary rounded-full" />
-          Billing Information
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-[1.2rem] gap-x-[2rem] text-[1.4rem]">
-          <div className="flex flex-col gap-[0.4rem]">
-            <span className="text-text-secondary font-[500]">Full Name</span>
-            <span className="text-text-primary font-[600]">
-              {control._formValues.fullName || "—"}
-            </span>
-          </div>
-          <div className="flex flex-col gap-[0.4rem]">
-            <span className="text-text-secondary font-[500]">Address</span>
-            <span className="text-text-primary font-[600]">
-              {control._formValues.address || "—"}
-            </span>
-          </div>
-          <div className="flex flex-col gap-[0.4rem]">
-            <span className="text-text-secondary font-[500]">City & State</span>
-            <span className="text-text-primary font-[600]">
-              {control._formValues.city}, {control._formValues.state}
-            </span>
-          </div>
-          <div className="flex flex-col gap-[0.4rem]">
-            <span className="text-text-secondary font-[500]">Postal Code</span>
-            <span className="text-text-primary font-[600]">
-              {control._formValues.postalCode || "—"}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Card Details Section */}
-      <div className="space-y-[1.2rem]">
-        <div className="flex justify-between items-end">
-          <label className="block text-[1.5rem] font-[700] text-text-primary">
-            Card Details
-          </label>
-          <span className="text-[1.2rem] text-text-secondary font-[500]">
-            Securely processed by Stripe
-          </span>
-        </div>
-
+    <div className="space-y-[2rem] mt-[3rem]">
+      {/* Card Number */}
+      <div className="space-y-[0.6rem]">
+        <label className="block text-[1.4rem] font-[500] text-text-primary">
+          Card Number <span className="text-destructive">*</span>
+        </label>
         <div
           className={cn(
             "p-[1.4rem] border rounded-[0.8rem] transition-all duration-200 bg-white",
@@ -90,19 +59,60 @@ export default function StripePaymentForm({
               : "border-input-stroke focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10",
           )}
         >
-          <CardElement
-            options={CARD_ELEMENT_OPTIONS}
-            onChange={handleCardChange}
+          <CardNumberElement
+            options={CARD_NUMBER_OPTIONS}
+            onChange={handleCardNumberChange}
           />
         </div>
-
-        {error && (
-          <p className="text-destructive text-[1.3rem] font-[500] flex items-center gap-[0.5rem]">
-            <span className="inline-block w-[0.4rem] h-[0.4rem] bg-destructive rounded-full" />
-            {error}
-          </p>
-        )}
       </div>
+
+      {/* Expiry & CVC side by side */}
+      <div className="grid grid-cols-2 gap-[1.6rem]">
+        <div className="space-y-[0.6rem]">
+          <label className="block text-[1.4rem] font-[500] text-text-primary">
+            Expiry Date <span className="text-destructive">*</span>
+          </label>
+          <div
+            className={cn(
+              "p-[1.4rem] border rounded-[0.8rem] transition-all duration-200 bg-white",
+              "border-input-stroke focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10",
+            )}
+          >
+            <CardExpiryElement
+              options={CARD_EXPIRY_OPTIONS}
+              onChange={handleCardExpiryChange}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-[0.6rem]">
+          <label className="block text-[1.4rem] font-[500] text-text-primary">
+            CVC <span className="text-destructive">*</span>
+          </label>
+          <div
+            className={cn(
+              "p-[1.4rem] border rounded-[0.8rem] transition-all duration-200 bg-white",
+              "border-input-stroke focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10",
+            )}
+          >
+            <CardCvcElement
+              options={CARD_CVC_OPTIONS}
+              onChange={handleCardCvcChange}
+            />
+          </div>
+        </div>
+      </div>
+
+      <p className="text-[1.2rem] text-text-secondary font-[500] text-right">
+        Securely processed by Stripe
+      </p>
+
+      {error && (
+        <p className="text-destructive text-[1.3rem] font-[500] flex items-center gap-[0.5rem]">
+          <span className="inline-block w-[0.4rem] h-[0.4rem] bg-destructive rounded-full" />
+          {error}
+        </p>
+      )}
 
       {/* Action Buttons */}
       <div className="pt-[2rem] flex flex-col sm:flex-row-reverse gap-[1.2rem]">

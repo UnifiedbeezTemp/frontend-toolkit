@@ -29,8 +29,8 @@ export const useAvailableAddons = () => {
       },
     );
 
-  const addons = useMemo(() => {
-    if (!data) return [];
+  const { apiAddons, uiAddons } = useMemo(() => {
+    if (!data) return { apiAddons: [], uiAddons: [] };
 
     let list: ApiAddon[] = [];
 
@@ -50,11 +50,15 @@ export const useAvailableAddons = () => {
       list = (data as { data: ApiAddon[] }).data;
     }
 
-    return transformApiAddonsToUiAddons(list, icons, isYearly);
+    return {
+      apiAddons: list,
+      uiAddons: transformApiAddonsToUiAddons(list, icons, isYearly),
+    };
   }, [data, icons, isYearly]);
 
   return {
-    addons,
+    addons: uiAddons,
+    rawApiAddons: apiAddons,
     isLoading,
     error,
     refetch,

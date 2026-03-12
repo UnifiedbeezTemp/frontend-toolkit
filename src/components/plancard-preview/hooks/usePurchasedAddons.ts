@@ -7,128 +7,33 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useUser } from "../../../contexts/UserContext";
+import { ApiAddon } from "../../../types/apiAddonTypes";
+import { getAddonUiMetadata } from "../../../data/addonsData";
+import { useAvailableAddons } from "../../addons/hooks/useAvailableAddons";
 
 interface PurchasedAddonsResponse {
   addons: PurchasedAddonResponse[];
 }
 
-const getUiIdAndIcon = (
-  addonType: string,
-  icons: ReturnType<typeof useSupabaseIcons>,
-): {
-  uiId: string;
-  icon: string;
-  limitText: string;
-  maxQuantity: number | null;
-} => {
-  const maxQuantity = null;
-
-  switch (addonType) {
-    case "EXTRA_AI_ASSISTANT":
-      return {
-        uiId: "ai-assistant",
-        icon: icons.usersCheck,
-        limitText: maxQuantity
-          ? `Max Assistants: ${maxQuantity} assistants`
-          : "Unlimited assistants",
-        maxQuantity,
-      };
-    case "EXTRA_SEAT":
-      return {
-        uiId: "seats",
-        icon: icons.seatsIcon,
-        limitText: maxQuantity
-          ? `Limit: Up to ${maxQuantity} seats`
-          : "Unlimited seats",
-        maxQuantity,
-      };
-    case "EXTRA_WHATSAPP_CHANNEL":
-      return {
-        uiId: "whatsapp-channel",
-        icon: icons.riWhatsappLine,
-        limitText: `Limit: ${maxQuantity || "Unlimited"} WhatsApp number${
-          maxQuantity !== 1 ? "s" : ""
-        }`,
-        maxQuantity,
-      };
-    case "MULTI_LANGUAGE_AI":
-      return {
-        uiId: "multi-language",
-        icon: icons.languageIcon,
-        limitText: `Limit: ${maxQuantity || "Unlimited"} language${
-          maxQuantity !== 1 ? "s" : ""
-        }`,
-        maxQuantity,
-      };
-    case "WHITE_LABEL_PORTAL":
-      return {
-        uiId: "white-label",
-        icon: icons.websiteActive,
-        limitText: `Limit: ${maxQuantity || "Unlimited"}`,
-        maxQuantity,
-      };
-    case "TWILIO_MESSAGE_PACK":
-      return {
-        uiId: "sms-pack",
-        icon: icons.tabblerBrandTwillo,
-        limitText: "Limit: 1 phone number/per 1,000 messages",
-        maxQuantity,
-      };
-    case "TWILIO_VOICE_PACK":
-      return {
-        uiId: "voice-call",
-        icon: icons.tabblerBrandTwillo,
-        limitText: `Limit: ${maxQuantity || "Unlimited"} phone number${
-          maxQuantity !== 1 ? "s" : ""
-        }`,
-        maxQuantity,
-      };
-    case "CRM_CALENDAR_SYNC":
-      return {
-        uiId: "crm-sync",
-        icon: icons.lucideCalender,
-        limitText: maxQuantity === 1 ? "Optional" : `Up to ${maxQuantity}`,
-        maxQuantity,
-      };
-    case "ECOMMERCE_PACK":
-      return {
-        uiId: "ecommerce-pack",
-        icon: icons.ecommerceApparel,
-        limitText: `Limit: ${maxQuantity || "Unlimited"} Store${
-          maxQuantity !== 1 ? "s" : ""
-        }`,
-        maxQuantity,
-      };
-    case "PRIORITY_SUPPORT":
-      return {
-        uiId: "priority-support",
-        icon: icons.customerSupport,
-        limitText: `Limit: ${maxQuantity || "Unlimited"} Allowed`,
-        maxQuantity,
-      };
-    case "RESELLER_AGENCY_PORTAL":
-      return {
-        uiId: "reseller-portal",
-        icon: icons.websiteActive,
-        limitText: `Limit: ${maxQuantity || "Unlimited"}`,
-        maxQuantity,
-      };
-    default:
-      return {
-        uiId: `addon-unknown`,
-        icon: icons.greenCreditCard,
-        limitText: `Limit: ${maxQuantity || "Unlimited"}`,
-        maxQuantity,
-      };
-  }
-};
-
 const transformPurchasedAddonToAddon = (
   purchasedAddon: PurchasedAddonResponse,
   icons: ReturnType<typeof useSupabaseIcons>,
+  availableAddon?: ApiAddon,
   isYearly?: boolean,
 ): Addon => {
-  const { uiId, icon, limitText } = getUiIdAndIcon(purchasedAddon.type, icons);
+  // Use raw metadata from available addon if present
+  const remainingPurchasable = availableAddon?.remainingPurchasable ?? null;
+  const isIncludedInPlan =
+    availableAddon?.isIncludedInPlan ??
+    purchasedAddon.isIncludedInPlan ??
+    false;
+
+  const { uiId, icon, limitText } = getAddonUiMetadata(
+    purchasedAddon.type,
+    remainingPurchasable,
+    icons,
+  );
+
   const monthlyPrice = purchasedAddon.priceEur / 100;
   const displayPrice = isYearly ? monthlyPrice * 12 : monthlyPrice;
   const priceSuffix = isYearly ? "/year" : "/month";
@@ -138,7 +43,7 @@ const transformPurchasedAddonToAddon = (
     name: purchasedAddon.name,
     price: monthlyPrice,
     priceText: `Price: £${displayPrice}${priceSuffix}`,
-    limit: 9999,
+    limit: remainingPurchasable ?? -1,
     limitText: limitText,
     icon: icon,
     addonType: purchasedAddon.type,
@@ -146,6 +51,7 @@ const transformPurchasedAddonToAddon = (
     used: purchasedAddon.quantity,
     active: purchasedAddon.active,
     scheduledForCancellation: purchasedAddon.scheduledForCancellation,
+    isIncludedInPlan: isIncludedInPlan,
     instances: purchasedAddon.instances?.map((instance) => ({
       id: instance.id,
       language: instance.language,
@@ -163,6 +69,9 @@ export const usePurchasedAddons = () => {
     searchParams.get("isYearly") === "true" ||
     user?.planBillingInterval === "YEARLY";
 
+  // Fetch available addons to enrich purchased data with accurate limits
+  const { rawApiAddons, isLoading: isLoadingAvailable } = useAvailableAddons();
+
   const { data, isLoading, error, refetch, isFetching } =
     useAppQuery<PurchasedAddonsResponse>(
       ["purchasedAddons"],
@@ -174,14 +83,25 @@ export const usePurchasedAddons = () => {
 
   const purchasedAddons: Addon[] = useMemo(() => {
     if (!data?.addons) return [];
-    return data.addons.map((addon) =>
-      transformPurchasedAddonToAddon(addon, icons, isYearly),
-    );
-  }, [data, icons, isYearly]);
+
+    return data.addons.map((purchased) => {
+      // Find the corresponding available addon to get the correct limit metadata
+      const availableMatch = rawApiAddons.find(
+        (avail) => avail.type === purchased.type,
+      );
+
+      return transformPurchasedAddonToAddon(
+        purchased,
+        icons,
+        availableMatch,
+        isYearly,
+      );
+    });
+  }, [data, icons, isYearly, rawApiAddons]);
 
   return {
     purchasedAddons,
-    isLoading,
+    isLoading: isLoading || isLoadingAvailable,
     error,
     refetch,
     isFetching,

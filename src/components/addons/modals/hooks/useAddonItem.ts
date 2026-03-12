@@ -16,9 +16,10 @@ export const useAddonItem = ({
   purchasedQuantity = 0,
 }: UseAddonItemProps) => {
   const icons = useSupabaseIcons();
-  const isLimitReached = (addon.used || 1) >= addon.limit;
+  const isLimitReached = addon.limit !== -1 && (addon.used || 1) >= addon.limit;
   const canIncrease = !isLimitReached;
-  const isDestructive = (isLimitReached || !!errorText) && addon.limit !== 1;
+  const isDestructive =
+    addon.limit !== 1 && addon.limit !== -1 && (isLimitReached || !!errorText);
 
   const getButtonIcons = useCallback(
     (type: "plus" | "minus") => {
