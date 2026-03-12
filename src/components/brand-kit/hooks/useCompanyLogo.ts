@@ -4,11 +4,13 @@ import { useState, useRef } from "react";
 
 export function useCompanyLogo() {
   const [logo, setLogo] = useState<string | null>(null);
+  const [pendingLogoFile, setPendingLogoFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setPendingLogoFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogo(reader.result as string);
@@ -23,14 +25,17 @@ export function useCompanyLogo() {
 
   const removeLogo = () => {
     setLogo(null);
+    setPendingLogoFile(null);
   };
 
   return {
     logo,
+    pendingLogoFile,
     fileInputRef,
     handleLogoUpload,
     triggerUpload,
     removeLogo,
     setLogo,
+    setPendingLogoFile,
   };
 }

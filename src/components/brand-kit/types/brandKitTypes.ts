@@ -8,6 +8,13 @@ export type SocialPlatform =
 export type FontWeight = "Light" | "Regular" | "Bold" | "Extra Bold";
 export type FontStyle = "Normal" | "Italic";
 
+import {
+  ApiBrandKit,
+  BrandKitResponse,
+  UpdateBrandKitPayload,
+  BrandKitErrorResponse,
+} from "../../../types/brandKitApiTypes";
+
 export interface FontState {
   family: string;
   weight: FontWeight;
@@ -22,12 +29,12 @@ export interface BrandFontState {
 export interface ModeColorState {
   primary: string;
   background: string;
-  accents: string[];
 }
 
 export interface BrandColorsState {
   light: ModeColorState;
   dark: ModeColorState;
+  accentColor: string;
   button: ButtonColorState;
 }
 
@@ -59,11 +66,7 @@ export interface ModeColorsProps {
   mode: "Light" | "Dark";
   primary: string;
   background: string;
-  accents: string[];
   onColorChange: (field: "primary" | "background", color: string) => void;
-  onAccentAdd: () => void;
-  onAccentUpdate: (index: number, color: string) => void;
-  onAccentRemove: (index: number) => void;
 }
 
 export interface FontPickerItemProps {
@@ -82,11 +85,9 @@ export interface FontSelectorProps {
   isFamily?: boolean;
 }
 
-export interface AccentColorsProps {
-  accents: string[];
-  onAdd: () => void;
-  onUpdate: (index: number, color: string) => void;
-  onRemove: (index: number) => void;
+export interface AccentColorProps {
+  accentColor: string;
+  onAccentColorChange: (color: string) => void;
 }
 
 export interface ColorPickerItemProps {
@@ -110,10 +111,22 @@ export interface SocialLink {
 }
 
 export interface BrandKitContextType extends BrandKitState {
+  isLoading: boolean;
+  isSaving: boolean;
+  isDeletingLogo: boolean;
+  isDetecting: boolean;
+  hasChanges: boolean;
+  error: BrandKitErrorResponse | null;
+  refetch: () => void;
+  saveBrandKit: () => Promise<void>;
+  detectBrand: (websiteUrl: string) => Promise<void>;
+  revertChanges: () => void;
+  onImportBrandKit: (data: Partial<BrandKitState>) => void;
   colorHandlers: {
     light: ModeColorsProps;
     dark: ModeColorsProps;
     button: ButtonColorsProps;
+    accent: AccentColorProps;
   };
   fontHandlers: {
     header: FontPickerItemProps;
@@ -131,5 +144,4 @@ export interface BrandKitContextType extends BrandKitState {
     triggerUpload: () => void;
     fileInputRef: React.RefObject<HTMLInputElement | null>;
   };
-  onImportBrandKit: (data: Partial<BrandKitState>) => void;
 }
