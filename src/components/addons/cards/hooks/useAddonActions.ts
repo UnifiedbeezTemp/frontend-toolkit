@@ -15,8 +15,8 @@ export const useAddonActions = ({ addon, variant }: UseAddonActionsProps) => {
   );
 
   const canIncrease = useMemo(
-    () => (addon.used || 0) < addon.limit,
-    [addon.used, addon.limit],
+    () => addon.limit === -1 || addon.limit > 0,
+    [addon.limit],
   );
 
   const isCancelling = useMemo(
@@ -25,12 +25,8 @@ export const useAddonActions = ({ addon, variant }: UseAddonActionsProps) => {
   );
 
   const showUpgradeWarning = useMemo(
-    () =>
-      variant === "manage" &&
-      !canIncrease &&
-      addon.limit !== 9999 &&
-      !isHighestPlan,
-    [variant, canIncrease, addon.limit, isHighestPlan],
+    () => variant === "manage" && !canIncrease && !isHighestPlan,
+    [variant, canIncrease, isHighestPlan],
   );
 
   return {

@@ -15,6 +15,7 @@ export interface PurchasedAddonResponse {
   priceEur: number;
   billingType?: string;
   billingInterval?: string; // "MONTHLY" | "YEARLY"
+  isIncludedInPlan?: boolean;
   instances?: MultiLanguageInstance[];
 }
 

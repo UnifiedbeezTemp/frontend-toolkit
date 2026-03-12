@@ -2,7 +2,6 @@
 
 import { CheckoutFormData } from "../hooks/useCheckoutForm";
 import FormField from "../../forms/FormField";
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import type { Control } from "react-hook-form";
 
 interface PaymentFormProps {
@@ -10,32 +9,31 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({ control }: PaymentFormProps) {
-  const icons = useSupabaseIcons();
-
   return (
     <div className="mt-[2rem] space-y-[1.4rem]">
       <FormField
         control={control}
         labelClassName="font-[400]"
         showRequired
-        name="fullName"
+        name="cardHolderName"
         type="text"
-        label="Full name"
-        placeholder="Enter full name"
+        label="Name on card"
+        placeholder="Enter name as it appears on your card"
+        required
+      />
+
+      <FormField
+        control={control}
+        labelClassName="font-[400]"
+        showRequired
+        name="address"
+        type="text"
+        label="Address"
+        placeholder="Enter billing address"
         required
       />
 
       <div className="space-y-[1.4rem] grid gap-[1rem] sm:grid-cols-2 sm:gap-[4rem] sm:space-y-0">
-        <FormField
-          control={control}
-          labelClassName="font-[400]"
-          showRequired
-          name="state"
-          type="text"
-          label="State"
-          placeholder="Enter state"
-          required
-        />
         <FormField
           control={control}
           labelClassName="font-[400]"
@@ -46,6 +44,16 @@ export default function PaymentForm({ control }: PaymentFormProps) {
           placeholder="Enter city"
           required
         />
+        <FormField
+          control={control}
+          labelClassName="font-[400]"
+          showRequired
+          name="state"
+          type="text"
+          label="State / County"
+          placeholder="Enter state or county"
+          required
+        />
       </div>
 
       <div className="space-y-[1.4rem] grid gap-[1rem] sm:grid-cols-2 sm:gap-[4rem] sm:space-y-0">
@@ -53,20 +61,20 @@ export default function PaymentForm({ control }: PaymentFormProps) {
           control={control}
           labelClassName="font-[400]"
           showRequired
-          name="address"
+          name="postalCode"
           type="text"
-          label="Address"
-          placeholder="Enter address"
+          label="Postal Code"
+          placeholder="Enter postal code / Eircode"
           required
         />
         <FormField
           control={control}
           labelClassName="font-[400]"
           showRequired
-          name="postalCode"
+          name="country"
           type="text"
-          label="Postal Code"
-          placeholder="Enter postal code"
+          label="Country"
+          placeholder="2-letter code (e.g. IE, GB, DE)"
           required
         />
       </div>
