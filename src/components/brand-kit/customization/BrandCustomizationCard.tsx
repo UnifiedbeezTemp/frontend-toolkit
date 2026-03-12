@@ -5,7 +5,7 @@ import BrandColors from "./sub-components/BrandColors";
 import BrandFont from "./sub-components/BrandFont";
 import SocialLinks from "./sub-components/SocialLinks";
 import ButtonColors from "./sub-components/colors/ButtonColors";
-import { useBrandKit } from "../BrandKitContext";
+import { useBrandKit } from "../context/BrandKitContext";
 import { cn } from "../../../lib/utils";
 import Heading from "../../ui/Heading";
 import Text from "../../ui/Text";
@@ -14,16 +14,16 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import CompanyLogo from "./sub-components/CompanyLogo";
 import { motion, AnimatePresence } from "framer-motion";
 import WebsiteImport from "./sub-components/WebsiteImport";
+import Button from "../../ui/Button";
 
 interface Props {
   onShowPreview?: () => void;
 }
 
 type TabType = "logo" | "colors" | "fonts" | "links";
-
-
 export default function BrandCustomizationCard({ onShowPreview }: Props) {
-  const { colorHandlers } = useBrandKit();
+  const { colorHandlers, saveBrandKit, revertChanges, isSaving, hasChanges } =
+    useBrandKit();
   const icons = useSupabaseIcons();
   const [activeTab, setActiveTab] = useState<TabType>("logo");
 
@@ -158,6 +158,26 @@ export default function BrandCustomizationCard({ onShowPreview }: Props) {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Sticky Save Footer */}
+      {hasChanges && (
+        <div className="sticky bottom-0 p-[1.6rem] sm:p-[2.4rem] border-t border-input-stroke bg-primary flex gap-4">
+          <Button
+            variant="secondary"
+            onClick={revertChanges}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={saveBrandKit}
+            loading={isSaving}
+            className="flex-[2]"
+          >
+            {isSaving ? "Saving..." : "Save Brand Kit"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

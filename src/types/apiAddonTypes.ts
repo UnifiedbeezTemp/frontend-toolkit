@@ -8,7 +8,10 @@ export interface ApiAddon {
   billingInterval?: string; // "MONTHLY" | "YEARLY"
   isActive: boolean;
   maxQuantity: number | null;
+  remainingPurchasable: number | null;
   category?: string; // "USAGE_PACK" | etc.
   createdAt: string;
   updatedAt: string;
+  isIncludedInPlan: boolean;
+  maxAllowed: number;
 }

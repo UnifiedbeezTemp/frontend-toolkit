@@ -8,6 +8,7 @@ import { useUser } from "../../../contexts/UserContext";
 import { useSwitchPreview } from "../../downgrade-warning/hooks/useSwitchPreview";
 import { authService } from "../../../api/services/auth";
 import { PaymentMethodData } from "../../../api/services/auth/types";
+import { queryClient } from "../../../api/client";
 
 export const usePlanSelection = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ export const usePlanSelection = () => {
     user?.planBillingInterval === "YEARLY",
   );
 
-   const returnTo = searchParams.get("returnTo");
+  const returnTo = searchParams.get("returnTo");
 
   useEffect(() => {
     if (user?.planBillingInterval) {
@@ -97,11 +98,11 @@ export const usePlanSelection = () => {
 
           // so the page fully reloads and refetches fresh data
           if (returnTo) {
-          window.location.href = decodeURIComponent(returnTo);
-        } else {
-          // router.back();
-          window.history.back();
-        }
+            window.location.href = decodeURIComponent(returnTo);
+          } else {
+            // router.back();
+            window.history.back();
+          }
         } else {
           // USER HAS NO CARD: Use trial activation (redirects to checkout)
           await accountSetupService.selectPlan(selectedPlan, billingInterval);
@@ -119,6 +120,8 @@ export const usePlanSelection = () => {
         }
 
         refetch();
+        await queryClient.invalidateQueries({ queryKey: ["plans", "user"] });
+        await queryClient.invalidateQueries({ queryKey: ["available-addons"] });
         // Close confirmation modal ONLY on success
         setShowPaymentConfirmationModal(false);
       } catch (err) {
