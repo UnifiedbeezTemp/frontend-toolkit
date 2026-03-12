@@ -232,6 +232,7 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
   );
 
   const canAddMore = useCallback((addon: Addon, currentQuantity: number) => {
+    if (addon.limit === -1) return true;
     return currentQuantity < addon.limit;
   }, []);
 

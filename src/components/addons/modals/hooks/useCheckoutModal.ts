@@ -69,7 +69,10 @@ export const useCheckoutModal = ({
   }, [subtotal, vat]);
 
   const hasLimitReachedAddons = useMemo(() => {
-    return selectedAddons?.some((addon) => (addon.used || 1) >= addon.limit);
+    return selectedAddons?.some((addon) => {
+      if (addon.limit === -1) return false;
+      return (addon.used || 1) >= addon.limit;
+    });
   }, [selectedAddons]);
 
   const { user } = useUser();
