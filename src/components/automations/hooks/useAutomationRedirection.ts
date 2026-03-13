@@ -34,13 +34,13 @@ export const useAutomationRedirection = () => {
       if (templateId) {
         query += `&templateId=${templateId}`;
       }
-      router.push(`${baseUrl}/new${query}`);
+      router.push(`${baseUrl}/automations/new${query}`);
     }
   };
 
   const handleGoToDashboard = () => {
     if (baseUrl) {
-      router.push(`${baseUrl}/new?category=reengagement-campaigns`);
+      router.push(`${baseUrl}/automations/new?category=reengagement-campaigns`);
     }
   };
 

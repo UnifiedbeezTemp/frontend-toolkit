@@ -21,6 +21,8 @@ export function StarIcon({
         <path
           d="M38.8799 1.28125L44.3827 24.7072L68.3626 22.7017L47.7837 35.1743L57.1012 57.3608L38.8799 41.6432L20.6585 57.3608L29.9761 35.1743L9.39713 22.7017L33.377 24.7072L38.8799 1.28125Z"
           fill={fill}
+          stroke={props.stroke}
+          strokeWidth={props.strokeWidth}
         />
       </g>
     </svg>
