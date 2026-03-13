@@ -181,8 +181,8 @@ export const SUPABASE_ICONS = {
   warning: "icons/solar_danger-triangle-outline.svg",
   check: "icons/checkbox-base.svg",
 
-  websiteWebChatIcon: "/icons/website-webchat.svg",
-  defaultIcon: "/icons/website-webchat.svg",
+  websiteWebChatIcon: "icons/website-webchat.svg",
+  defaultIcon: "icons/website-webchat.svg",
   whatsappIcon: "icons/whatsapp.svg",
   facebookMessengerLogo: "icons/facebook-messenger-logo.svg",
   instagramLogo: "icons/instagram-logo.svg",
