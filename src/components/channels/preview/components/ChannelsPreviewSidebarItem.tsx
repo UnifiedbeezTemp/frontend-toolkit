@@ -19,7 +19,6 @@ export default function ChannelsPreviewSidebarItem({
   onClick,
 }: ChannelsPreviewSidebarItemProps) {
   const icons = useSupabaseIcons();
-  
   // Fetch connections to display count
   const { connections } = useChannelConnectionsData(channel);
   const hasConnections = connections.length > 0;
@@ -31,7 +30,7 @@ export default function ChannelsPreviewSidebarItem({
         "flex items-center gap-[1.2rem] py-[1.6rem] pl-[0.8rem] pr-[1.6rem] rounded-[0.8rem] cursor-pointer transition-colors",
         isActive
           ? "border border-brand-primary layout-body"
-          : "bg-primary border border-input-stroke hover:bg-input-filled"
+          : "bg-primary border border-input-stroke hover:bg-input-filled",
       )}
     >
       <ImageComponent
@@ -47,7 +46,7 @@ export default function ChannelsPreviewSidebarItem({
           size="sm"
           className={cn(
             "font-[700] truncate",
-            isActive ? "text-text-secondary" : "text-text-secondary"
+            isActive ? "text-text-secondary" : "text-text-secondary",
           )}
         >
           {channel.name}
