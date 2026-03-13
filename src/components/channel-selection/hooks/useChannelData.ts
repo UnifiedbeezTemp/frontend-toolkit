@@ -1,6 +1,5 @@
-import { useAppQuery, api } from "@/shared/src/api";
-import { ChannelsApiResponse } from "@/shared/src/types/channelApiTypes";
-import { SelectedChannelsResponse } from "@/shared/src/types/channelApiTypes";
+import { useAppQuery, api } from "../../../api";
+import { ChannelsApiResponse, SelectedChannelsResponse } from "../../../types/channelApiTypes";
 
 export const useStep5Channels = () => {
   const {

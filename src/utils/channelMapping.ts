@@ -1,5 +1,10 @@
 import { Channel } from "../store/onboarding/types/channelTypes";
-import { BackendChannel, ChannelsApiResponse, SelectedChannelsResponse, SelectedChannel } from "../types/channelApiTypes";
+import {
+  BackendChannel,
+  ChannelsApiResponse,
+  SelectedChannelsResponse,
+  SelectedChannel,
+} from "../types/channelApiTypes";
 
 interface ChannelIconMap {
   [key: string]: string;
@@ -29,12 +34,11 @@ export const getChannelIconKey = (channelName: string): string => {
     microsoft_calendar: "microsoftCalendar",
     google_calendar: "googleCalendar",
     twilio_sms: "twilioSmsIcon",
-    twilio_voice: "twilioPhoneIcon"
+    twilio_voice: "twilioPhoneIcon",
   };
 
   return iconMap[channelName.toLowerCase()] || "linkExternal";
 };
-
 
 const mapCategoryToType = (category: string): string => {
   const categoryMap: Record<string, string> = {
@@ -42,6 +46,8 @@ const mapCategoryToType = (category: string): string => {
     CRM_CALENDAR: "CRM & Calendar Sync",
     ECOMMERCE: "Ecommerce & Payment",
     UPCOMING: "Coming Soon",
+    UPCOMING_CHANNELS: "Coming Soon",
+    upcomingchannels: "Coming Soon",
   };
 
   return categoryMap[category] || category;
@@ -53,7 +59,7 @@ const mapCategoryToType = (category: string): string => {
 const formatPlanInfo = (
   requiresPlan: string[],
   comingSoon: boolean,
-  limits?: { remaining?: number; max?: number; unlimited?: boolean }
+  limits?: { remaining?: number; max?: number; unlimited?: boolean },
 ): string => {
   if (comingSoon) {
     return "Coming Soon";
@@ -83,7 +89,7 @@ const formatPlanInfo = (
  */
 export const transformSelectedChannelToUI = (
   selectedChannel: SelectedChannel,
-  assets: Record<string, string>
+  assets: Record<string, string>,
 ): Channel => {
   if (!selectedChannel || !selectedChannel.availableChannel) {
     throw new Error("Invalid selected channel data: missing availableChannel");
@@ -93,7 +99,6 @@ export const transformSelectedChannelToUI = (
   const iconKey = getChannelIconKey(backendChannel.name);
   const icon = assets[iconKey] || assets.linkExternal || "";
   // console.log(backendChannel)
-
 
   // Preserve ALL backend data and just add UI-specific fields
   const { id, channelName, ...restSelectedChannel } = selectedChannel;
@@ -106,10 +111,13 @@ export const transformSelectedChannelToUI = (
     icon, // Add icon
     hasBorder: backendChannel.name === "webchat",
     type: mapCategoryToType(backendChannel.category || "COMMUNICATION"),
-    tags: backendChannel.isActive && !backendChannel.comingSoon ? ["popular"] : undefined,
+    tags:
+      backendChannel.isActive && !backendChannel.comingSoon
+        ? ["popular"]
+        : undefined,
     info: formatPlanInfo(
       backendChannel.requiresPlan || [],
-      backendChannel.comingSoon || false
+      backendChannel.comingSoon || false,
     ),
     isSelected: true, // Mark as selected since it's from selectedChannels
     // Preserve availableChannel with icon added
@@ -126,7 +134,7 @@ export const transformSelectedChannelToUI = (
 export const transformBackendChannelToUI = (
   backendChannel: BackendChannel,
   assets: Record<string, string>,
-  categoryLimits?: { remaining?: number; max?: number; unlimited?: boolean }
+  categoryLimits?: { remaining?: number; max?: number; unlimited?: boolean },
 ): Channel => {
   if (!backendChannel || !backendChannel.name) {
     throw new Error("Invalid channel data: missing name");
@@ -173,11 +181,14 @@ export const transformBackendChannelToUI = (
     icon,
     hasBorder: backendChannel.name === "webchat",
     type: mapCategoryToType(backendChannel.category || "COMMUNICATION"),
-    tags: backendChannel.isActive && !backendChannel.comingSoon ? ["popular"] : undefined,
+    tags:
+      backendChannel.isActive && !backendChannel.comingSoon
+        ? ["popular"]
+        : undefined,
     info: formatPlanInfo(
       backendChannel.requiresPlan || [],
       backendChannel.comingSoon || false,
-      categoryLimits
+      categoryLimits,
     ),
     isSelected: false, // Not selected yet
 
@@ -192,7 +203,7 @@ export const transformBackendChannelToUI = (
 export const transformChannelsResponse = (
   response: ChannelsApiResponse | null | undefined,
   assets: Record<string, string>,
-  selectedChannels?: SelectedChannelsResponse | null
+  selectedChannels?: SelectedChannelsResponse | null,
 ): Channel[] => {
   if (!response || !response.categories) {
     return [];
@@ -200,7 +211,7 @@ export const transformChannelsResponse = (
 
   const channels: Channel[] = [];
   const selectedChannelMap = new Map<number, SelectedChannel>();
-  
+
   // Map selected channels by availableChannelId for quick lookup
   if (selectedChannels?.channels) {
     selectedChannels.channels.forEach((selected) => {
@@ -225,7 +236,7 @@ export const transformChannelsResponse = (
             return transformBackendChannelToUI(
               channel,
               assets,
-              response.categories.communication.limits
+              response.categories.communication.limits,
             );
           }
         });
@@ -263,8 +274,10 @@ export const transformChannelsResponse = (
     }
 
     // Process Upcoming channels
-    if (response.categories.upcoming?.available?.length) {
-      const upcomingChannels = response.categories.upcoming.available
+    const upcomingCategory =
+      response.categories.upcoming || response.categories.upcomingchannels;
+    if (upcomingCategory?.available?.length) {
+      const upcomingChannels = upcomingCategory.available
         .filter((channel) => channel && channel.name)
         .map((channel) => {
           const selected = selectedChannelMap.get(channel.id);
@@ -283,4 +296,3 @@ export const transformChannelsResponse = (
 
   return channels;
 };
-

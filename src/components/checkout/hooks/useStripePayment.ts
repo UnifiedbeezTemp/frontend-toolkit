@@ -1,23 +1,36 @@
 "use client";
 import { useState } from "react";
-import { StripeCardElementChangeEvent, StripeError } from "@stripe/stripe-js";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import {
+  StripeCardNumberElementChangeEvent,
+  StripeCardExpiryElementChangeEvent,
+  StripeCardCvcElementChangeEvent,
+  StripeError,
+} from "@stripe/stripe-js";
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+} from "@stripe/react-stripe-js";
+import { Control } from "react-hook-form";
+import { CheckoutFormData } from "../hooks/useCheckoutForm";
 import { authService } from "../../../api/services/auth";
 import { useRouter } from "next/navigation";
+import { useUser } from "../../../contexts/UserContext";
 import { addonService } from "../../../api/services/addon/addonService";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
+import { queryClient } from "../../../api/client";
 
 interface FormValues {
   cardHolderName?: string;
-  fullName?: string;
   address?: string;
   city?: string;
   state?: string;
   postalCode?: string;
+  country?: string;
 }
 
 interface UseStripePaymentProps {
-  control: { _formValues: unknown };
+  control: Control<CheckoutFormData>;
   clientSecret: string;
   onPaymentMethodAttached?: () => void;
 }
@@ -29,14 +42,47 @@ export const useStripePayment = ({
 }: UseStripePaymentProps) => {
   const stripe = useStripe();
   const elements = useElements();
+  const { user, refetch } = useUser();
   const router = useRouter();
-  const [cardComplete, setCardComplete] = useState(false);
+
+  const [cardNumberComplete, setCardNumberComplete] = useState(false);
+  const [cardExpiryComplete, setCardExpiryComplete] = useState(false);
+  const [cardCvcComplete, setCardCvcComplete] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string>("");
 
-  const handleCardChange = (event: StripeCardElementChangeEvent) => {
-    setCardComplete(event.complete);
-    setError(event.error?.message || "");
+  const cardComplete =
+    cardNumberComplete && cardExpiryComplete && cardCvcComplete;
+
+  const handleCardNumberChange = (
+    event: StripeCardNumberElementChangeEvent,
+  ) => {
+    setCardNumberComplete(event.complete);
+    if (event.error) {
+      setError(event.error.message);
+    } else {
+      setError("");
+    }
+  };
+
+  const handleCardExpiryChange = (
+    event: StripeCardExpiryElementChangeEvent,
+  ) => {
+    setCardExpiryComplete(event.complete);
+    if (event.error) {
+      setError(event.error.message);
+    } else {
+      setError("");
+    }
+  };
+
+  const handleCardCvcChange = (event: StripeCardCvcElementChangeEvent) => {
+    setCardCvcComplete(event.complete);
+    if (event.error) {
+      setError(event.error.message);
+    } else {
+      setError("");
+    }
   };
 
   const handlePaymentSubmit = async () => {
@@ -49,26 +95,27 @@ export const useStripePayment = ({
     setError("");
 
     try {
-      const cardElement = elements.getElement(CardElement);
+      const cardNumberElement = elements.getElement(CardNumberElement);
 
-      if (!cardElement) {
-        throw new Error("Card element not found");
+      if (!cardNumberElement) {
+        throw new Error("Card number element not found");
       }
 
-      const formValues = control._formValues as FormValues;
+      const formValues = control._formValues as CheckoutFormData;
 
       const { error: stripeError, setupIntent } = await stripe.confirmCardSetup(
         clientSecret,
         {
           payment_method: {
-            card: cardElement,
+            card: cardNumberElement,
             billing_details: {
-              name: formValues.cardHolderName || formValues.fullName,
+              name: formValues.cardHolderName,
               address: {
                 line1: formValues.address,
                 city: formValues.city,
                 state: formValues.state,
                 postal_code: formValues.postalCode,
+                country: formValues.country,
               },
             },
           },
@@ -102,8 +149,6 @@ export const useStripePayment = ({
           if (storedAddonsStr) {
             try {
               const selectedAddons: Addon[] = JSON.parse(storedAddonsStr);
-              // Note: for a new user, purchasedAddons will be empty/delta is full qty
-              // but we calculate it anyway for consistency if hook is available
               const purchases = selectedAddons
                 .map((addon) => ({
                   addonType: addon.addonType,
@@ -124,6 +169,11 @@ export const useStripePayment = ({
           }
 
           onPaymentMethodAttached?.();
+          refetch();
+          await queryClient.invalidateQueries({ queryKey: ["plans", "user"] });
+          await queryClient.invalidateQueries({
+            queryKey: ["available-addons"],
+          });
         } catch (attachError) {
           const errorMessage =
             attachError instanceof Error
@@ -153,7 +203,9 @@ export const useStripePayment = ({
     cardComplete,
     processing,
     error,
-    handleCardChange,
+    handleCardNumberChange,
+    handleCardExpiryChange,
+    handleCardCvcChange,
     handlePaymentSubmit,
     setError,
   };

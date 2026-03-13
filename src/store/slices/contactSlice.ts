@@ -8,22 +8,23 @@ export interface Contact {
   email: string;
   phone: string;
   dateCreated: string;
-  status: "Active" | "Unconfirmed" | "Unsubscribed" | "Bounced";
+  status: "active" | "unconfirmed" | "unsubscribed" | "bounced";
   avatar?: string;
+  list?: string;
 }
 
 export interface ContactState {
   contacts: Contact[];
   selectedContacts: string[];
   searchQuery: string;
-  selectedStatus: "All" | "Active" | "Unconfirmed" | "Unsubscribed" | "Bounced";
+  selectedStatus: "all" | "active" | "unconfirmed" | "unsubscribed" | "bounced";
 }
 
 const initialState: ContactState = {
   contacts: [],
   selectedContacts: [],
   searchQuery: "",
-  selectedStatus: "All",
+  selectedStatus: "all",
 };
 
 const contactSlice = createSlice({
@@ -57,6 +58,18 @@ const contactSlice = createSlice({
     clearSelection: (state) => {
       state.selectedContacts = [];
     },
+    addContact: (state, action: PayloadAction<Contact>) => {
+      state.contacts.unshift(action.payload);
+    },
+    deleteContacts: (state, action: PayloadAction<string[]>) => {
+      const idsToDelete = action.payload;
+      state.contacts = state.contacts.filter(
+        (contact) => !idsToDelete.includes(contact.id),
+      );
+      state.selectedContacts = state.selectedContacts.filter(
+        (id) => !idsToDelete.includes(id),
+      );
+    },
   },
 });
 
@@ -64,7 +77,7 @@ export const selectFilteredContacts = createSelector(
   [
     (state: RootState) => state?.contact?.contacts || [],
     (state: RootState) => state?.contact?.searchQuery || "",
-    (state: RootState) => state?.contact?.selectedStatus || "All",
+    (state: RootState) => state?.contact?.selectedStatus || "all",
   ],
   (contacts, searchQuery, selectedStatus) => {
     return contacts.filter((contact) => {
@@ -73,7 +86,7 @@ export const selectFilteredContacts = createSelector(
         contact.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         contact.username.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesStatus =
-        selectedStatus === "All" || contact.status === selectedStatus;
+        selectedStatus === "all" || contact.status === selectedStatus;
 
       return matchesSearch && matchesStatus;
     });
@@ -93,6 +106,8 @@ export const {
   setSelectedStatus,
   selectAllContacts,
   clearSelection,
+  addContact,
+  deleteContacts,
 } = contactSlice.actions;
 
 export default contactSlice.reducer;

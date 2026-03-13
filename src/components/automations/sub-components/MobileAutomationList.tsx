@@ -11,6 +11,7 @@ import {
   clearSelectedAutomations,
 } from "../../../store/slices/automationSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
+import { useRouter } from "next/navigation";
 
 interface MobileAutomationListProps {
   currentAutomations: Automation[];
@@ -22,9 +23,17 @@ export default function MobileAutomationList({
   icons,
 }: MobileAutomationListProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const selectedAutomations = useAppSelector(
     (state) => state.automation.selectedAutomations,
   );
+
+  const handleEdit = (automationId: string) => {
+    const baseUrl = process.env.NEXT_PUBLIC_AUTOMATIONS_LIBRARY_URL || "";
+    if (baseUrl) {
+      router.push(`${baseUrl}/automations/${automationId}`);
+    }
+  };
 
   return (
     <div className="sm:hidden px-[1.4rem] space-y-[1.6rem] mb-[1.6rem] mt-[2rem]">
@@ -77,7 +86,10 @@ export default function MobileAutomationList({
               </div>
 
               <div className="flex items-center gap-[1px]">
-                <button className="p-2 text-text-primary hover:bg-brand-primary/10 rounded-lg transition-colors">
+                <button
+                  onClick={() => handleEdit(automation.id)}
+                  className="p-2 text-text-primary hover:bg-brand-primary/10 rounded-lg transition-colors"
+                >
                   <ImageComponent
                     alt={"edit"}
                     src={icons.editPen}

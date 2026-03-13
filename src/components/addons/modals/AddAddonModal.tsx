@@ -44,9 +44,10 @@ export const AddAddonModal: React.FC<AddAddonModalProps> = ({
   } = useAddAddonModal({ onAdd, addon, currentQuantity });
 
   const isLimitReached = !canAddMore;
-  const isAddDisabled = addon?.limit
-    ? !canAddMore && currentQuantity > addon.limit
-    : false;
+  const isAddDisabled =
+    addon?.limit !== undefined && addon.limit !== -1
+      ? !canAddMore && currentQuantity > addon.limit
+      : false;
 
   const isDisabled =
     isAddDisabled || isLanguageSelectionIncomplete || isUpdatingPreferences;
@@ -72,6 +73,7 @@ export const AddAddonModal: React.FC<AddAddonModalProps> = ({
               onQuantityChange={onQuantityChange}
               canAddMore={canAddMore}
               isLimitReached={isLimitReached}
+              limit={addon?.limit}
               errorText={errorText}
             />
             {isMultiLanguage && addon && (

@@ -6,12 +6,16 @@ export interface MultiLanguageInstance {
 }
 
 export interface PurchasedAddonResponse {
+  id?: number | string;
   type: string;
   name: string;
   quantity: number;
   active: number;
   scheduledForCancellation: number;
   priceEur: number;
+  billingType?: string;
+  billingInterval?: string; // "MONTHLY" | "YEARLY"
+  isIncludedInPlan?: boolean;
   instances?: MultiLanguageInstance[];
 }
 
@@ -24,6 +28,7 @@ export interface Addon {
   limitText: string;
   icon: string;
   addonType: string;
+  billingType?: string; // "MONTHLY" | "YEARLY"
   used?: number; // Total quantity (active + scheduled for cancellation)
   active?: number; // Currently active quantity
   scheduledForCancellation?: number; // Quantity scheduled to cancel
@@ -32,4 +37,5 @@ export interface Addon {
   isIncludedInPlan?: boolean;
   instances?: MultiLanguageInstance[]; // For multi-language addons
   selectedLanguages?: string[]; // For UI selection state
+  category?: string;
 }

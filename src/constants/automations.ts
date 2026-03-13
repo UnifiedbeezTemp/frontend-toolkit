@@ -3,5 +3,4 @@ export const AUTOMATION_TYPES = [
   "Support and Escalation",
   "Retention and Nurture",
   "Re-engagement and Campaigns",
-  "Internal Operations & Admin",
 ];

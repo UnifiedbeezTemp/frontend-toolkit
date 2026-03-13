@@ -64,7 +64,9 @@ const addonSlice = createSlice({
       const { id, quantity } = action.payload;
       const addon = state.selectedAddons.find((a) => a.id === id);
       if (addon) {
-        addon.used = Math.max(1, Math.min(quantity, addon.limit));
+        const cappedQuantity =
+          addon.limit === -1 ? quantity : Math.min(quantity, addon.limit);
+        addon.used = Math.max(1, cappedQuantity);
       }
     },
     openCheckoutModal: (state) => {

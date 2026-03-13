@@ -1,14 +1,20 @@
 import { useMemo, useEffect } from "react";
 import { useChannels } from "./useChannels";
-import { useSupabaseIcons, useSupabaseImages } from "../../../lib/supabase/useSupabase";
-import { ChannelsApiResponse, SelectedChannelsResponse } from "../../../types/channelApiTypes";
+import {
+  useSupabaseIcons,
+  useSupabaseImages,
+} from "../../../lib/supabase/useSupabase";
+import {
+  ChannelsApiResponse,
+  SelectedChannelsResponse,
+} from "../../../types/channelApiTypes";
 import { transformChannelsResponse } from "../../../utils/channelMapping";
 import { Channel } from "../../../store/onboarding/types/channelTypes";
 
 export const useChannelsData = (
   backendData?: ChannelsApiResponse | null,
   selectedChannels?: SelectedChannelsResponse | null,
-  externalChannels?: Channel[]
+  externalChannels?: Channel[],
 ) => {
   const supabaseIcons = useSupabaseIcons();
   const supabaseImages = useSupabaseImages();
@@ -40,10 +46,10 @@ export const useChannelsData = (
   }, [backendData, assets, selectedChannels]);
 
   useEffect(() => {
-    if (channelsData.length > 0) {
+    if (backendData) {
       setChannels(channelsData);
     }
-  }, [channelsData, setChannels]);
+  }, [channelsData, setChannels, backendData]);
 
   const channelsToUse = externalChannels || defaultChannels;
 

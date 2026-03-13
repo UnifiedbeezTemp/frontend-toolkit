@@ -14,6 +14,8 @@ import {
   deleteAiAssistant,
   fetchAiAssistants,
   updateAiAssistantName,
+  updateAiAssistantPersonality,
+  updateAiAssistantInstruction,
 } from "../api/aiAssistants";
 import {
   AIAssistant,
@@ -154,69 +156,57 @@ export function useAiAssistants(
     { id: string; tone: string; style: string; personalityType: string },
     AIAssistant,
     ApiError
-  >(
-    (payload) =>
-      import("../api/aiAssistants").then((api) =>
-        api.updateAiAssistantPersonality(payload),
-      ),
-    {
-      onSuccess: (data) => {
-        const normalized = normalizeAssistant(data);
-        dispatch(updateAssistant({ id: normalized.id, data: normalized }));
-        if (showToasts) {
-          showToast({
-            variant: "success",
-            title: "Personality updated",
-            description: "Tone and style saved successfully.",
-          });
-        }
-        queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
-      },
-      onError: (error) => {
-        if (showToasts) {
-          showToast({
-            variant: "error",
-            title: "Personality update failed",
-            description: getErrorMessage(error),
-          });
-        }
-      },
+  >((payload) => updateAiAssistantPersonality(payload), {
+    onSuccess: (data) => {
+      const normalized = normalizeAssistant(data);
+      dispatch(updateAssistant({ id: normalized.id, data: normalized }));
+      if (showToasts) {
+        showToast({
+          variant: "success",
+          title: "Personality updated",
+          description: "Tone and style saved successfully.",
+        });
+      }
+      queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
     },
-  );
+    onError: (error) => {
+      if (showToasts) {
+        showToast({
+          variant: "error",
+          title: "Personality update failed",
+          description: getErrorMessage(error),
+        });
+      }
+    },
+  });
 
   const updateInstructionMutation = useAppMutation<
     { id: string; instruction: string },
     AIAssistant,
     ApiError
-  >(
-    (payload) =>
-      import("../api/aiAssistants").then((api) =>
-        api.updateAiAssistantInstruction(payload),
-      ),
-    {
-      onSuccess: (data) => {
-        const normalized = normalizeAssistant(data);
-        dispatch(updateAssistant({ id: normalized.id, data: normalized }));
-        if (showToasts) {
-          showToast({
-            variant: "success",
-            title: "Instructions updated",
-            description: "Assistant instructions saved successfully.",
-          });
-        }
-        queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
-      },
-      onError: (error) => {
-        if (showToasts) {
-          showToast({
-            variant: "error",
-            title: "Instruction update failed",
-            description: getErrorMessage(error),
-          });
-        }
-      },
+  >((payload) => updateAiAssistantInstruction(payload), {
+    onSuccess: (data) => {
+      const normalized = normalizeAssistant(data);
+      dispatch(updateAssistant({ id: normalized.id, data: normalized }));
+      if (showToasts) {
+        showToast({
+          variant: "success",
+          title: "Instructions updated",
+          description: "Assistant instructions saved successfully.",
+        });
+      }
+      queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
     },
-  );
+    onError: (error) => {
+      if (showToasts) {
+        showToast({
+          variant: "error",
+          title: "Instruction update failed",
+          description: getErrorMessage(error),
+        });
+      }
+    },
+  });
 
   const deleteAssistantMutation = useAppMutation<
     string,

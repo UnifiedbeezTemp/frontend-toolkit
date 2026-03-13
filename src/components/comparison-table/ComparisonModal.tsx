@@ -3,9 +3,7 @@
 import React from "react";
 import Modal from "../modal/Modal";
 import ComparisonTable from "./ComparisonTable";
-import ImageComponent from "next/image";
-import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
-import Heading from "../ui/Heading";
+import CloseModalButton from "../modal/CloseModalButton";
 
 interface ComparisonModalProps {
   isOpen: boolean;
@@ -20,8 +18,6 @@ export default function ComparisonModal({
   onSelectPlan,
   onAddonsClick,
 }: ComparisonModalProps) {
-  const icons = useSupabaseIcons();
-
   return (
     <Modal
       isOpen={isOpen}
@@ -29,7 +25,11 @@ export default function ComparisonModal({
       size="fullscreen"
       className="w-[calc(100vw-2rem)] lg:w-fit rounded-[2.5rem] mx-auto overflow-hidden"
     >
-      <div className="max-w-[138rem] mx-auto">
+      <div className="max-w-[160rem] mx-auto relative">
+        <CloseModalButton
+          onClick={onClose}
+          className="absolute top-0 right-0 z-[60]"
+        />
         <ComparisonTable
           onSelectPlan={onSelectPlan}
           onAddonsClick={onAddonsClick}

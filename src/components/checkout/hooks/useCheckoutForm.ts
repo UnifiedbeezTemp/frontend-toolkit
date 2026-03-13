@@ -5,40 +5,56 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { CHECKOUT_FORM_SCHEMA } from "../utils/checkoutSchema";
-import { authService, StartTrialPayload } from "../../../api/services/auth";
+import { authService } from "../../../api/services/auth";
 import { useState, useEffect } from "react";
 import { useToast } from "../../ui/toast/useToast";
-import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 import { useUser } from "../../../contexts/UserContext";
 
 export type CheckoutFormData = z.infer<typeof CHECKOUT_FORM_SCHEMA>;
 
 const CHECKOUT_STORAGE_KEY = "unifiedbeez_checkout_data";
 
-export const useCheckoutForm = () => {
+export const useCheckoutForm = ({
+  isYearly = false,
+}: { isYearly?: boolean } = {}) => {
   const [clientSecret, setClientSecret] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [trialEndsAt, setTrialEndsAt] = useState<string>("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const { showToast } = useToast();
+  const { user } = useUser();
+  const router = useRouter();
 
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(CHECKOUT_FORM_SCHEMA),
     mode: "onSubmit" as const,
     reValidateMode: "onChange" as const,
     defaultValues: {
-      fullName: "",
-      state: "",
-      city: "",
+      cardHolderName: "",
       address: "",
+      city: "",
+      state: "",
       postalCode: "",
+      country: "",
       agreeToTerms: false,
     },
   });
 
-  const { user } = useUser();
-  const router = useRouter();
+  useEffect(() => {
+    const fetchSetupIntent = async () => {
+      try {
+        const response = await authService.createSetupIntent();
+        if (response.client_secret) {
+          setClientSecret(response.client_secret);
+        }
+      } catch (err) {
+        console.error("Failed to fetch setup intent:", err);
+      }
+    };
+
+    fetchSetupIntent();
+  }, []);
 
   useEffect(() => {
     const savedData = localStorage.getItem(CHECKOUT_STORAGE_KEY);
@@ -65,17 +81,6 @@ export const useCheckoutForm = () => {
   }, [watchedValues, isReady]);
 
   const onSubmit = async (data: CheckoutFormData) => {
-    const planType = user?.plan?.toUpperCase();
-
-    if (!planType) {
-      showToast({
-        title: "No Plan Selected",
-        description: "Please select a plan first.",
-        variant: "error",
-      });
-      return;
-    }
-
     if (!data.agreeToTerms) {
       showToast({
         title: "Terms Required",
@@ -85,51 +90,12 @@ export const useCheckoutForm = () => {
       return;
     }
 
-    setIsProcessing(true);
+    // This triggers the appearance of the Stripe elements or the "confirmation" state
     setHasSubmitted(true);
-
-    try {
-      const payload: StartTrialPayload = {
-        planType: planType,
-      };
-
-      const response = await authService.confirmTrialStart(payload);
-
-      if (response.clientSecret) {
-        setClientSecret(response.clientSecret);
-        setTrialEndsAt(response.trialEndsAt);
-        localStorage.removeItem(CHECKOUT_STORAGE_KEY);
-      } else {
-        showToast({
-          title: "Setup Failed",
-          description: "Failed to get client secret from server",
-          variant: "error",
-        });
-        setHasSubmitted(false);
-      }
-    } catch (err: unknown) {
-      const errorMessage = extractErrorMessage(
-        err,
-        "Failed to setup trial. Please try again.",
-      );
-      showToast({
-        title: "Trial Setup Failed",
-        description: errorMessage,
-        variant: "error",
-      });
-      setHasSubmitted(false);
-    } finally {
-      setIsProcessing(false);
-    }
   };
 
   const handleGoBack = () => {
-    if (hasSubmitted && clientSecret) {
-      setHasSubmitted(false);
-      setClientSecret("");
-    } else {
-      router.back();
-    }
+    router.back();
   };
 
   return {
@@ -141,7 +107,9 @@ export const useCheckoutForm = () => {
     onSubmit,
     clientSecret,
     isProcessing,
+    setIsProcessing,
     trialEndsAt,
+    setTrialEndsAt,
     hasSubmitted,
     handleGoBack,
     setHasSubmitted,

@@ -3,17 +3,22 @@ import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
 
 interface UseQuantitySelectorProps {
   isLimitReached: boolean;
+  limit?: number;
   errorText?: string | null;
 }
 
 export const useQuantitySelector = ({
   isLimitReached,
+  limit,
   errorText,
 }: UseQuantitySelectorProps) => {
   const icons = useSupabaseIcons();
 
+  const isDestructive =
+    limit !== 1 && limit !== -1 && (isLimitReached || !!errorText);
+
   const buttonIcons = useMemo(() => {
-    if (isLimitReached || errorText) {
+    if (isDestructive || errorText) {
       return {
         minus: icons.minusRed,
         plus: icons.plusRed,
@@ -24,7 +29,7 @@ export const useQuantitySelector = ({
       plus: icons.plus,
     };
   }, [
-    isLimitReached,
+    isDestructive,
     errorText,
     icons.minus,
     icons.minusRed,
@@ -34,14 +39,14 @@ export const useQuantitySelector = ({
 
   const textColor = useMemo(
     () =>
-      isLimitReached || errorText ? "text-destructive" : "text-text-secondary",
-    [isLimitReached, errorText],
+      isDestructive || errorText ? "text-destructive" : "text-text-secondary",
+    [isDestructive, errorText],
   );
 
   const buttonVariant = useMemo(
     (): "dangerReverse" | "secondary" =>
-      isLimitReached || errorText ? "dangerReverse" : "secondary",
-    [isLimitReached, errorText],
+      isDestructive || errorText ? "dangerReverse" : "secondary",
+    [isDestructive, errorText],
   );
 
   return {

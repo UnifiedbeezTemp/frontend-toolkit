@@ -132,16 +132,20 @@ export default function SmartDropdown({
         <motion.div
           ref={dropdownRef}
           className={cn(
-            "fixed bg-primary border border-border rounded-[0.8rem] shadow-xl z-50 overflow-hidden backdrop-blur-sm z-[1000]",
+            "fixed bg-primary border border-border rounded-[0.8rem] shadow-xl overflow-hidden backdrop-blur-sm z-[9999]",
             className.includes("w-full") ? "w-full" : "",
-            !className.includes("w-full") && triggerWidth ? `min-w-[${triggerWidth}px]` : "",
-            className
+            !className.includes("w-full") && triggerWidth
+              ? `min-w-[${triggerWidth}px]`
+              : "",
+            className,
           )}
           style={{
             top: calculatedPosition.top,
             left: calculatedPosition.left,
             maxHeight,
-            ...(!className.includes("w-full") && !className.includes("!w-") && triggerWidth && { width: triggerWidth }),
+            ...(!className.includes("w-full") &&
+              !className.includes("!w-") &&
+              triggerWidth && { width: triggerWidth }),
           }}
           initial={{ opacity: 0, scale: 0.95, y: -5 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -160,6 +164,6 @@ export default function SmartDropdown({
         </motion.div>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 }

@@ -20,7 +20,7 @@ import {
 } from "../../../store/onboarding/slices/addonSlice";
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 
-export const useAddons = (planType?: string) => {
+export const useAddons = (planType?: string, isYearly?: boolean) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const addonState = useSelector((state: RootState) => state.addons);
@@ -67,6 +67,21 @@ export const useAddons = (planType?: string) => {
       dispatch(hydrateAddons(purchasedAddons));
     }
   }, [dispatch, purchasedAddons]);
+
+  // Sync staged addons to sessionStorage for users without a payment method
+  // This ensures that removals/changes are reflected on the checkout page
+  useEffect(() => {
+    if (typeof window !== "undefined" && !user?.paymentMethod) {
+      if (selectedAddons.length > 0) {
+        sessionStorage.setItem(
+          "unifiedbeez_checkout_addons",
+          JSON.stringify(selectedAddons),
+        );
+      } else {
+        sessionStorage.removeItem("unifiedbeez_checkout_addons");
+      }
+    }
+  }, [selectedAddons]);
 
   const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
 
@@ -162,8 +177,8 @@ export const useAddons = (planType?: string) => {
   }, [dispatch]);
 
   const handleBackNavigation = useCallback(() => {
-    router.back();
-  }, [router]);
+    window.history.back();
+  }, []);
 
   const { user } = useUser();
 
@@ -186,27 +201,38 @@ export const useAddons = (planType?: string) => {
   }, [selectedAddons, purchasedAddons]);
 
   const handleContinueToCheckout = useCallback(
-    (selectedAddons: Addon[]) => {
-      if (selectedAddons.length > 0) {
-        if (user?.trialInfo) {
-          if (!hasChanges) {
-            router.back();
-            return;
+    (selectedAddons: Addon[], returnTo?: string | null) => {
+      if (!hasChanges) {
+        if (user?.paymentMethod) {
+          if (returnTo) {
+            window.location.href = decodeURIComponent(returnTo);
+          } else {
+            window.history.back();
           }
+        } else {
+          router.push("/checkout");
         }
-        handleOpenCheckoutModal();
+        return;
       }
+
+      // If there are changes, we show the checkout modal regardless of payment method
+      handleOpenCheckoutModal();
     },
-    [handleOpenCheckoutModal, user?.trialInfo, hasChanges, router],
+    [handleOpenCheckoutModal, user?.paymentMethod, hasChanges, router],
   );
 
-  const getTotalPrice = useCallback((selectedAddons: Addon[]) => {
-    return selectedAddons.reduce((total, addon) => {
-      return total + addon.price * (addon.used || 1);
-    }, 0);
-  }, []);
+  const getTotalPrice = useCallback(
+    (selectedAddons: Addon[]) => {
+      return selectedAddons.reduce((total, addon) => {
+        const base = addon.price * (addon.used || 1);
+        return total + (isYearly ? base * 12 : base);
+      }, 0);
+    },
+    [isYearly],
+  );
 
   const canAddMore = useCallback((addon: Addon, currentQuantity: number) => {
+    if (addon.limit === -1) return true;
     return currentQuantity < addon.limit;
   }, []);
 

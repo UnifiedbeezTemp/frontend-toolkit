@@ -43,9 +43,17 @@ export const AddonHeader: React.FC<AddonHeaderProps> = ({
             alt={addon.name}
             width={20}
             height={20}
+            className={cn(addon.isIncludedInPlan ? "opacity-50" : "")}
           />
         </div>
-        <Heading size="sm">{addon.name}</Heading>
+        <div className="flex items-center gap-[0.8rem]">
+          <Heading size="sm" className={cn(addon.isIncludedInPlan ? "text-muted" : "")}>{addon.name}</Heading>
+          {addon.isIncludedInPlan && (
+            <div className="bg-success/20 text-success text-[1.3rem] px-[0.8rem] py-[0.2rem] rounded-full font-[700] border border-success whitespace-nowrap">
+              Already Included in Plan
+            </div>
+          )}
+        </div>
       </div>
 
       {variant === "manage" && (addon.scheduledForCancellation || 0) === 0 ? (
