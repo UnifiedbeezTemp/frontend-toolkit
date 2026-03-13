@@ -7,23 +7,16 @@ import {
   ButtonColorState,
 } from "../types/brandKitTypes";
 
-export interface ModeColorState {
-  primary: string;
-  background: string;
-  accents: string[];
-}
-
 export const INITIAL_COLORS: BrandColorsState = {
   light: {
     primary: "#FFFFFF",
     background: "#FFFFFF",
-    accents: ["#FFFFFF"],
   },
   dark: {
     primary: "#1A1A1A",
     background: "#000000",
-    accents: ["#FFFFFF"],
   },
+  accentColor: "#FFFFFF",
   button: {
     color: "#FFFFFF",
     background: "#FFFFFF",
@@ -48,61 +41,19 @@ export function useBrandColors() {
     [],
   );
 
-  const handleAccentUpdate = useCallback(
-    (mode: "light" | "dark", index: number, color: string) => {
-      setColors((prev) => {
-        const newAccents = [...prev[mode].accents];
-        newAccents[index] = color;
-        return {
-          ...prev,
-          [mode]: { ...prev[mode], accents: newAccents },
-        };
-      });
-    },
-    [],
-  );
-
-  const handleAddAccent = useCallback((mode: "light" | "dark") => {
-    setColors((prev) => {
-      if (prev[mode].accents.length >= 5) return prev;
-      return {
-        ...prev,
-        [mode]: {
-          ...prev[mode],
-          accents: [...prev[mode].accents, "#FFFFFF"],
-        },
-      };
-    });
+  const handleAccentColorChange = useCallback((color: string) => {
+    setColors((prev) => ({
+      ...prev,
+      accentColor: color,
+    }));
   }, []);
-
-  const handleRemoveAccent = useCallback(
-    (mode: "light" | "dark", index: number) => {
-      setColors((prev) => {
-        const newAccents = prev[mode].accents.filter((_, i) => i !== index);
-        return {
-          ...prev,
-          [mode]: { ...prev[mode], accents: newAccents },
-        };
-      });
-    },
-    [],
-  );
 
   const createModeHandlers = useCallback(
     (mode: "light" | "dark") => ({
       onColorChange: (field: "primary" | "background", color: string) =>
         handleColorChange(mode, field, color),
-      onAccentAdd: () => handleAddAccent(mode),
-      onAccentUpdate: (index: number, color: string) =>
-        handleAccentUpdate(mode, index, color),
-      onAccentRemove: (index: number) => handleRemoveAccent(mode, index),
     }),
-    [
-      handleColorChange,
-      handleAddAccent,
-      handleAccentUpdate,
-      handleRemoveAccent,
-    ],
+    [handleColorChange],
   );
 
   const lightHandlers = useMemo(
@@ -132,11 +83,19 @@ export function useBrandColors() {
     [handleButtonColorChange],
   );
 
+  const accentHandlers = useMemo(
+    () => ({
+      onAccentColorChange: handleAccentColorChange,
+    }),
+    [handleAccentColorChange],
+  );
+
   return {
     colors,
     lightHandlers,
     darkHandlers,
     buttonHandlers,
+    accentHandlers,
     setColors,
   };
 }

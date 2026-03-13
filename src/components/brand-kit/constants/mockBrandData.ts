@@ -10,13 +10,12 @@ export const MOCK_BRAND_DATA: Partial<BrandKitState> = {
     light: {
       primary: "#0A84FF",
       background: "#FFFFFF",
-      accents: ["#007AFF", "#E5E5EA", "#F2F2F7"],
     },
     dark: {
       primary: "#0A84FF",
       background: "#1C1C1E",
-      accents: ["#007AFF", "#3A3A3C", "#2C2C2E"],
     },
+    accentColor: "#007AFF",
     button: {
       color: "#FFFFFF",
       background: "#0A84FF",
