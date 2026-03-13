@@ -43,15 +43,14 @@ export default function InactivePagesModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="w-full max-w-[37.4rem] sm:max-w-[57.4rem] lg:w-[69.6rem] rounded-t-[2.4rem] sm:rounded-[0.8rem] flex flex-col max-h-[98vh]"
-      overflow={false}
+      className="w-full max-w-[37.4rem] sm:max-w-[57.4rem] lg:w-[69.6rem] rounded-t-[2.4rem] sm:rounded-[0.8rem] flex flex-col max-h-[98dvh]"
       bottomSheet={true}
     >
       <div className="flex-shrink-0">
         <InactivePagesModalHeader onClose={onClose} />
       </div>
 
-      <div className="flex-1 overflow-y-auto px-[2rem] sm:px-[1.5rem] lg:px-[4rem] max-h-[70rem] pb-[15rem]">
+      <div className="flex-1 px-[2rem] sm:px-[1.5rem] lg:px-[4rem]">
         <div className="pt-[1.6rem] sm:pt-[2rem]">
           <InactivePagesSearch
             searchQuery={searchQuery}
@@ -68,7 +67,7 @@ export default function InactivePagesModal({
         </div>
       </div>
 
-      <div className="flex-shrink-0 sm:pb-[2.4rem] px-[2rem] sm:px-[1.5rem] lg:px-[4rem] pt-[1.5rem] sticky bottom-0 bg-primary rounded-[0.8rem]">
+      <div className="flex-shrink-0 pb-[2.4rem] px-[2rem] sm:px-[1.5rem] lg:px-[4rem] pt-[1.5rem] sticky bottom-0 bg-primary rounded-[0.8rem] z-[10]">
         <InactivePagesModalActions
           onClose={onClose}
           onSave={handleSave}

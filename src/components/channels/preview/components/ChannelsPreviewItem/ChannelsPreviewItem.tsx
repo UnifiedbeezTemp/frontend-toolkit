@@ -1,15 +1,16 @@
 "use client";
 
-import ImageComponent from "next/image";
+import ImageComponent from "../../../../../components/ui/ImageComponent";
 import { useSupabaseIcons } from "../../../../../lib/supabase/useSupabase";
 import { cn } from "../../../../../lib/utils";
 import CloseModalButton from "../../../../modal/CloseModalButton";
 import { useChannelConnectionsData } from "../../../hooks/useChannelConnectionsData";
-import ChannelConnectionsList from "../../ChannelConnectionsList";
 import { ChannelsPreviewItemProps } from "../../types";
 import SearchBar from "../SearchBar";
 import { useChannelsPreviewItem } from "./hooks/useChannelsPreviewItem";
 import Text from "../../../../ui/Text";
+import Heading from "../../../../ui/Heading";
+import ChannelConnectionsList from "../ChannelConnectionsList/ChannelConnectionsList";
 
 export default function ChannelsPreviewItem({
   channel,
@@ -21,25 +22,22 @@ export default function ChannelsPreviewItem({
   onSearchChange: externalOnSearchChange,
 }: ChannelsPreviewItemProps) {
   const icons = useSupabaseIcons();
-  
+
   // Fetch connections here
   const { connections } = useChannelConnectionsData(channel);
 
-  const {
-    searchQuery,
-    hasConnections,
-    handleSearchChange,
-  } = useChannelsPreviewItem({
-    connections,
-    searchQuery: externalSearchQuery,
-    onSearchChange: externalOnSearchChange,
-  });
+  const { searchQuery, hasConnections, handleSearchChange } =
+    useChannelsPreviewItem({
+      connections,
+      searchQuery: externalSearchQuery,
+      onSearchChange: externalOnSearchChange,
+    });
 
   const handleClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    const isCheckboxClick = target.closest('[data-checkbox]');
-    const isConnectionClick = target.closest('[data-connection-item]');
-    
+    const isCheckboxClick = target.closest("[data-checkbox]");
+    const isConnectionClick = target.closest("[data-connection-item]");
+
     if (isCheckboxClick) {
       onSelect();
     } else if (!isConnectionClick) {
@@ -52,7 +50,7 @@ export default function ChannelsPreviewItem({
       <div
         className={cn(
           "flex items-center justify-between p-[0.8rem] px-[0.8rem] cursor-pointer transition-colors border border-input-stroke rounded-[0.8rem]",
-          isExpanded && "layout-body"
+          isExpanded && "layout-body",
         )}
         onClick={handleClick}
       >
@@ -69,7 +67,7 @@ export default function ChannelsPreviewItem({
               size="sm"
               className={cn(
                 "font-[700] truncate",
-                isExpanded ? "text-text-secondary" : "text-text-secondary"
+                isExpanded ? "text-text-secondary" : "text-text-secondary",
               )}
             >
               {channel.name}
@@ -93,7 +91,7 @@ export default function ChannelsPreviewItem({
                 height={16}
                 className={cn(
                   "text-text-secondary transition-transform",
-                  isExpanded ? "" : "rotate-0"
+                  isExpanded ? "" : "rotate-0",
                 )}
               />
             ) : (
@@ -106,8 +104,11 @@ export default function ChannelsPreviewItem({
       {isExpanded && hasConnections && (
         <div className="pb-[1.6rem] pt-[0.8rem]">
           <div className="w-full flex items-center justify-between">
-            <Text size="sm">Select a {channel.name} account to connect</Text>
-            <CloseModalButton onClick={onToggle} className="ml-auto p-[.4rem]" />
+            {/* <Text size="sm">Select a {channel.name} account to connect</Text> */}
+            <CloseModalButton
+              onClick={onToggle}
+              className="ml-auto p-[.4rem]"
+            />
           </div>
           <SearchBar
             value={searchQuery}
@@ -125,4 +126,3 @@ export default function ChannelsPreviewItem({
     </div>
   );
 }
-
