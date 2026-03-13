@@ -46,8 +46,8 @@ export default function CustomEmailRequirements({
 
           <div className="bg-input-filled px-[1.6rem] py-[2.4rem] rounded-[.8rem] border border-input-stroke">
             <label className="block mb-[0.6rem] space-y-[0.6rem]">
-              <Heading size="sm">Email address</Heading>
-              <Text>Enter the email address you want to add.</Text>
+              <Heading size="sm">Domain</Heading>
+              <Text>Enter the domain you want to add.</Text>
             </label>
             <Input
               type="text"

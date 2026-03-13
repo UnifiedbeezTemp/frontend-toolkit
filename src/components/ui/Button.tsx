@@ -53,7 +53,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-[0.8rem] py-[1rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]";
+    "inline-flex whitespace-nowrap items-center justify-center font-medium rounded-[0.8rem] py-[1rem] text-[1.6rem] transition-all duration-200 focus:outline-none font-[700]";
 
   const variantClasses = {
     primary:

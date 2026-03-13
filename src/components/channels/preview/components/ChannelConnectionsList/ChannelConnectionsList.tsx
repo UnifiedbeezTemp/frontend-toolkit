@@ -1,9 +1,8 @@
 "use client";
 
-import Checkbox from "../../../../../components/ui/CheckBox";
 import Heading from "../../../../../components/ui/Heading";
 import Text from "../../../../../components/ui/Text";
-import DotsMenu from "../../../../../components/ui/DotsMenu";
+// import DotsMenu from "../../../../../components/ui/DotsMenu";
 import ImageComponent from "../../../../../components/ui/ImageComponent";
 import { ChannelConnectionsListProps } from "../../types";
 import { useChannelConnectionsList } from "./hooks/useChannelConnectionsList";
@@ -23,7 +22,7 @@ export default function ChannelConnectionsList({
     return (
       <div className="text-center py-[3.2rem]">
         <Text size="sm" className="text-text-secondary text-center">
-          {searchQuery ? "No connections found" : "No connections available"}
+          {searchQuery ? "No accounts found" : "No connections available"}
         </Text>
       </div>
     );
@@ -32,13 +31,7 @@ export default function ChannelConnectionsList({
   return (
     <div className="border-x border-t border-input-stroke rounded-[0.8rem] overflow-hidden">
       <div className="p-[1.2rem] border-b border-input-stroke flex items-center gap-[1.2rem] text-text-primary bg-input-filled text-[1.6rem] font-[700]">
-        <Checkbox
-          size="sm"
-          checked={false}
-          onChange={() => {}}
-          className="shrink-0"
-        />
-        Channels
+        Accounts
       </div>
       {filteredConnections.map((connection) => {
         const displayName = connection.title;
@@ -50,12 +43,6 @@ export default function ChannelConnectionsList({
             className="flex items-center justify-between p-[1.2rem] bg-primary border-b border-input-stroke hover:bg-input-filled transition-colors"
           >
             <div className="flex items-center gap-[0.8rem] lg:gap-[1.2rem] flex-1 min-w-0">
-              <Checkbox
-                size="sm"
-                checked={false}
-                onChange={() => {}}
-                className="shrink-0"
-              />
               <ImageComponent
                 src={channelIcon}
                 alt="channel"
@@ -73,11 +60,9 @@ export default function ChannelConnectionsList({
                 )}
               </div>
             </div>
-            <DotsMenu />
           </div>
         );
       })}
     </div>
   );
 }
-
