@@ -92,6 +92,12 @@ export function useAIConfigPersistence<T>({
     hasChanges: hasChanges(),
     hasAI: !!aiId,
     apiConfig,
-    save: () => saveMutation.mutate(),
+    save: (options?: { onSuccess?: () => void }) => {
+      saveMutation.mutate(undefined, {
+        onSuccess: () => {
+          options?.onSuccess?.();
+        },
+      });
+    },
   };
 }

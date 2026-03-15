@@ -22,7 +22,7 @@ export default function ChannelConnectionsList({
     return (
       <div className="text-center py-[3.2rem]">
         <Text size="sm" className="text-text-secondary text-center">
-          {searchQuery ? "No accounts found" : "No connections available"}
+          {searchQuery ? "No accounts found" : "No accounts available"}
         </Text>
       </div>
     );

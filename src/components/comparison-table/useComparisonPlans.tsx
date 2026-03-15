@@ -78,8 +78,7 @@ export const useComparisonPlans = () => {
           return "All supported channels";
         }
         if (planType === "individual") return "Facebook, Telegram, Messenger";
-        if (planType === "business")
-          return "Facebook, Telegram, WhatsApp";
+        if (planType === "business") return "Facebook, Telegram, WhatsApp";
 
         const channels = [];
         if (p.hasFacebookMessenger) channels.push("Facebook");
@@ -191,6 +190,10 @@ export const useComparisonPlans = () => {
                 ? "Included"
                 : "Not Included",
           addons: original.canPurchaseAddons ? "Add-ons allowed" : "No Add-ons",
+          automationsDashboard:
+            planType === "premium" || planType === "organisation"
+              ? "Included"
+              : "No Access",
         },
         ctaText: config.ctaText,
         footerText: config.footerText,

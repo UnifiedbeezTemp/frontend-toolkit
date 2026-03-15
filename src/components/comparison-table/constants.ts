@@ -12,4 +12,5 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   { key: "crm", label: "CRM/Calendar" },
   { key: "ecommerce", label: "E-commerce Pack" },
   { key: "addons", label: "Add-ons" },
+  { key: "automationsDashboard", label: "Automations Dashboard" },
 ];
