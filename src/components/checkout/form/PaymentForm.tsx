@@ -2,7 +2,8 @@
 
 import { CheckoutFormData } from "../hooks/useCheckoutForm";
 import FormField from "../../forms/FormField";
-import type { Control } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
+import CountrySelector from "./CountrySelector";
 
 interface PaymentFormProps {
   control: Control<CheckoutFormData>;
@@ -33,7 +34,7 @@ export default function PaymentForm({ control }: PaymentFormProps) {
         required
       />
 
-      <div className="space-y-[1.4rem] grid gap-[1rem] sm:grid-cols-2 sm:gap-[4rem] sm:space-y-0">
+      <div className="space-y-[1.4rem] grid gap-[1rem] sm:grid-cols-2 sm:gap-[2rem] sm:space-y-0">
         <FormField
           control={control}
           labelClassName="font-[400]"
@@ -56,7 +57,7 @@ export default function PaymentForm({ control }: PaymentFormProps) {
         />
       </div>
 
-      <div className="space-y-[1.4rem] grid gap-[1rem] sm:grid-cols-2 sm:gap-[4rem] sm:space-y-0">
+      <div className="space-y-[1.4rem] grid gap-[1rem] sm:grid-cols-2 sm:gap-[2rem] sm:space-y-0">
         <FormField
           control={control}
           labelClassName="font-[400]"
@@ -67,15 +68,17 @@ export default function PaymentForm({ control }: PaymentFormProps) {
           placeholder="Enter postal code / Eircode"
           required
         />
-        <FormField
-          control={control}
-          labelClassName="font-[400]"
-          showRequired
+        <Controller
           name="country"
-          type="text"
-          label="Country"
-          placeholder="2-letter code (e.g. IE, GB, DE)"
-          required
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <CountrySelector
+              value={field.value}
+              onChange={field.onChange}
+              error={error?.message}
+              required
+            />
+          )}
         />
       </div>
     </div>
