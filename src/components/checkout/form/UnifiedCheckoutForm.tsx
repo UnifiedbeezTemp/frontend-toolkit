@@ -5,7 +5,7 @@ import {
   CardExpiryElement,
   CardCvcElement,
 } from "@stripe/react-stripe-js";
-import { Control, UseFormHandleSubmit } from "react-hook-form";
+import { Control, UseFormHandleSubmit, Controller } from "react-hook-form";
 import { CheckoutFormData } from "../hooks/useCheckoutForm";
 import Button from "../../ui/Button";
 import { useStripePayment } from "../hooks/useStripePayment";
@@ -21,6 +21,7 @@ import TermsAgreement from "../form/TermsAgreement";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import ImageComponent from "../../ui/ImageComponent";
 import { useRouter } from "next/navigation";
+import CountrySelector from "./CountrySelector";
 
 interface UnifiedCheckoutFormProps {
   control: Control<CheckoutFormData>;
@@ -57,7 +58,7 @@ export default function UnifiedCheckoutForm({
 
   const icons = useSupabaseIcons();
 
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div className="space-y-[3.2rem] mt-[3rem]">
@@ -124,15 +125,17 @@ export default function UnifiedCheckoutForm({
               placeholder="Postal Code"
               required
             />
-            <FormField
-              control={control}
-              labelClassName="font-[500] text-[1.4rem]"
-              showRequired
+            <Controller
               name="country"
-              type="text"
-              label="Country"
-              placeholder="IE, GB, US..."
-              required
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <CountrySelector
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={error?.message}
+                  required
+                />
+              )}
             />
           </div>
         </div>
@@ -202,7 +205,7 @@ export default function UnifiedCheckoutForm({
       </section>
 
       {/* Agreement & Action */}
-      <div className="">
+      <div>
         <TermsAgreement
           control={control}
           planTitle={planTitle}
