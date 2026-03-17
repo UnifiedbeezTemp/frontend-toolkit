@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "../../modal/Modal";
 import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
 import Text from "../../ui/Text";
-import { CardElement, Elements } from "@stripe/react-stripe-js";
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+  Elements,
+} from "@stripe/react-stripe-js";
 import { useUpdatePaymentMethod } from "../hooks/useUpdatePaymentMethod";
 import { PaymentMethodData } from "../../../api/services/auth/types";
 import { useStripeContext } from "../../../contexts/stripeContext";
 import PreLoader from "../../ui/PreLoader";
-import { CARD_ELEMENT_OPTIONS } from "../constants/stripeConstants";
+import {
+  CARD_NUMBER_OPTIONS,
+  CARD_EXPIRY_OPTIONS,
+  CARD_CVC_OPTIONS,
+} from "../constants/stripeConstants";
+import PaymentForm from "../../checkout/form/PaymentForm";
+import { cn } from "../../../lib/utils";
 
 interface Props {
   isOpen: boolean;
@@ -23,17 +34,32 @@ function UpdatePaymentMethodContent({
   onClose: () => void;
   onSuccess: (newMethod: PaymentMethodData) => void;
 }) {
-  const { handleUpdate, isUpdating, updateError, setUpdateError } =
-    useUpdatePaymentMethod({
-      onSuccess,
-    });
+  const {
+    control,
+    handleSubmit,
+    handleUpdate,
+    isUpdating,
+    updateError,
+    setUpdateError,
+  } = useUpdatePaymentMethod({
+    onSuccess,
+  });
+
+  const [cardComplete, setCardComplete] = useState({
+    number: false,
+    expiry: false,
+    cvc: false,
+  });
+
+  const isFormValid =
+    cardComplete.number && cardComplete.expiry && cardComplete.cvc;
 
   return (
-    <div className="px-[2rem] py-[3.2rem] sm:px-[4rem] md:px-[6.4rem]">
-      <div className="flex flex-col items-center justify-center text-center">
+    <div className="px-[2rem] py-[3.2rem] sm:px-[4rem] max-h-[85vh] overflow-y-auto">
+      <div className="flex flex-col">
         <Heading
           align="center"
-          className="text-[2.4rem] sm:text-[3.2rem] lg:text-[3.5rem] mb-[0.8rem]"
+          className="text-[2.4rem] sm:text-[3.2rem] mb-[0.8rem]"
         >
           Update Payment Method
         </Heading>
@@ -42,35 +68,108 @@ function UpdatePaymentMethodContent({
           align="center"
           size="sm"
           color="muted"
-          className="mt-[0.8rem] max-w-[40rem] leading-base mx-auto"
+          className="mt-[0.8rem] max-w-[40rem] leading-base mx-auto mb-[3.2rem]"
         >
-          Please enter your new card details below. This card will be saved for
-          your future subscription charges.
+          Please enter your new card and billing details below. This card will
+          be saved for your future subscription charges.
         </Text>
 
-        <div className="w-full mt-[3.2rem] mb-[4rem] text-left">
-          <label className="block text-[1.4rem] font-bold text-text-secondary mb-[0.8rem]">
+        <section className="space-y-[1.6rem]">
+          <h3 className="text-[1.8rem] font-[700] text-text-primary flex items-center gap-[0.8rem]">
+            <span className="w-[0.4rem] h-[1.8rem] bg-brand-primary rounded-full" />
+            Billing Information
+          </h3>
+          <PaymentForm control={control} />
+        </section>
+
+        <section className="space-y-[1.6rem] mt-[3.2rem] pt-[3.2rem] border-t border-input-stroke">
+          <h3 className="text-[1.8rem] font-[700] text-text-primary flex items-center gap-[0.8rem]">
+            <span className="w-[0.4rem] h-[1.8rem] bg-brand-primary rounded-full" />
             Card Details
-          </label>
-          <div className="p-[1.6rem] border border-border rounded-[1.2rem] bg-gray-25 focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
-            <CardElement
-              options={CARD_ELEMENT_OPTIONS}
-              onChange={() => setUpdateError(null)}
-            />
+          </h3>
+
+          <div className="space-y-[1.6rem]">
+            <div className="space-y-[0.6rem]">
+              <label className="block text-[1.4rem] font-[500] text-text-primary">
+                Card Number <span className="text-destructive">*</span>
+              </label>
+              <div
+                className={cn(
+                  "p-[1.4rem] border rounded-[0.8rem] transition-all duration-200 bg-white",
+                  "border-input-stroke focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10",
+                )}
+              >
+                <CardNumberElement
+                  options={CARD_NUMBER_OPTIONS}
+                  onChange={(e) => {
+                    setCardComplete((prev) => ({
+                      ...prev,
+                      number: e.complete,
+                    }));
+                    setUpdateError(null);
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-[1.6rem]">
+              <div className="space-y-[0.6rem]">
+                <label className="block text-[1.4rem] font-[500] text-text-primary">
+                  Expiry Date <span className="text-destructive">*</span>
+                </label>
+                <div
+                  className={cn(
+                    "p-[1.4rem] border rounded-[0.8rem] transition-all duration-200 bg-white",
+                    "border-input-stroke focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10",
+                  )}
+                >
+                  <CardExpiryElement
+                    options={CARD_EXPIRY_OPTIONS}
+                    onChange={(e) =>
+                      setCardComplete((prev) => ({
+                        ...prev,
+                        expiry: e.complete,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-[0.6rem]">
+                <label className="block text-[1.4rem] font-[500] text-text-primary">
+                  CVC <span className="text-destructive">*</span>
+                </label>
+                <div
+                  className={cn(
+                    "p-[1.4rem] border rounded-[0.8rem] transition-all duration-200 bg-white",
+                    "border-input-stroke focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/10",
+                  )}
+                >
+                  <CardCvcElement
+                    options={CARD_CVC_OPTIONS}
+                    onChange={(e) =>
+                      setCardComplete((prev) => ({ ...prev, cvc: e.complete }))
+                    }
+                  />
+                </div>
+              </div>
+            </div>
           </div>
+
           {updateError && (
-            <p className="text-[#cc0e11] text-[1.2rem] mt-[0.8rem]">
+            <p className="text-destructive text-[1.2rem] font-[500] mt-[0.8rem]">
               {updateError}
             </p>
           )}
-        </div>
+        </section>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-[1.2rem] w-full">
+      <div className="flex flex-col sm:flex-row gap-[1.2rem] w-full mt-[4rem]">
         <Button
           className="w-full sm:flex-1"
-          onClick={handleUpdate}
+          onClick={handleSubmit(handleUpdate)}
           loading={isUpdating}
+          disabled={!isFormValid}
         >
           Update Card
         </Button>
@@ -99,7 +198,6 @@ export default function UpdatePaymentMethodModal({
       isOpen={isOpen}
       onClose={onClose}
       className="rounded-[1.6rem]"
-      size="md"
       isBlur
       bottomSheet
     >

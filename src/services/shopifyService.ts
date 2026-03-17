@@ -22,7 +22,6 @@ export const getShopifyAuthUrl = (shopDomain: string): string => {
     ? domain
     : `${domain}.myshopify.com`;
 
-  console.log(domain);
   return `${apiBaseUrl}/channels/shopify/auth?shop=${domain}`;
 };
 
