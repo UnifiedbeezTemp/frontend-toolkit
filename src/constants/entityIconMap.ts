@@ -93,7 +93,7 @@ export const ENTITY_ICON_MAP: Record<string, IconDescriptor> = {
 
   // ── Workflow ────────────────────────────────────────────────────
   "wait":                    { iconType: "component", component: HourglassIcon, label: "Wait" },
-  "smart-rules":             { iconType: "component", component: SitemapIcon, label: "Smart rules" },
+  "smart-rule":             { iconType: "component", component: SitemapIcon, label: "Smart rules" },
   "split":                   { iconType: "component", component: TriggerIcon, label: "Split" },
   "go-to":                   { iconType: "component", component: ReplyArrowReverseIcon, label: "Go to" },
   "jump-to":                 { iconType: "component", component: ReplyArrowReverseIcon, label: "Jump to" },
@@ -149,7 +149,7 @@ export const ENTITY_ICON_MAP: Record<string, IconDescriptor> = {
   "default-app":             { iconType: "component", component: AppsIcon, label: "App" },
 
   // ── Comment mention entities ────────────────────────────────────
-  "action_send_message":       { iconType: "component", component: MessageDotsIcon, label: "Send a message" },
+  "action_send-message":       { iconType: "component", component: MessageDotsIcon, label: "Send a message" },
   "trigger_subscribe_list":    { iconType: "component", component: DotPointsIcon, label: "Subscribes to a list" },
   "action_wait":               { iconType: "component", component: HourglassIcon, label: "Wait" },
 };
