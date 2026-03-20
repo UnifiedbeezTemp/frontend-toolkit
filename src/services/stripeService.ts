@@ -12,7 +12,8 @@ export interface StripeConnectResponse {
 }
 
 export const getStripeAuthUrl = (): string => {
-  return `${apiBaseUrl}/channels/stripe/auth`;
+  const currentPath = window.location.pathname + window.location.search;
+  return `${apiBaseUrl}/channels/stripe/auth?redirect_path=${encodeURIComponent(currentPath)}`;
 };
 
 export const initiateStripeAuth = (): void => {
