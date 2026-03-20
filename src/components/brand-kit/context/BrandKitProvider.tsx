@@ -7,11 +7,7 @@ import { useSocialLinks } from "../hooks/useSocialLinks";
 import { useCompanyLogo } from "../hooks/useCompanyLogo";
 import { useBrandKitMapper } from "../hooks/useBrandKitMapper";
 import { useToast } from "../../../components/ui/toast/useToast";
-import {
-  BrandKitContextType,
-  BrandColorsState,
-  BrandFontState,
-} from "../types/brandKitTypes";
+import type { BrandKitContextType } from "../types/brandKitTypes";
 import {
   useBrandKitData,
   useUpdateBrandKit,
@@ -22,6 +18,7 @@ import {
 import { BrandKitContext } from "./BrandKitContext";
 import { useBrandKitActions } from "./useBrandKitActions";
 import { useBrandKitChangeDetection } from "./useBrandKitChangeDetection";
+import { BrandDetectionOverride } from "./contextTypes";
 
 export function BrandKitProvider({ children }: { children: ReactNode }) {
   const {
@@ -55,6 +52,14 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
   const { data: brandKitData, isLoading, error, refetch } = useBrandKitData();
   const { mapApiToState, mapStateToPayload } = useBrandKitMapper();
   const { showToast } = useToast();
+
+  const detectionOverrideRef = React.useRef<BrandDetectionOverride | null>(null);
+  const setDetectionOverride = React.useCallback(
+    (override: BrandDetectionOverride | null) => {
+      detectionOverrideRef.current = override;
+    },
+    [],
+  );
 
   const { mutateAsync: updateBrandKitMutation, isPending: isSaving } =
     useUpdateBrandKit();
@@ -92,6 +97,7 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
     uploadLogoMutation,
     deleteLogoMutation,
     detectBrandMutation,
+    setDetectionOverride,
   });
 
   const hasChanges = useBrandKitChangeDetection({
@@ -107,6 +113,23 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (brandKitData) {
       const mappedState = mapApiToState(brandKitData);
+      const override = detectionOverrideRef.current;
+      if (override) {
+        detectionOverrideRef.current = null;
+
+        if (override.logoUrl) {
+          mappedState.logo = override.logoUrl;
+        }
+
+        if (override.primaryColor) {
+          mappedState.colors = {
+            ...mappedState.colors,
+            light: { ...mappedState.colors.light, primary: override.primaryColor },
+            dark: { ...mappedState.colors.dark, primary: override.primaryColor },
+            accentColor: override.primaryColor,
+          };
+        }
+      }
       onImportBrandKit(mappedState);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

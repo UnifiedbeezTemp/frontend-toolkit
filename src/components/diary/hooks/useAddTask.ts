@@ -74,6 +74,7 @@ export const useAddTask = (contactId?: string, onSaveSuccess?: () => void) => {
       dueDate: `${formData.dueDate}T${formData.dueTime || "00:00"}:00Z`,
       reminder: formData.reminder,
       completed: false,
+      workflowStatus: "In Progress",
       contactId,
       assignee: formData.assignee,
     };

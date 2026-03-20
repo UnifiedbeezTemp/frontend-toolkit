@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import {
   BrandKitState,
   BrandColorsState,
@@ -15,6 +16,11 @@ import {
 } from "../../../types/brandKitApiTypes";
 import { ToastPayload } from "../../ui/toast/types";
 
+export interface BrandDetectionOverride {
+  logoUrl?: string;
+  primaryColor?: string;
+}
+
 export interface UseBrandKitActionsProps {
   // State
   colors: BrandColorsState;
@@ -24,17 +30,18 @@ export interface UseBrandKitActionsProps {
   pendingLogoFile: File | null;
   brandKitData?: ApiBrandKit;
   // State Setters
-  setColors: (colors: BrandColorsState) => void;
-  setFonts: (fonts: BrandFontState) => void;
-  setLinks: (links: SocialLink[]) => void;
-  setLogo: (logo: string | null) => void;
-  setPendingLogoFile: (file: File | null) => void;
+  setColors: Dispatch<SetStateAction<BrandColorsState>>;
+  setFonts: Dispatch<SetStateAction<BrandFontState>>;
+  setLinks: Dispatch<SetStateAction<SocialLink[]>>;
+  setLogo: Dispatch<SetStateAction<string | null>>;
+  setPendingLogoFile: Dispatch<SetStateAction<File | null>>;
   removeLogo: () => void;
+  setDetectionOverride: (override: BrandDetectionOverride | null) => void;
   // Helpers
   mapApiToState: (data: ApiBrandKit) => BrandKitState;
   mapStateToPayload: (state: BrandKitState) => UpdateBrandKitPayload;
   showToast: (payload: ToastPayload) => void;
-  refetch: () => void;
+  refetch: () => Promise<unknown>;
   // Mutations
   updateBrandKitMutation: (
     payload: UpdateBrandKitPayload,
