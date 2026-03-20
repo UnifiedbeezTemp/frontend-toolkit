@@ -27,7 +27,7 @@ export default function TaskPriorityBadge({
   return (
     <div
       className={cn(
-        "px-[0.8rem] py-[0.8rem] rounded-[0.8rem] border text-[1.1rem] f leading-none uppercase tracking-wider",
+        "px-[0.8rem] py-[0.3rem] rounded-full text-[1.1rem] f leading-none tracking-wider",
         styles[priority],
         className,
       )}

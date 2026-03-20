@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
 import { cn } from "../../../lib/utils";
 import Button from "../../ui/Button";
 import Checkbox from "../../ui/CheckBox";
-import { getContactStatusStyles } from "../utils/contactStatusStyles";
+import StatusPill from "../../ui/StatusPill";
 
 interface MobileContactsListProps {
   contacts: Contact[];
@@ -91,15 +91,7 @@ export default function MobileContactsList({
             </div>
 
             <div className="flex items-center justify-between mt-2 pt-4 border-t border-border">
-              <span
-                className={cn(
-                  "px-3 py-1 rounded-full text-[1.2rem] font-medium inline-flex items-center gap-1",
-                  getContactStatusStyles(contact.status),
-                )}
-              >
-                <span className="w-2 h-2 rounded-full bg-current" />
-                {contact.status}
-              </span>
+              <StatusPill status={contact.status} />
               <Button
                 variant="secondary"
                 className="text-[1.2rem] font-bold border border-input-stroke rounded-lg px-4 py-2"

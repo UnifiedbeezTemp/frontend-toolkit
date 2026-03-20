@@ -9,10 +9,7 @@ export type FontWeight = "Light" | "Regular" | "Bold" | "Extra Bold";
 export type FontStyle = "Normal" | "Italic";
 
 import {
-  ApiBrandKit,
-  BrandKitResponse,
-  UpdateBrandKitPayload,
-  BrandKitErrorResponse,
+  type BrandKitErrorResponse,
 } from "../../../types/brandKitApiTypes";
 
 export interface FontState {
@@ -117,7 +114,7 @@ export interface BrandKitContextType extends BrandKitState {
   isDetecting: boolean;
   hasChanges: boolean;
   error: BrandKitErrorResponse | null;
-  refetch: () => void;
+  refetch: () => Promise<unknown>;
   saveBrandKit: () => Promise<void>;
   detectBrand: (websiteUrl: string) => Promise<void>;
   revertChanges: () => void;
