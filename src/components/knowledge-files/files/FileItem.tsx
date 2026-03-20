@@ -39,13 +39,15 @@ export default function FileItem({
             />
             <div
               className={`absolute ${getFileTypeColor(
-                file.type
+                file.type,
               )} text-white w-full flex items-center justify-center text-center text-[.8rem] px-[2px] rounded-[1px] top-[50%] overflow-hidden`}
             >
               {file.type}
             </div>
           </div>
-          <Text className="text-[1.2rem] sm:text-[1.6rem] truncate whitespace-nowrap max-w-[20rem] sm:max-w-[30rem]">{file.name}</Text>
+          <Text className="text-[1.2rem] sm:text-[1.6rem] truncate whitespace-nowrap max-w-[20rem] sm:max-w-[30rem]">
+            {file.name}
+          </Text>
         </div>
 
         {isDeleting ? (

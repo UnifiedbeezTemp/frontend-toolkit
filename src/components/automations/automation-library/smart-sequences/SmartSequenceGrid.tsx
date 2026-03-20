@@ -55,7 +55,7 @@ export default function SmartSequenceGrid() {
           />
         </div>
 
-        <div className="flex items-center gap-[1.2rem] w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-[1.2rem] w-full md:w-auto">
           <div className="relative">
             <button
               ref={industryTriggerRef}

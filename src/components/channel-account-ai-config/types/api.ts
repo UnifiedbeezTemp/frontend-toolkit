@@ -27,7 +27,9 @@ export type AccountType =
   | "stripe"
   | "telegram"
   | "zoom"
-  | "calendly";
+  | "calendly"
+  | "webchat"
+  | "shopify";
 
 export interface EscalationContact {
   email: string;

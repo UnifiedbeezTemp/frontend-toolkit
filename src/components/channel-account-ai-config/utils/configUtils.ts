@@ -36,6 +36,8 @@ const PROVIDER_TO_ACCOUNT_TYPE: Record<string, AccountType> = {
   zoom: "zoom",
   calendly: "calendly",
   provider: "email",
+  webchat: "webchat",
+  shopify: "shopify"
 };
 
 export function getAccountTypeFromProvider(provider: string): AccountType {
