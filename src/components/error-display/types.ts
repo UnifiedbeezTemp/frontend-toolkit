@@ -38,14 +38,16 @@ export interface ErrorReportModalProps {
   onErrorDetailsChange: (value: string) => void
   onSubmit: () => void
   isSubmitting: boolean
-  iconSrc: string
+  iconSrc?: string
+  icon?: React.ReactNode
 }
 
 export interface ErrorReportSuccessModalProps {
   isOpen: boolean
   onClose: () => void
   onGoToHomepage?: () => void
-  iconSrc: string
+  iconSrc?: string
+  icon?: React.ReactNode
 }
 
 export interface ErrorModalLayoutProps {

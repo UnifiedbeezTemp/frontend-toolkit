@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Player from "lottie-react";
+import Player, { LottieRefCurrentProps } from "lottie-react";
 import animationData from "../../animations/Onboarding-Animation-Only-1.json";
 import { cn } from "../../lib/utils";
 
@@ -16,7 +16,7 @@ export default function ConsentBannerAnimation({
   height = "100%",
   isPaused = false,
 }: ConsentBannerAnimationProps) {
-  const playerRef = React.useRef<any>(null);
+  const playerRef = React.useRef<LottieRefCurrentProps | null>(null);
 
   React.useEffect(() => {
     if (!playerRef.current) return;
@@ -35,9 +35,7 @@ export default function ConsentBannerAnimation({
       )}
     >
       <Player
-        lottieRef={(instance) => {
-          playerRef.current = instance;
-        }}
+        lottieRef={playerRef}
         autoplay={!isPaused}
         loop
         animationData={animationData}

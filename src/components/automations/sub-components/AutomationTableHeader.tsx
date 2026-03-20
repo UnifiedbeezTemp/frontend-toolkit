@@ -17,7 +17,7 @@ interface AutomationTableHeaderProps {
 export default function AutomationTableHeader({
   automationType,
 }: AutomationTableHeaderProps) {
-  const { searchQuery, handleSearchChange, supabaseIcons } =
+  const { searchQuery, handleSearchChange, supabaseIcons, totalCount } =
     useAutomationTableHeader();
   const { handleRedirection } = useAutomationRedirection();
 
@@ -28,7 +28,7 @@ export default function AutomationTableHeader({
           {automationType}
         </p>
         <p className="rounded-full py-[0.16rem] px-[.31rem] text-text-primary text-[.99rem] border border-border">
-          100
+          {totalCount}
         </p>
       </div>
 
