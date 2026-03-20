@@ -6,6 +6,12 @@ import {
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 import { UseBrandKitActionsProps } from "./contextTypes";
 
+const nonEmptyStringOrNull = (value: unknown): string | null => {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+};
+
 export function useBrandKitActions({
   colors,
   fonts,
@@ -19,6 +25,7 @@ export function useBrandKitActions({
   setLogo,
   setPendingLogoFile,
   removeLogo,
+  setDetectionOverride,
   mapApiToState,
   mapStateToPayload,
   showToast,
@@ -38,22 +45,41 @@ export function useBrandKitActions({
   const handleDetectBrand = async (websiteUrl: string) => {
     try {
       const response = await detectBrandMutation({ websiteUrl });
-      console.log("Detection response:", response);
+      const detectedPrimaryColor = nonEmptyStringOrNull(
+        response.detectedPrimaryColor,
+      );
+      const detectedFaviconUrl = nonEmptyStringOrNull(
+        response.detectedFaviconUrl,
+      );
+      const detectedLogoUrl =
+        nonEmptyStringOrNull(response.detectedLogoUrl) ??
+        nonEmptyStringOrNull(
+          (response as { companyLogoUrl?: unknown }).companyLogoUrl,
+        );
 
-      if (response.detectedLogoUrl || response.detectedPrimaryColor) {
-        if (response.detectedLogoUrl) {
-          setLogo(response.detectedLogoUrl);
+      const hasAnyDetectedField = Boolean(
+        detectedLogoUrl || detectedPrimaryColor || detectedFaviconUrl,
+      );
+
+      if (hasAnyDetectedField) {
+        if (detectedLogoUrl) {
+          setLogo(detectedLogoUrl);
           setPendingLogoFile(null);
         }
 
-        if (response.detectedPrimaryColor) {
-          setColors({
-            ...colors,
-            light: { ...colors.light, primary: response.detectedPrimaryColor! },
-            dark: { ...colors.dark, primary: response.detectedPrimaryColor! },
-            accentColor: response.detectedPrimaryColor!,
-          });
+        if (detectedPrimaryColor) {
+          setColors((prev) => ({
+            ...prev,
+            light: { ...prev.light, primary: detectedPrimaryColor },
+            dark: { ...prev.dark, primary: detectedPrimaryColor },
+            accentColor: detectedPrimaryColor,
+          }));
         }
+
+        setDetectionOverride({
+          logoUrl: detectedLogoUrl ?? undefined,
+          primaryColor: detectedPrimaryColor ?? undefined,
+        });
 
         showToast({
           title: "Imported",
@@ -68,6 +94,8 @@ export function useBrandKitActions({
           variant: "info",
         });
       }
+
+      await refetch();
     } catch (err) {
       const msg = extractErrorMessage(err, "Failed to detect brand");
       showToast({

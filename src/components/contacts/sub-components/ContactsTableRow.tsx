@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
 import { cn } from "../../../lib/utils";
 import Button from "../../ui/Button";
 import Checkbox from "../../ui/CheckBox";
-import { getContactStatusStyles } from "../utils/contactStatusStyles";
+import StatusPill from "../../ui/StatusPill";
 
 interface ContactsTableRowProps {
   contact: Contact;
@@ -77,15 +77,7 @@ export default function ContactsTableRow({
         {contact.dateCreated}
       </td>
       <td className="py-4 px-4 border-r border-input-stroke">
-        <span
-          className={cn(
-            "px-3 py-1 rounded-full text-[1.2rem] font-medium inline-flex items-center gap-1",
-            getContactStatusStyles(contact.status),
-          )}
-        >
-          <span className="w-2 h-2 rounded-full bg-current" />
-          {contact.status}
-        </span>
+        <StatusPill status={contact.status} />
       </td>
       <td className="py-4 px-4">
         <Button

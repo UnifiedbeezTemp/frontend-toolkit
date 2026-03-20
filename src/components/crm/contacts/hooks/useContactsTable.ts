@@ -13,6 +13,7 @@ import {
   deleteContacts,
   selectFilteredContacts,
 } from "../../../../store/slices/contactSlice";
+import type { ContactState } from "../../../../store/slices/contactSlice";
 import { mockContacts as initialMockContacts } from "../utils/mockContacts";
 import { ContactStatus } from "../types";
 
@@ -79,12 +80,7 @@ export function useContactsTable() {
   };
 
   const setSelectedStatus = (status: ContactStatus | "all") => {
-    // Convert "all" to "All" to match slice expectations if necessary
-    const value =
-      status === "all"
-        ? "All"
-        : status.charAt(0).toUpperCase() + status.slice(1);
-    dispatch(setReduxSelectedStatus(value as any));
+    dispatch(setReduxSelectedStatus(status as ContactState["selectedStatus"]));
     setCurrentPage(1);
   };
 
@@ -93,7 +89,7 @@ export function useContactsTable() {
     selectedContacts,
     searchQuery,
     setSearchQuery,
-    selectedStatus: selectedStatus.toLowerCase() as any,
+    selectedStatus: selectedStatus as ContactStatus | "all",
     setSelectedStatus,
     currentPage,
     totalPages,
