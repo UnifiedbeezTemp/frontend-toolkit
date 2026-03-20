@@ -16,9 +16,7 @@ import {
 } from "./types/brandKitTypes";
 import {
   ApiBrandKit,
-  BrandKitResponse,
   UpdateBrandKitPayload,
-  BrandKitErrorResponse,
 } from "../../types/brandKitApiTypes";
 import {
   useBrandKitData,
@@ -31,6 +29,12 @@ import {
 const BrandKitContext = createContext<BrandKitContextType | undefined>(
   undefined,
 );
+
+const nonEmptyStringOrNull = (value: unknown): string | null => {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+};
 
 export function BrandKitProvider({ children }: { children: ReactNode }) {
   const {
@@ -148,19 +152,35 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
       const response = await detectBrandMutation({ websiteUrl });
       console.log("Detection response:", response);
 
-      if (response.detectedLogoUrl || response.detectedPrimaryColor) {
+      const detectedPrimaryColor = nonEmptyStringOrNull(
+        response.detectedPrimaryColor,
+      );
+      const detectedFaviconUrl = nonEmptyStringOrNull(
+        response.detectedFaviconUrl,
+      );
+      const detectedLogoUrl =
+        nonEmptyStringOrNull(response.detectedLogoUrl) ??
+        nonEmptyStringOrNull(
+          (response as { companyLogoUrl?: unknown }).companyLogoUrl,
+        );
+
+      const hasAnyDetectedField = Boolean(
+        detectedLogoUrl || detectedPrimaryColor || detectedFaviconUrl,
+      );
+
+      if (hasAnyDetectedField) {
         // Map specific detected fields back to our state
-        if (response.detectedLogoUrl) {
-          setLogo(response.detectedLogoUrl);
+        if (detectedLogoUrl) {
+          setLogo(detectedLogoUrl);
           setPendingLogoFile(null); // Clear staged if we detect a new one
         }
 
-        if (response.detectedPrimaryColor) {
+        if (detectedPrimaryColor) {
           setColors((prev) => ({
             ...prev,
-            light: { ...prev.light, primary: response.detectedPrimaryColor! },
-            dark: { ...prev.dark, primary: response.detectedPrimaryColor! },
-            accentColor: response.detectedPrimaryColor!,
+            light: { ...prev.light, primary: detectedPrimaryColor },
+            dark: { ...prev.dark, primary: detectedPrimaryColor },
+            accentColor: detectedPrimaryColor,
           }));
         }
 
@@ -177,6 +197,8 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
           variant: "info",
         });
       }
+
+      await refetch();
     } catch (err) {
       const msg = extractErrorMessage(err, "Failed to detect brand");
       showToast({

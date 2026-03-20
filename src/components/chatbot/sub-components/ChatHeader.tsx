@@ -33,7 +33,7 @@ export default function ChatHeader({
             </div>
             <div>
               <h3 className="text-white text-[1.6rem] font-bold">
-                BeeHive Support
+                Beezora Support
               </h3>
               <p className="text-white/80 text-[1.2rem]">
                 {mode === "ai" ? "AI Assistant" : "Live Support"}
