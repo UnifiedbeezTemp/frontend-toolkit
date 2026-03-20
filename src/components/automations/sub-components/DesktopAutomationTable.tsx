@@ -18,7 +18,6 @@ export default function DesktopAutomationTable({
           <tr className="border-b border-border">
             <th className="text-left py-[.9rem] px-4 font-bold text-text-primary text-[1.16rem] border-r border-border">
               <div className="flex items-center gap-[10px]">
-                <div className="w-[1.65rem] h-[1.65rem] rounded-[0.4rem] border border-border bg-white"></div>
                 Automation Name
               </div>
             </th>
