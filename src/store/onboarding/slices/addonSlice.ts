@@ -17,6 +17,9 @@ const initialState: AddonState = {
   isCheckoutModalOpen: false,
 };
 
+const addonKey = (addon: Pick<Addon, "addonType" | "id">) =>
+  addon.addonType || addon.id;
+
 const addonSlice = createSlice({
   name: "addons",
   initialState,
@@ -38,8 +41,9 @@ const addonSlice = createSlice({
       action: PayloadAction<{ addon: Addon; quantity: number }>,
     ) => {
       const { addon, quantity } = action.payload;
+      const key = addonKey(addon);
       const existingIndex = state.selectedAddons.findIndex(
-        (a) => a.id === addon.id,
+        (a) => addonKey(a) === key,
       );
 
       if (existingIndex >= 0) {
@@ -53,8 +57,9 @@ const addonSlice = createSlice({
       }
     },
     removeAddon: (state, action: PayloadAction<string>) => {
+      const key = action.payload;
       state.selectedAddons = state.selectedAddons.filter(
-        (addon) => addon.id !== action.payload,
+        (addon) => addon.id !== key && addon.addonType !== key,
       );
     },
     updateAddonQuantity: (
@@ -62,7 +67,9 @@ const addonSlice = createSlice({
       action: PayloadAction<{ id: string; quantity: number }>,
     ) => {
       const { id, quantity } = action.payload;
-      const addon = state.selectedAddons.find((a) => a.id === id);
+      const addon = state.selectedAddons.find(
+        (a) => a.id === id || a.addonType === id,
+      );
       if (addon) {
         const cappedQuantity =
           addon.limit === -1 ? quantity : Math.min(quantity, addon.limit);
@@ -77,19 +84,27 @@ const addonSlice = createSlice({
     },
     hydrateAddons: (state, action: PayloadAction<Addon[]>) => {
       const purchased = action.payload;
+      const purchasedKeys = new Set(purchased.map((p) => addonKey(p)));
       const localNew = state.selectedAddons.filter(
-        (a) => !purchased.some((p) => p.id === a.id),
+        (a) => !purchasedKeys.has(addonKey(a)),
       );
       state.selectedAddons = [...purchased, ...localNew];
 
       if (state.tempAddon) {
         const updated = state.selectedAddons.find(
-          (a) => a.id === state.tempAddon?.id,
+          (a) => addonKey(a) === addonKey(state.tempAddon as Addon),
         );
         if (updated) {
           state.tempAddon = updated;
         }
       }
+    },
+    clearSelectedAddons: (state) => {
+      state.selectedAddons = [];
+      state.tempAddon = null;
+      state.tempQuantity = 1;
+      state.isAddModalOpen = false;
+      state.isCheckoutModalOpen = false;
     },
   },
 });
@@ -104,6 +119,7 @@ export const {
   openCheckoutModal,
   closeCheckoutModal,
   hydrateAddons,
+  clearSelectedAddons,
 } = addonSlice.actions;
 
 export default addonSlice.reducer;
