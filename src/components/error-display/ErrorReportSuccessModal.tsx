@@ -9,12 +9,13 @@ export default function ErrorReportSuccessModal({
   onClose,
   onGoToHomepage,
   iconSrc,
+  icon
 }: ErrorReportSuccessModalProps) {
   return (
     <ErrorModalLayout
       isOpen={isOpen}
       onClose={onClose}
-      icon={<SuccessIcon iconSrc={iconSrc} size="sm" />}
+      icon={iconSrc ? <SuccessIcon iconSrc={iconSrc ?? ""} size="sm" /> : icon}
       showCloseButton={false}
       closeOnOverlayClick={false}
     >

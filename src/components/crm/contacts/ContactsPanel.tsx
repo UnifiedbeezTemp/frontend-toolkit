@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import ContactsHeader from "./sub-components/ContactsHeader";
 import ContactsTable from "./sub-components/ContactsTable";
 import { useContactsTable } from "./hooks/useContactsTable";
 import PaginationV2 from "../../ui/PaginationV2";
 import Pagination from "../../ui/Pagination";
 import { useRouter } from "next/navigation";
+import ContactDetailsModal from "./modals/ContactDetailsModal";
+import type { Contact } from "./types";
 
 export default function ContactsPanel() {
   const router = useRouter();
@@ -24,8 +26,12 @@ export default function ContactsPanel() {
     totalCount,
   } = useContactsTable();
 
-  const handleViewDetails = (contact: { id: string }) => {
-    router.push(`/crm/contacts/${contact.id}`);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  const handleViewDetails = (contact: Contact) => {
+    setSelectedContact(contact);
+    setIsDetailsOpen(true);
   };
 
   const handleMoreClick = (id: string, e: React.MouseEvent) => {
@@ -60,6 +66,13 @@ export default function ContactsPanel() {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
+      />
+
+      <ContactDetailsModal
+        contact={selectedContact}
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        onOpenFullDetails={(contact) => router.push(`/crm/contacts/${contact.id}`)}
       />
     </div>
   );

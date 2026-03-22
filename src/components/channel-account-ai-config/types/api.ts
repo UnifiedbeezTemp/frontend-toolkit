@@ -28,7 +28,8 @@ export type AccountType =
   | "telegram"
   | "zoom"
   | "calendly"
-  | "webchat";
+  | "webchat"
+  | "shopify";
 
 export interface EscalationContact {
   email: string;

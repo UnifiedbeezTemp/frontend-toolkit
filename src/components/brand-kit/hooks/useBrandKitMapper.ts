@@ -106,7 +106,7 @@ export function useBrandKitMapper() {
       for (const link of state.socialLinks) {
         const apiKey = PLATFORM_TO_API_KEY[link.platform];
         if (apiKey) {
-          (payload as any)[apiKey] = link.url;
+          payload[apiKey] = link.url;
         }
       }
 
