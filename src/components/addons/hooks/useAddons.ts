@@ -17,6 +17,7 @@ import {
   openCheckoutModal,
   closeCheckoutModal,
   hydrateAddons,
+  clearSelectedAddons,
 } from "../../../store/onboarding/slices/addonSlice";
 import { extractErrorMessage } from "../../../utils/extractErrorMessage";
 
@@ -26,13 +27,17 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
   const addonState = useSelector((state: RootState) => state.addons);
   const { selectedAddons } = addonState;
   const { showToast } = useToast();
-  const { refetch: refetchUser } = useUser();
+  const { user, refetch: refetchUser } = useUser();
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [addonErrors, setAddonErrors] = useState<Record<string, string | null>>(
     {},
   );
 
-  const { purchasedAddons, refetch: refetchPurchased } = usePurchasedAddons();
+  const {
+    purchasedAddons,
+    refetch: refetchPurchased,
+    isFetching: isFetchingPurchased,
+  } = usePurchasedAddons();
 
   const cancelAddonMutation = useAppMutation(
     async ({
@@ -68,20 +73,41 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
     }
   }, [dispatch, purchasedAddons]);
 
+  // If checkout completed elsewhere, clear any staged selections so the UI can't
+  // show "pending" selections after a successful purchase/redirect.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const purchaseComplete = sessionStorage.getItem(
+      "unifiedbeez_addons_purchase_complete",
+    );
+    if (!purchaseComplete) return;
+
+    sessionStorage.removeItem("unifiedbeez_addons_purchase_complete");
+    dispatch(clearSelectedAddons());
+    refetchPurchased();
+    refetchUser();
+  }, [dispatch, refetchPurchased, refetchUser]);
+
   // Sync staged addons to sessionStorage for users without a payment method
   // This ensures that removals/changes are reflected on the checkout page
   useEffect(() => {
-    if (typeof window !== "undefined" && !user?.paymentMethod) {
-      if (selectedAddons.length > 0) {
-        sessionStorage.setItem(
-          "unifiedbeez_checkout_addons",
-          JSON.stringify(selectedAddons),
-        );
-      } else {
-        sessionStorage.removeItem("unifiedbeez_checkout_addons");
-      }
+    if (typeof window === "undefined") return;
+
+    if (user?.paymentMethod) {
+      sessionStorage.removeItem("unifiedbeez_checkout_addons");
+      return;
     }
-  }, [selectedAddons]);
+
+    if (selectedAddons.length > 0) {
+      sessionStorage.setItem(
+        "unifiedbeez_checkout_addons",
+        JSON.stringify(selectedAddons),
+      );
+    } else {
+      sessionStorage.removeItem("unifiedbeez_checkout_addons");
+    }
+  }, [selectedAddons, user?.paymentMethod]);
 
   const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
 
@@ -180,8 +206,6 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
     window.history.back();
   }, []);
 
-  const { user } = useUser();
-
   const hasChanges = useMemo(() => {
     const currentPurchases = purchasedAddons.map((a) => ({
       type: a.addonType,
@@ -236,6 +260,10 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
     return currentQuantity < addon.limit;
   }, []);
 
+  const handleClearSelectedAddons = useCallback(() => {
+    dispatch(clearSelectedAddons());
+  }, [dispatch]);
+
   return {
     ...addonState,
 
@@ -258,5 +286,7 @@ export const useAddons = (planType?: string, isYearly?: boolean) => {
     isRemoving: !!removingId,
     addonErrors,
     hasChanges,
+    isFetchingPurchased,
+    handleClearSelectedAddons,
   };
 };
