@@ -6,6 +6,7 @@ interface AddonCardProps {
   isSelected: boolean;
   onAdd: () => void;
   showAddButton?: boolean;
+  isAdding?: boolean;
 }
 
 export const AddonCard: React.FC<AddonCardProps> = ({
@@ -13,6 +14,7 @@ export const AddonCard: React.FC<AddonCardProps> = ({
   isSelected,
   onAdd,
   showAddButton = true,
+  isAdding = false,
 }) => {
   if (!showAddButton) {
     return (
@@ -33,6 +35,7 @@ export const AddonCard: React.FC<AddonCardProps> = ({
       variant="add"
       showProgress={false}
       onAdd={onAdd}
+      isAdding={isAdding}
     />
   );
 };

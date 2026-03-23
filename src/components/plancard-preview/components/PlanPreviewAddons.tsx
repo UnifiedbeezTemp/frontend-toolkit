@@ -11,6 +11,7 @@ interface PlanPreviewAddonsProps {
   planType?: string;
   addonsTotal: number;
   selectedAddons?: Addon[];
+  bulkSeatsCount?: number;
   onAddonsClick: () => void;
   isYearly?: boolean;
 }
@@ -20,6 +21,7 @@ export default function PlanPreviewAddons({
   planType,
   addonsTotal,
   selectedAddons,
+  bulkSeatsCount,
   onAddonsClick,
   isYearly,
 }: PlanPreviewAddonsProps) {
@@ -28,6 +30,8 @@ export default function PlanPreviewAddons({
   if (isAddons || planType?.toLowerCase() === "individual") {
     return null;
   }
+
+  const showBulkSeats = (bulkSeatsCount ?? 0) > 0;
 
   return (
     <div className="mt-[3rem] sm:mt-[5rem]">
@@ -42,6 +46,21 @@ export default function PlanPreviewAddons({
       </Button>
 
       <div className="flex flex-wrap items-center mt-[1rem] gap-[1rem]">
+        {showBulkSeats && (
+          <div className="flex items-start gap-[.62rem]">
+            <div className="bg-success rounded-full flex items-center justify-center w-[1.5rem] h-[1.5rem] shrink-0">
+              <ImageComponent
+                src={icons.checkMark}
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
+            <Text size="xs" className="font-[700] text-[1rem]">
+              Bulk seats x {bulkSeatsCount}
+            </Text>
+          </div>
+        )}
         {selectedAddons?.map((addon) => (
           <div className="flex items-start gap-[.62rem]" key={addon.id}>
             <div className="bg-success rounded-full flex items-center justify-center w-[1.5rem] h-[1.5rem] shrink-0">
