@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { Pin, MessageSquare, Share2, Trash2 } from "lucide-react";
-import SmartDropdown from "../../smart-dropdown/SmartDropdown";
-import { MessageOptionsMenuProps } from "./types";
-import { cn } from "../../../lib/utils";
-import IconButton from "../../ui/IconButton";
+import { Pin, MessageSquare, Share2, Trash2 } from "lucide-react"
+import SmartDropdown from "../../smart-dropdown/SmartDropdown"
+import { MessageOptionsMenuProps } from "./types"
+import { cn } from "../../../lib/utils"
+import IconButton from "../../ui/IconButton"
 
 export default function MessageOptionsMenu({
   isOpen,
@@ -18,7 +18,7 @@ export default function MessageOptionsMenu({
   triggerRef,
 }: MessageOptionsMenuProps) {
   const iconButtonBase =
-    "bg-input-filled border border-transparent hover:border-input-stroke"
+    "bg-input-filled border border-transparent lg:w-[4.4rem] lg:h-[4.4rem] hover:border-input-stroke"
 
   return (
     <SmartDropdown
@@ -33,50 +33,69 @@ export default function MessageOptionsMenu({
       <div className="flex items-center gap-2">
         <IconButton
           onClick={() => {
-            onPin(messageId);
-            onClose();
+            onPin(messageId)
+            onClose()
           }}
           className={cn(iconButtonBase)}
           ariaLabel="Pin message"
-          icon={<Pin size={16} fontWeight={700} className="text-dark-base-70" />}
-          />
+          icon={
+            <Pin size={16} fontWeight={700} className="text-dark-base-70" />
+          }
+        />
 
         {onReply && (
           <IconButton
             onClick={() => {
-              onReply(messageId);
-              onClose();
+              onReply(messageId)
+              onClose()
             }}
             className={cn(iconButtonBase)}
             ariaLabel="Reply"
-            icon={<MessageSquare size={16} fontWeight={700} className="text-dark-base-70" />}
-/>
+            icon={
+              <MessageSquare
+                size={16}
+                fontWeight={700}
+                className="text-dark-base-70"
+              />
+            }
+          />
         )}
 
         {onShare && (
           <IconButton
             onClick={() => {
-              onShare(messageId);
-              onClose();
+              onShare(messageId)
+              onClose()
             }}
             className={cn(iconButtonBase)}
             ariaLabel="Share"
-            icon={<Share2 size={16} fontWeight={700} className="text-dark-base-70" />}
+            icon={
+              <Share2
+                size={16}
+                fontWeight={700}
+                className="text-dark-base-70"
+              />
+            }
           />
         )}
 
         {onDelete && (
           <IconButton
             onClick={() => {
-              onDelete(messageId);
-              onClose();
+              onDelete(messageId)
+              onClose()
             }}
-            className={cn(iconButtonBase, "bg-danger-10 hover:bg-danger-5 hover:border-danger-100!")}
+            className={cn(
+              iconButtonBase,
+              "bg-danger-10 hover:bg-danger-5 hover:border-danger-100!",
+            )}
             ariaLabel="Delete"
-            icon={<Trash2 size={16} fontWeight={700} className="text-danger-100" />}
+            icon={
+              <Trash2 size={16} fontWeight={700} className="text-danger-100" />
+            }
           />
         )}
       </div>
     </SmartDropdown>
-  );
+  )
 }
