@@ -1,7 +1,6 @@
 import { ReactNode } from "react"
 import { cn } from "../../../lib/utils"
 
-
 export function IncomingChatBubble({
   children,
   className,
@@ -12,22 +11,20 @@ export function IncomingChatBubble({
   maxWidthClass?: string
 }) {
   return (
-    <div
-      className={cn(
-        "flex gap-2 flex-col w-full justify-end items-start",
-        className
-      )}
-    >
+    <div>
       <div
         className={cn(
-          "text-md rounded-[1.6rem] rounded-bl-none bg-input-filled p-4",
-          "text-dark-base-70 shadow-sm",
-          maxWidthClass
+          "rounded-bl-none! flex items-start gap-4 bg-input-filled px-4 py-2 rounded-[1.4rem]",
+          className,
         )}
       >
-        {children}
+        <div className={cn("min-w-0 flex flex-col gap-1", maxWidthClass)}>
+          <div className="my-1 whitespace-pre-wrap text-md lg:text-base leading-relaxed text-dark-base-40">
+            {children}
+          </div>
+        </div>
       </div>
-      <span className="text-xs text-dark-base-50 font-normal">12:57 am</span>
+      <span className="text-sm text-dark-base-50 font-normal">12:57 am</span>
     </div>
   )
 }

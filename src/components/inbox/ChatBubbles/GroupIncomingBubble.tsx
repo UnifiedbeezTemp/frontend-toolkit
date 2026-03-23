@@ -21,13 +21,18 @@ export function GroupIncomingBubble({
   const avatarSrc = isColorClass ? undefined : avatar
 
   return (
-    <div className={cn("flex items-start gap-4", className)}>
+    <div
+      className={cn(
+        "flex items-start gap-4 bg-input-filled px-4 py-2 rounded-[1.4rem]",
+        className,
+      )}
+    >
       <div className="shrink-0">
         {isColorClass ? (
           <div
             className={cn(
               "w-[4rem] h-[4rem] rounded-full flex items-center justify-center text-white font-bold text-[14px]",
-              avatar
+              avatar,
             )}
           >
             {name.charAt(0).toUpperCase()}
@@ -40,12 +45,12 @@ export function GroupIncomingBubble({
       <div className={cn("min-w-0 flex flex-col gap-1", maxWidthClass)}>
         <div className="text-base font-bold text-dark-base-100">{name}</div>
 
-        <div className="my-1 whitespace-pre-wrap text-md leading-relaxed text-dark-base-40">
+        <div className="my-1 whitespace-pre-wrap text-md lg:text-base leading-relaxed text-dark-base-40">
           {message}
           <LinkPill />
         </div>
 
-        <span className="text-xs text-dark-base-50 font-normal">12:57 am</span>
+        <span className="text-sm text-dark-base-50 font-normal">12:57 am</span>
       </div>
     </div>
   )
