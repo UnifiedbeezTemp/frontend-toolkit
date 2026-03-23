@@ -59,6 +59,7 @@ interface TabsProps {
   labelClassName?: string;
   inactiveLabelClassName?: string;
   containerClassName?: string;
+  activeLabelClassName?: string
 }
 
 const sizeClasses = {
@@ -79,6 +80,7 @@ export default function Tabs({
   labelClassName = "",
   inactiveLabelClassName = "",
   containerClassName = "",
+  activeLabelClassName
 }: TabsProps) {
   const normalizedTabs: Tab[] = React.useMemo(
     () =>
@@ -188,16 +190,16 @@ export default function Tabs({
   const getTabVariantClasses = (isActive: boolean) => {
     const variants = {
       default: isActive
-        ? "text-text-primary relative z-10 border border-input-stroke"
+        ? "text-text-primary relative z-10 border border-input-stroke" + ` ${activeLabelClassName}`
         : "bg-transparent text-inactive-color hover:text-text-primary",
       pills: isActive
-        ? "bg-brand-primary text-white"
+        ? "bg-brand-primary text-white" + ` ${activeLabelClassName}`
         : "bg-primary text-text-primary border border-border hover:bg-brand-primary/10",
       underline: isActive
-        ? "text-brand-primary border-b-2 border-brand-primary"
+        ? "text-brand-primary border-b-2 border-brand-primary" + ` ${activeLabelClassName}`
         : "text-text-primary border-b-2 border-transparent hover:text-brand-primary hover:border-border",
       unpadded: isActive
-        ? "text-dark-base-70 relative z-10"
+        ? "text-dark-base-70 relative z-10" + ` ${activeLabelClassName}`
         : "text-dark-base-70 hover:text-dark-base-100",
     };
     return variants[variant];
@@ -265,7 +267,7 @@ export default function Tabs({
               tab.disabled && "opacity-50 cursor-not-allowed",
               !tab.disabled && "cursor-pointer",
               variant === "underline" && "rounded-none",
-              isActive ? labelClassName : inactiveLabelClassName,
+              isActive ? labelClassName  + ` ${activeLabelClassName}` : inactiveLabelClassName,
             )}
           >
             {tab.label}

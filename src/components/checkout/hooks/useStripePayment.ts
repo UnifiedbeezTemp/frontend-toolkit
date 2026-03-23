@@ -160,6 +160,10 @@ export const useStripePayment = ({
                 await addonService.purchaseBatch({ purchases });
                 console.log("Background addon purchase successful");
                 sessionStorage.removeItem("unifiedbeez_checkout_addons");
+                sessionStorage.setItem(
+                  "unifiedbeez_addons_purchase_complete",
+                  "1",
+                );
               }
             } catch (addonError) {
               console.error("Background addon purchase failed:", addonError);
@@ -174,6 +178,7 @@ export const useStripePayment = ({
           await queryClient.invalidateQueries({
             queryKey: ["available-addons"],
           });
+          await queryClient.invalidateQueries({ queryKey: ["purchasedAddons"] });
         } catch (attachError) {
           const errorMessage =
             attachError instanceof Error

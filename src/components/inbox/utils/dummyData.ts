@@ -35,7 +35,7 @@ export const generalInboxConversations: Conversation[] = [
   },
   {
     id: "2",
-    name: "Brian George",
+    name: "John Doe",
     tagId: "new-customer",
     tag: "New customer",
     preview: "I want to know if the price is negotiable, i need about 2 Units",

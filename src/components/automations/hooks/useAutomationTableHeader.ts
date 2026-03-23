@@ -10,6 +10,7 @@ import {
   clearSelectedAutomations,
   deleteSelectedAutomations,
   selectFilteredAutomations,
+  selectTotalCount,
 } from "../../../store/slices/automationSlice";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 
@@ -25,6 +26,7 @@ export const useAutomationTableHeader = () => {
   const searchQuery = automationState?.searchQuery || "";
   const selectedAutomations = automationState?.selectedAutomations || [];
   const selectedStatus = automationState?.selectedStatus || "All";
+  const totalCount = useAppSelector(selectTotalCount);
 
   const filteredAutomations = useAppSelector(selectFilteredAutomations);
 
@@ -103,6 +105,7 @@ export const useAutomationTableHeader = () => {
     searchQuery,
     selectedAutomations,
     selectedStatus,
+    totalCount,
     handleSearchChange,
     toggleDropdown,
     toggleFilterDropdown,

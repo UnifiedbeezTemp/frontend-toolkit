@@ -70,21 +70,23 @@ export default function CountrySelector({
           error ? "border-destructive" : "hover:border-brand-primary/50",
         )}
       >
-        <span className="flex items-center gap-[0.8rem]">
+        <span className="flex items-center gap-[0.8rem] min-w-0 flex-1">
           {selectedCountry ? (
             <>
-              <span className="text-[2rem] leading-none">
+              <span className="text-[2rem] leading-none shrink-0">
                 {selectedCountry.flag}
               </span>
-              <span className="font-[500] truncate max-w-[15rem] sm:max-w-none">
+              <span className="font-[500] truncate min-w-0">
                 {selectedCountry.name}
               </span>
             </>
           ) : (
-            <span className="text-text-tertiary">Select a country</span>
+            <span className="text-text-tertiary truncate min-w-0">
+              Select a country
+            </span>
           )}
         </span>
-        <div className="flex items-center gap-[0.8rem]">
+        <div className="flex items-center gap-[0.8rem] shrink-0">
           {selectedCountry && (
             <span className="text-[1.2rem] text-text-tertiary font-mono uppercase bg-surface-secondary px-[0.4rem] py-[0.1rem] rounded border border-border">
               {selectedCountry.alpha2Code}
