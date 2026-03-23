@@ -11,6 +11,7 @@ interface ComparisonMobileProps {
   icons: Record<string, string | null>;
   onSelectPlan?: (planId: string) => void;
   onAddonsClick?: (planId?: string) => void;
+  isYearly?: boolean;
 }
 
 export default function ComparisonMobile({
@@ -19,6 +20,7 @@ export default function ComparisonMobile({
   icons,
   onSelectPlan,
   onAddonsClick,
+  isYearly = false,
 }: ComparisonMobileProps) {
   const [activeIndex, setActiveIndex] = useState(1);
 
@@ -34,9 +36,10 @@ export default function ComparisonMobile({
 
   if (!activePlan) return null;
 
-  const monthlyPriceStr = String(activePlan.values.monthlyPrice);
-  const priceMatch = monthlyPriceStr.match(/£(\d+)/);
-  const displayPrice = priceMatch ? parseInt(priceMatch[1]) : 0;
+  const priceKey = isYearly ? "yearlyPrice" : "monthlyPrice";
+  const priceStr = String(activePlan.values[priceKey]);
+  const priceMatch = priceStr.match(/£([0-9.]+)/);
+  const displayPrice = priceMatch ? parseFloat(priceMatch[1]) : 0;
 
   const seatsStr = String(activePlan.values.seats);
   const aiAssistantsStr = String(activePlan.values.aiAssistants);
@@ -88,7 +91,7 @@ export default function ComparisonMobile({
           <div className="flex justify-evenly items-center *:first:pl-2 sm:*:first:pl-5.25 *:last:pr-1.25 sm:*:last:pr-5.25 text-xs sm:text-md text-text-primary">
             <div className="flex items-baseline">
               <span>£{displayPrice}</span>
-              <span>/month</span>
+              <span>{isYearly ? "/year" : "/month"}</span>
             </div>
             <div className="w-px bg-text-primary/25 self-stretch" />
             <div className="flex items-center gap-[0.6rem]">

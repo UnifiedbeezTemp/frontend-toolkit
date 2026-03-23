@@ -14,6 +14,7 @@ interface BaseAddonCardProps {
   onRemove?: () => void;
   onQuantityChange?: (quantity: number) => void;
   isRemoving?: boolean;
+  isAdding?: boolean;
   className?: string;
 }
 
@@ -26,6 +27,7 @@ export const BaseAddonCard: React.FC<BaseAddonCardProps> = ({
   onRemove,
   onQuantityChange,
   isRemoving = false,
+  isAdding = false,
   className = "",
 }) => {
   const isUnlimited = addon.limit === -1;
@@ -76,6 +78,7 @@ export const BaseAddonCard: React.FC<BaseAddonCardProps> = ({
         onRemove={onRemove}
         onQuantityChange={onQuantityChange}
         isRemoving={isRemoving}
+        isAdding={isAdding}
       />
     </Card>
   );
