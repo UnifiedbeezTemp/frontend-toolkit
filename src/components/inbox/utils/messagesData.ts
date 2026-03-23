@@ -172,11 +172,9 @@ export const conversationMessages: Record<string, ConversationMessages> = {
       },
       {
         id: "mt1-3",
-        type: "group",
+        type: "incoming",
         text: "Can we discuss this in our team meeting tomorrow?",
         timestamp: "2 days ago, 4:00 PM",
-        senderName: "Sarah",
-        senderAvatar: "https://i.pravatar.cc/150?img=47",
       },
     ],
     status: "Online • Team discussion",

@@ -6,6 +6,7 @@ import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
 import ImageComponent from "../../../ui/ImageComponent";
 import { WebsitePage } from "../utils/types";
 import { usePageDropdown } from "../hooks/usePageDropdown";
+import MoreVerticalIcon from "../../../../assets/icons/MoreVerticalIcon";
 
 interface PageDropdownProps {
   page: WebsitePage;
@@ -26,9 +27,10 @@ export default function PageDropdown({ page }: PageDropdownProps) {
       <button
         ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-[0.3rem] hover:bg-muted/10 p-2 rounded-full transition-colors"
+        className="flex items-center gap-[0.3rem] hover:bg-muted/10 p-2 rounded-full transition-colors rotate-90 sm:rotate-0"
       >
         <DotsMenu />
+        {/* <MoreVerticalIcon/> */}
       </button>
 
       <SmartDropdown
