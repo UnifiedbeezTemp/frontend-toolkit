@@ -199,9 +199,9 @@ export const webchatService = {
     webchatConfigId: string | number,
     recipientEmail: string
   ): Promise<void> {
-    return api.post<{ recipientEmail: string }, void>(
+    return api.post<{ emails: string[] }, void>(
       `/webchat/${webchatConfigId}/send-instructions-by-email`,
-      { recipientEmail }
+      { emails: [recipientEmail] }
     );
   },
 };
