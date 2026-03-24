@@ -1,6 +1,6 @@
 import React from "react";
-import ImageComponent from "@/shared/src/components/ui/ImageComponent";
-import { useSupabaseIcons } from "@/shared/src/lib/supabase/useSupabase";
+import ImageComponent from "../../../ui/ImageComponent";
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase"; 
 import { SelectionCard } from "./FormSubComponents";
 import { TemplateFormData, HandleChange } from "../../types";
 
@@ -13,16 +13,12 @@ export default function AttachmentTypeSelection({
   formData,
   handleChange,
 }: AttachmentTypeSelectionProps) {
-  const icons = useSupabaseIcons() as {
-    camera: string;
-    video: string;
-    document: string;
-  };
+  const icons = useSupabaseIcons() 
 
   const types = [
     { id: "image", label: "Image", icon: icons.camera },
-    { id: "video", label: "Video", icon: icons.video },
-    { id: "document", label: "Document", icon: icons.document },
+    { id: "video", label: "Video", icon: icons.tablerVideo2 },
+    { id: "document", label: "Document", icon: icons.folder },
   ];
 
   return (
@@ -41,6 +37,7 @@ export default function AttachmentTypeSelection({
               <ImageComponent
                 src={type.icon}
                 alt={type.label}
+                className="grayscale"
                 width={20}
                 height={20}
               />
