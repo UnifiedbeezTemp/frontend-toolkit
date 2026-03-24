@@ -20,7 +20,7 @@ export default function TemplateList({ icons }: Props) {
   }, [icons]);
 
   return (
-    <div className="mx-auto">
+    <div className="max-w-[90rem] mx-auto mt-[3rem]">
       <div className="flex flex-col sm:flex-row items-start gap-[1.6rem] justify-between  sm:items-center mb-[2.4rem]">
         <div>
           <Heading>Automation Template Library</Heading>
