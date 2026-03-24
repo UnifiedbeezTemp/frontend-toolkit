@@ -200,7 +200,7 @@ export const webchatService = {
     recipientEmail: string
   ): Promise<void> {
     return api.post<{ recipientEmail: string }, void>(
-      `/webchat/${webchatConfigId}/send-instructions`,
+      `/webchat/${webchatConfigId}/send-instructions-by-email`,
       { recipientEmail }
     );
   },
