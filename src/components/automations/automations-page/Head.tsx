@@ -8,7 +8,7 @@ export default function Head() {
   return (
     <div className="text-center  mx-auto">
       <Heading align="center" className="text-[1.6rem] sm:text-[2.4rem]">
-        {data?.fullName}, What would you like to automate today?
+        {data?.fullName? `${data.fullName},` : ""} What would you like to automate today?
       </Heading>
       <Text align="center" className="mt-2 text-[1.4rem] sm:text-[1.6rem]">
         Talk to Beezora, type an idea & get instant actions

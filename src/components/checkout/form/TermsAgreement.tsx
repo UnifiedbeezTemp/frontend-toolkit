@@ -5,6 +5,7 @@ import { Controller } from "react-hook-form";
 import { CheckoutFormData } from "../hooks/useCheckoutForm";
 import type { Control } from "react-hook-form";
 import { getDateAfter30Days, formatPrice } from "../../../lib/utils";
+import Link from "next/link";
 
 interface TermsAgreementProps {
   control: Control<CheckoutFormData>;
@@ -45,10 +46,23 @@ export default function TermsAgreement({
                 <strong>{planTitle} Plan</strong> (including any selected
                 add-ons), plus applicable tax, until I cancel. I understand I
                 can cancel anytime through the Account and Billing page. By
-                selecting &quot;I Agree&quot;, I acknowledge the{" "}
-                <strong>Marketing Free Trial Offer Terms</strong> and{" "}
-                <strong>Terms of Use</strong>. UnifiedBeez&apos;s Global Privacy
-                Statement applies to all personal information collected.
+                selecting &quot;I authorize&quot;, I acknowledge the{" "}
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_WEBSITE}/privacy-policy`}
+                  target="_black"
+                >
+                  <strong className="hover:underline">Privacy Policy</strong>{" "}
+                  {/* <strong>Marketing Free Trial Offer Terms</strong> */}
+                </Link>
+                and{" "}
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_WEBSITE}/terms-of-use`}
+                  target="_black"
+                >
+                  <strong className="hover:underline">Terms of Use</strong>
+                </Link>
+                . UnifiedBeez&apos;s Global Privacy Statement applies to all
+                personal information collected.
               </p>
               {error && (
                 <p className="text-destructive text-sm mt-1 text-[1.4rem]">

@@ -14,12 +14,27 @@ const stepsSlice = createSlice({
   initialState,
   reducers: {
     // Initialize steps with the structure from SetupPage
-    setSteps: (state, action: PayloadAction<{ steps: Step[]; initialVisitedStep?: { stepId: number; subStepId: string | number } }>) => {
-      const { steps, initialVisitedStep } = action.payload;
+    setSteps: (
+      state,
+      action: PayloadAction<{
+        steps: Step[];
+        initialVisitedStep?: { stepId: number; subStepId: string | number };
+        initialVisitedSteps?: { stepId: number; subStepId: string | number }[];
+      }>
+    ) => {
+      const { steps, initialVisitedStep, initialVisitedSteps } = action.payload;
       state.steps = steps;
       
       if (state.visitedSteps.length === 0) {
-        if (initialVisitedStep) {
+        if (initialVisitedSteps && initialVisitedSteps.length > 0) {
+          state.visitedSteps = initialVisitedSteps;
+
+          const current =
+            initialVisitedStep ||
+            initialVisitedSteps[initialVisitedSteps.length - 1];
+          state.currentStepId = current.stepId;
+          state.currentSubStepId = current.subStepId;
+        } else if (initialVisitedStep) {
           state.visitedSteps = [initialVisitedStep];
           state.currentStepId = initialVisitedStep.stepId;
           state.currentSubStepId = initialVisitedStep.subStepId;
