@@ -1,7 +1,7 @@
 import React from "react";
-import { cn } from "@/shared/src/lib/utils";
-import ImageComponent from "@/shared/src/components/ui/ImageComponent";
-import { useSupabaseIcons } from "@/shared/src/lib/supabase/useSupabase";
+import { cn } from "../../../../lib/utils"
+import ImageComponent from "../../../ui/ImageComponent";
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
 
 interface ButtonHeaderProps {
   index: number;
@@ -9,7 +9,7 @@ interface ButtonHeaderProps {
 }
 
 export const ButtonHeader = ({ index, onRemove }: ButtonHeaderProps) => {
-  const icons = useSupabaseIcons() as { trashGray: string };
+  const icons = useSupabaseIcons();
   return (
     <div className="flex items-center justify-between">
       <span className="text-[1.4rem] font-bold text-text-secondary">
@@ -21,7 +21,8 @@ export const ButtonHeader = ({ index, onRemove }: ButtonHeaderProps) => {
           className="p-[0.4rem] hover:bg-black-5 rounded-[0.4rem] transition-colors"
         >
           <ImageComponent
-            src={icons.trashGray}
+            src={icons.trashRed}
+            className="graysca"
             alt="remove"
             width={16}
             height={16}
