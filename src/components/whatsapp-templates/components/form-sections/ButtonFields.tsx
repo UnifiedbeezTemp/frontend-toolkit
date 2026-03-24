@@ -22,7 +22,7 @@ export const ButtonHeader = ({ index, onRemove }: ButtonHeaderProps) => {
         >
           <ImageComponent
             src={icons.trashRed}
-            className="graysca"
+            className="grayscale"
             alt="remove"
             width={16}
             height={16}
