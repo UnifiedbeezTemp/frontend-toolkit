@@ -4,6 +4,7 @@ import { useUserPlan } from "../../api/services/plan/hooks/useUserPlan";
 import { ComparisonPlan } from "./types";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import BadgeIcon from "../ui/BadgeIcon";
+import { calculateBillingCyclePrice } from "../../utils/priceUtils";
 
 const PLAN_HIERARCHY: Record<string, number> = {
   individual: 1,
@@ -167,6 +168,10 @@ export const useComparisonPlans = () => {
         tag: config.tag,
         values: {
           monthlyPrice: `£${original.priceEur / 100}/month`,
+          yearlyPrice: `£${
+            (original.yearlyPriceEur ??
+              calculateBillingCyclePrice(original.priceEur, true)) / 100
+          }/year`,
           seats: formatSeats(original.maxSeats),
           aiAssistants: formatAiAssistants(original.maxAiAssistants),
           contacts: getContactsValue(),

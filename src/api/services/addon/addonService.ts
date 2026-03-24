@@ -7,6 +7,54 @@ export interface AddonPurchase {
   quantity: number;
 }
 
+export type BulkSeatBillingInterval = "MONTHLY" | "YEARLY";
+
+export interface BulkSeatPackage {
+  id: number;
+  seats: number;
+  priceEur: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface UserBulkSeat {
+  id: number;
+  packageId: number;
+  quantity: number;
+  billingInterval: BulkSeatBillingInterval;
+  isActive: boolean;
+  package: BulkSeatPackage;
+}
+
+export interface BulkSeatStats {
+  currentMembers: number;
+  basePlanSeats: number | null;
+  bulkSeats: number;
+  extraSeats: number;
+  totalSeats: number | null;
+  unlimited: boolean;
+  canAddMembers: boolean;
+}
+
+export interface GetBulkSeatsResponse {
+  bulkSeats: UserBulkSeat[];
+  stats: BulkSeatStats;
+}
+
+export interface PurchaseBulkSeatPayload {
+  packageId: number;
+  quantity?: number;
+}
+
+export interface PurchaseBulkSeatResponse {
+  userBulkSeat: UserBulkSeat;
+  totalSeats: number | null;
+  monthlyCharge?: string;
+  yearlyCharge?: string;
+  message: string;
+}
+
 export interface PurchaseBatchPayload {
   purchases: AddonPurchase[];
 }
@@ -89,5 +137,26 @@ export const addonService = {
     planType: string,
   ): Promise<{ addons: ApiAddon[] }> {
     return api.get(`/addon/available-for-plan?planType=${planType}`);
+  },
+
+  async getBulkSeats(): Promise<GetBulkSeatsResponse> {
+    return api.get("/addon/bulk-seats");
+  },
+
+  async getBulkSeatPackages(): Promise<{ packages: BulkSeatPackage[] } | BulkSeatPackage[]> {
+    return api.get("/addon/bulk-seats/packages");
+  },
+
+  async purchaseBulkSeatPackage(
+    payload: PurchaseBulkSeatPayload,
+  ): Promise<PurchaseBulkSeatResponse> {
+    return api.post<PurchaseBulkSeatPayload, PurchaseBulkSeatResponse>(
+      "/addon/bulk-seats/purchase",
+      payload,
+    );
+  },
+
+  async cancelBulkSeatPackage(id: number): Promise<{ message: string }> {
+    return api.delete(`/addon/bulk-seats/${id}`);
   },
 };
