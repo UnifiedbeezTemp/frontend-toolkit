@@ -19,6 +19,7 @@ import PlanPreviewPricing from "./components/PlanPreviewPricing";
 import ComparisonModal from "../comparison-table/ComparisonModal";
 import { AvailableAddonsPreviewModal } from "../plan-selection/modals/AvailableAddonsPreviewModal";
 import { useUser } from "../../contexts/UserContext";
+import { useBulkSeatStatsPreview } from "./hooks/useBulkSeatStatsPreview";
 
 export default function PlanCardPreview({
   isAddons,
@@ -32,6 +33,11 @@ export default function PlanCardPreview({
   const { user } = useUser();
   const effectiveIsYearly =
     user?.planBillingInterval === "YEARLY" ? true : isYearly;
+
+  const isOrganisation = planType?.toUpperCase() === "ORGANISATION";
+  const { bulkSeatsCount, hasActiveBulkSeats } = useBulkSeatStatsPreview({
+    enabled: isOrganisation && !isAddons,
+  });
 
   const { plan: backendPlan, loading, error, retry } = usePlan({ planType });
   const { plan, displayPrice, monthlyPrice } = useCheckoutPlan({
@@ -188,6 +194,7 @@ export default function PlanCardPreview({
             planType={planType}
             addonsTotal={addonsTotal}
             selectedAddons={addonsToUse}
+            bulkSeatsCount={hasActiveBulkSeats ? bulkSeatsCount : 0}
             onAddonsClick={() => handleAddonsClick(planType)}
             isYearly={effectiveIsYearly}
           />
