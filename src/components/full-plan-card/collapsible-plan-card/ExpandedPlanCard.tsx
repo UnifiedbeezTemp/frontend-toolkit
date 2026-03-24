@@ -21,12 +21,14 @@ export default function ExpandedPlanCard({
 }: CollapsiblePlanCardProps) {
   const { displayPrice } = useCollapsiblePlanCard(plan, isYearly);
 
-  const allFeatures = [...plan.availableFeatures, ...plan.unAvailableFeatures];
+  let allFeatures = [...plan.availableFeatures, ...plan.unAvailableFeatures];
+  if (plan.originalPlan.planType === "PREMIUM" || plan.originalPlan.planType === "ORGANISATION")
+    allFeatures = [...allFeatures, `Automation Dashboard:\nFull Access`]
 
   return (
     <div
       className={cn(
-        "grid grid-rows-subgrid row-span-11 pt-6 pb-4 px-0 w-full transition-all duration-300 bg-primary",
+        "grid grid-rows-subgrid row-span-12 pt-6 pb-4 px-0 w-full transition-all duration-300 bg-primary",
         className
       )}
     >
@@ -46,7 +48,8 @@ export default function ExpandedPlanCard({
         </div>
       ))}
 
-      <CollapsiblePlanCardFooter
+
+        <CollapsiblePlanCardFooter
         plan={plan}
         isSelected={isSelected}
         isLowerThanCurrentPlan={isLowerThanCurrentPlan}
@@ -61,9 +64,10 @@ export default function ExpandedPlanCard({
           alt=""
           width={8}
           height={8}
-        />
+          />
         {plan.footerText}
       </div>
+
     </div>
   );
 }
