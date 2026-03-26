@@ -1,17 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
-import {
-  setSearchQuery,
-  setSelectedType,
-  setSelectedStatus,
-  selectAllAutomations,
-  clearSelectedAutomations,
-  deleteSelectedAutomations,
-  selectFilteredAutomations,
-  selectTotalCount,
-} from "../../../store/slices/automationSlice";
+import { useAutomationsContext } from "../AutomationsContext";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 
 export const useAutomationTableHeader = () => {
@@ -19,16 +9,20 @@ export const useAutomationTableHeader = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const filterDropdownRef = useRef<HTMLDivElement>(null);
-  const dispatch = useAppDispatch();
   const supabaseIcons = useSupabaseIcons();
 
-  const automationState = useAppSelector((state) => state.automation);
-  const searchQuery = automationState?.searchQuery || "";
-  const selectedAutomations = automationState?.selectedAutomations || [];
-  const selectedStatus = automationState?.selectedStatus || "All";
-  const totalCount = useAppSelector(selectTotalCount);
-
-  const filteredAutomations = useAppSelector(selectFilteredAutomations);
+  const {
+    items,
+    total,
+    searchQuery,
+    selectedStatus,
+    selectedIds,
+    setSearch,
+    setStatus,
+    selectAll,
+    clearSelected,
+    deleteSelected,
+  } = useAutomationsContext();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,13 +39,12 @@ export const useAutomationTableHeader = () => {
         setIsFilterOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchQuery(e.target.value));
+    setSearch(e.target.value);
   };
 
   const toggleDropdown = () => {
@@ -65,36 +58,28 @@ export const useAutomationTableHeader = () => {
   };
 
   const onSelectAll = () => {
-    const allIds = filteredAutomations.map((a) => a.id);
-    dispatch(selectAllAutomations(allIds));
+    selectAll();
     setIsOpen(false);
   };
 
   const onUnselectAll = () => {
-    dispatch(clearSelectedAutomations());
+    clearSelected();
     setIsOpen(false);
   };
 
   const onDeleteSelected = () => {
-    if (selectedAutomations.length > 0) {
-      dispatch(deleteSelectedAutomations());
-    }
+    deleteSelected();
     setIsOpen(false);
   };
 
-  const handleFilter = () => {
-    toggleFilterDropdown();
+  const handleStatusFilter = (status: "All" | "active" | "inactive") => {
+    setStatus(status);
+    setIsFilterOpen(false);
   };
 
   const resetFilters = () => {
-    dispatch(setSearchQuery(""));
-    dispatch(setSelectedType("All"));
-    dispatch(setSelectedStatus("All"));
-  };
-
-  const handleStatusFilter = (status: "All" | "active" | "inactive") => {
-    dispatch(setSelectedStatus(status));
-    setIsFilterOpen(false);
+    setSearch("");
+    setStatus("All");
   };
 
   return {
@@ -103,18 +88,19 @@ export const useAutomationTableHeader = () => {
     dropdownRef,
     filterDropdownRef,
     searchQuery,
-    selectedAutomations,
+    selectedAutomations: selectedIds,
     selectedStatus,
-    totalCount,
+    totalCount: total,
     handleSearchChange,
     toggleDropdown,
     toggleFilterDropdown,
     onSelectAll,
     onUnselectAll,
     onDeleteSelected,
-    handleFilter,
+    handleFilter: toggleFilterDropdown,
     resetFilters,
     handleStatusFilter,
     supabaseIcons,
+    filteredAutomations: items,
   };
 };

@@ -1,16 +1,9 @@
 "use client";
 
-import React from "react";
 import Checkbox from "../../ui/CheckBox";
 import ImageComponent from "../../ui/ImageComponent";
-import {
-  Automation,
-  toggleAutomation,
-  deleteAutomation,
-  selectAllAutomations,
-  clearSelectedAutomations,
-} from "../../../store/slices/automationSlice";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
+import { Automation } from "../../../store/slices/automationSlice";
+import { useAutomationsContext } from "../AutomationsContext";
 import { useRouter } from "next/navigation";
 
 interface MobileAutomationListProps {
@@ -22,11 +15,9 @@ export default function MobileAutomationList({
   currentAutomations,
   icons,
 }: MobileAutomationListProps) {
-  const dispatch = useAppDispatch();
+  const { selectedIds, toggleSelected, selectAll, clearSelected, deleteOne } =
+    useAutomationsContext();
   const router = useRouter();
-  const selectedAutomations = useAppSelector(
-    (state) => state.automation.selectedAutomations,
-  );
 
   const handleEdit = (automationId: string) => {
     const baseUrl = process.env.NEXT_PUBLIC_AUTOMATIONS_LIBRARY_URL || "";
@@ -40,24 +31,22 @@ export default function MobileAutomationList({
       <div className="flex items-center gap-[.5rem]">
         <Checkbox
           checked={
-            selectedAutomations.length === currentAutomations.length &&
+            selectedIds.length === currentAutomations.length &&
             currentAutomations.length > 0
           }
           onChange={() => {
-            if (selectedAutomations.length === currentAutomations.length) {
-              dispatch(clearSelectedAutomations());
+            if (selectedIds.length === currentAutomations.length) {
+              clearSelected();
             } else {
-              dispatch(
-                selectAllAutomations(currentAutomations.map((a) => a.id)),
-              );
+              selectAll();
             }
           }}
           size="sm"
         />
         <span className="text-[1.1rem]">Select all</span>
       </div>
-      {currentAutomations.map((automation, idx) => {
-        const isSelected = selectedAutomations.includes(automation.id);
+      {currentAutomations.map((automation) => {
+        const isSelected = selectedIds.includes(automation.id);
 
         return (
           <div
@@ -68,7 +57,7 @@ export default function MobileAutomationList({
               <div className="flex items-center gap-[1rem]">
                 <Checkbox
                   checked={isSelected}
-                  onChange={() => dispatch(toggleAutomation(automation.id))}
+                  onChange={() => toggleSelected(automation.id)}
                   size="sm"
                 />
                 <div className="border border-border rounded-[.3rem] overflow-hidden">
@@ -99,7 +88,7 @@ export default function MobileAutomationList({
                   />
                 </button>
                 <button
-                  onClick={() => dispatch(deleteAutomation(automation.id))}
+                  onClick={() => deleteOne(automation.id)}
                   className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                 >
                   <ImageComponent

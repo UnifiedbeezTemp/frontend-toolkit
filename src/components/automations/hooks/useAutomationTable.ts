@@ -1,48 +1,54 @@
 "use client";
 
-import { useAppSelector } from "../../../store/hooks/useRedux";
-import { usePagination } from "../../../hooks/usePagination";
+import { useAutomationsContext } from "../AutomationsContext";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
-import {
-  selectFilteredAutomations,
-  selectTotalCount,
-} from "../../../store/slices/automationSlice";
-
-const ITEMS_PER_PAGE = 10;
 
 export const useAutomationTable = () => {
-  const filteredAutomations = useAppSelector(selectFilteredAutomations);
-  const totalCount = useAppSelector(selectTotalCount);
+  const { items, total, totalPages, currentPage, setPage } =
+    useAutomationsContext();
   const icons = useSupabaseIcons();
 
-  const {
-    currentPage,
-    totalPages,
-    startIndex,
-    endIndex,
-    handlePrevious,
-    handleNext,
-    handlePageChange,
-    getPageNumbers,
-  } = usePagination({
-    totalItems: filteredAutomations.length,
-    itemsPerPage: ITEMS_PER_PAGE,
-  });
+  const getPageNumbers = (): (number | string)[] => {
+    const pages: (number | string)[] = [];
+    const maxVisiblePages = 5;
 
-  const currentAutomations = filteredAutomations.slice(startIndex, endIndex);
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else if (currentPage <= 3) {
+      for (let i = 1; i <= 4; i++) pages.push(i);
+      pages.push("...");
+      pages.push(totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1);
+      pages.push("...");
+      for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      pages.push("...");
+      pages.push(currentPage - 1);
+      pages.push(currentPage);
+      pages.push(currentPage + 1);
+      pages.push("...");
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
 
   return {
-    filteredAutomations,
-    currentAutomations,
+    filteredAutomations: items,
+    currentAutomations: items,
     icons,
     currentPage,
     totalPages,
-    startIndex,
-    endIndex,
-    handlePrevious,
-    handleNext,
-    handlePageChange,
+    totalCount: total,
+    handlePrevious: () => setPage(Math.max(1, currentPage - 1)),
+    handleNext: () => setPage(Math.min(totalPages, currentPage + 1)),
+    handlePageChange: (page: number | string) => {
+      if (typeof page === "number" && page >= 1 && page <= totalPages) {
+        setPage(page);
+      }
+    },
     getPageNumbers,
-    totalCount,
   };
 };

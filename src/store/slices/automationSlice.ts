@@ -19,6 +19,9 @@ export interface AutomationState {
   searchQuery: string;
   selectedType: string;
   selectedStatus: "All" | "active" | "inactive";
+  total: number;
+  totalPages: number;
+  currentPage: number;
 }
 
 const initialState: AutomationState = {
@@ -27,6 +30,9 @@ const initialState: AutomationState = {
   searchQuery: "",
   selectedType: "All",
   selectedStatus: "All",
+  total: 0,
+  totalPages: 0,
+  currentPage: 1,
 };
 
 const automationSlice = createSlice({
@@ -82,6 +88,16 @@ const automationSlice = createSlice({
     selectAllAutomations: (state, action: PayloadAction<string[]>) => {
       state.selectedAutomations = action.payload;
     },
+    setTotal: (
+      state,
+      action: PayloadAction<{ total: number; totalPages: number }>,
+    ) => {
+      state.total = action.payload.total;
+      state.totalPages = action.payload.totalPages;
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
   },
 });
 
@@ -110,7 +126,7 @@ export const selectFilteredAutomations = createSelector(
 );
 
 export const selectTotalCount = (state: RootState) =>
-  state?.automation?.automations?.length || 0;
+  state?.automation?.total || 0;
 
 export const selectSelectedCount = (state: RootState) =>
   state?.automation?.selectedAutomations?.length || 0;
@@ -137,6 +153,8 @@ export const {
   setSelectedStatus,
   clearSelectedAutomations,
   selectAllAutomations,
+  setTotal,
+  setCurrentPage,
 } = automationSlice.actions;
 
 export default automationSlice.reducer;

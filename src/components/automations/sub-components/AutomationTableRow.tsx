@@ -2,11 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import {
-  Automation,
-  toggleAutomation,
-} from "../../../store/slices/automationSlice";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
+import { Automation } from "../../../store/slices/automationSlice";
+import { useAutomationsContext } from "../AutomationsContext";
 import Checkbox from "../../ui/CheckBox";
 import ImageComponent from "../../ui/ImageComponent";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
@@ -23,15 +20,12 @@ export default function AutomationTableRow({
   automation,
   isLast,
 }: AutomationTableRowProps) {
-  const dispatch = useAppDispatch();
+  const { selectedIds, toggleSelected, deleteOne } = useAutomationsContext();
   const router = useRouter();
-  const selectedAutomations = useAppSelector(
-    (state) => state.automation.selectedAutomations,
-  );
-  const isSelected = selectedAutomations.includes(automation.id);
+  const isSelected = selectedIds.includes(automation.id);
   const supabaseIcons = useSupabaseIcons();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { deleteAutomation, isDeleting } = useDeleteAutomation();
+  const { deleteAutomation, isDeleting } = useDeleteAutomation(deleteOne);
 
   const handleEdit = () => {
     const baseUrl = process.env.NEXT_PUBLIC_AUTOMATIONS_LIBRARY_URL || "";
@@ -52,7 +46,7 @@ export default function AutomationTableRow({
           <div className="flex items-center gap-[10px]">
             <Checkbox
               checked={isSelected}
-              onChange={() => dispatch(toggleAutomation(automation.id))}
+              onChange={() => toggleSelected(automation.id)}
               size="sm"
             />
             <div className="border border-border rounded-[.3rem] overflow-hidden">
