@@ -8,22 +8,24 @@ import CloseIcon from "../../../assets/icons/CloseIcon";
 import Button from "../../ui/Button";
 import Checkbox from "../../ui/CheckBox";
 
+export interface ConnectedNumber {
+  id: string;
+  displayName: string;
+  type: string;
+}
+
 interface ConnectedNumbersModalProps {
   isOpen: boolean;
   onClose: () => void;
   accountName: string;
+  numbers?: ConnectedNumber[];
 }
-
-const DUMMY_NUMBERS = [
-  { id: "1", number: "+44 7700 900077", status: "Active", label: "Primary" },
-  { id: "2", number: "+44 7700 900088", status: "Active", label: "Support" },
-  { id: "3", number: "+44 7700 900099", status: "Active", label: "Marketing" },
-];
 
 export default function ConnectedNumbersModal({
   isOpen,
   onClose,
   accountName,
+  numbers = [],
 }: ConnectedNumbersModalProps) {
   return (
     <Modal
@@ -49,32 +51,29 @@ export default function ConnectedNumbersModal({
       </div>
 
       <div className="flex flex-col gap-[1.2rem] mb-[2.4rem]">
-        {DUMMY_NUMBERS.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center justify-between p-[1.6rem] border border-border rounded-[1.2rem] hover:bg-input-filled transition-colors"
-          >
-            <div className="flex flex-col gap-[0.2rem]">
-              <span className="text-[1.4rem] font-medium text-text-primary">
-                {item.number}
-              </span>
-              <span className="text-[1.2rem] text-text-secondary">
-                {item.label}
-              </span>
-            </div>
-            <div className="flex items-center gap-[0.8rem]">
-              <span
-                className={`text-[1.2rem] px-[0.8rem] py-[0.2rem] rounded-full ${
-                  item.status === "Active"
-                    ? "bg-success/10 text-success"
-                    : "bg-warning/10 text-warning"
-                }`}
-              >
-                {item.status}
-              </span>
-            </div>
+        {numbers.length === 0 ? (
+          <div className="py-[4rem] text-center">
+            <Text className="text-[1.4rem] text-text-secondary">
+              No connected numbers found.
+            </Text>
           </div>
-        ))}
+        ) : (
+          numbers.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between p-[1.6rem] border border-border rounded-[1.2rem] hover:bg-input-filled transition-colors"
+            >
+              <div className="flex flex-col gap-[0.2rem]">
+                <span className="text-[1.4rem] font-medium text-text-primary">
+                  {item.displayName}
+                </span>
+                <span className="text-[1.2rem] text-text-secondary">
+                  {item.type}
+                </span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       <Button

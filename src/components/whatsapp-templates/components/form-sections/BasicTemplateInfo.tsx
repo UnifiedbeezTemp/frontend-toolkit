@@ -9,6 +9,7 @@ import { useCollapsible } from "../../hooks/useCollapsible";
 import ImageComponent from "next/image";
 import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
 import { cn } from "../../../../lib/utils";
+import type { ConnectedNumber } from "../ConnectedNumbersModal";
 
 interface BasicTemplateInfoProps {
   formData: TemplateFormData;
@@ -16,6 +17,8 @@ interface BasicTemplateInfoProps {
   activeDropdown: string | null;
   toggleDropdown: (name: string) => void;
   setActiveDropdown: (name: string | null) => void;
+  channelName?: string;
+  accounts?: ConnectedNumber[];
 }
 
 export default function BasicTemplateInfo({
@@ -24,6 +27,8 @@ export default function BasicTemplateInfo({
   activeDropdown,
   toggleDropdown,
   setActiveDropdown,
+  channelName,
+  accounts = [],
 }: BasicTemplateInfoProps) {
   const { isExpanded, toggle } = useCollapsible(true);
   const icons = useSupabaseIcons() as { gridDropdown: string };
@@ -62,6 +67,8 @@ export default function BasicTemplateInfo({
             activeDropdown={activeDropdown}
             toggleDropdown={toggleDropdown}
             setActiveDropdown={setActiveDropdown}
+            channelName={channelName}
+            accounts={accounts}
           />
 
           <TemplateNameInput formData={formData} handleChange={handleChange} />
