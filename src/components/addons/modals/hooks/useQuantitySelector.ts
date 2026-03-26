@@ -14,7 +14,8 @@ export const useQuantitySelector = ({
 }: UseQuantitySelectorProps) => {
   const icons = useSupabaseIcons();
 
-  const isDestructive = (isLimitReached || !!errorText) && limit !== 1;
+  const isDestructive =
+    limit !== 1 && limit !== -1 && (isLimitReached || !!errorText);
 
   const buttonIcons = useMemo(() => {
     if (isDestructive || errorText) {

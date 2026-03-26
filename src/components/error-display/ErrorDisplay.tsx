@@ -62,6 +62,7 @@ export default function ErrorDisplay({
           onReportClick={handleOpenReportModal}
           showReportButton={hasErrorReporting}
         />
+        <button onClick={onGoToHomepage} className="text-brand-primary font-bold text-[1rem] mt-4 mx-auto underline">Return to homepage</button>
       </motion.div>
 
       {hasErrorReporting && (

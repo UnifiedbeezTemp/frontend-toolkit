@@ -75,7 +75,10 @@ export interface Step6ChannelConfigState {
   [channelId: string]: ChannelStep6Config;
 }
 
-const getDefaultConfig = (firstAssistantId: string | null = null, allMemberIds: string[] = []): ChannelStep6Config => ({
+const getDefaultConfig = (
+  firstAssistantId: string | null = null,
+  allMemberIds: string[] = [],
+): ChannelStep6Config => ({
   smartSuggestions: {
     smartSuggestionsEnabled: false,
     selectedAssistantId: firstAssistantId,
@@ -90,7 +93,7 @@ const getDefaultConfig = (firstAssistantId: string | null = null, allMemberIds: 
   escalationRules: {
     enabled: true,
     smartSuggestionsEnabled: false,
-    useDefault: true,
+    useDefault: false,
     escalateAfterUnanswered: null,
     escalateOnKeywords: [],
     escalateAfterNoReply: null,
@@ -99,15 +102,15 @@ const getDefaultConfig = (firstAssistantId: string | null = null, allMemberIds: 
   followUpTriggers: {
     enabled: true,
     smartSuggestionsEnabled: false,
-    useDefault: true,
-    enableFollowUp: false,
+    useDefault: false,
+    enableFollowUp: true,
     delayBeforeFollowUp: null,
     followUpContentType: null,
   },
   aiBehaviorSettings: {
     enabled: true,
     smartSuggestionsEnabled: false,
-    useDefault: true,
+    useDefault: false,
     aiReplyDelay: null,
     workingDays: [],
     timezone: null,
@@ -121,7 +124,7 @@ const getDefaultConfig = (firstAssistantId: string | null = null, allMemberIds: 
   accessPermissions: {
     enabled: true,
     smartSuggestionsEnabled: false,
-    useDefault: true,
+    useDefault: false,
     selectedMemberIds: allMemberIds,
   },
   aiAssistantTesting: {
@@ -140,9 +143,17 @@ const step6ChannelConfigSlice = createSlice({
   reducers: {
     initializeChannelConfig: (
       state,
-      action: PayloadAction<{ channelId: string; firstAssistantId?: string | null; allMemberIds?: string[] }>
+      action: PayloadAction<{
+        channelId: string;
+        firstAssistantId?: string | null;
+        allMemberIds?: string[];
+      }>,
     ) => {
-      const { channelId, firstAssistantId = null, allMemberIds = [] } = action.payload;
+      const {
+        channelId,
+        firstAssistantId = null,
+        allMemberIds = [],
+      } = action.payload;
       if (!state[channelId]) {
         state[channelId] = getDefaultConfig(firstAssistantId, allMemberIds);
       }
@@ -150,9 +161,17 @@ const step6ChannelConfigSlice = createSlice({
 
     initializeChannelConfigs: (
       state,
-      action: PayloadAction<{ channelIds: string[]; firstAssistantId?: string | null; allMemberIds?: string[] }>
+      action: PayloadAction<{
+        channelIds: string[];
+        firstAssistantId?: string | null;
+        allMemberIds?: string[];
+      }>,
     ) => {
-      const { channelIds, firstAssistantId = null, allMemberIds = [] } = action.payload;
+      const {
+        channelIds,
+        firstAssistantId = null,
+        allMemberIds = [],
+      } = action.payload;
       channelIds.forEach((channelId) => {
         if (!state[channelId]) {
           state[channelId] = getDefaultConfig(firstAssistantId, allMemberIds);
@@ -162,7 +181,10 @@ const step6ChannelConfigSlice = createSlice({
 
     updateSmartSuggestions: (
       state,
-      action: PayloadAction<{ channelId: string; updates: Partial<SmartSuggestionsConfig> }>
+      action: PayloadAction<{
+        channelId: string;
+        updates: Partial<SmartSuggestionsConfig>;
+      }>,
     ) => {
       const { channelId, updates } = action.payload;
       if (!state[channelId]) {
@@ -176,7 +198,10 @@ const step6ChannelConfigSlice = createSlice({
 
     updateAIProfile: (
       state,
-      action: PayloadAction<{ channelId: string; updates: Partial<AIProfileConfig> }>
+      action: PayloadAction<{
+        channelId: string;
+        updates: Partial<AIProfileConfig>;
+      }>,
     ) => {
       const { channelId, updates } = action.payload;
       if (!state[channelId]) {
@@ -190,7 +215,10 @@ const step6ChannelConfigSlice = createSlice({
 
     updateEscalationRules: (
       state,
-      action: PayloadAction<{ channelId: string; updates: Partial<EscalationRulesConfig> }>
+      action: PayloadAction<{
+        channelId: string;
+        updates: Partial<EscalationRulesConfig>;
+      }>,
     ) => {
       const { channelId, updates } = action.payload;
       if (!state[channelId]) {
@@ -204,7 +232,10 @@ const step6ChannelConfigSlice = createSlice({
 
     updateFollowUpTriggers: (
       state,
-      action: PayloadAction<{ channelId: string; updates: Partial<FollowUpTriggersConfig> }>
+      action: PayloadAction<{
+        channelId: string;
+        updates: Partial<FollowUpTriggersConfig>;
+      }>,
     ) => {
       const { channelId, updates } = action.payload;
       if (!state[channelId]) {
@@ -218,7 +249,10 @@ const step6ChannelConfigSlice = createSlice({
 
     updateAIBehaviorSettings: (
       state,
-      action: PayloadAction<{ channelId: string; updates: Partial<AIBehaviorSettingsConfig> }>
+      action: PayloadAction<{
+        channelId: string;
+        updates: Partial<AIBehaviorSettingsConfig>;
+      }>,
     ) => {
       const { channelId, updates } = action.payload;
       if (!state[channelId]) {
@@ -232,7 +266,10 @@ const step6ChannelConfigSlice = createSlice({
 
     updateAccessPermissions: (
       state,
-      action: PayloadAction<{ channelId: string; updates: Partial<AccessPermissionsConfig> }>
+      action: PayloadAction<{
+        channelId: string;
+        updates: Partial<AccessPermissionsConfig>;
+      }>,
     ) => {
       const { channelId, updates } = action.payload;
       if (!state[channelId]) {
@@ -246,7 +283,10 @@ const step6ChannelConfigSlice = createSlice({
 
     updateAIAssistantTesting: (
       state,
-      action: PayloadAction<{ channelId: string; updates: Partial<AIAssistantTestingConfig> }>
+      action: PayloadAction<{
+        channelId: string;
+        updates: Partial<AIAssistantTestingConfig>;
+      }>,
     ) => {
       const { channelId, updates } = action.payload;
       if (!state[channelId]) {
@@ -281,4 +321,3 @@ export const {
 } = step6ChannelConfigSlice.actions;
 
 export default step6ChannelConfigSlice.reducer;
-

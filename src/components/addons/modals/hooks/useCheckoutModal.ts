@@ -30,7 +30,8 @@ export const useCheckoutModal = ({
   const { refetch: refetchUser } = useUser();
   const { purchasedAddons, refetch: refetchPurchased } = usePurchasedAddons();
 
-  const { handleCloseCheckoutModal, returnTo } = useAddonsPage();
+  const { handleCloseCheckoutModal, returnTo, handleClearSelectedAddons } =
+    useAddonsPage();
 
   const { plan: backendPlan } = usePlan({ planType });
   const { displayPrice: planFee } = useCheckoutPlan({
@@ -69,7 +70,10 @@ export const useCheckoutModal = ({
   }, [subtotal, vat]);
 
   const hasLimitReachedAddons = useMemo(() => {
-    return selectedAddons?.some((addon) => (addon.used || 1) >= addon.limit);
+    return selectedAddons?.some((addon) => {
+      if (addon.limit === -1) return false;
+      return (addon.used || 1) >= addon.limit;
+    });
   }, [selectedAddons]);
 
   const { user } = useUser();
@@ -171,6 +175,8 @@ export const useCheckoutModal = ({
       });
 
       sessionStorage.removeItem("unifiedbeez_checkout_addons");
+      sessionStorage.setItem("unifiedbeez_addons_purchase_complete", "1");
+      handleClearSelectedAddons();
       handleCloseCheckoutModal();
       if (returnTo) {
         window.location.href = decodeURIComponent(returnTo);
@@ -192,6 +198,7 @@ export const useCheckoutModal = ({
     purchasedAddons,
     availableAddons,
     handleCloseCheckoutModal,
+    handleClearSelectedAddons,
     router,
     showToast,
     refetchUser,

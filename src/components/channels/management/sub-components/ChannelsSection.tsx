@@ -1,11 +1,13 @@
 "use client";
 
 import { Channel } from "../../../../store/onboarding/types/channelTypes";
-import { ChannelsApiResponse, SelectedChannelsResponse } from "../../../../types/channelApiTypes";
+import {
+  ChannelsApiResponse,
+  SelectedChannelsResponse,
+} from "../../../../types/channelApiTypes";
 import ChannelTypeSection from "../../../channel-selection/ChannelTypeSection";
 import { useChannelSelection } from "../../../channel-selection/hooks/useChannelSelection";
-import Text from "../../../ui/Text";
-
+import ChannelsEmptyState from "./ChannelsEmptyState";
 
 interface ChildProps {
   searchQuery: string;
@@ -16,6 +18,7 @@ interface ChildProps {
   selectedChannels?: SelectedChannelsResponse | null;
   setSearchQuery?: (query: string) => void;
   setFilter?: (filter: string) => void;
+  onSwitchToAll?: () => void;
 }
 
 export default function ChannelsSection({
@@ -27,6 +30,7 @@ export default function ChannelsSection({
   selectedChannels,
   setSearchQuery,
   setFilter,
+  onSwitchToAll,
 }: ChildProps) {
   const { filteredChannels, typeEntries, toggleChannel, isChannelLoading } =
     useChannelSelection({
@@ -38,11 +42,31 @@ export default function ChannelsSection({
       setFilter,
     });
 
+  if (typeEntries.length === 0) {
+    if (searchQuery || (filter && filter !== "Communication Channels")) {
+      return (
+        <ChannelsEmptyState
+          title="No results found"
+          description={`We couldn't find any channels matching "${searchQuery || filter}".`}
+          actionText="Clear filters"
+          onSwitchToAll={() => {
+            setSearchQuery?.("");
+            setFilter?.("Communication Channels");
+          }}
+        />
+      );
+    }
+
+    return <ChannelsEmptyState onSwitchToAll={onSwitchToAll} />;
+  }
+
   return (
     <div className="mt-[4rem] lg:mt-[1rem]">
       <div className="mt-[1.5rem]">
-        {typeEntries.length > 0 ? (
-          typeEntries.map(([type, typeChannels], index) => (
+        {typeEntries.map(([type, typeChannels], index) => {
+          if (typeChannels.length === 0) return null;
+
+          return (
             <ChannelTypeSection
               key={type}
               type={type}
@@ -52,14 +76,8 @@ export default function ChannelsSection({
               isChannelLoading={isChannelLoading}
               canEdit={canEdit}
             />
-          ))
-        ) : (
-          <div className="text-center py-[4rem]">
-            <Text size="base" className="text-secondary">
-              No channels available at the moment.
-            </Text>
-          </div>
-        )}
+          );
+        })}
       </div>
     </div>
   );

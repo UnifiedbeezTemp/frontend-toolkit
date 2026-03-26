@@ -12,11 +12,11 @@ export const useAddonsAccess = () => {
       targetPlanId &&
       userPlan?.planType?.toLowerCase() !== targetPlanId.toLowerCase()
     ) {
-      showToast({
-        title: "Access Restricted",
-        description: "You can only view addons for your current plan",
-        variant: "info",
-      });
+      // showToast({
+      //   title: "Access Restricted",
+      //   description: "You can only view addons for your current plan",
+      //   variant: "info",
+      // });
       return false;
     }
     return true;

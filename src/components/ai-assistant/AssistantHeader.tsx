@@ -61,6 +61,7 @@ export default function AssistantHeader({
                 <SelectionChip text={selectionText} colorScheme={colorScheme} />
               </div>
             )}
+            <div className="flex items-center gap-[1rem]">
             {rightElement && <div>{rightElement}</div>}
             <Checkbox
               checked={isSelected || false}
@@ -68,6 +69,7 @@ export default function AssistantHeader({
               className="rounded-full"
               size="sm"
             />
+            </div>
           </div>
         </div>
       </div>

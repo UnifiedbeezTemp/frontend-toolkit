@@ -15,6 +15,7 @@ export interface PurchasedAddonResponse {
   priceEur: number;
   billingType?: string;
   billingInterval?: string; // "MONTHLY" | "YEARLY"
+  isIncludedInPlan?: boolean;
   instances?: MultiLanguageInstance[];
 }
 
@@ -36,4 +37,5 @@ export interface Addon {
   isIncludedInPlan?: boolean;
   instances?: MultiLanguageInstance[]; // For multi-language addons
   selectedLanguages?: string[]; // For UI selection state
+  category?: string;
 }

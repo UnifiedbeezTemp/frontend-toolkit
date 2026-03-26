@@ -13,14 +13,21 @@ interface ComparisonTableProps {
   className?: string;
   onSelectPlan?: (planId: string) => void;
   onAddonsClick?: (planId?: string) => void;
+  isYearly?: boolean;
 }
 
 export default function ComparisonTable({
   className,
   onSelectPlan,
   onAddonsClick,
+  isYearly = false,
 }: ComparisonTableProps) {
   const { plans, loading, error, retry, icons } = useComparisonPlans();
+  const features = React.useMemo(() => {
+    if (!isYearly) return COMPARISON_FEATURES;
+    const [, ...rest] = COMPARISON_FEATURES;
+    return [{ key: "yearlyPrice", label: "Yearly Price" }, ...rest];
+  }, [isYearly]);
 
   if (loading) {
     return <ComparisonSkeleton />;
@@ -61,17 +68,18 @@ export default function ComparisonTable({
     <div className={cn("w-full", className)}>
       <ComparisonDesktop
         plans={plans}
-        features={COMPARISON_FEATURES}
+        features={features}
         icons={icons}
         onAddonsClick={onAddonsClick}
         onSelectPlan={onSelectPlan}
       />
       <ComparisonMobile
         plans={plans}
-        features={COMPARISON_FEATURES}
+        features={features}
         onAddonsClick={onAddonsClick}
         icons={icons}
         onSelectPlan={onSelectPlan}
+        isYearly={isYearly}
       />
     </div>
   );

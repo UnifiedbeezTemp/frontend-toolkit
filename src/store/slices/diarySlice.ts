@@ -18,15 +18,35 @@ export interface TaskItem {
   dueDate: string;
   reminder?: string;
   completed: boolean;
+  workflowStatus?: "In Progress" | "Pending" | "On Hold";
+  contactId?: string;
+  beehiveId?: string;
   assignee?: {
     name: string;
     avatar: string;
   };
+  assignees?: Array<{
+    name: string;
+    avatar: string;
+  }>;
+}
+
+export interface OperationsBeehive {
+  id: string;
+  contactId: string;
+  name: string;
+  createdAt: string;
+}
+
+export interface UpdateTaskPayload {
+  id: string;
+  updates: Partial<Omit<TaskItem, "id">>;
 }
 
 export interface DiaryState {
   entries: DiaryEntry[];
   tasks: TaskItem[];
+  operationsBeehives: OperationsBeehive[];
   activeTab: "diary" | "tasks";
   editingEntryId: string | null;
   selectedEntryForDetails: DiaryEntry | null;
@@ -38,6 +58,7 @@ export interface DiaryState {
 const initialState: DiaryState = {
   entries: [],
   tasks: [],
+  operationsBeehives: [],
   activeTab: "diary",
   editingEntryId: null,
   selectedEntryForDetails: null,
@@ -89,6 +110,34 @@ const diarySlice = createSlice({
     addTask: (state, action: PayloadAction<TaskItem>) => {
       state.tasks.unshift(action.payload);
     },
+    updateTask: (state, action: PayloadAction<UpdateTaskPayload>) => {
+      const index = state.tasks.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        state.tasks[index] = {
+          ...state.tasks[index],
+          ...action.payload.updates,
+        };
+      }
+    },
+    deleteTask: (state, action: PayloadAction<string>) => {
+      state.tasks = state.tasks.filter((t) => t.id !== action.payload);
+    },
+    addOperationsBeehive: (state, action: PayloadAction<OperationsBeehive>) => {
+      const exists = state.operationsBeehives.some(
+        (b) => b.id === action.payload.id,
+      );
+      if (exists) return;
+      state.operationsBeehives.unshift(action.payload);
+    },
+    updateOperationsBeehiveName: (
+      state,
+      action: PayloadAction<{ id: string; name: string }>,
+    ) => {
+      const index = state.operationsBeehives.findIndex(
+        (b) => b.id === action.payload.id,
+      );
+      if (index !== -1) state.operationsBeehives[index].name = action.payload.name;
+    },
     setIsAddTaskModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isAddTaskModalOpen = action.payload;
     },
@@ -112,6 +161,10 @@ export const {
   toggleTaskStatus,
   setTasks,
   addTask,
+  updateTask,
+  deleteTask,
+  addOperationsBeehive,
+  updateOperationsBeehiveName,
   setIsAddTaskModalOpen,
   setDiaryGroupBy,
 } = diarySlice.actions;

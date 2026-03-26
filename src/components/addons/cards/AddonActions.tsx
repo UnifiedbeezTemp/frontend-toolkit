@@ -13,6 +13,7 @@ interface AddonActionsProps {
   onRemove?: () => void;
   onQuantityChange?: (quantity: number) => void;
   isRemoving?: boolean;
+  isAdding?: boolean;
 }
 
 export const AddonActions: React.FC<AddonActionsProps> = ({
@@ -22,16 +23,24 @@ export const AddonActions: React.FC<AddonActionsProps> = ({
   onRemove,
   onQuantityChange,
   isRemoving = false,
+  isAdding = false,
 }) => {
   const icons = useSupabaseIcons();
-  const { isCancelling, showUpgradeWarning } = useAddonActions({
+  const { isCancelling, showUpgradeWarning, canIncrease } = useAddonActions({
     addon,
     variant,
   });
-
+  if (addon.isIncludedInPlan) return null;
   if (variant === "add") {
+    if (!canIncrease) return null;
     return (
-      <Button className="text-[1.4rem] mt-[2.4rem] font-bold" onClick={onAdd}>
+      <Button
+        className="text-[1.4rem] mt-[2.4rem] font-bold"
+        onClick={onAdd}
+        loading={isAdding}
+        disabled={isAdding}
+        loadingText="Adding"
+      >
         <span className="sm:hidden">Add +</span>
         <span className="sm:block hidden">Add {addon.name} +</span>
       </Button>
@@ -47,12 +56,17 @@ export const AddonActions: React.FC<AddonActionsProps> = ({
       )}
 
       <div className="flex flex-col lg:flex-row items-start lg:items-center gap-[1rem] mt-[1.2rem]">
-        <Button
-          className="bg-brand-primary text-primary text-[1.4rem] flex gap-[0.5rem] items-center px-[1.6rem] py-[0.8rem] font-[700] border-0"
-          onClick={onAdd}
-        >
-          Add {addon.name}
-        </Button>
+        {canIncrease && (
+          <Button
+            className="bg-brand-primary text-primary text-[1.4rem] flex gap-[0.5rem] items-center px-[1.6rem] py-[0.8rem] font-[700] border-0"
+            onClick={onAdd}
+            loading={isAdding}
+            disabled={isAdding}
+            loadingText="Adding"
+          >
+            Add {addon.name}
+          </Button>
+        )}
 
         {!isCancelling && (
           <Button

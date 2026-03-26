@@ -4,6 +4,7 @@ import { useUserPlan } from "../../api/services/plan/hooks/useUserPlan";
 import { ComparisonPlan } from "./types";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import BadgeIcon from "../ui/BadgeIcon";
+import { calculateBillingCyclePrice } from "../../utils/priceUtils";
 
 const PLAN_HIERARCHY: Record<string, number> = {
   individual: 1,
@@ -78,8 +79,7 @@ export const useComparisonPlans = () => {
           return "All supported channels";
         }
         if (planType === "individual") return "Facebook, Telegram, Messenger";
-        if (planType === "business")
-          return "Facebook, Telegram, WhatsApp";
+        if (planType === "business") return "Facebook, Telegram, WhatsApp";
 
         const channels = [];
         if (p.hasFacebookMessenger) channels.push("Facebook");
@@ -168,6 +168,10 @@ export const useComparisonPlans = () => {
         tag: config.tag,
         values: {
           monthlyPrice: `£${original.priceEur / 100}/month`,
+          yearlyPrice: `£${
+            (original.yearlyPriceEur ??
+              calculateBillingCyclePrice(original.priceEur, true)) / 100
+          }/year`,
           seats: formatSeats(original.maxSeats),
           aiAssistants: formatAiAssistants(original.maxAiAssistants),
           contacts: getContactsValue(),
@@ -191,6 +195,10 @@ export const useComparisonPlans = () => {
                 ? "Included"
                 : "Not Included",
           addons: original.canPurchaseAddons ? "Add-ons allowed" : "No Add-ons",
+          automationsDashboard:
+            planType === "premium" || planType === "organisation"
+              ? "Included"
+              : "No Access",
         },
         ctaText: config.ctaText,
         footerText: config.footerText,

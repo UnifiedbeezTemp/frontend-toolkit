@@ -1,11 +1,10 @@
-import { ReactNode } from "react";
-import { cn } from "../../../../lib/utils";
-import { isString } from "../../../../utils/is";
-import Heading from "../../../ui/Heading";
-import Text from "../../../ui/Text";
-import { TagPill } from "../../components/TagPill";
+import { cn } from "../../../../lib/utils"
+import { isString } from "../../../../utils/is"
+import Heading from "../../../ui/Heading"
+import Text from "../../../ui/Text"
+import { TagPill } from "../../components/TagPill"
 
-import { GeneralInboxConversationItemProps } from "../types";
+import { GeneralInboxConversationItemProps } from "../types"
 
 export function GeneralInboxConversationItem({
   leading,
@@ -58,5 +57,5 @@ export function GeneralInboxConversationItem({
         {timestamp}
       </div>
     </button>
-  );
+  )
 }

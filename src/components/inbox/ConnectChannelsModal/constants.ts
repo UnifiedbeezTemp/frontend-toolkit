@@ -23,19 +23,19 @@ export const connectedChannels: Channel[] = [
     id: "telegram",
     name: "Telegram",
     icon: "telegramLogo",
-    identifier: "Brian George",
+    identifier: "John Doe",
   },
   {
     id: "instagram",
     name: "Instagram DMs",
     icon: "instagramLogo",
-    identifier: "Brian George",
+    identifier: "John Doe",
   },
   {
     id: "linkedin",
     name: "LinkedIn",
     icon: "linkedinLogo",
-    identifier: "Brian George",
+    identifier: "John Doe",
   },
   {
     id: "whatsapp",
@@ -50,7 +50,7 @@ export const channelAccounts: Record<string, ChannelAccount[]> = {
     {
       id: "wa-1",
       phoneNumber: "+234 902 922 0646",
-      name: "Brian George",
+      name: "John Doe",
       isConnected: false,
       status: "disconnected",
     },
@@ -104,7 +104,7 @@ export const channelAccounts: Record<string, ChannelAccount[]> = {
   telegram: [
     {
       id: "tg-1",
-      name: "Brian George",
+      name: "John Doe",
       isConnected: true,
       status: "connected",
     },
@@ -112,7 +112,7 @@ export const channelAccounts: Record<string, ChannelAccount[]> = {
   instagram: [
     {
       id: "ig-1",
-      name: "Brian George",
+      name: "John Doe",
       isConnected: true,
       status: "connected",
     },
@@ -120,7 +120,7 @@ export const channelAccounts: Record<string, ChannelAccount[]> = {
   linkedin: [
     {
       id: "li-1",
-      name: "Brian George",
+      name: "John Doe",
       isConnected: true,
       status: "connected",
     },

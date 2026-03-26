@@ -27,6 +27,7 @@ export default function ColorPicker({ value, onChange, onClose }: ColorPickerPro
     handleHueDrag,
     setupDrag,
     handleHexChange,
+    handleHexCommit,
   } = useColorPicker(value, onChange)
 
   return (
@@ -43,6 +44,7 @@ export default function ColorPicker({ value, onChange, onClose }: ColorPickerPro
           value={hexInput.replace(/^#/, "")}
           currentColor={currentColor}
           onChange={handleHexChange}
+          onCommit={handleHexCommit}
         />
       </div>
 
