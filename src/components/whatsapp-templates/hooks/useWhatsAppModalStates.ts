@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TemplateFormData } from "../types";
+import { Template } from "./discoverTemplatesData";
 
 export function useWhatsAppModalStates() {
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
@@ -22,8 +23,8 @@ export function useWhatsAppModalStates() {
     }
   };
 
-  const handleUseTemplate = (templateData: TemplateFormData) => {
-    setTemplateToCreate(templateData);
+  const handleUseTemplate = (template: Template) => {
+    setTemplateToCreate(template.formData);
     setIsDiscoverModalOpen(false);
     setIsCreationModalOpen(true);
   };

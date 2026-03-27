@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { TemplateFormData } from "../types";
+import { Template } from "../hooks/discoverTemplatesData";
 import { useDiscoverTemplates } from "../hooks/useDiscoverTemplates";
 import { DiscoverHeader } from "./discover/DiscoverHeader";
 import { DiscoverControls } from "./discover/DiscoverControls";
@@ -11,7 +11,7 @@ import Modal from "../../modal/Modal";
 interface DiscoverTemplatesModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUseTemplate: (template: TemplateFormData) => void;
+  onUseTemplate: (template: Template) => void;
   onCreateNewTemplate?: () => void;
 }
 
