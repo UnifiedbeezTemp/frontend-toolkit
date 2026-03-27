@@ -86,7 +86,7 @@ export function useAiAssistants(
   useEffect(() => {
     if (assistantsQuery.data) {
       const normalized =
-        assistantsQuery.data.aiAssistants.map(normalizeAssistant);
+        assistantsQuery.data.items.map(normalizeAssistant);
       dispatch(setAssistants(normalized));
       dispatch(setUsage(assistantsQuery.data.usage));
     }
@@ -247,8 +247,8 @@ export function useAiAssistants(
 
   const currentAssistants = useMemo(() => {
     if (assistants.length > 0) return assistants;
-    if (assistantsQuery.data?.aiAssistants) {
-      return assistantsQuery.data.aiAssistants.map(normalizeAssistant);
+    if (assistantsQuery.data?.items) {
+      return assistantsQuery.data.items.map(normalizeAssistant);
     }
     return [];
   }, [assistants, assistantsQuery.data]);

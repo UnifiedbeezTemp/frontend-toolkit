@@ -43,7 +43,7 @@ export interface AiUsage {
 }
 
 export interface AiAssistantsResponse {
-  aiAssistants: AIAssistant[];
+  items: AIAssistant[];
   usage: AiUsage;
 }
 
