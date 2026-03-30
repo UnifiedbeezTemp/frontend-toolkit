@@ -2,7 +2,7 @@ import { PlatformContent } from "./types";
 
 export const getPlatformContent = (name: string): PlatformContent => {
   return {
-    description: `Easily connect ${name} to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing—all within your growth automation setup.`,
+    description: `Easily connect ${name} to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing, all within your growth automation setup.`,
     features: [
       `Automatically trigger workflows when a new ${name} event is received`,
       `Sync customer and transaction data with your CRM`,
@@ -15,7 +15,7 @@ export const getPlatformContent = (name: string): PlatformContent => {
       `Sign in with your ${name} credentials`,
       `Authorize UnifiedBeez to access your account`,
       `Choose the events (e.g., new charge, failed payment) you want to automate`,
-      `Click "Finish Setup" — your ${name} automation is live 🚀`,
+      `Click "Finish Setup", your ${name} automation is live 🚀`,
     ],
     requirements: [
       `Active ${name} account`,
