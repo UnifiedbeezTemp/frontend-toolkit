@@ -65,11 +65,6 @@ export interface AiUsage {
 }
 
 export interface AiAssistantsResponse {
-  aiAssistants: AIAssistant[];
-<<<<<<< HEAD
-  items: AIAssistant[];
-  usage: AiUsage;
-=======
   // New response shape
   items?: AIAssistant[];
   total?: number;
@@ -80,7 +75,6 @@ export interface AiAssistantsResponse {
 
   // Legacy response shape (kept for backward compatibility)
   aiAssistants?: AIAssistant[];
->>>>>>> main
 }
 
 export interface CreateAiAssistantResponse {
