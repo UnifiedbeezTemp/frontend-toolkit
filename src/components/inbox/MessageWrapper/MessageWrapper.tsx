@@ -30,7 +30,7 @@ export default function MessageWrapper({
   const { longPressHandlers, handleContextMenu } = useMessageWrapper({
     messageId: message.id,
     onLongPress,
-  });
+  })
 
   const renderBubble = (): ReactNode => {
     if (message.type === "own") {
