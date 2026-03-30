@@ -1,10 +1,4 @@
-import { useState, useRef } from "react";
-
-export const TIMEZONES = [
-  { label: "UTC", value: "UTC" },
-  { label: "EST", value: "EST" },
-  { label: "PST", value: "PST" },
-];
+import { useRef, useState } from "react";
 
 export const useTimezoneField = (
   value: string | null,

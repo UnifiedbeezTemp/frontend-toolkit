@@ -89,10 +89,10 @@ export default function AssistantSelector({
               />
             </div>
             <div className="text-left">
-              <p className="text-text-primary font-[600] text-[1.4rem]">
+              <p className="text-text-secondary font-[600] text-[1.4rem]">
                 Select AI Assistant
               </p>
-              <p className="text-text-secondary text-[1.2rem]">
+              <p className="text-text-primary text-[1.2rem]">
                 Click to choose an AI assistant for this account
               </p>
             </div>

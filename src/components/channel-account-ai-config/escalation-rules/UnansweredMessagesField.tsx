@@ -38,7 +38,7 @@ export default function UnansweredMessagesField({
       </Heading>
 
       {showCustomInput ? (
-        <div className="relative flex items-center gap-[1.2rem] p-[1.2rem] bg-brand-primary/5 border border-brand-primary/20 rounded-[1rem]">
+        <div className="relative flex items-center gap-[1.2rem] p-[1.2rem] bg-input-filled border border-brand-primary/20 rounded-[1rem]">
           <div className="flex-1 flex items-center gap-[1rem]">
             <input
               type="number"
@@ -59,7 +59,7 @@ export default function UnansweredMessagesField({
           <button
             onClick={handleExitCustomMode}
             className={cn(
-              "px-[1.2rem] py-[0.6rem] rounded-[0.6rem] bg-primary border border-input-stroke",
+              "px-[1.2rem] py-[1rem] rounded-[0.6rem] bg-primary border border-input-stroke",
               "text-text-secondary text-[1.3rem] font-[500]",
               "hover:bg-input-filled hover:border-brand-primary/50 transition-all",
             )}
