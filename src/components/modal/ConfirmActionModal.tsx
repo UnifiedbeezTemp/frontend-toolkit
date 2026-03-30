@@ -8,6 +8,7 @@ import Text from "../ui/Text";
 import { cn } from "../../lib/utils";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import ImageComponent from "../ui/ImageComponent";
+import type { ReactNode } from "react";
 
 type ConfirmTone = "danger" | "primary" | "warning";
 
@@ -17,11 +18,14 @@ interface ConfirmActionModalProps {
   onConfirm: () => void;
   title: string;
   description?: string;
+  children?: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   tone?: ConfirmTone;
   confirmLoading?: boolean;
   bottomSheet?: boolean;
+  iconSrc?: string;
+  iconAlt?: string;
 }
 
 export default function ConfirmActionModal({
@@ -30,11 +34,14 @@ export default function ConfirmActionModal({
   onConfirm,
   title,
   description,
+  children,
   confirmLabel = "Delete",
   cancelLabel = "Cancel",
   tone = "danger",
   confirmLoading = false,
   bottomSheet = false,
+  iconSrc,
+  iconAlt = "icon",
 }: ConfirmActionModalProps) {
   const icons = useSupabaseIcons();
 
@@ -44,11 +51,25 @@ export default function ConfirmActionModal({
     warning: "bg-warning/10 text-warning border-warning/20",
   };
 
+  const innerToneClasses: Record<ConfirmTone, string> = {
+    danger: "bg-destructive/20",
+    primary: "bg-brand-primary/20",
+    warning: "bg-warning/20",
+  };
+
+  const resolvedIconSrc =
+    iconSrc ??
+    (tone === "danger"
+      ? icons.trashRed
+      : tone === "warning"
+        ? icons.warning
+        : icons.check);
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      className="w-full sm:w-[90%] max-w-[36rem] rounded-t-[1.2rem] sm:rounded-[1.2rem]"
+      className="w-full sm:w-[90%] max-w-[40rem] rounded-t-[1.2rem] sm:rounded-[1.2rem]"
       bottomSheet={bottomSheet}
     >
       <div className="p-[2.4rem]">
@@ -59,10 +80,15 @@ export default function ConfirmActionModal({
               toneClasses[tone]
             )}
           >
-            <div className="flex items-center justify-center rounded-full w-[3.5rem] h-[3.5rem] bg-destructive/20 text-[1.8rem] font-[700]">
+            <div
+              className={cn(
+                "flex items-center justify-center rounded-full w-[3.5rem] h-[3.5rem] text-[1.8rem] font-[700]",
+                innerToneClasses[tone],
+              )}
+            >
               <ImageComponent
-                src={icons.trashRed}
-                alt="trash"
+                src={resolvedIconSrc}
+                alt={iconAlt}
                 width={20}
                 height={20}
               />
@@ -83,6 +109,7 @@ export default function ConfirmActionModal({
               {description}
             </Text>
           ) : null}
+          {children ? <div className="mt-[1.6rem]">{children}</div> : null}
         </div>
 
         <div className="flex items-center gap-[1.2rem]">
