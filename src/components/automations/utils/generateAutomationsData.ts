@@ -350,7 +350,7 @@ export const generateAutomationsData = (icons: {
       campaign: 67,
       conversion: 85,
       type: "Re-engagement and Campaigns",
-      description: "Black Friday, Valentine's, Back-to-School — all automated",
+      description: "Black Friday, Valentine's, Back-to-School, all automated",
       status: "active",
     },
     {
@@ -395,7 +395,7 @@ export const generateAutomationsData = (icons: {
       campaign: 12,
       conversion: 17,
       type: "Internal Operations & Admin",
-      description: "IT setup, HR docs, Slack invites — all automated",
+      description: "IT setup, HR docs, Slack invites, all automated",
       status: "active",
     },
     {

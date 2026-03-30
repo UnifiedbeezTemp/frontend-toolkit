@@ -19,7 +19,7 @@ export const automationsData = [
 export const channelsFeatures = [
   {
     title: "Seamless Connections",
-    text: "Integrate WhatsApp, Instagram, Facebook Messenger, Telegram, LinkedIn, SMS, Email, and more — all in minutes.",
+    text: "Integrate WhatsApp, Instagram, Facebook Messenger, Telegram, LinkedIn, SMS, Email, and more, all in minutes.",
   },
   {
     title: "One Unified Inbox",
@@ -31,7 +31,7 @@ export const channelsFeatures = [
   },
   {
     title: "Smart AI Assistance",
-    text: "Let Beezaro handle FAQs, auto-replies, and routing — or step in anytime for the human touch.",
+    text: "Let Beezaro handle FAQs, auto-replies, and routing, or step in anytime for the human touch.",
   },
 ];
 
@@ -42,7 +42,7 @@ export const campaignFeatures = [
   },
   {
     title: "Ready-to-Launch Templates",
-    text: "Save time with pre-built templates for newsletters, product updates, event invites, onboarding flows, and promotional texts—customizable in minutes.",
+    text: "Save time with pre-built templates for newsletters, product updates, event invites, onboarding flows, and promotional texts, customizable in minutes.",
   },
   {
     title: "Beezaro Assistance",

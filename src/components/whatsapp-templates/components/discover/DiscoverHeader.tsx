@@ -14,7 +14,7 @@ export function DiscoverHeader({ onClose }: DiscoverHeaderProps) {
         </h2>
         <p className="lg:text-[1.4rem] text-[1rem] text-text-primary">
           Smart, ready-to-use templates designed to sell, support, follow up,
-          and automate conversations — across every stage of your customer
+          and automate conversations, across every stage of your customer
           journey.
         </p>
       </div>

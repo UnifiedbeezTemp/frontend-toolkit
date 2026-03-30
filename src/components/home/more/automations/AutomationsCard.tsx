@@ -38,11 +38,11 @@ export default function AutomationsCard() {
 
           <div className="mx-auto space-y-[5px] mt-4 mb-[1.9rem]">
             <Heading align="center" className="text-[2rem] sm:text-[2.4rem]">
-              ⚡ Automations – Work Smarter, Not Harder
+              ⚡ Automations, Work Smarter, Not Harder
             </Heading>
             <Text align="center" className="leading-[2.3rem]">
               UnifiedBeez automations help your team save time, reduce errors,
-              and deliver <br className="hidden sm:block" /> faster responses — so you can focus on what really
+              and deliver <br className="hidden sm:block" /> faster responses, so you can focus on what really
               matters: growing your business.
             </Text>
           </div>

@@ -31,7 +31,7 @@ export const MOCK_SMART_SEQUENCES: SmartSequence[] = [
   },
   {
     id: "1",
-    title: "Smart Lead Capture — Instant Deal Setup",
+    title: "Smart Lead Capture, Instant Deal Setup",
     description:
       "When someone submits your service inquiry form, this workflow instantly sorts them into the right segment, spins up a new deal. Read more",
     industry: "Any Industry",
