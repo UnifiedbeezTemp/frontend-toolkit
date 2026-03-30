@@ -70,12 +70,6 @@ export default function CategorySelection({
           ))}
         </SmartDropdown>
       </div>
-      <p className="text-[1.2rem] text-text-primary">
-        Need help picking a category? Click{" "}
-        <span className="text-brand-primary font-bold underline cursor-pointer">
-          here
-        </span>
-      </p>
     </div>
   );
 }
