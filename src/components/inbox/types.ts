@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type InboxType = "general" | "team";
 
 export interface LabelContactMethod {
@@ -51,7 +53,7 @@ export interface Conversation {
 }
 
 export interface TagPillProps {
-  label: string;
+  label: string| ReactNode;
   showIcon?: boolean;
   className?: string;
   isDismissable?: boolean;
