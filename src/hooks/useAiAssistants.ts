@@ -54,16 +54,27 @@ const computeUsage = (prev: AiUsage | null, remaining?: number) => {
       : null;
   }
 
+  if (prev.unlimited) return prev;
+
   const nextRemaining =
     typeof remaining === "number" ? Math.max(0, remaining) : prev.remaining;
 
   return {
     ...prev,
     remaining: nextRemaining,
-    current: prev.unlimited
-      ? prev.current
-      : Math.max(prev.max - nextRemaining, 0),
+    current:
+      typeof prev.max === "number" && typeof nextRemaining === "number"
+        ? Math.max(prev.max - nextRemaining, 0)
+        : prev.current,
   };
+};
+
+const getAssistantsFromResponse = (
+  data: AiAssistantsResponse | undefined,
+): AIAssistant[] => {
+  if (!data) return [];
+  const list = (data.items ?? data.aiAssistants) as unknown;
+  return Array.isArray(list) ? (list as AIAssistant[]) : [];
 };
 
 export function useAiAssistants(
@@ -85,10 +96,13 @@ export function useAiAssistants(
 
   useEffect(() => {
     if (assistantsQuery.data) {
-      const normalized =
-        assistantsQuery.data.items.map(normalizeAssistant);
+      const normalized = getAssistantsFromResponse(assistantsQuery.data).map(
+        normalizeAssistant,
+      );
       dispatch(setAssistants(normalized));
-      dispatch(setUsage(assistantsQuery.data.usage));
+      if (assistantsQuery.data.usage) {
+        dispatch(setUsage(assistantsQuery.data.usage));
+      }
     }
   }, [assistantsQuery.data, dispatch]);
 
@@ -242,15 +256,14 @@ export function useAiAssistants(
   const canCreateMore = useMemo(() => {
     if (!usage) return true;
     if (usage.unlimited) return true;
-    return usage.remaining > 0;
+    return (usage.remaining ?? 0) > 0;
   }, [usage]);
 
   const currentAssistants = useMemo(() => {
     if (assistants.length > 0) return assistants;
-    if (assistantsQuery.data?.items) {
-      return assistantsQuery.data.items.map(normalizeAssistant);
-    }
-    return [];
+    return getAssistantsFromResponse(assistantsQuery.data).map(
+      normalizeAssistant,
+    );
   }, [assistants, assistantsQuery.data]);
 
   return {

@@ -4,6 +4,7 @@ import { RefObject } from "react";
 import SmartDropdown from "../../smart-dropdown/SmartDropdown";
 import AssistantHeader from "../AssistantHeader";
 import { AIAssistant } from "../../../types/aiAssistantTypes";
+import AssistantMetaIndicators from "./AssistantMetaIndicators";
 
 interface AssistantDropdownProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export default function AssistantDropdown({
             onSelect={() => onSelectAssistant(assistant.id)}
             variant="desktop"
             index={idx}
+            rightElement={<AssistantMetaIndicators assistant={assistant} size="xs" />}
           />
         ))}
 

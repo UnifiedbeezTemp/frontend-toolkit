@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 import { useChannels } from "../../../channel-selection/hooks/useChannels";
+import { hasConnectedAccounts } from "../../utils/channelConnections";
 
 export function useChannelsPreview() {
   const { selectedChannels } = useChannels();
+  const connectedChannels = useMemo(
+    () => selectedChannels.filter(hasConnectedAccounts),
+    [selectedChannels],
+  );
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const [activeChannelId, setActiveChannelId] = useState<string | null>(null);
@@ -36,7 +41,7 @@ export function useChannelsPreview() {
   };
 
   return {
-    selectedChannels,
+    selectedChannels: connectedChannels,
     activeChannelId,
     expandedChannelId,
     selectedChannelId,
