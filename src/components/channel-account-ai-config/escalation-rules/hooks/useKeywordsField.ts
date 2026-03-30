@@ -1,4 +1,6 @@
-import { useState, useRef, KeyboardEvent } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useUser } from "@/shared/src/contexts/UserContext";
+import { useEscalationKeywordsOptions } from "@/shared/src/api/services/configuration/hooks/useEscalationKeywordsOptions";
 
 export const SUGGESTED_KEYWORDS = [
   "Alarm",
@@ -18,12 +20,16 @@ export const useKeywordsField = (
   value: string[],
   onChange: (keywords: string[]) => void,
 ) => {
+  const { user } = useUser();
+  const industryType = user?.industry ?? "";
+  const keywordsQuery = useEscalationKeywordsOptions(industryType);
+
   const [inputValue, setInputValue] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownTriggerRef = useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim()) {
       e.preventDefault();
       if (!value.includes(inputValue.trim())) {
@@ -49,7 +55,7 @@ export const useKeywordsField = (
   };
 
   const addSuggestedKeyword = (keyword: string) => {
-    if (!value.includes(keyword) && value.length < 10) {
+    if (!value.includes(keyword)) {
       onChange([...value, keyword]);
     }
     setIsDropdownOpen(false);
@@ -67,9 +73,18 @@ export const useKeywordsField = (
     inputRef.current?.focus();
   };
 
-  const availableSuggestions = SUGGESTED_KEYWORDS.filter(
-    (k) => !value.includes(k),
-  );
+  const suggestions = useMemo(() => {
+    const remote = keywordsQuery.data?.keywords;
+    if (Array.isArray(remote) && remote.length > 0) return remote;
+    return SUGGESTED_KEYWORDS;
+  }, [keywordsQuery.data?.keywords]);
+
+  const availableSuggestions = useMemo(() => {
+    return suggestions
+      .filter((k): k is string => typeof k === "string")
+      .map((k) => k.trim())
+      .filter((k) => k.length > 0 && !value.includes(k));
+  }, [suggestions, value]);
 
   return {
     inputValue,
@@ -85,5 +100,6 @@ export const useKeywordsField = (
     handleToggleDropdown,
     handleCloseDropdown,
     handleContainerClick,
+    isLoadingSuggestions: keywordsQuery.isLoading || keywordsQuery.isFetching,
   };
 };

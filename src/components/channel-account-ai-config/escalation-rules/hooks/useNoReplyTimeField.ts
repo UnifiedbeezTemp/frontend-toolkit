@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useMemo, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export const OPTIONS = ["30 Sec", "1 min", "5 mins", "10 mins", "Custom"];
 
@@ -10,8 +10,11 @@ export const UNIT_OPTIONS = [
 
 const DEFAULT_PRESET = "5 mins";
 
-function extractUnit(val: string | null): string {
-  if (!val) return "min";
+function extractUnit(
+  val: string | null,
+  unitOptions: { label: string; value: string }[],
+): string {
+  if (!val) return unitOptions[1]?.value ?? "min";
   const lower = val.toLowerCase();
   if (lower.includes("sec")) return "sec";
   if (lower.includes("hour")) return "hour";
@@ -21,26 +24,33 @@ function extractUnit(val: string | null): string {
 export const useNoReplyTimeField = (
   value: string | null,
   onChange: (value: string) => void,
+  config?: {
+    options?: string[];
+    unitOptions?: { label: string; value: string }[];
+  },
 ) => {
+  const options = config?.options ?? OPTIONS;
+  const unitOptions = config?.unitOptions ?? UNIT_OPTIONS;
+
   const [isOpen, setIsOpen] = useState(false);
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [customAmount, setCustomAmount] = useState("");
-  const [customUnit, setCustomUnit] = useState("min");
+  const [customUnit, setCustomUnit] = useState(unitOptions[1]?.value ?? "min");
   const [isUnitOpen, setIsUnitOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const unitTriggerRef = useRef<HTMLButtonElement>(null);
 
   const isPresetValue = useMemo(() => {
-    return OPTIONS.slice(0, -1).includes(value || "");
-  }, [value]);
+    return options.slice(0, -1).includes(value || "");
+  }, [options, value]);
 
   useEffect(() => {
     if (value && !isPresetValue && value !== "Custom" && !isCustomMode) {
       setIsCustomMode(true);
       setCustomAmount(value.match(/\d+/)?.[0] || "");
-      setCustomUnit(extractUnit(value));
+      setCustomUnit(extractUnit(value, unitOptions));
     }
-  }, [value, isPresetValue, isCustomMode]);
+  }, [value, isPresetValue, isCustomMode, unitOptions]);
 
   const showCustomInput = isCustomMode;
 
@@ -57,7 +67,7 @@ export const useNoReplyTimeField = (
       if (option === "Custom") {
         setIsCustomMode(true);
         setCustomAmount(value?.match(/\d+/)?.[0] || "");
-        setCustomUnit(extractUnit(value));
+        setCustomUnit(extractUnit(value, unitOptions));
         setIsOpen(false);
       } else {
         setIsCustomMode(false);
@@ -66,7 +76,7 @@ export const useNoReplyTimeField = (
         setIsOpen(false);
       }
     },
-    [onChange, value],
+    [onChange, unitOptions, value],
   );
 
   const handleCustomAmountChange = useCallback(
@@ -113,7 +123,7 @@ export const useNoReplyTimeField = (
   }, []);
 
   const currentUnitLabel =
-    UNIT_OPTIONS.find((u) => u.value === customUnit)?.label || "Minutes";
+    unitOptions.find((u) => u.value === customUnit)?.label || "Minutes";
 
   return {
     isOpen,
@@ -132,5 +142,7 @@ export const useNoReplyTimeField = (
     handleExitCustomMode,
     toggleUnitDropdown,
     closeUnitDropdown,
+    options,
+    unitOptions,
   };
 };

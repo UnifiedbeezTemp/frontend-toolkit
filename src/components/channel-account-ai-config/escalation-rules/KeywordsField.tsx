@@ -27,6 +27,7 @@ export default function KeywordsField({ value, onChange }: KeywordsFieldProps) {
     handleToggleDropdown,
     handleCloseDropdown,
     handleContainerClick,
+    isLoadingSuggestions,
   } = useKeywordsField(value, onChange);
 
   return (
@@ -34,6 +35,11 @@ export default function KeywordsField({ value, onChange }: KeywordsFieldProps) {
       <Heading className="font-[700] text-[1.4rem]">
         Escalate on keyword
       </Heading>
+      {inputValue.trim().length > 0 ? (
+        <Text className="text-[1.2rem] text-text-primary">
+          Press Enter to add
+        </Text>
+      ) : null}
       <div className="relative">
         <div
           ref={dropdownTriggerRef}
@@ -75,63 +81,59 @@ export default function KeywordsField({ value, onChange }: KeywordsFieldProps) {
               "text-[1.4rem] text-text-primary placeholder:text-text-secondary",
             )}
           />
-          {value.length < 10 && (
-            <button onClick={handleToggleDropdown} className="ml-auto">
-              <ImageComponent
-                src={icons.chevronDown}
-                alt="dropdown"
-                width={20}
-                height={20}
-                className={cn(
-                  "transition-transform",
-                  isDropdownOpen && "rotate-180",
-                )}
-              />
-            </button>
-          )}
-        </div>
-        {value.length < 10 && (
-          <SmartDropdown
-            isOpen={isDropdownOpen}
-            onClose={handleCloseDropdown}
-            triggerRef={dropdownTriggerRef}
-            placement="bottom-start"
-          >
-            <div className="p-[0.8rem]">
-              <Text className="text-brand-primary text-[1.2rem] px-[1.2rem] py-[0.8rem]">
-                Brand attributes (max 10)
-              </Text>
-              {availableSuggestions.length > 0 ? (
-                <div className="flex flex-wrap items-center gap-[0.4rem] p-[0.8rem]">
-                  {availableSuggestions.map((keyword) => (
-                    <button
-                      key={keyword}
-                      onClick={() => addSuggestedKeyword(keyword)}
-                      className={cn(
-                        "px-[1.2rem] py-[0.8rem] border border-input-stroke rounded-[0.6rem] text-left",
-                        "hover:bg-input-filled transition-colors",
-                        "flex items-center justify-between",
-                      )}
-                    >
-                      <Text className="text-[1.4rem] text-text-primary">
-                        {keyword}
-                      </Text>
-                      <Text className="text-[1.4rem] text-brand-primary ml-[.5rem]">
-                        +
-                      </Text>
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="p-[1.2rem]">
-                  <Text className="text-text-secondary text-[1.2rem]">
-                    All suggestions added
-                  </Text>
-                </div>
+          <button onClick={handleToggleDropdown} className="ml-auto">
+            <ImageComponent
+              src={icons.chevronDown}
+              alt="dropdown"
+              width={20}
+              height={20}
+              className={cn(
+                "transition-transform",
+                isDropdownOpen && "rotate-180",
               )}
-            </div>
-          </SmartDropdown>
-        )}
+            />
+          </button>
+        </div>
+        <SmartDropdown
+          isOpen={isDropdownOpen}
+          onClose={handleCloseDropdown}
+          triggerRef={dropdownTriggerRef}
+          placement="bottom-start"
+        >
+          <div className="p-[0.8rem]">
+            <Text className="text-brand-primary text-[1.2rem] px-[1.2rem] py-[0.8rem]">
+              {isLoadingSuggestions ? "Loading suggestions..." : "Suggested keywords"}
+            </Text>
+            {availableSuggestions.length > 0 ? (
+              <div className="flex flex-wrap items-center gap-[0.4rem] p-[0.8rem]">
+                {availableSuggestions.map((keyword) => (
+                  <button
+                    key={keyword}
+                    onClick={() => addSuggestedKeyword(keyword)}
+                    className={cn(
+                      "px-[1.2rem] py-[0.8rem] border border-input-stroke rounded-[0.6rem] text-left",
+                      "hover:bg-input-filled transition-colors",
+                      "flex items-center justify-between",
+                    )}
+                  >
+                    <Text className="text-[1.4rem] text-text-primary">
+                      {keyword}
+                    </Text>
+                    <Text className="text-[1.4rem] text-brand-primary ml-[.5rem]">
+                      +
+                    </Text>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="p-[1.2rem]">
+                <Text className="text-text-secondary text-[1.2rem]">
+                  No suggestions available
+                </Text>
+              </div>
+            )}
+          </div>
+        </SmartDropdown>
       </div>
     </div>
   );
