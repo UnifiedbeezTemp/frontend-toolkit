@@ -176,3 +176,13 @@ export interface CreateLocalizationPayload {
   title: string
   body: string
 }
+
+export interface InstallScriptResponse {
+  scriptUrl: string
+  embedCode: string
+}
+
+export interface VerifyInstallationResponse {
+  verified: boolean
+  message: string
+}

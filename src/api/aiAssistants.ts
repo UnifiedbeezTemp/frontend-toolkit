@@ -3,8 +3,6 @@ import {
   CreateAiAssistantResponse,
   DeleteAiAssistantResponse,
   AIAssistant,
-  WebsitesResponse,
-  AddWebsiteResponse,
 } from "../types/aiAssistantTypes";
 import { api } from ".";
 

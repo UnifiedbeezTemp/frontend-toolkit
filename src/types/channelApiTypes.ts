@@ -75,8 +75,24 @@ export interface SelectedChannel {
   shopifyAccounts: unknown[];
 }
 
+export interface GroupedChannelAccount {
+  id: number;
+  type: string;
+  displayName: string;
+}
+
+export interface GroupedChannelEntry {
+  channelId: number;
+  channelName: string;
+  channelType: string;
+  isActive: boolean;
+  isConnected: boolean;
+  accounts: GroupedChannelAccount[];
+}
+
 export interface SelectedChannelsResponse {
   channels: SelectedChannel[];
+  grouped?: Record<string, GroupedChannelEntry[]>;
 }
 
 export interface WabaConfigResponse {

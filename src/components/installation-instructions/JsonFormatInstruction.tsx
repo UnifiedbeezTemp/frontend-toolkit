@@ -11,6 +11,7 @@ interface JsonFormatInstructionProps {
   onCopy: () => void;
   tagLabel?: string;
   tagClassName?: string;
+  copyLabel?: string;
 }
 
 export default function JsonFormatInstruction({
@@ -19,6 +20,7 @@ export default function JsonFormatInstruction({
   onCopy,
   tagLabel,
   tagClassName,
+  copyLabel = "Copy code",
 }: JsonFormatInstructionProps) {
   const icons = useSupabaseIcons();
 
@@ -70,7 +72,7 @@ export default function JsonFormatInstruction({
               height={20}
               className="opacity-70"
             />
-            {copied ? "Copied!" : "Copy code"}
+            {copied ? "Copied!" : copyLabel}
           </button>
         </div>
       </div>

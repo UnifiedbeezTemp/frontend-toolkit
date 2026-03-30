@@ -1,11 +1,10 @@
 import React from "react";
 import TemplateCard from "../TemplateCard";
-import { TemplateFormData } from "../../types";
 import { Template } from "../../hooks/discoverTemplatesData";
 
 interface DiscoverGridProps {
   groupedTemplates: Record<string, Template[]>;
-  onUseTemplate: (template: TemplateFormData) => void;
+  onUseTemplate: (template: Template) => void;
 }
 
 export function DiscoverGrid({

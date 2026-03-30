@@ -4,6 +4,7 @@ import { PhoneFrame } from "./TemplatePreview";
 import { TemplateFormData } from "../types";
 import { useSupabaseImages } from "@/shared/src/lib/supabase/useSupabase";
 import ImageComponent from "@/shared/src/components/ui/ImageComponent";
+import { Template } from "../hooks/discoverTemplatesData";
 
 import CheckMarkIcon from "@/shared/src/assets/icons/CheckMarkIcon";
 
@@ -13,7 +14,7 @@ interface TemplateCardProps {
   description: string;
   category: string;
   formData: TemplateFormData;
-  onUse: (formData: TemplateFormData) => void;
+  onUse: (template: Template) => void;
 }
 
 const FeatureBenefit = ({ text }: { text: string }) => (
@@ -28,6 +29,7 @@ const FeatureBenefit = ({ text }: { text: string }) => (
 );
 
 export default function TemplateCard({
+  id,
   title,
   description,
   category,
@@ -99,14 +101,16 @@ export default function TemplateCard({
           <Button
             variant="secondary"
             className="w-full lg:hidden px-[1.6rem] justify-center border-input-stroke rounded-[1rem] h-[4.2rem] text-[1.4rem] text-text-secondary font-bold hover:bg-black-5"
-            onClick={() => onUse(formData)}
+            onClick={() =>
+              onUse({ id, title, description, category, formData })
+            }
           >
             Select template
           </Button>
           <Button
             variant="primary"
             className="hidden lg:flex grad-btn"
-            onClick={() => onUse(formData)}
+            onClick={() => onUse({ id, title, description, category, formData })}
           >
             Use Template
           </Button>
