@@ -82,11 +82,13 @@ export const useAutomations = (
     {
       enabled: true,
       refetchOnMount: true,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
     },
   )
 
-  const mappedItems: Automation[] = (Array.isArray(data?.items) ? data!.items : []).map((automation) => {
+  const mappedItems: Automation[] = (
+    Array.isArray(data?.items) ? data!.items : []
+  ).map((automation) => {
     const status = (automation.status || "").toUpperCase()
     const isActive = status === "ACTIVE" || status === "RUNNING"
     const categoryFromSlug = AUTOMATION_CATEGORY_CONFIG.find(
