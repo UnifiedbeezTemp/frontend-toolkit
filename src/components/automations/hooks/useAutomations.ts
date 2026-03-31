@@ -75,6 +75,7 @@ export const useAutomations = (automationType: string): AutomationsContextValue 
       refetchOnWindowFocus: false,
     },
   )
+  console.log(data, "thiss is data")
 
   const mappedItems: Automation[] = (data?.items || []).map((automation) => {
     const status = (automation.status || "").toUpperCase()
