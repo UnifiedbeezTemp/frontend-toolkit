@@ -29,12 +29,16 @@ export interface AutomationListResponse {
 
 const ITEMS_PER_PAGE = 10
 
-export const useAutomations = (automationType: string): AutomationsContextValue => {
+export const useAutomations = (
+  automationType: string,
+): AutomationsContextValue => {
   const icons = useSupabaseImages()
   const [lastType, setLastType] = useState(automationType)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedStatus, setSelectedStatus] = useState<"All" | "active" | "inactive">("All")
+  const [selectedStatus, setSelectedStatus] = useState<
+    "All" | "active" | "inactive"
+  >("All")
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set())
 
@@ -63,7 +67,13 @@ export const useAutomations = (automationType: string): AutomationsContextValue 
   }
 
   const queryKey = categoryConfig
-    ? ["automations", categoryConfig.apiCategory, currentPage, searchQuery, selectedStatus]
+    ? [
+        "automations",
+        categoryConfig.apiCategory,
+        currentPage,
+        searchQuery,
+        selectedStatus,
+      ]
     : ["automations", currentPage, searchQuery, selectedStatus]
 
   const { data, isLoading, isFetching } = useAppQuery<AutomationListResponse>(
@@ -75,9 +85,8 @@ export const useAutomations = (automationType: string): AutomationsContextValue 
       refetchOnWindowFocus: false,
     },
   )
-  console.log(data, "thiss is data")
 
-  const mappedItems: Automation[] = (data?.items || []).map((automation) => {
+  const mappedItems: Automation[] = (Array.isArray(data?.items) ? data!.items : []).map((automation) => {
     const status = (automation.status || "").toUpperCase()
     const isActive = status === "ACTIVE" || status === "RUNNING"
     const categoryFromSlug = AUTOMATION_CATEGORY_CONFIG.find(
