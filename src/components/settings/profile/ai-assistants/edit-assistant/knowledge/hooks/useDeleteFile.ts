@@ -4,8 +4,8 @@ import { useState } from "react";
 import { deleteAssistantFile } from "../../../../../../../api/aiAssistants";
 import { useAppMutation } from "../../../../../../../api/query";
 import { extractErrorMessage } from "../../../../../../../utils/extractErrorMessage";
-import { queryClient } from "../../../../../../../api/client";
 import { useToast } from "../../../../../../ui/toast/useToast";
+import { invalidateAiAssistantsAndSession } from "../../../../../../../api/invalidateAiAssistantsAndSession";
 
 export function useDeleteFile() {
   const { showToast } = useToast();
@@ -22,7 +22,7 @@ export function useDeleteFile() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+        void invalidateAiAssistantsAndSession({ refetchActive: true });
         showToast({
           variant: "success",
           title: "File deleted",
