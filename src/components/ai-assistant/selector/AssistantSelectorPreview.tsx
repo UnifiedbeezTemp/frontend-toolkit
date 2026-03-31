@@ -6,6 +6,7 @@ import SelectionChip from "../SelectionChip";
 import { getColorScheme } from "../utils/colorSchemes";
 import { getSelectionText } from "../utils/formatters";
 import { AIAssistant } from "../../../types/aiAssistantTypes";
+import AssistantMetaIndicators from "./AssistantMetaIndicators";
 
 interface AssistantSelectorPreviewProps {
   assistant: AIAssistant;
@@ -23,7 +24,7 @@ export default function AssistantSelectorPreview({
   return (
     <div className="flex flex-col items-start gap-[1rem] w-full">
       <div className="flex items-center justify-between w-full">
-        <div className="flex gap-[0.5rem] items-center flex-1">
+        <div className="flex gap-[0.5rem] items-center flex-1 min-w-0">
           <div className="border border-border rounded-[0.34rem] p-[0.34rem]">
             <ImageComponent
               src={icons.beeZoraWelcome}
@@ -32,11 +33,16 @@ export default function AssistantSelectorPreview({
               height={25}
             />
           </div>
-          <p className="text-[1.6rem] text-text-primary">{assistant.name}</p>
+          <p className="text-[1.6rem] text-text-primary truncate">
+            {assistant.name}
+          </p>
           <div className="hidden sm:block">
             {showChip && selectionText && (
               <SelectionChip text={selectionText} colorScheme={colorScheme} />
             )}
+          </div>
+          <div className="hidden sm:flex ml-auto">
+            <AssistantMetaIndicators assistant={assistant} size="xs" />
           </div>
         </div>
       </div>
@@ -45,6 +51,9 @@ export default function AssistantSelectorPreview({
           <SelectionChip text={selectionText} colorScheme={colorScheme} />
         </div>
       )}
+      <div className="sm:hidden">
+        <AssistantMetaIndicators assistant={assistant} />
+      </div>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import {
   AIAssistant,
   FileUploadResponse,
 } from "../../../../../../types/aiAssistantTypes";
+import { invalidateAiAssistantsAndSession } from "../../../../../../api/invalidateAiAssistantsAndSession";
 
 interface UseEditAssistantModalProps {
   assistant: AIAssistant;
@@ -80,7 +81,6 @@ export const useEditAssistantModal = ({
 
     try {
       const tasks: SaveTask[] = [];
-
       // 1. Update Name if changed
       if (localAssistant.name !== assistant.name) {
         tasks.push({
@@ -184,8 +184,13 @@ export const useEditAssistantModal = ({
         description: "Assistant updated successfully.",
       });
 
+      // Ensure the assistants list + active user profile reflect the latest
+      // server state (e.g. newly uploaded knowledge files / usage changes).
+      await invalidateAiAssistantsAndSession({ refetchActive: true });
+
       onSave(localAssistant);
       onClose();
+
     } catch (error) {
       console.error("Failed to save assistant changes:", error);
       showToast({

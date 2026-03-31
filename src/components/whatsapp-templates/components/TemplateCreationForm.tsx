@@ -4,6 +4,7 @@ import AttachmentHeadingSection from "./form-sections/AttachmentHeadingSection";
 import FooterButtonsSection from "./form-sections/FooterButtonsSection";
 import FolderSection from "./form-sections/FolderSection";
 import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon";
+import type { ConnectedNumber } from "./ConnectedNumbersModal";
 
 interface TemplateCreationFormProps {
   formData: TemplateFormData;
@@ -12,6 +13,8 @@ interface TemplateCreationFormProps {
   toggleDropdown: (name: string) => void;
   setActiveDropdown: (name: string | null) => void;
   onTogglePreview?: () => void;
+  channelName?: string;
+  accounts?: ConnectedNumber[];
 }
 
 export default function TemplateCreationForm({
@@ -21,6 +24,8 @@ export default function TemplateCreationForm({
   toggleDropdown,
   setActiveDropdown,
   onTogglePreview,
+  channelName,
+  accounts,
 }: TemplateCreationFormProps) {
   return (
     <div className="flex flex-col gap-[2.4rem]">
@@ -30,6 +35,8 @@ export default function TemplateCreationForm({
         activeDropdown={activeDropdown}
         toggleDropdown={toggleDropdown}
         setActiveDropdown={setActiveDropdown}
+        channelName={channelName}
+        accounts={accounts}
       />
 
       <div className="w-full h-[0.1rem] bg-border" />

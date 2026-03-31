@@ -36,7 +36,7 @@ export default function AssistantHeader({
             : "border-border hover:border-brand-primary/50 hover:bg-brand-primary/2",
         )}
       >
-        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-[1rem] xl:gap-0">
+        <div className="flex flex-col items-start gap-[1rem]">
           <div className="flex items-center gap-[0.5rem] flex-1">
             <div className="border border-border rounded-[0.34rem] p-[0.34rem]">
               <ImageComponent
@@ -50,24 +50,24 @@ export default function AssistantHeader({
               {assistant.name}
             </p>
             {showChip && selectionText && (
-              <div className="hidden xl:block">
+              <div className="hidden x l:block">
                 <SelectionChip text={selectionText} colorScheme={colorScheme} />
               </div>
             )}
           </div>
-          <div className="flex items-center gap-[1rem] justify-between xl:justify-end">
+          <div className="flex w-full items-center gap-[1rem] justify-between">
             {showChip && selectionText && (
-              <div className="xl:hidden">
+              <div className="x l:hidden">
                 <SelectionChip text={selectionText} colorScheme={colorScheme} />
               </div>
             )}
-            <div className="flex items-center gap-[1rem]">
+            <div className="flex items-center justify-between gap-[1rem]">
             {rightElement && <div>{rightElement}</div>}
             <Checkbox
               checked={isSelected || false}
               onChange={() => onSelect?.()}
               className="rounded-full"
-              size="sm"
+              // size="sm"
             />
             </div>
           </div>

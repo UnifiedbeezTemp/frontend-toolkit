@@ -2,14 +2,18 @@ export interface BusinessKnowledgeFile {
   id: number;
   userId: number;
   fileName: string;
-  originalName: string;
+  originalName?: string;
   fileType: string;
   fileSize: number;
-  filePath: string;
+  filePath?: string;
   uploadedAt: string;
   isDefaultKnowledge: boolean;
-  processingStatus: "COMPLETED" | "FAILED" | "QUEUED_FOR_PROCESSING" | "PROCESSING";
-  processingError: string | null;
+  processingStatus:
+    | "COMPLETED"
+    | "FAILED"
+    | "QUEUED_FOR_PROCESSING"
+    | "PROCESSING";
+  processingError?: string | null;
   extractedImagesCount: number;
   extractedTablesCount: number;
   wordCount: number;
@@ -21,6 +25,22 @@ export interface BusinessKnowledgeFile {
   aiAssistantId: number;
 }
 
+export type AssistantKnowledgeFileSummary = {
+  id: number;
+  fileName: string;
+  fileSize: number;
+  fileType: string;
+  processingStatus:
+    | "COMPLETED"
+    | "FAILED"
+    | "QUEUED_FOR_PROCESSING"
+    | "PROCESSING";
+  uploadedAt?: string;
+  processingError?: string | null;
+  filePath?: string;
+  originalName?: string;
+};
+
 export interface AIAssistant {
   id: string;
   name: string;
@@ -28,23 +48,33 @@ export interface AIAssistant {
   style?: string;
   personalityType?: string;
   instruction?: string;
+  instructionEditedByUser?: boolean;
   isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  websites?: string[];
-  businessKnowledgeFiles?: BusinessKnowledgeFile[];
+  websites?: { displayName: string; baseUrl: string; id: number, syncStatus: string, }[];
+  knowledgeFiles?: Array<BusinessKnowledgeFile | AssistantKnowledgeFileSummary>;
+  businessKnowledgeFiles?: Array<BusinessKnowledgeFile | AssistantKnowledgeFileSummary>;
 }
 
 export interface AiUsage {
   current: number;
-  max: number;
+  max: number | null;
   unlimited: boolean;
-  remaining: number;
+  remaining: number | null;
 }
 
 export interface AiAssistantsResponse {
-  aiAssistants: AIAssistant[];
-  usage: AiUsage;
+  // New response shape
+  items?: AIAssistant[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
+  usage?: AiUsage;
+
+  // Legacy response shape (kept for backward compatibility)
+  aiAssistants?: AIAssistant[];
 }
 
 export interface CreateAiAssistantResponse {
@@ -136,4 +166,3 @@ export interface AddWebsiteResponse {
   displayName?: string;
   results: AddWebsiteResult[];
 }
-

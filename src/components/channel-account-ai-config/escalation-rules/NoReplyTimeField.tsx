@@ -4,20 +4,20 @@ import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 import ImageComponent from "../../ui/ImageComponent";
 import { cn } from "../../../lib/utils";
 import Heading from "../../ui/Heading";
-import {
-  useNoReplyTimeField,
-  OPTIONS,
-  UNIT_OPTIONS,
-} from "./hooks/useNoReplyTimeField";
+import { useNoReplyTimeField } from "./hooks/useNoReplyTimeField";
 
 interface NoReplyTimeFieldProps {
   value: string | null;
   onChange: (value: string) => void;
+  options?: string[];
+  unitOptions?: { label: string; value: string }[];
 }
 
 export default function NoReplyTimeField({
   value,
   onChange,
+  options,
+  unitOptions,
 }: NoReplyTimeFieldProps) {
   const icons = useSupabaseIcons();
   const {
@@ -37,7 +37,9 @@ export default function NoReplyTimeField({
     handleExitCustomMode,
     toggleUnitDropdown,
     closeUnitDropdown,
-  } = useNoReplyTimeField(value, onChange);
+    options: resolvedOptions,
+    unitOptions: resolvedUnitOptions,
+  } = useNoReplyTimeField(value, onChange, { options, unitOptions });
 
   const displayAmount = customAmount || value?.match(/\d+/)?.[0] || "";
 
@@ -48,7 +50,7 @@ export default function NoReplyTimeField({
       </Heading>
 
       {showCustomInput ? (
-        <div className="relative flex flex-wrap items-center gap-[1rem] p-[1.2rem] bg-brand-primary/5 border border-brand-primary/20 rounded-[1rem]">
+        <div className="relative flex flex-wrap justify-between items-center gap-[1rem] p-[1.2rem] bg-input-filled border border-brand-primary/20 rounded-[1rem]">
           <div className="flex items-center gap-[1rem]">
             <input
               type="number"
@@ -91,9 +93,10 @@ export default function NoReplyTimeField({
                 isOpen={isUnitOpen}
                 onClose={closeUnitDropdown}
                 triggerRef={unitTriggerRef}
+                className=" min-w-[12rem]"
               >
-                <div className="p-[0.8rem] min-w-[12rem]">
-                  {UNIT_OPTIONS.map((option) => (
+                <div className="p-[0.8rem">
+                  {resolvedUnitOptions.map((option) => (
                     <button
                       key={option.value}
                       onClick={handleUnitChange.bind(null, option.value)}
@@ -125,9 +128,9 @@ export default function NoReplyTimeField({
           <button
             onClick={handleExitCustomMode}
             className={cn(
-              "px-[1.2rem] py-[0.6rem] rounded-[0.6rem] bg-primary border border-input-stroke",
+              "px-[1.2rem] py-[1rem] rounded-[0.6rem] bg-primary border border-input-stroke",
               "text-text-secondary text-[1.3rem] font-[500]",
-              "hover:bg-input-filled hover:border-brand-primary/50 transition-all",
+              "hover:bg-input-filled hover:border-input-filled transition-all",
             )}
           >
             Use preset
@@ -161,7 +164,7 @@ export default function NoReplyTimeField({
             triggerRef={triggerRef}
           >
             <div className="p-[0.8rem]">
-              {OPTIONS.map((option) => (
+              {resolvedOptions.map((option) => (
                 <button
                   key={option}
                   onClick={handleSelect.bind(null, option)}
@@ -177,7 +180,7 @@ export default function NoReplyTimeField({
                   </Text>
                   {value === option && (
                     <ImageComponent
-                      src={icons.check}
+                      src={icons.checkboxBase2}
                       alt="selected"
                       width={20}
                       height={20}

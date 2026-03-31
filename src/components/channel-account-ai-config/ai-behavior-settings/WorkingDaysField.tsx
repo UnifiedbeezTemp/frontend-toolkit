@@ -87,7 +87,7 @@ export default function WorkingDaysField({
                 </Text>
                 {isSelected ? (
                   <ImageComponent
-                    src={icons.checkboxBase2}
+                    src={icons.check}
                     alt="selected"
                     width={20}
                     height={20}

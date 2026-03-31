@@ -41,7 +41,7 @@ export const useCreateAutomationModal = () => {
     {
       title: "BeeTag: First Contact Labeling 2",
       description:
-        "Let BeeBot tag contacts by their level of interaction—opens, clicks, replies. These tags help you identify your most active (or quiet) users for better targeting.",
+        "Let BeeBot tag contacts by their level of interaction, opens, clicks, replies. These tags help you identify your most active (or quiet) users for better targeting.",
       tag: "Start from Scratch",
       image: supabaseIcons.envelope,
       icon: supabaseIcons.redTag,

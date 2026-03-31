@@ -1,6 +1,7 @@
 import ToggleSwitch from "../../ui/ToggleSwitch";
 import { WebsitePage } from "./utils/types";
 import PageDropdown from "./components/PageDropdown";
+import PageUrlDropdown from "./components/PageUrlDropdown";
 
 interface PageItemProps {
   page: WebsitePage;
@@ -35,9 +36,9 @@ export default function PageItem({
         }
       >
         <div className="mb-[0.8rem] flex justify-between gap-[.5rem] items-center">
-          <span className="text-[1rem] block truncate">
-            {page.url} {page.url} {page.url}
-          </span>
+          <div className="min-w-0 flex-1">
+            <PageUrlDropdown url={page.url} className="text-[1rem]" />
+          </div>
           <span className="bg-input-filled text-center items-center justify-center rounded-full border border-border py-[0.4rem] px-[0.8rem] text-[0.9rem] whitespace-nowrap">
             {page.characters} characters
           </span>
@@ -45,10 +46,10 @@ export default function PageItem({
       </div>
 
       {!forceMobileStyle && (
-        <div className="hidden sm:grid text-text-primary text-[1rem] sm:w-[75%] lg:w-[70%] gap-[1rem] grid-cols-5 items-center justify-between sm:gap-[2rem]">
-          <span className="text-[1rem] block col-span-2 whitespace-nowrap truncate">
-            {page.url}
-          </span>
+        <div className="hidden sm:grid text-text-primary text-[1rem] sm:w-[75%] lg:w-[80%] gap-[1rem] grid-cols-5 items-center justify-between sm:gap-[2rem]">
+          <div className="col-span-2 min-w-0">
+            <PageUrlDropdown url={page.url} className="text-[1rem]" />
+          </div>
           <span className="inline-block w-fit ml-[-2rem] bg-input-filled flex text-center items-center justify-center rounded-full border border-border py-[0.4rem] px-[0.8rem]">
             {page.characters} characters
           </span>
@@ -66,7 +67,7 @@ export default function PageItem({
             Updated: {page.updatedAt}
           </span>
 
-          <PageDropdown page={page} />
+          {/* <PageDropdown page={page} /> */}
           <ToggleSwitch
             isActive={isActive}
             onToggle={() => onToggleStatus?.(websiteIndex, page.url)}

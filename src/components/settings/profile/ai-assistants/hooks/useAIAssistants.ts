@@ -1,4 +1,4 @@
-import { useAiAssistants as useSharedAiAssistants } from "@/shared/src/hooks/useAiAssistants";
+import { useAiAssistants as useSharedAiAssistants } from "../../../../../hooks/useAiAssistants";
 
 export function useAIAssistants(autoFetch: boolean = true) {
   const shared = useSharedAiAssistants({ autoFetch });

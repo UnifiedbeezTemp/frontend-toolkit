@@ -27,9 +27,9 @@ export const initialStepsData: Step[] = [
     step: "Step 02",
     title: "User Type Detection & Info",
     description:
-      "We'll customize your setup based on your plan—just fill in a few business or organizational details if required.",
+      "We'll customize your setup based on your plan, just fill in a few business or organizational details if required.",
     summary:
-      "We'll customize your setup based on your plan—just fill in a few business or organizational details if required.",
+      "We'll customize your setup based on your plan, just fill in a few business or organizational details if required.",
     isCompleted: true,
     isActive: true,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
@@ -105,7 +105,7 @@ export const initialStepsData: Step[] = [
     description:
       "Connect your communication platforms and preview how UnifiedBeez will interact with each one.",
     summary:
-      "Create your AI assistant's tone and personality—then watch a live preview of how it responds.",
+      "Create your AI assistant's tone and personality, then watch a live preview of how it responds.",
     isCompleted: false,
     isActive: false,
     videoUrl: "https://www.pexels.com/download/video/35234919/",
