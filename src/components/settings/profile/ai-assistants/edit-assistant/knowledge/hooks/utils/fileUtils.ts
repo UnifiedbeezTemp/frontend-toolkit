@@ -6,7 +6,7 @@ export const convertBusinessFileToUploadedFile = (
 ): UploadedFile => ({
   id: file.id.toString(),
   documentId: file.id,
-  name: file.originalName,
+  name: file.fileName,
   size: file.fileSize,
   type: file.fileType,
   progress: 100,

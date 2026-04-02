@@ -29,10 +29,10 @@ export function useAssistantKnowledgeFiles(
 
   useEffect(() => {
     if (
-      assistant?.businessKnowledgeFiles &&
-      Array.isArray(assistant.businessKnowledgeFiles)
+      assistant?.knowledgeFiles &&
+      Array.isArray(assistant.knowledgeFiles)
     ) {
-      const saved = assistant.businessKnowledgeFiles.map(
+      const saved = assistant.knowledgeFiles.map(
         convertBusinessFileToUploadedFile,
       );
       setSavedFiles(saved);
@@ -51,7 +51,7 @@ export function useAssistantKnowledgeFiles(
     } else {
       setSavedFiles([]);
     }
-  }, [assistant?.businessKnowledgeFiles]);
+  }, [assistant?.knowledgeFiles]);
 
   useEffect(() => {
     setUploadingFiles([]);
