@@ -41,6 +41,7 @@ export const SUPABASE_IMAGES = {
   authLogo: "images/welcome/welcomeLogo.png",
   videoThumbnail: "images/videoThumbnail.jpeg",
   logoFull: "images/logo-full-new.png",
+  logoShort: "images/logo-short.png",
   logoOld: "images/logo-full.png",
   mobilePhone: "website/mobile-phone.png",
   channels: "website/channels.svg",

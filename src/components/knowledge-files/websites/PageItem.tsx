@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import ToggleSwitch from "../../ui/ToggleSwitch";
 import { WebsitePage } from "./utils/types";
 import PageDropdown from "./components/PageDropdown";
@@ -22,6 +23,28 @@ export default function PageItem({
   isEditing = false,
   forceMobileStyle = false,
 }: PageItemProps) {
+  const [isToggling, setIsToggling] = useState(false);
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  const handleToggle = async () => {
+    if (!onToggleStatus || isToggling) return;
+
+    setIsToggling(true);
+    try {
+      await Promise.resolve(onToggleStatus(websiteIndex, page.url));
+    } finally {
+      if (isMountedRef.current) {
+        setIsToggling(false);
+      }
+    }
+  };
+
   return (
     <div
       className={`border-border border lg:border p-[0.8rem] rounded-[0.8rem] ${forceMobileStyle ? "" : "sm:flex items-center justify-between"} mb-[1rem] sm:mb-[2rem] lg:mb-[1rem] ${
@@ -70,7 +93,8 @@ export default function PageItem({
           {/* <PageDropdown page={page} /> */}
           <ToggleSwitch
             isActive={isActive}
-            onToggle={() => onToggleStatus?.(websiteIndex, page.url)}
+            onToggle={handleToggle}
+            isLoading={isToggling}
           />
         </div>
       )}

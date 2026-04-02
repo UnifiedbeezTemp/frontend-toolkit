@@ -159,11 +159,15 @@ export const webchatService = {
   async createLanguage(
     webchatId: string | number,
     payload: import("../../../types/webchatApiTypes").CreateLanguagePayload
-  ): Promise<unknown> {
+  ): Promise<import("../../../types/webchatApiTypes").WebchatLanguageConfigDto> {
     return api.post<
       import("../../../types/webchatApiTypes").CreateLanguagePayload,
-      unknown
+      import("../../../types/webchatApiTypes").WebchatLanguageConfigDto
     >(`/webchat/${webchatId}/languages`, payload);
+  },
+
+  async deleteLanguage(languageId: string | number): Promise<void> {
+    return api.delete(`/webchat/languages/${languageId}`)
   },
 
   async createLocalization(

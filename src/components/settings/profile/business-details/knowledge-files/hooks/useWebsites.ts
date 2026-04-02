@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   CrawlType,
@@ -14,6 +15,7 @@ import { addWebsite, fetchWebsites } from "../../../../../../api/websites";
 import { useToast } from "../../../../../ui/toast/useToast";
 import { useWebsiteOperations } from "../../../../../knowledge-files/websites/hooks/useWebsiteOperations";
 import { mapApiWebsiteToUiWebsite } from "../../../../../knowledge-files/websites/utils/websiteMappers";
+import { useWebsitesWithPages } from "../../../../../knowledge-files/websites/hooks/useWebsitesWithPages";
 import {
   cleanAndPrepareUrl,
   isValidUrl,
@@ -31,6 +33,7 @@ export function useWebsites() {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [websiteToDelete, setWebsiteToDelete] = useState<number | null>(null);
   const { showToast } = useToast();
+  const queryClient = useQueryClient();
 
   const {
     deleteWebsite,
@@ -53,11 +56,12 @@ export function useWebsites() {
     refetch: refetchWebsites,
   } = useAppQuery(["websites"], () => fetchWebsites(), {});
 
-  const websites: Website[] = Array.isArray(websitesData)
+  const baseWebsites: Website[] = Array.isArray(websitesData)
     ? (websitesData as ApiWebsite[]).map((apiWebsite) =>
         mapApiWebsiteToUiWebsite(apiWebsite),
       )
     : [];
+  const websites = useWebsitesWithPages(baseWebsites);
 
   const addWebsiteMutation = useAppMutation<
     CreateWebsitePayload,
@@ -149,6 +153,7 @@ export function useWebsites() {
   const handleDeleteWebsite = async (websiteId: number) => {
     try {
       await deleteWebsite({ websiteId });
+      queryClient.removeQueries({ queryKey: ["website", websiteId] });
       setDeleteConfirmOpen(false);
       setWebsiteToDelete(null);
     } catch (error) {
@@ -173,6 +178,7 @@ export function useWebsites() {
         pageId: Number.parseInt(page.id, 10),
         isActive: page.status !== "active",
       });
+      await queryClient.invalidateQueries({ queryKey: ["website", website.id] });
     } catch (error) {
       // Error handled by mutation
     }
@@ -188,6 +194,7 @@ export function useWebsites() {
     if (status === "inactive") {
       try {
         await deactivateAllPages({ websiteId: website.id });
+        await queryClient.invalidateQueries({ queryKey: ["website", website.id] });
       } catch (error) {
         // Error handled by mutation
       }
@@ -203,6 +210,7 @@ export function useWebsites() {
             pageIds: inactivePageIds,
             isActive: true,
           });
+          await queryClient.invalidateQueries({ queryKey: ["website", website.id] });
         } catch (error) {
           // Error handled by mutation
         }
@@ -235,6 +243,7 @@ export function useWebsites() {
           pageIds: selectedPageIds,
           isActive: true,
         });
+        await queryClient.invalidateQueries({ queryKey: ["website", website.id] });
         closeModal();
       } catch (error) {
         // Error handled by mutation

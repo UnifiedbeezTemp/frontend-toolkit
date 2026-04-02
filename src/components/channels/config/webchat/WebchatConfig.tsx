@@ -4,13 +4,13 @@ import { BaseChannelConfigProps } from "../BaseChannelConfig";
 import { useWebchatConfig } from "./hooks/useWebchatConfig";
 import { useWebchatHandlers } from "./hooks/useWebchatHandlers";
 import WebchatRequirements from "./components/WebchatRequirements";
-import WebchatForm from "./components/shared/WebchatForm";
 import Heading from "../../../../components/ui/Heading";
 import Text from "../../../../components/ui/Text";
 import ImageComponent from "../../../../components/ui/ImageComponent";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 import CloseModalButton from "../../../modal/CloseModalButton";
 import DeleteChannelModal from "../../management/DeleteChannelModal";
+import WebchatIntegration from "./components/shared/WebchatIntegration";
 
 export default function WebchatConfig({
   channel,
@@ -28,10 +28,9 @@ export default function WebchatConfig({
     control,
     formHandleSubmit,
     watch,
-    register,
-    prepareFormData,
-    websites,
     setValue,
+    prepareCreateFormData,
+    prepareUpdatePayload,
   } = useWebchatConfig(channelId, connection);
 
   const {
@@ -49,7 +48,8 @@ export default function WebchatConfig({
     onSave,
     onCancel,
     onEditConnection,
-    prepareFormData,
+    prepareCreateFormData,
+    prepareUpdatePayload,
   });
 
   if (showRequirements) {
@@ -57,16 +57,15 @@ export default function WebchatConfig({
   }
 
   const formContent = (
-    <WebchatForm
+    <WebchatIntegration
       connection={connection}
       onSave={handleSubmit}
       onDelete={handleDeleteClick}
       isLoading={isLoading || isCreatingWebchat || isDeleting}
       watch={watch}
-      register={register}
       control={control}
+      formHandleSubmit={formHandleSubmit}
       variant={isDesktop ? "desktop" : "mobile"}
-      websites={websites}
       setValue={setValue}
     />
   );

@@ -3,7 +3,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import { WebchatFormData } from "./useWebchatConfig";
 import { extractErrorMessage } from "../utils/errorUtils";
 import { useAppMutation } from "../../../../../api";
-import { WebchatCreateResponse, createWebchat, WebchatUpdateResponse, updateWebchat, WebchatDeleteResponse, deleteWebchat } from "../../../../../services/webchatService";
+import {
+  WebchatCreateResponse,
+  createWebchat,
+  WebchatUpdateResponse,
+  WebchatUpdateRequest,
+  updateWebchat,
+  uploadWebchatProfilePic,
+  WebchatDeleteResponse,
+  deleteWebchat,
+} from "../../../../../services/webchatService";
 import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
 import { useToast } from "../../../../ui/toast/ToastProvider";
 
@@ -12,15 +21,22 @@ interface UseWebchatHandlersProps {
   onSave: (data: Record<string, unknown>) => void;
   onCancel?: () => void;
   onEditConnection?: (connection: ChannelConnection | null) => void;
-  prepareFormData: (data: WebchatFormData) => { websiteUrl: string; connectedChannelId: number };
+  prepareCreateFormData: (data: WebchatFormData) => FormData;
+  prepareUpdatePayload: (data: WebchatFormData) => WebchatUpdateRequest;
 }
+
+type UpdateWebchatInput = {
+  payload: WebchatUpdateRequest;
+  profilePic: File | null;
+};
 
 export function useWebchatHandlers({
   connection,
   onSave,
   onCancel,
   onEditConnection,
-  prepareFormData,
+  prepareCreateFormData,
+  prepareUpdatePayload,
 }: UseWebchatHandlersProps) {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
@@ -48,7 +64,7 @@ export function useWebchatHandlers({
   };
 
   const createWebchatMutation = useAppMutation<
-    { websiteUrl: string; connectedChannelId: number },
+    FormData,
     WebchatCreateResponse
   >(
     async (data) => {
@@ -69,7 +85,6 @@ export function useWebchatHandlers({
         if (response.channel) {
           onSave({
             connectedChannel: response.channel,
-            websiteUrl: response.channel.websiteUrl,
           });
         }
       },
@@ -84,18 +99,27 @@ export function useWebchatHandlers({
   );
 
   const updateWebchatMutation = useAppMutation<
-    { websiteUrl: string },
+    UpdateWebchatInput,
     WebchatUpdateResponse
   >(
-    async (data) => {
+    async ({ payload, profilePic }) => {
       if (!connection?.id) {
         throw new Error("Connection ID is required for update");
       }
+
       const webchatId = parseInt(connection.id, 10);
       if (isNaN(webchatId)) {
         throw new Error("Invalid webchat ID");
       }
-      return await updateWebchat(webchatId, data);
+
+      const updateResponse = await updateWebchat(webchatId, payload);
+
+      if (profilePic) {
+        const uploadResponse = await uploadWebchatProfilePic(webchatId, profilePic);
+        return uploadResponse || updateResponse;
+      }
+
+      return updateResponse;
     },
     {
       onSuccess: (response) => {
@@ -112,7 +136,6 @@ export function useWebchatHandlers({
         if (response.channel) {
           onSave({
             connectedChannel: response.channel,
-            websiteUrl: response.channel.websiteUrl,
           });
         }
       },
@@ -132,12 +155,20 @@ export function useWebchatHandlers({
 
   const handleSubmit = (data: WebchatFormData) => {
     if (isEditMode) {
+      const payload = prepareUpdatePayload(data);
+      if (process.env.NODE_ENV !== "production") {
+        console.log(
+          `[webchat] PATCH /webchat/${connection?.id ?? ":id"} payload`,
+          payload,
+        );
+      }
+
       updateWebchatMutation.mutate({
-        websiteUrl: data.websiteUrl,
+        payload,
+        profilePic: data.profilePic ?? null,
       });
     } else {
-      const formData = prepareFormData(data);
-      createWebchatMutation.mutate(formData);
+      createWebchatMutation.mutate(prepareCreateFormData(data));
     }
   };
 
@@ -209,4 +240,3 @@ export function useWebchatHandlers({
     isDeleting: deleteWebchatMutation.isPending,
   };
 }
-

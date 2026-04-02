@@ -7,6 +7,7 @@ import WebsiteDropdown from "./components/WebsiteDropdown";
 import Player from "lottie-react";
 import animationData from "../../../animations/Preloader.json";
 import { useWebsitePolling } from "./hooks/useWebsitePolling";
+import { isDiscoveryInProgress } from "./utils/discoveryStatus";
 
 interface WebsiteCardProps {
   website: Website;
@@ -49,13 +50,11 @@ export default function WebsiteCard({
   const handleTabClick = (tab: ActiveTab) => {
     setActiveTab(tab);
   };
-  const isEntireAndPending =
-    website.crawlType === "ENTIRE_SITE" &&
-    website.discoveryStatus === "PENDING";
 
-  useWebsitePolling(
-    isEntireAndPending || website.discoveryStatus === "DISCOVERING",
-  );
+  const isDiscoveringPages = isDiscoveryInProgress(website.discoveryStatus);
+  const isLoadingPages = !!website.isPagesLoading;
+
+  useWebsitePolling(isDiscoveringPages);
 
   return (
     <div
@@ -69,20 +68,21 @@ export default function WebsiteCard({
         isDeleting={isDeleting}
       />
 
-      {isEntireAndPending ||
-        (website.discoveryStatus === "DISCOVERING" && (
-          <div className="mb-4">
-            <Player
-              autoplay
-              loop
-              animationData={animationData}
-              style={{ height: 100 }}
-            />
-            <p className="text-[1.2rem] text-text-primary mt-[0.6rem] text-center">
-              Discovering pages... this might take a while!
-            </p>
-          </div>
-        ))}
+      {(isDiscoveringPages || isLoadingPages) && (
+        <div className="mb-4">
+          <Player
+            autoplay
+            loop
+            animationData={animationData}
+            style={{ height: 100 }}
+          />
+          <p className="text-[1.2rem] text-text-primary mt-[0.6rem] text-center">
+            {isLoadingPages
+              ? "Loading pages..."
+              : "Discovering pages... this might take a while!"}
+          </p>
+        </div>
+      )}
 
       {website.pages.length > 0 && (
         <div className="lg:hidden py-[2rem] flex items-center">

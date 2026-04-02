@@ -15,19 +15,31 @@ export const mapWebchatConnectionToDisplay = (
       return null;
     }
 
-    if (!webchatConn.websiteUrl) {
-      console.error("Connection missing websiteUrl:", webchatConn);
-      return null;
-    }
+    const title =
+      webchatConn.teamName ||
+      webchatConn.chatName ||
+      webchatConn.websiteUrl ||
+      webchatConn.connectedChannel?.channelName ||
+      "Web Chat";
+
+    const subtitle =
+      webchatConn.chatName ||
+      webchatConn.websiteUrl ||
+      webchatConn.connectedChannel?.channelName ||
+      undefined;
 
     return {
       id: webchatConn.id,
-      title: webchatConn.websiteUrl || "Unknown Website",
-      subtitle: webchatConn.connectedChannel?.channelName || "Web Chat",
+      title,
+      subtitle,
       isActive: webchatConn.connectedChannel?.isActive ?? false,
       isConnected: webchatConn.connectedChannel?.isConnected ?? false,
       metadata: {
         websiteUrl: webchatConn.websiteUrl,
+        teamName: webchatConn.teamName,
+        chatName: webchatConn.chatName,
+        readReceipts: webchatConn.readReceipts,
+        profilePic: webchatConn.profilePic,
         connectedChannelId: webchatConn.connectedChannelId,
         alignment: webchatConn.alignment,
         bubbleColor: webchatConn.bubbleColor,
@@ -38,4 +50,3 @@ export const mapWebchatConnectionToDisplay = (
     return null;
   }
 };
-
