@@ -15,6 +15,7 @@ export function useWebsitePolling(shouldPoll: boolean) {
 
     const intervalId = setInterval(() => {
       queryClient.invalidateQueries({ queryKey: ["websites"] });
+      queryClient.invalidateQueries({ queryKey: ["assistant-websites"] });
     }, 5000);
 
     return () => {

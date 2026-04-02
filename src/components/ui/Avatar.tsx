@@ -53,15 +53,15 @@ const sizeClasses = {
 };
 
 const indicatorSizeClasses = {
-  xs: "w-1.5 h-1.5 border",
-  sm: "w-2 h-2 border",
-  md: "w-2.5 h-2.5 border-2",
-  lg: "w-3 h-3 border-2",
-  xl: "w-4 h-4 border-2",
+  xs: "w-1.5 h-1.5 ",
+  sm: "w-2 h-2 ",
+  md: "w-2.5 h-2.5 -2",
+  lg: "w-3 h-3 -2",
+  xl: "w-4 h-4 -2",
 };
 
 const statusColors = {
-  online: "bg-input-stroke",
+  online: "bg-success",
   offline: "bg-muted",
   away: "bg-warning",
 };
@@ -136,7 +136,7 @@ export default function Avatar({
       {showOnline && (
         <span
           className={cn(
-            "absolute bottom-0 right-0 rounded-full border-primary",
+            "absolute bottom-0 right-0 rounded-full  shrink-o",
             indicatorSizeClasses[size],
             statusColors[onlineStatus]
           )}

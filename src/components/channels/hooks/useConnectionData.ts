@@ -44,6 +44,7 @@ export const useConnectionData = (
       const connection = webchats.find(
         (conn) => String(conn.id) === String(connectionId),
       );
+
       if (connection) {
         return mapper(connection);
       }

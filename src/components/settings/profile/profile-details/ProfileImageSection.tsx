@@ -3,7 +3,7 @@ import ImageUploadSection from "@/shared/src/components/image-upload-section/Ima
 interface ProfileImageSectionProps {
   profileImage: string | null;
   selectedFile: File | null;
-  onImageSelect: (file: File) => void;
+  onImageSelect: (file: File | null) => void;
   fullName: string;
   isEditing: boolean;
 }

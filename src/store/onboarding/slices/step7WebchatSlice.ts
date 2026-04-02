@@ -7,7 +7,7 @@ export interface WebchatUrl {
   isSelected?: boolean
   isConfigured?: boolean // True when configuration is complete (substeps 1-5)
   // Store full API response for future use
-  apiData?: unknown
+  apiData?: {teamName: string}
 }
 
 export interface Step7WebchatState {

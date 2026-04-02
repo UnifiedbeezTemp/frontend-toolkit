@@ -162,8 +162,8 @@ export const useChannelConnectionsData = (channel?: Channel | null) => {
 
   const mappedConnections = useMemo(() => {
     if (!channel) return [];
-
     if (channelName === "webchat") {
+
       if (
         !webchatConnections?.webchats ||
         !Array.isArray(webchatConnections.webchats) ||

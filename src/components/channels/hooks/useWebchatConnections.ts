@@ -1,5 +1,7 @@
 import { useAppQuery, api } from "../../../api";
-import { WebchatConnectionsResponse } from "../connections/types";
+import { WebchatConnectionsResponse, WebchatConnection } from "../connections/types";
+
+type WebchatConnectionsApiResponse = WebchatConnectionsResponse | WebchatConnection[];
 
 export const useWebchatConnections = (options: { enabled?: boolean } = {}) => {
   const {
@@ -8,20 +10,23 @@ export const useWebchatConnections = (options: { enabled?: boolean } = {}) => {
     error,
     refetch,
     isFetching,
-  } = useAppQuery<WebchatConnectionsResponse>(
+  } = useAppQuery<WebchatConnectionsApiResponse>(
     ["webchats"],
-    () => api.get<WebchatConnectionsResponse>("/webchat"),
+    () => api.get<WebchatConnectionsApiResponse>("/webchat"),
     {
       enabled: options.enabled,
     }
   );
 
+  const connections: WebchatConnectionsResponse = Array.isArray(data)
+    ? { webchats: data }
+    : data || { webchats: [] };
+
   return {
-    connections: data || { webchats: [] },
+    connections,
     isLoading,
     error,
     refetch,
     isFetching,
   };
 };
-
