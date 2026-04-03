@@ -25,12 +25,12 @@ export const MOCK_BRAND_DATA: Partial<BrandKitState> = {
   fonts: {
     header: {
       family: "Outfit",
-      weight: "Bold",
+      weight: "700",
       style: "Normal",
     },
     body: {
       family: "Inter",
-      weight: "Regular",
+      weight: "400",
       style: "Normal",
     },
   },

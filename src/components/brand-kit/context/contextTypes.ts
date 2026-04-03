@@ -12,6 +12,8 @@ import {
   UpdateBrandKitPayload,
   BrandKitResponse,
   LogoUploadResponse,
+  BrandDetectionPayload,
+  BrandDetectionSseEvent,
   BrandDetectionResponse,
 } from "../../../types/brandKitApiTypes";
 import { ToastPayload } from "../../ui/toast/types";
@@ -48,7 +50,13 @@ export interface UseBrandKitActionsProps {
   ) => Promise<BrandKitResponse>;
   uploadLogoMutation: (file: File) => Promise<LogoUploadResponse>;
   deleteLogoMutation: () => Promise<{ message: string }>;
-  detectBrandMutation: (payload: {
-    websiteUrl: string;
-  }) => Promise<BrandDetectionResponse>;
+  detectBrandMutation: (
+    payload: BrandDetectionPayload,
+  ) => Promise<BrandDetectionResponse>;
+
+  // Detection UI
+  onDetectionStart: (websiteUrl: string) => void;
+  onDetectionEvent: (event: BrandDetectionSseEvent) => void;
+  onDetectionComplete: (data: BrandDetectionResponse) => void;
+  onDetectionError: (message: string) => void;
 }

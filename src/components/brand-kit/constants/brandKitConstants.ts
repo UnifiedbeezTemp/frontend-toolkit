@@ -9,8 +9,8 @@ export const PLATFORMS: SocialPlatform[] = [
 ];
 
 export const WEIGHT_OPTIONS: FontWeight[] = [
-  "Light",
-  "Regular",
-  "Bold",
-  "Extra Bold",
+  "400",
+  "500",
+  "600",
+  "700",
 ];

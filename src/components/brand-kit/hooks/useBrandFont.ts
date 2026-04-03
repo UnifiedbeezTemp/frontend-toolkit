@@ -4,12 +4,12 @@ import { FontState, BrandFontState } from "../types/brandKitTypes";
 export const INITIAL_FONTS: BrandFontState = {
   header: {
     family: "Times New Roman",
-    weight: "Bold",
+    weight: "700",
     style: "Normal",
   },
   body: {
     family: "Times New Roman",
-    weight: "Regular",
+    weight: "400",
     style: "Normal",
   },
 };
