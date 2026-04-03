@@ -120,7 +120,7 @@ export function useAssistantWebsites(assistant: AIAssistant | null) {
       baseUrl: fullUrl,
       displayName: displayName,
       crawlType: crawlType,
-      maxPages: 100,
+      // maxPages: 100,
       maxDepth: crawlType === "SPECIFIC_PAGES" ? 1 : 3,
       isDefaultKnowledge: false,
     };
