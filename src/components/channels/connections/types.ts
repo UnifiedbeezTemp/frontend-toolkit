@@ -10,7 +10,7 @@ export interface WebchatConnectionsResponse {
 }
 
 export interface WebchatConnection extends BaseChannelConnection {
-  websiteUrl: string;
+  websiteUrl: string | null;
   aiAssistantId: number | null;
   emailAddresses: string | null;
   phoneNumbers: string | null;
@@ -37,6 +37,9 @@ export interface WebchatConnection extends BaseChannelConnection {
   launcherPosition: string;
   avatarPhoto: string | null;
   removeUnifiedBeezLogo: boolean;
+  teamName?: string | null;
+  chatName?: string | null;
+  readReceipts?: boolean | null;
   defaultLanguage: string;
   languages: unknown | null;
   localizedContent: unknown | null;
@@ -88,4 +91,3 @@ export interface ConnectionItemProps {
   onEdit: () => void;
   onCancel?: () => void;
 }
-
