@@ -161,7 +161,7 @@ export default function BrandCustomizationCard({ onShowPreview }: Props) {
 
       {/* Sticky Save Footer */}
       {hasChanges && (
-        <div className="sticky bottom-0 p-[1.6rem] sm:p-[2.4rem] border-t border-input-stroke bg-primary flex gap-4">
+        <div className="shrink-0 p-[1.6rem] sm:p-[2.4rem] border-t border-input-stroke bg-primary flex gap-4">
           <Button
             variant="secondary"
             onClick={revertChanges}
