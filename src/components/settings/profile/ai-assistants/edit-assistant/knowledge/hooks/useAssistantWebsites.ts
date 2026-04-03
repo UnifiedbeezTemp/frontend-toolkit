@@ -121,7 +121,7 @@ export function useAssistantWebsites(assistant: AIAssistant | null) {
       displayName: displayName,
       crawlType: crawlType,
       // maxPages: 100,
-      maxDepth: crawlType === "SPECIFIC_PAGES" ? 1 : 3,
+      // maxDepth: crawlType === "SPECIFIC_PAGES" ? 1 : 3,
       isDefaultKnowledge: false,
     };
 
