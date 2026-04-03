@@ -6,6 +6,7 @@ import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
 import { PlanSummaryCardProps } from "../types";
 import PlanAddOns from "./PlanAddons";
+import ImageComponent from "../../ui/ImageComponent";
 import PlanIcon from "./PlanIcon";
 import PlanPricingAndInterval from "./PlanPricingAndInterval";
 import PlanSummaryActions from "./PlanSummaryActions";
@@ -21,6 +22,7 @@ export default function PlanSummaryCTATop({
   className,
   isLoading,
   isUpgradePlanDisabled,
+  purchasedAddons,
   onAddonsClick = () => {},
   onSelect = () => {},
 }: PlanSummaryCardProps) {
@@ -84,7 +86,8 @@ export default function PlanSummaryCTATop({
             </div>
 
             <div>
-              {plan.addons && plan.addons.length > 0 && (
+              {(plan.addons?.length > 0 ||
+                (purchasedAddons && purchasedAddons.length > 0)) && (
                 <>
                   <Button
                     variant="secondary"
@@ -92,7 +95,25 @@ export default function PlanSummaryCTATop({
                   >
                     Add-ons
                   </Button>
-                  <PlanAddOns plan={plan} />
+                  {plan.addons?.length > 0 && <PlanAddOns plan={plan} />}
+                  {purchasedAddons && purchasedAddons.length > 0 && (
+                    <div className="flex flex-wrap gap-2 text-sm text-gray-700">
+                      {purchasedAddons.map((addon) => (
+                        <div key={addon.id} className="icon-list-item">
+                          <span className="bg-secondary-green-100 w-3 h-3 flex justify-center items-center rounded-full">
+                            <ImageComponent
+                              width={6}
+                              height={6}
+                              alt="checkmark"
+                              src={icons.checkMark}
+                              className="text-white"
+                            />
+                          </span>
+                          <span>{`${addon.used ?? 0} ${addon.name}`}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </>
               )}
             </div>
