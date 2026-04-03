@@ -101,7 +101,7 @@ export interface CreateWebsitePayload {
   displayName: string;
   crawlType: CrawlType;
   // maxPages: number;
-  maxDepth: number;
+  // maxDepth: number;
   isDefaultKnowledge: boolean;
 }
 
