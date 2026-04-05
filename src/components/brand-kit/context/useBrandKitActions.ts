@@ -189,18 +189,18 @@ export function useBrandKitActions({
         websiteUrl,
         onEvent: ({ event, data }) => {
           onDetectionEvent({ event, data });
-          console.log(`[brand-kit/detect] ${event}`, {
-            ...data,
-            _meta: {
-              accuracyScore: data.accuracyScore,
-              advancedSearchTriggered: data.advancedSearchTriggered,
-            },
-          });
+          // console.log(`[brand-kit/detect] ${event}`, {
+          //   ...data,
+          //   _meta: {
+          //     accuracyScore: data.accuracyScore,
+          //     advancedSearchTriggered: data.advancedSearchTriggered,
+          //   },
+          // });
           applyDetectionResult(data);
         },
       });
 
-      console.log("[brand-kit/detect] complete response", response);
+      // console.log("[brand-kit/detect] complete response", response);
       onDetectionComplete(response);
       applyDetectionResult(response);
 

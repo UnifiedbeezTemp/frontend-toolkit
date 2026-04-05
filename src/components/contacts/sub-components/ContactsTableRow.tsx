@@ -26,6 +26,8 @@ export default function ContactsTableRow({
     state.contact.selectedContacts.includes(contact.id),
   );
 
+  console.log(contact.status)
+
   return (
     <tr
       className={cn(

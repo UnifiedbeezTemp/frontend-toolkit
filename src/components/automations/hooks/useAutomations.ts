@@ -12,15 +12,20 @@ import { AUTOMATION_CATEGORY_CONFIG } from "../../../constants/automations";
 import { useSupabaseImages } from "../../../lib/supabase/useSupabase";
 
 type ApiAutomation = {
-  id: number | string;
-  name: string;
-  description?: string | null;
-  category?: string | null;
-  status?: string | null;
-  icon?: string | null;
-  _count?: {
-    executions?: number | null;
-  };
+  page: number;
+  limit: number;
+  total: number;
+  items: {
+    id: number | string;
+    name: string;
+    description?: string | null;
+    category?: string | null;
+    status?: string | null;
+    icon?: string | null;
+    _count?: {
+      executions?: number | null;
+    };
+  }[];
 };
 
 export const useAutomations = (automationType: string) => {
@@ -35,8 +40,10 @@ export const useAutomations = (automationType: string) => {
     ? `?category=${categoryConfig.apiCategory}`
     : "";
 
-  const { data, isLoading, isFetching } = useAppQuery<ApiAutomation[]>(
-    categoryConfig ? ["automations", categoryConfig.apiCategory] : ["automations"],
+  const { data, isLoading, isFetching } = useAppQuery<ApiAutomation>(
+    categoryConfig
+      ? ["automations", categoryConfig.apiCategory]
+      : ["automations"],
     () => api.get(`/automations${categoryQuery}`),
     {
       enabled: true,
@@ -55,14 +62,16 @@ export const useAutomations = (automationType: string) => {
       return;
     }
 
-    const mapped = data.map<Automation>((automation) => {
+    console.log(data);
+    const mapped = data?.items?.map<Automation>((automation) => {
       const status = (automation.status || "").toUpperCase();
       const isActive = status === "ACTIVE" || status === "RUNNING";
       const categoryFromSlug = AUTOMATION_CATEGORY_CONFIG.find(
         (category) => category.slug === automation.category,
       );
       const displayType = categoryFromSlug?.label || automationType;
-      const fallbackIconKey = categoryFromSlug?.iconKey || categoryConfig?.iconKey;
+      const fallbackIconKey =
+        categoryFromSlug?.iconKey || categoryConfig?.iconKey;
       const fallbackIcon = fallbackIconKey ? icons[fallbackIconKey] : "";
 
       return {

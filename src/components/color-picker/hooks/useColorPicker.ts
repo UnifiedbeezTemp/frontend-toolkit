@@ -1,7 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 
-export const useColorPicker = (initialValue: string, onChange: (color: string) => void) => {
-  const [hexInput, setHexInput] = useState(initialValue.replace(/^#?/, "#"));
+export const useColorPicker = (
+  initialValue: string,
+  onChange: (color: string) => void,
+) => {
+  const [hexInput, setHexInput] = useState(
+    (initialValue || "").replace(/^#?/, "#"),
+  );
   const [hue, setHue] = useState(0);
   const [saturation, setSaturation] = useState(100);
   const [lightness, setLightness] = useState(50);
@@ -9,12 +14,17 @@ export const useColorPicker = (initialValue: string, onChange: (color: string) =
   const hueRef = useRef<HTMLDivElement>(null);
 
   const presetColors = [
-    "#EF4444", "#F97316", "#FACC15", "#4ADE80",
-    "#2DD4BF", "#3B82F6", "#6366F1",
+    "#EF4444",
+    "#F97316",
+    "#FACC15",
+    "#4ADE80",
+    "#2DD4BF",
+    "#3B82F6",
+    "#6366F1",
   ];
 
   useEffect(() => {
-    setHexInput(initialValue.replace(/^#?/, "#"));
+    setHexInput((initialValue || "").replace(/^#?/, "#"));
   }, [initialValue]);
 
   useEffect(() => {
@@ -35,8 +45,10 @@ export const useColorPicker = (initialValue: string, onChange: (color: string) =
     onChange(color);
   };
 
-  const handleSaturationLightnessDrag = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = saturationRef.current!.getBoundingClientRect();
+  const handleSaturationLightnessDrag = (
+    e: React.MouseEvent<HTMLDivElement>,
+  ) => {
+    const rect = saturationRef?.current!.getBoundingClientRect();
     const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
     const y = Math.max(0, Math.min(e.clientY - rect.top, rect.height));
 
@@ -57,7 +69,9 @@ export const useColorPicker = (initialValue: string, onChange: (color: string) =
     updateColor(newHue, saturation, lightness);
   };
 
-  const setupDrag = (handler: (e: React.MouseEvent<HTMLDivElement>) => void) => {
+  const setupDrag = (
+    handler: (e: React.MouseEvent<HTMLDivElement>) => void,
+  ) => {
     return (e: React.MouseEvent<HTMLDivElement>) => {
       handler(e);
       const handleMouseMove = (moveEvent: MouseEvent) => {
@@ -111,15 +125,23 @@ export const useColorPicker = (initialValue: string, onChange: (color: string) =
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h = 0, s = 0, l = (max + min) / 2;
+    let h = 0,
+      s = 0,
+      l = (max + min) / 2;
 
     if (max !== min) {
       const d = max - min;
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
       switch (max) {
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        case b: h = (r - g) / d + 4; break;
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
       }
       h /= 6;
     }
@@ -137,7 +159,9 @@ export const useColorPicker = (initialValue: string, onChange: (color: string) =
     const f = (n: number) => {
       const k = (n + h / 30) % 12;
       const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-      return Math.round(255 * color).toString(16).padStart(2, "0");
+      return Math.round(255 * color)
+        .toString(16)
+        .padStart(2, "0");
     };
     return `#${f(0)}${f(8)}${f(4)}`;
   };
