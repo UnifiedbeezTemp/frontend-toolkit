@@ -12,6 +12,8 @@ export interface InboxListTopToolBarProps {
   className?: string;
   selectedInboxType?: InboxType;
   onInboxTypeChange?: (type: InboxType) => void;
+  isLiveDashboard?: boolean;
+  isSideDrawerOpen?: boolean;
 }
 
 export interface SubItem {

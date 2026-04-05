@@ -1,21 +1,22 @@
-import { ReactNode, forwardRef } from "react"
-import { cn } from "../../../lib/utils"
-import { PaperclipIcon } from "../../../assets/icons/PaperclipIcon"
-import { SmileIcon } from "../../../assets/icons/SmileIcon"
-import { SendIcon } from "../../../assets/icons/SendIcon"
-import IconButton from "../../ui/IconButton"
+import { ReactNode, forwardRef } from "react";
+import { cn } from "../../../lib/utils";
+import { PaperclipIcon } from "../../../assets/icons/PaperclipIcon";
+import { SmileIcon } from "../../../assets/icons/SmileIcon";
+import { SendIcon } from "../../../assets/icons/SendIcon";
+import IconButton from "../../ui/IconButton";
 
 interface MessageComposerProps {
-  value: string
-  onChange: (v: string) => void
-  onSend?: () => void
-  onAttach?: () => void
-  onEmoji?: () => void
-  placeholder?: string
-  disabled?: boolean
-  className?: string
-  leftIcon?: ReactNode
-  emojiIcon?: ReactNode
+  value: string;
+  onChange: (v: string) => void;
+  onSend?: () => void;
+  onAttach?: () => void;
+  onEmoji?: () => void;
+  emojiRef?: React.RefObject<HTMLButtonElement | null>;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+  leftIcon?: ReactNode;
+  emojiIcon?: ReactNode;
 }
 
 const MessageComposer = forwardRef<HTMLButtonElement, MessageComposerProps>(
@@ -26,6 +27,7 @@ const MessageComposer = forwardRef<HTMLButtonElement, MessageComposerProps>(
       onSend,
       onAttach,
       onEmoji,
+      emojiRef,
       placeholder = "Type a message....",
       disabled,
       className,
@@ -35,15 +37,15 @@ const MessageComposer = forwardRef<HTMLButtonElement, MessageComposerProps>(
     ref,
   ) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (disabled) return
+      if (disabled) return;
       if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault()
-        onSend?.()
+        e.preventDefault();
+        onSend?.();
       }
-    }
+    };
 
     return (
-      <div className={cn("flex items-center gap-3.75", className)}>
+      <div className={cn("flex items-center gap-3.75 lg:pb-[2rem]", className)}>
         <button
           ref={ref}
           type="button"
@@ -75,6 +77,7 @@ const MessageComposer = forwardRef<HTMLButtonElement, MessageComposerProps>(
             )}
           />
           <button
+            ref={emojiRef}
             type="button"
             onClick={onEmoji}
             disabled={disabled}
@@ -98,8 +101,8 @@ const MessageComposer = forwardRef<HTMLButtonElement, MessageComposerProps>(
           ariaLabel={"Send"}
         />
       </div>
-    )
+    );
   },
-)
+);
 
-export default MessageComposer
+export default MessageComposer;

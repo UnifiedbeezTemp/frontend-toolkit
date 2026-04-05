@@ -1,18 +1,20 @@
-import { ReactNode, useRef } from "react"
-import { cn } from "../../../lib/utils"
+"use client"
+
+import { ReactNode, useRef } from "react";
+import { cn } from "../../../lib/utils";
 import {
   ConversationHeaderAction,
   ConversationHeaderActions,
-} from "./ConversationHeaderActions"
-import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon"
-import { SmartDropdown } from "../../smart-dropdown"
-import IconButton from "../../ui/IconButton"
-import MoreHorizontalIcon from "../../../assets/icons/MoreHorizontalIcon"
-import { useToggle } from "../../../hooks/useToggle"
-import { TagPill } from "../components/TagPill"
-import Attributes from "../components/attributes/Attributes"
-import ImageComponent from "../../ui/ImageComponent"
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
+} from "./ConversationHeaderActions";
+import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon";
+import { SmartDropdown } from "../../smart-dropdown";
+import IconButton from "../../ui/IconButton";
+import MoreHorizontalIcon from "../../../assets/icons/MoreHorizontalIcon";
+import { useToggle } from "../../../hooks/useToggle";
+import { TagPill } from "../components/TagPill";
+import Attributes from "../components/attributes/Attributes";
+import ImageComponent from "../../ui/ImageComponent";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
 
 export function ConversationHeader({
   platformIcon,
@@ -23,34 +25,41 @@ export function ConversationHeader({
   actions,
   className,
   onBack,
+  isLiveDashboard,
 }: {
-  platformIcon: ReactNode
-  title: string
-  tag?: string | ReactNode
-  status?: string
-  showChevron?: boolean
-  actions?: ConversationHeaderAction[]
-  className?: string
-  onBack?: () => void
+  platformIcon: ReactNode;
+  title: string;
+  tag?: string | ReactNode;
+  status?: string;
+  showChevron?: boolean;
+  actions?: ConversationHeaderAction[];
+  className?: string;
+  onBack?: () => void;
+  isLiveDashboard?: boolean;
 }) {
-  const { arrowLeft } = useSupabaseIcons()
-  const tagNode = typeof tag === "string" ? <TagPill label={tag} /> : tag
+  const { arrowLeft } = useSupabaseIcons();
+  const tagNode = typeof tag === "string" ? <TagPill label={tag} /> : tag;
   const {
     value: isMobileActionsOpen,
     setFalse: closeMobileActions,
     toggle: toggleMobileActions,
-  } = useToggle()
+  } = useToggle();
 
-  const actionsRef = useRef<HTMLButtonElement | null>(null)
-  const attributesTriggerRef = useRef<HTMLButtonElement | null>(null)
+  const actionsRef = useRef<HTMLButtonElement | null>(null);
+  const attributesTriggerRef = useRef<HTMLButtonElement | null>(null);
   const {
     value: showAttributes,
     setTrue: openAttributes,
     setFalse: closeAttributes,
-  } = useToggle()
+  } = useToggle();
 
   return (
-    <header className={cn("w-full p-4 md:py-3 lg:py-4", className)}>
+    <header
+      className={cn(
+        "w-full p-4 md:py-6 lg:py-7 bg-primary border-b border-b-gray-60",
+        className,
+      )}
+    >
       <div className="flex items-center justify-between gap-6">
         <div className="flex min-w-0 items-center gap-4">
           {onBack && (
@@ -138,5 +147,5 @@ export function ConversationHeader({
         ) : null}
       </div>
     </header>
-  )
+  );
 }
