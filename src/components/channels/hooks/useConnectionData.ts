@@ -49,6 +49,25 @@ export const useConnectionData = (
         return mapper(connection);
       }
     }
+    if (channelName === "livechat" && channel) {
+      const livechats = (channel.liveChatConfigs || []) as any[];
+      const connection = livechats.find(
+        (conn) => String(conn.id) === String(connectionId),
+      );
+
+      if (connection) {
+        const liveChatConn = {
+          ...connection,
+          connectedChannel: {
+            id: channel.id,
+            isActive: channel.isActive,
+            isConnected: channel.isConnected,
+            channelName: channel.channelName,
+          },
+        };
+        return mapper(liveChatConn);
+      }
+    }
 
     if (channelName === "gmail" && channel) {
       const accounts = (channel.emailAccounts || []) as GmailAccount[];

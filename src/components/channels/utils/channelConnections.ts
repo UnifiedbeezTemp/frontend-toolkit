@@ -7,6 +7,7 @@ const connectionArrayKeys = [
   "smsAccounts",
   "calendarAccounts",
   "webchatConfigs",
+  "liveChatConfigs",
   "telegramAccounts",
   "paypalAccounts",
   "calendlyAccounts",
@@ -23,4 +24,3 @@ export const getChannelConnectionsCount = (channel: Channel): number => {
 
 export const hasConnectedAccounts = (channel: Channel): boolean =>
   getChannelConnectionsCount(channel) > 0;
-
