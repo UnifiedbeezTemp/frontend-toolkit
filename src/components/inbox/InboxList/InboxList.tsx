@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { InboxSearchAndFilters } from "./FilterComponents"
-import { InboxListTopToolBar } from "./InboxListTopToolBar"
-import { GeneralInboxConversationItem } from "./components/GeneralInboxConversationItem"
-import { TeamInboxConversationItem } from "./components/TeamInboxConversationItem"
-import InboxListContainer from "./InboxListContainer"
-import { ReactNode } from "react"
-import PanelShell from "../ChannelsPanel/PanelShell"
-import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon"
-import IconButton from "../../ui/IconButton"
-import Heading from "../../ui/Heading"
-import { inboxTypeLabels } from "../utils/dummyData"
-import { InboxType, Conversation } from "../types"
-import Avatar from "../../ui/Avatar"
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
-import ImageComponent from "../../ui/ImageComponent"
-import { useInboxList } from "./hooks/useInboxList"
+import { InboxSearchAndFilters } from "./FilterComponents";
+import { InboxListTopToolBar } from "./InboxListTopToolBar";
+import { GeneralInboxConversationItem } from "./components/GeneralInboxConversationItem";
+import { TeamInboxConversationItem } from "./components/TeamInboxConversationItem";
+import InboxListContainer from "./InboxListContainer";
+import { ReactNode } from "react";
+import PanelShell from "../ChannelsPanel/PanelShell";
+import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon";
+import IconButton from "../../ui/IconButton";
+import Heading from "../../ui/Heading";
+import { inboxTypeLabels } from "../utils/dummyData";
+import { InboxType, Conversation } from "../types";
+import Avatar from "../../ui/Avatar";
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import ImageComponent from "../../ui/ImageComponent";
+import { useInboxList } from "./hooks/useInboxList";
 
 export default function InboxList({
   sideDrawerContent,
@@ -23,13 +23,15 @@ export default function InboxList({
   selectedInboxType,
   onInboxTypeChange,
   selectedConversationId,
+  isLiveDashboard,
 }: {
-  sideDrawerContent?: ReactNode
-  sideDrawerTitle?: string
-  selectedInboxType: InboxType
-  onInboxTypeChange: (type: InboxType) => void
-  selectedConversationId?: string | null
-  onConversationSelect?: (conversationId: string | null) => void
+  sideDrawerContent?: ReactNode;
+  sideDrawerTitle?: string;
+  selectedInboxType: InboxType;
+  onInboxTypeChange: (type: InboxType) => void;
+  selectedConversationId?: string | null;
+  onConversationSelect?: (conversationId: string | null) => void;
+  isLiveDashboard?: boolean;
 }) {
   const {
     filteredGeneralConversations,
@@ -39,16 +41,16 @@ export default function InboxList({
     closeSideDrawer,
     handleInboxTypeChange,
     handleConversationClick,
-  } = useInboxList({ onInboxTypeChange })
+  } = useInboxList({ onInboxTypeChange });
 
-  const icons = useSupabaseIcons()
+  const icons = useSupabaseIcons();
 
   const conversations =
     selectedInboxType === "general"
       ? filteredGeneralConversations
-      : filteredTeamConversations
+      : filteredTeamConversations;
 
-  const currentTitle = inboxTypeLabels[selectedInboxType]
+  const currentTitle = inboxTypeLabels[selectedInboxType];
 
   const iconNames = {
     whatsapp: "whatsappIcon",
@@ -60,12 +62,13 @@ export default function InboxList({
     email: "emailRedIcon",
     phone: "twilioPhoneIcon",
     "website-chat": "websiteWebChatIcon",
-  }
+  };
 
   return (
     <div className="absolute flex w-full">
       <PanelShell
         isOpen={isSideDrawerOpen}
+        isLiveDashboard={isLiveDashboard}
         className="h-[calc(100dvh-16.5rem)] sm:h-[calc(100dvh-5.7rem)] overflow-auto"
       >
         <div className="flex items-center justify-between">
@@ -82,10 +85,14 @@ export default function InboxList({
         {sideDrawerContent}
       </PanelShell>
       <InboxListContainer
+        isLiveDashboard={isLiveDashboard}
+        isSideDrawerOpen={isSideDrawerOpen}
         className="grow"
         header={
           <div className="flex flex-col">
             <InboxListTopToolBar
+              isLiveDashboard={isLiveDashboard}
+              isSideDrawerOpen={isSideDrawerOpen}
               onLeftClick={isSideDrawerOpen ? closeSideDrawer : openSideDrawer}
               title={currentTitle}
               selectedInboxType={selectedInboxType}
@@ -108,7 +115,7 @@ export default function InboxList({
                 <div
                   className={`h-10 w-10 rounded-full ${conversation.avatarColor}`}
                 />
-              )
+              );
 
               if (selectedInboxType === "general") {
                 const channelIcon = conversation.channel
@@ -117,7 +124,7 @@ export default function InboxList({
                         conversation.channel as keyof typeof iconNames
                       ] as keyof typeof icons) || ""
                     ]
-                  : null
+                  : null;
 
                 const generalLeading = channelIcon ? (
                   <ImageComponent
@@ -136,7 +143,7 @@ export default function InboxList({
                   />
                 ) : (
                   leading
-                )
+                );
                 return (
                   <GeneralInboxConversationItem
                     key={conversation.id}
@@ -149,7 +156,7 @@ export default function InboxList({
                     isActive={selectedConversationId === conversation.id}
                     unreadCount={conversation.unreadCount}
                   />
-                )
+                );
               } else {
                 return (
                   <TeamInboxConversationItem
@@ -165,12 +172,12 @@ export default function InboxList({
                     participants={conversation.participants || []}
                     participantAvatars={conversation.participantAvatars || []}
                   />
-                )
+                );
               }
             })}
           </div>
         }
       />
     </div>
-  )
+  );
 }

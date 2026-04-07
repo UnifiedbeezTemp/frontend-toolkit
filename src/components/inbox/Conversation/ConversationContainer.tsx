@@ -1,20 +1,23 @@
-import { ReactNode } from "react";
+import { ReactNode, forwardRef } from "react";
+import { cn } from "../../../lib/utils";
 
-export default function ConversationContainer({
-  header,
-  pinnedBar,
-  body,
-  composer,
-}: {
-  header: ReactNode;
-  pinnedBar?: ReactNode;
-  body: ReactNode;
-  composer: ReactNode;
-}) {
+const ConversationContainer = forwardRef<
+  HTMLDivElement,
+  {
+    header: ReactNode;
+    pinnedBar?: ReactNode;
+    body: ReactNode;
+    composer: ReactNode;
+    className?: string;
+  }
+>(({ header, pinnedBar, body, composer, className }, ref) => {
   return (
     <>
-      <div className="absolute h-[calc(100dvh-16.5rem)] sm:h-[calc(100dvh-5.7rem)] overflow-auto w-full inset-0 bg-primary">
-        <div className="sticky top-0 z-20 bg-primary">
+      <div
+        ref={ref}
+        className="absolute h-[calc(100dvh-16.5rem)] sm:h-[calc(100dvh-5.7rem)] overflow-auto overscroll-none w-full inset-0 bg-primary shadow-sm transition-all"
+      >
+        <div className={cn("sticky top-0 z-20 bg-primary transition-all")}>
           <div className="border-b border-b-gray-60">{header}</div>
           {pinnedBar && <div className="w-full">{pinnedBar}</div>}
         </div>
@@ -25,4 +28,8 @@ export default function ConversationContainer({
       </div>
     </>
   );
-}
+});
+
+ConversationContainer.displayName = "ConversationContainer";
+
+export default ConversationContainer;

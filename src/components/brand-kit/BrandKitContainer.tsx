@@ -43,7 +43,7 @@ export default function BrandKitContainer() {
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="flex flex-col lg:flex-row gap-[2.4rem] w-full bg-primary sm:border rounded-[1.2rem] border-input-stroke overflow-hidden min-h-[calc(100vh-20rem)] lg:min-h-0 lg:h-[calc(100vh-14rem)]"
+      className="flex flex-col lg:flex-row gap-[2.4rem] w-full bg-primary sm:border rounded-[1.2rem] border-input-stroke overflow-hidden min-h-[calc(100vh-20rem)] lg:min-h-0 lg:h-[calc(100vh-20rem)]"
     >
       <AnimatePresence mode="wait">
         {activeView === "customization" && (
@@ -53,7 +53,7 @@ export default function BrandKitContainer() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -10 }}
             transition={{ duration: 0.3 }}
-            className="flex-1 block lg:h-full lg:overflow-y-auto scrollbar-hide"
+            className="flex-1 block lg:h-full lg:overflow-hidden scrollbar-hide"
           >
             <BrandCustomizationCard
               onShowPreview={() => setActiveView("preview")}

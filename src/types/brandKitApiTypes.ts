@@ -48,12 +48,12 @@ export interface UpdateBrandKitPayload {
   headerFontWeight?: string;
   bodyFontStyle?: string;
   bodyFontWeight?: string;
-  instagram?: string;
-  whatsapp?: string;
-  twitter?: string;
-  youtube?: string;
-  facebook?: string;
-  linkedin?: string;
+  instagram?: string | null;
+  whatsapp?: string | null;
+  twitter?: string | null;
+  youtube?: string | null;
+  facebook?: string | null;
+  linkedin?: string | null;
 }
 
 export interface BrandKitErrorResponse {
@@ -68,11 +68,36 @@ export interface LogoUploadResponse {
 
 export interface BrandDetectionPayload {
   websiteUrl: string;
+  onEvent?: (event: BrandDetectionSseEvent) => void;
+}
+
+export type BrandDetectionEventName = "partial" | "complete" | string;
+
+export interface BrandDetectionSseEvent {
+  event: BrandDetectionEventName;
+  data: BrandDetectionResponse;
 }
 
 export interface BrandDetectionResponse {
-  detectedLogoUrl?: string | null;
-  detectedPrimaryColor?: string | null;
+  companyLogoUrl?: string | null;
   detectedFaviconUrl?: string | null;
+  detectedPrimaryColor?: string | null;
+  detectedAccentColor?: string | null;
+  detectedBackgroundColor?: string | null;
+  detectedButtonColor?: string | null;
+  headerFontStyle?: string | null;
+  headerFontWeight?: string | null;
+  bodyFontStyle?: string | null;
+  bodyFontWeight?: string | null;
+  instagram?: string | null;
+  twitter?: string | null;
+  facebook?: string | null;
+  linkedin?: string | null;
+  youtube?: string | null;
+  accuracyScore?: number | null;
+  advancedSearchTriggered?: boolean;
+
+  // Backwards compatibility
+  detectedLogoUrl?: string | null;
   success?: boolean;
 }
