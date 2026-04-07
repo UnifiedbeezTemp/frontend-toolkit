@@ -68,6 +68,7 @@ export interface SelectedChannel {
   smsAccounts: unknown[];
   calendarAccounts: unknown[];
   webchatConfigs: unknown[];
+  liveChatConfigs: unknown[];
   telegramAccounts: unknown[];
   paypalAccounts: unknown[];
   calendlyAccounts: unknown[];

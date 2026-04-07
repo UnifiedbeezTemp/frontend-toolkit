@@ -1,5 +1,6 @@
 import { useWebchatConnections } from "./useWebchatConnections";
 import { mapWebchatConnectionToDisplay } from "../mappers/webchatConnectionMapper";
+import { mapLiveChatConnectionToDisplay } from "../mappers/livechatConnectionMapper";
 import { useMemo } from "react";
 import { Channel } from "../../../store/onboarding/types/channelTypes";
 import { ConnectionDisplayData } from "../connections/types";
@@ -148,6 +149,18 @@ interface ShopifyAccount {
   updatedAt: string;
 }
 
+interface LiveChatAccount {
+  id: number;
+  connectedChannelId: number;
+  teamName: string | null;
+  chatName: string | null;
+  profilePic: string | null;
+  readReceipts: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const useChannelConnectionsData = (channel?: Channel | null) => {
   const channelName = channel?.availableChannel?.name;
   const isWebchat = channelName === "webchat";
@@ -163,7 +176,6 @@ export const useChannelConnectionsData = (channel?: Channel | null) => {
   const mappedConnections = useMemo(() => {
     if (!channel) return [];
     if (channelName === "webchat") {
-
       if (
         !webchatConnections?.webchats ||
         !Array.isArray(webchatConnections.webchats) ||
@@ -173,6 +185,29 @@ export const useChannelConnectionsData = (channel?: Channel | null) => {
       }
       return webchatConnections.webchats
         .map(mapWebchatConnectionToDisplay)
+        .filter((conn): conn is ConnectionDisplayData => conn !== null);
+    }
+
+    if (channelName === "livechat") {
+      const accounts = (channel.liveChatConfigs ||
+        []) as unknown as LiveChatAccount[];
+      if (accounts.length === 0) {
+        return [];
+      }
+      return accounts
+        .map((account) => {
+          // Add connectedChannel info if needed by the mapper, or wrap it
+          const liveChatConn = {
+            ...account,
+            connectedChannel: {
+              id: channel.id,
+              isActive: channel.isActive,
+              isConnected: channel.isConnected,
+              channelName: channel.channelName,
+            },
+          };
+          return mapLiveChatConnectionToDisplay(liveChatConn);
+        })
         .filter((conn): conn is ConnectionDisplayData => conn !== null);
     }
 

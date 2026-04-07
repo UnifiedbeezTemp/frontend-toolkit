@@ -16,10 +16,12 @@ import { ShopifyConfig } from "./shopify";
 import { StripeConfig } from "./stripe";
 import { ZoomConfig } from "./zoom";
 import { TelegramConfig } from "./telegram";
+import LiveChatConfig from "./livechat/LiveChatConfig";
 
 export const channelConfigMap: Record<string, ChannelConfigComponent> = {
   whatsapp: WhatsAppConfig,
   webchat: WebchatConfig,
+  livechat: LiveChatConfig,
   facebook_messenger: FacebookConfig as ChannelConfigComponent,
   instagram_direct: InstagramConfig as ChannelConfigComponent,
   gmail: GoogleConfig as ChannelConfigComponent,

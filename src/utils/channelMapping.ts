@@ -14,6 +14,7 @@ export const getChannelIconKey = (channelName: string): string => {
   const iconMap: ChannelIconMap = {
     whatsapp: "whatsappIcon",
     webchat: "websiteWebChat",
+    livechat: "websiteWebChat",
     facebook_messenger: "facebookMessengerLogo",
     instagram_direct: "instagramLogo",
     telegram: "telegramLogo",

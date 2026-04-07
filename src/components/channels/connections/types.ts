@@ -76,6 +76,30 @@ export interface WebchatConnection extends BaseChannelConnection {
   contentLocalizations: unknown[];
 }
 
+export interface LiveChatConnection extends BaseChannelConnection {
+  websiteUrl?: string | null;
+  teamName?: string | null;
+  chatName?: string | null;
+  readReceipts?: boolean | null;
+  profilePic?: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  alignment?: string;
+  bubbleColor?: string;
+  connectedChannel?: {
+    id: number;
+    userId: number;
+    availableChannelId: number;
+    channelName: string;
+    isActive: boolean;
+    isConnected: boolean;
+    credentials: unknown;
+    connectedAt: string;
+    lastSyncAt: string | null;
+  };
+}
+
 export interface ConnectionDisplayData {
   id: string | number;
   title: string;
