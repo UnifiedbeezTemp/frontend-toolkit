@@ -34,24 +34,25 @@ const statusStyles: Record<
 };
 
 export default function StatusPill({ status, className }: StatusPillProps) {
-  const styles = statusStyles[status];
+  const formattedStatus = status.toLocaleLowerCase() as ContactStatus;
+  const styles = statusStyles[formattedStatus];
 
   return (
     <div
       className={cn(
         "inline-flex items-center gap-[0.6rem] px-[0.8rem] py-[0.2rem] rounded-[1.6rem] text-[1.2rem] font-medium",
-        className
+        className,
       )}
       style={{
-        backgroundColor: styles.bg,
-        color: styles.text,
+        backgroundColor: styles?.bg,
+        color: styles?.text,
       }}
     >
       <span
         className="w-[0.6rem] h-[0.6rem] rounded-full"
-        style={{ backgroundColor: styles.text }}
+        style={{ backgroundColor: styles?.text }}
       />
-      {styles.label}
+      {styles?.label}
     </div>
   );
 }

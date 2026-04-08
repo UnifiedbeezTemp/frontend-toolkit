@@ -23,13 +23,15 @@ export default function InboxList({
   selectedInboxType,
   onInboxTypeChange,
   selectedConversationId,
+  isLiveDashboard,
 }: {
-  sideDrawerContent?: ReactNode
-  sideDrawerTitle?: string
-  selectedInboxType: InboxType
-  onInboxTypeChange: (type: InboxType) => void
-  selectedConversationId?: string | null
-  onConversationSelect?: (conversationId: string | null) => void
+  sideDrawerContent?: ReactNode;
+  sideDrawerTitle?: string;
+  selectedInboxType: InboxType;
+  onInboxTypeChange: (type: InboxType) => void;
+  selectedConversationId?: string | null;
+  onConversationSelect?: (conversationId: string | null) => void;
+  isLiveDashboard?: boolean;
 }) {
   const {
     filteredGeneralConversations,
@@ -62,10 +64,23 @@ export default function InboxList({
     "website-chat": "websiteWebChatIcon",
   }
 
+  const iconNames = {
+    whatsapp: "whatsappIcon",
+    instagram: "instagramLogo",
+    facebook: "facebookMessengerLogo",
+    telegram: "telegramLogo",
+    linkedin: "linkedinLogo",
+    sms: "twilioSmsIcon",
+    email: "emailRedIcon",
+    phone: "twilioPhoneIcon",
+    "website-chat": "websiteWebChatIcon",
+  };
+
   return (
     <div className="absolute flex w-full">
       <PanelShell
         isOpen={isSideDrawerOpen}
+        isLiveDashboard={isLiveDashboard}
         className="h-[calc(100dvh-16.5rem)] sm:h-[calc(100dvh-5.7rem)] overflow-auto"
       >
         <div className="flex items-center justify-between">
@@ -82,10 +97,14 @@ export default function InboxList({
         {sideDrawerContent}
       </PanelShell>
       <InboxListContainer
+        isLiveDashboard={isLiveDashboard}
+        isSideDrawerOpen={isSideDrawerOpen}
         className="grow"
         header={
           <div className="flex flex-col">
             <InboxListTopToolBar
+              isLiveDashboard={isLiveDashboard}
+              isSideDrawerOpen={isSideDrawerOpen}
               onLeftClick={isSideDrawerOpen ? closeSideDrawer : openSideDrawer}
               title={currentTitle}
               selectedInboxType={selectedInboxType}

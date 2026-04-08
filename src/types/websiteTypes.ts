@@ -86,6 +86,11 @@ export interface Website {
   crawlType?: CrawlType;
   discoveryStatus?: DiscoveryStatus;
   pages: WebsitePage[];
+  /**
+   * UI-only state: true while we're fetching pages from `/websites/:id`
+   * after discovery has completed.
+   */
+  isPagesLoading?: boolean;
 }
 
 /**
@@ -95,8 +100,8 @@ export interface CreateWebsitePayload {
   baseUrl: string;
   displayName: string;
   crawlType: CrawlType;
-  maxPages: number;
-  maxDepth: number;
+  // maxPages: number;
+  // maxDepth: number;
   isDefaultKnowledge: boolean;
 }
 

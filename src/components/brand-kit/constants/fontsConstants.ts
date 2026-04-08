@@ -14,10 +14,10 @@ export const EMAIL_SAFE_FONTS = [
 import { FontWeight, FontStyle } from "../types/brandKitTypes";
 
 export const FONT_WEIGHTS: Record<FontWeight, number> = {
-  Light: 300,
-  Regular: 400,
-  Bold: 700,
-  "Extra Bold": 800,
+  "400": 400,
+  "500": 500,
+  "600": 600,
+  "700": 700,
 };
 
 export const FONT_STYLES: FontStyle[] = ["Normal", "Italic"];

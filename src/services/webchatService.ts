@@ -1,21 +1,24 @@
 import { api } from "../api";
 
-export interface WebchatCreateRequest {
-  connectedChannelId: number;
-  websiteUrl: string;
-}
+export type WebchatCreateRequest = FormData;
 
 export interface WebchatUpdateRequest {
-  websiteUrl: string;
+  teamName: string;
+  chatName: string;
+  readReceipts: boolean;
 }
 
 export interface WebchatCreateResponse {
   success: boolean;
   channel?: {
     id: number;
-    websiteUrl: string;
     isActive: boolean;
     connectedAt: string;
+    websiteUrl?: string;
+    teamName?: string;
+    chatName?: string;
+    readReceipts?: boolean;
+    profilePic?: string | null;
   };
   message?: string;
 }
@@ -24,10 +27,14 @@ export interface WebchatUpdateResponse {
   success: boolean;
   channel?: {
     id: number;
-    websiteUrl: string;
     isActive: boolean;
     connectedAt: string;
     updatedAt: string;
+    websiteUrl?: string;
+    teamName?: string;
+    chatName?: string;
+    readReceipts?: boolean;
+    profilePic?: string | null;
   };
   message?: string;
 }
@@ -37,7 +44,12 @@ export const createWebchat = async (
 ): Promise<WebchatCreateResponse> => {
   const response = await api.post<WebchatCreateRequest, WebchatCreateResponse>(
     "/webchat",
-    data
+    data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
   return response;
 };
@@ -49,6 +61,25 @@ export const updateWebchat = async (
   const response = await api.patch<WebchatUpdateRequest, WebchatUpdateResponse>(
     `/webchat/${webchatId}`,
     data
+  );
+  return response;
+};
+
+export const uploadWebchatProfilePic = async (
+  webchatId: number,
+  profilePic: File
+): Promise<WebchatUpdateResponse> => {
+  const formData = new FormData();
+  formData.append("profilePic", profilePic);
+
+  const response = await api.post<FormData, WebchatUpdateResponse>(
+    `/webchat/${webchatId}/upload-profile-pic`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
   return response;
 };
@@ -66,4 +97,3 @@ export const deleteWebchat = async (
   );
   return response;
 };
-

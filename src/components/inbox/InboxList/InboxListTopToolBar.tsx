@@ -1,19 +1,22 @@
-import { ReactNode, useMemo, useRef } from "react"
-import { cn } from "../../../lib/utils"
-import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon"
-import IconButton from "../../ui/IconButton"
-import SettingsDrawerIcon from "../../../assets/icons/SettingsDrawerIcon"
-import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon"
-import Heading from "../../ui/Heading"
-import { SmartDropdown, DropdownItem } from "../../smart-dropdown"
-import { useToggle } from "../../../hooks/useToggle"
-import { inboxTypeLabels } from "../utils/dummyData"
-import { InboxType } from "../types"
-import MoreVerticalIcon from "../../../assets/icons/MoreVerticalIcon"
-import PlusIcon from "../../../assets/icons/PlusIcon"
-import CreateNewChatModal from "../CreateNewChatModal"
-import { InboxListTopToolBarProps } from "./types"
-import { useRouter } from "next/navigation"
+import { ReactNode, useMemo, useRef } from "react";
+import { cn } from "../../../lib/utils";
+import ChevronDownIcon from "../../../assets/icons/ChevronDownIcon";
+import IconButton from "../../ui/IconButton";
+import SettingsDrawerIcon from "../../../assets/icons/SettingsDrawerIcon";
+import PanelCollapseIcon from "../../../assets/icons/PanelCollapseIcon";
+import Heading from "../../ui/Heading";
+import { SmartDropdown, DropdownItem } from "../../smart-dropdown";
+import { useToggle } from "../../../hooks/useToggle";
+import { inboxTypeLabels } from "../utils/dummyData";
+import { InboxType } from "../types";
+import MoreVerticalIcon from "../../../assets/icons/MoreVerticalIcon";
+import PlusIcon from "../../../assets/icons/PlusIcon";
+import CreateNewChatModal from "../CreateNewChatModal";
+import { InboxListTopToolBarProps } from "./types";
+import { useRouter } from "next/navigation";
+
+import useSession from "../../../providers/hooks/useSession";
+import Avatar from "../../ui/Avatar";
 
 export function InboxListTopToolBar({
   title,
@@ -22,28 +25,31 @@ export function InboxListTopToolBar({
   onLeftClick,
   selectedInboxType,
   onInboxTypeChange,
+  isLiveDashboard,
+  isSideDrawerOpen,
 }: InboxListTopToolBarProps) {
+  const { data: user } = useSession();
   const {
     value: showActions,
     toggle: toggleActions,
     setFalse: closeActions,
-  } = useToggle()
+  } = useToggle();
 
   const {
     value: showInboxDropdown,
     toggle: toggleInboxDropdown,
     setFalse: closeInboxDropdown,
-  } = useToggle()
+  } = useToggle();
 
   const {
     value: showCreateChatModal,
     setTrue: openCreateChatModal,
     setFalse: closeCreateChatModal,
-  } = useToggle()
-  const router = useRouter()
+  } = useToggle();
+  const router = useRouter();
 
-  const actionsToggleRef = useRef<HTMLButtonElement | null>(null)
-  const inboxToggleRef = useRef<HTMLButtonElement | null>(null)
+  const actionsToggleRef = useRef<HTMLButtonElement | null>(null);
+  const inboxToggleRef = useRef<HTMLButtonElement | null>(null);
 
   const actionButtons = useMemo(
     () => (
@@ -58,23 +64,25 @@ export function InboxListTopToolBar({
           variant="primary"
           icon={<PlusIcon />}
           ariaLabel={"Add New"}
-          onClick={openCreateChatModal}
+          onClick={() => openCreateChatModal()}
         />
       </>
     ),
-    [openCreateChatModal]
-  )
+    [openCreateChatModal],
+  );
 
   return (
     <header
       className={cn(
-        "w-full px-4 md:px-2 py-4 bg-primary relative z-10",
-        className
+        "w-full px-4 md:px-5 py-4 bg-primary relative z-[1000]",
+        isLiveDashboard && "py-4 md:py-6",
+        isLiveDashboard && !isSideDrawerOpen && "sm:rounded-ss-[3rem]",
+        className,
       )}
     >
-      <div className="flex items-center justify-start gap-2.25">
+      <div className="flex items-center justify-start gap-4">
         <IconButton
-          onClick={onLeftClick}
+          onClick={() => onLeftClick?.()}
           variant="secondary"
           icon={<PanelCollapseIcon />}
           ariaLabel="Open Drawer"
@@ -83,7 +91,7 @@ export function InboxListTopToolBar({
           <button
             type="button"
             ref={inboxToggleRef}
-            onClick={toggleInboxDropdown}
+            onClick={() => toggleInboxDropdown()}
             className="flex items-center gap-2"
             aria-label="Select inbox"
           >
@@ -96,7 +104,7 @@ export function InboxListTopToolBar({
           </button>
           <SmartDropdown
             isOpen={showInboxDropdown}
-            onClose={closeInboxDropdown}
+            onClose={() => closeInboxDropdown()}
             triggerRef={inboxToggleRef}
             className="min-w-[18rem]"
             maxHeight="none"
@@ -105,12 +113,12 @@ export function InboxListTopToolBar({
             <div className="flex flex-col p-1">
               <DropdownItem
                 onClick={() => {
-                  onInboxTypeChange?.("general")
-                  closeInboxDropdown()
+                  onInboxTypeChange?.("general");
+                  closeInboxDropdown();
                 }}
                 className={cn(
                   "px-3 py-2 rounded-md",
-                  selectedInboxType === "general" && "bg-input-filled"
+                  selectedInboxType === "general" && "bg-input-filled",
                 )}
               >
                 <span className="text-dark-base-100 text-base">
@@ -119,12 +127,12 @@ export function InboxListTopToolBar({
               </DropdownItem>
               <DropdownItem
                 onClick={() => {
-                  onInboxTypeChange?.("team")
-                  closeInboxDropdown()
+                  onInboxTypeChange?.("team");
+                  closeInboxDropdown();
                 }}
                 className={cn(
                   "px-3 py-2 rounded-md",
-                  selectedInboxType === "team" && "bg-input-filled"
+                  selectedInboxType === "team" && "bg-input-filled",
                 )}
               >
                 <span className="text-dark-base-100 text-base">
@@ -139,7 +147,7 @@ export function InboxListTopToolBar({
             {actionButtons}
           </div>
           <button
-            onClick={toggleActions}
+            onClick={() => toggleActions()}
             ref={actionsToggleRef}
             aria-label="Toggle Options"
             className="text-gray-45 hidden md:flex lg:hidden p-4"
@@ -148,7 +156,7 @@ export function InboxListTopToolBar({
           </button>
           <SmartDropdown
             isOpen={showActions}
-            onClose={closeActions}
+            onClose={() => closeActions()}
             triggerRef={actionsToggleRef}
             className="hidden w-auto! md:block -ml-3"
             maxHeight="none"
@@ -161,8 +169,8 @@ export function InboxListTopToolBar({
       </div>
       <CreateNewChatModal
         isOpen={showCreateChatModal}
-        onClose={closeCreateChatModal}
+        onClose={() => closeCreateChatModal()}
       />
     </header>
-  )
+  );
 }

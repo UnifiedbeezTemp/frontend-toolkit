@@ -5,7 +5,7 @@ export type SocialPlatform =
   | "LinkedIn"
   | "YouTube"
   | "Website";
-export type FontWeight = "Light" | "Regular" | "Bold" | "Extra Bold";
+export type FontWeight = "400" | "500" | "600" | "700";
 export type FontStyle = "Normal" | "Italic";
 
 import {

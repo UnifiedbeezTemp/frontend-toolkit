@@ -26,6 +26,7 @@ export default function Contacts({ onClose }: ContactsProps) {
     setIsDetailsOpen(true);
   };
 
+
   return (
     <>
       <div className="pt-[1.9rem] sm:pt-[2.4rem] bg-primary pb-[1rem] sticky top-0">

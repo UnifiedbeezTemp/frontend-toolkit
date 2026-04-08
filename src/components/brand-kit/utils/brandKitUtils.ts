@@ -18,19 +18,18 @@ export const getPlatformIcon = (platform: string, icons: IconsType) => {
 };
 
 export const getFontWeightStyle = (weight: string, style?: string) => {
+  const lower = weight.trim().toLowerCase();
+  const numeric = Number.parseInt(lower, 10);
+
   let fontWeight = 400;
-  switch (weight) {
-    case "Bold":
-      fontWeight = 700;
-      break;
-    case "Extra Bold":
-      fontWeight = 800;
-      break;
-    case "Light":
-      fontWeight = 300;
-      break;
-    default:
-      fontWeight = 400;
+  if (Number.isFinite(numeric)) {
+    fontWeight = numeric;
+  } else if (lower.includes("bold")) {
+    fontWeight = 700;
+  } else if (lower.includes("light")) {
+    fontWeight = 400;
+  } else {
+    fontWeight = 400;
   }
 
   return {

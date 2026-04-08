@@ -1,3 +1,22 @@
+export interface WebchatLanguageConfigDto {
+  id: number
+  webchatConfigId: number
+  languageCode: string
+  languageName: string
+  isActive: boolean
+  displayOrder: number
+}
+
+export interface WebchatContentLocalizationDto {
+  id: number
+  webchatConfigId: number
+  languageCode: string
+  title: string
+  body: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface WebchatConfigDto {
   id: number
   websiteUrl: string
@@ -7,6 +26,7 @@ export interface WebchatConfigDto {
   phoneNumbers: string[] | null
   chatIcon: string | null
   bubbleColor: string
+  textColor: string
   greetingText: string | null
   greetingLanguage: string
   backgroundType: "SOLID" | "GRADIENT"
@@ -19,7 +39,7 @@ export interface WebchatConfigDto {
   alignment: "LEFT" | "RIGHT"
   distanceFromRight: number
   distanceFromBottom: number
-  teamMemberAccess: number[]
+  teamMemberAccess: {id:number, email:string, fullName:string}[]
   profilePic: string | null
   introduceTeam: boolean
   widgetBgColor: string
@@ -35,6 +55,8 @@ export interface WebchatConfigDto {
   defaultLanguage: string
   languages: string[] | null
   localizedContent: unknown | null
+  languageConfigs?: WebchatLanguageConfigDto[]
+  contentLocalizations?: WebchatContentLocalizationDto[]
   createdAt: string
   updatedAt: string
   aiAssistant?: {
@@ -131,6 +153,7 @@ export interface UpdateWebchatConfigPayload {
   websiteUrl?: string
   chatIcon?: string
   bubbleColor?: string
+  textColor?: string
   greetingText?: string
   greetingLanguage?: string
   backgroundType?: "SOLID" | "TRANSPARENT" | "GRADIENT"
@@ -168,7 +191,6 @@ export interface SendInstructionsToTeamPayload {
 export interface CreateLanguagePayload {
   languageCode: string
   languageName: string
-  displayOrder: number
 }
 
 export interface CreateLocalizationPayload {

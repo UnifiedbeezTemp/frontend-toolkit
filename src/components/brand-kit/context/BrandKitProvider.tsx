@@ -8,6 +8,10 @@ import { useCompanyLogo } from "../hooks/useCompanyLogo";
 import { useBrandKitMapper } from "../hooks/useBrandKitMapper";
 import { useToast } from "../../../components/ui/toast/useToast";
 import type { BrandKitContextType } from "../types/brandKitTypes";
+import type {
+  BrandDetectionResponse,
+  BrandDetectionSseEvent,
+} from "../../../types/brandKitApiTypes";
 import {
   useBrandKitData,
   useUpdateBrandKit,
@@ -19,6 +23,7 @@ import { BrandKitContext } from "./BrandKitContext";
 import { useBrandKitActions } from "./useBrandKitActions";
 import { useBrandKitChangeDetection } from "./useBrandKitChangeDetection";
 import { BrandDetectionOverride } from "./contextTypes";
+import BrandKitDetectionModal from "../detection/BrandKitDetectionModal";
 
 export function BrandKitProvider({ children }: { children: ReactNode }) {
   const {
@@ -70,6 +75,31 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
   const { mutateAsync: detectBrandMutation, isPending: isDetecting } =
     useDetectBrandKit();
 
+  const [isDetectionModalOpen, setIsDetectionModalOpen] = React.useState(false);
+  const [detectionData, setDetectionData] =
+    React.useState<BrandDetectionResponse | null>(null);
+
+  const handleDetectionStart = React.useCallback((_websiteUrl: string) => {
+    setDetectionData(null);
+    setIsDetectionModalOpen(false);
+  }, []);
+
+  const handleDetectionEvent = React.useCallback((_event: BrandDetectionSseEvent) => {
+    // Intentionally no-op — modal opens only once the request completes successfully.
+  }, []);
+
+  const handleDetectionComplete = React.useCallback(
+    (data: BrandDetectionResponse) => {
+      setDetectionData(data);
+      setIsDetectionModalOpen(true);
+    },
+    [],
+  );
+
+  const handleDetectionError = React.useCallback((_message: string) => {
+    setIsDetectionModalOpen(false);
+  }, []);
+
   const {
     onImportBrandKit,
     handleDetectBrand,
@@ -98,6 +128,10 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
     deleteLogoMutation,
     detectBrandMutation,
     setDetectionOverride,
+    onDetectionStart: handleDetectionStart,
+    onDetectionEvent: handleDetectionEvent,
+    onDetectionComplete: handleDetectionComplete,
+    onDetectionError: handleDetectionError,
   });
 
   const hasChanges = useBrandKitChangeDetection({
@@ -206,6 +240,11 @@ export function BrandKitProvider({ children }: { children: ReactNode }) {
   return (
     <BrandKitContext.Provider value={value}>
       {children}
+      <BrandKitDetectionModal
+        isOpen={isDetectionModalOpen}
+        onClose={() => setIsDetectionModalOpen(false)}
+        data={detectionData}
+      />
     </BrandKitContext.Provider>
   );
 }

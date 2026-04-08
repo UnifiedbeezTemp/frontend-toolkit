@@ -6,6 +6,7 @@ import Text from "../../../components/ui/Text";
 import CloseModalButton from "../../../components/modal/CloseModalButton";
 import ChannelConfigWrapper from "../config/ChannelConfigWrapper";
 import { DesktopSettingsPanelProps } from "../types";
+import type { ChannelConnection } from "../../../types/channelConnectionTypes";
 
 export default function DesktopSettingsPanel({
   channel,
@@ -14,6 +15,12 @@ export default function DesktopSettingsPanel({
   editingConnectionId,
   onRefetchChannels,
 }: DesktopSettingsPanelProps) {
+  const handleEditConnectionWrapper = (connection: ChannelConnection | null) => {
+    if (!connection) {
+      onEditConnection?.(null);
+    }
+  };
+
   if (!channel) {
     return (
       <div className="flex flex-col h-full items-center justify-center">
@@ -56,6 +63,7 @@ export default function DesktopSettingsPanel({
         <ChannelConfigWrapper
           channel={channel}
           onClose={onClose}
+          onEditConnection={handleEditConnectionWrapper}
           editingConnectionId={editingConnectionId}
           onRefetchChannels={onRefetchChannels}
         />
