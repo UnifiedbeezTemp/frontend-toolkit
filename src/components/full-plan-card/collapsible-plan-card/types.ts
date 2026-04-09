@@ -12,4 +12,5 @@ export interface CollapsiblePlanCardProps {
   className?: string;
   isSelectionDisabled?: boolean
   isCurrentPlan?: boolean
+  showFooter?: boolean
 }
