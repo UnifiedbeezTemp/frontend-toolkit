@@ -20,7 +20,7 @@ import LiveChatConfig from "./livechat/LiveChatConfig";
 
 export const channelConfigMap: Record<string, ChannelConfigComponent> = {
   whatsapp: WhatsAppConfig,
-  webchat: WebchatConfig,
+  webchat: LiveChatConfig,
   livechat: LiveChatConfig,
   facebook_messenger: FacebookConfig as ChannelConfigComponent,
   instagram_direct: InstagramConfig as ChannelConfigComponent,

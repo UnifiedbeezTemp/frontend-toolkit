@@ -24,8 +24,8 @@ const getInitialState = (): Step7WebchatState => {
   const persisted = step7WebchatPersistence.load();
   if (persisted) {
     return {
-      webchatUrls: (persisted.webchatUrls as WebchatUrl[]) || [],
-      addedWebchatUrls: (persisted.addedWebchatUrls as WebchatUrl[]) || [],
+      webchatUrls: [],
+      addedWebchatUrls: [],
       selectedWebchatId: persisted.selectedWebchatId || null,
       searchQuery: "",
     };
@@ -67,8 +67,6 @@ const step7WebchatSlice = createSlice({
       state.webchatUrls = action.payload;
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
-        addedWebchatUrls: state.addedWebchatUrls,
       });
     },
 
@@ -84,8 +82,6 @@ const step7WebchatSlice = createSlice({
       // Persist to sessionStorage
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
-        addedWebchatUrls: state.addedWebchatUrls,
       });
     },
 
@@ -99,7 +95,6 @@ const step7WebchatSlice = createSlice({
       // Persist to sessionStorage
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
       });
     },
 
@@ -115,8 +110,6 @@ const step7WebchatSlice = createSlice({
       // Persist to sessionStorage
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
-        addedWebchatUrls: state.addedWebchatUrls,
       });
     },
 
@@ -156,8 +149,6 @@ const step7WebchatSlice = createSlice({
       // Persist immediately
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
-        addedWebchatUrls: state.addedWebchatUrls,
       });
     },
 
@@ -174,7 +165,6 @@ const step7WebchatSlice = createSlice({
       // Persist to sessionStorage
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
       });
     },
 
@@ -205,7 +195,6 @@ const step7WebchatSlice = createSlice({
       // Persist to sessionStorage
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
       });
     },
 
@@ -223,7 +212,6 @@ const step7WebchatSlice = createSlice({
       // Persist to sessionStorage
       step7WebchatPersistence.save({
         selectedWebchatId: state.selectedWebchatId,
-        webchatUrls: state.webchatUrls,
       });
     },
   },
