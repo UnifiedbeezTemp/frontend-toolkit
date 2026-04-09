@@ -22,6 +22,7 @@ export default function CollapsiblePlanCard({
   className,
   isSelectionDisabled,
   handleAddonClick,
+  showFooter = true,
 }: CollapsiblePlanCardProps) {
   const { displayPrice } = useCollapsiblePlanCard(plan, isYearly);
   const { value: expanded, toggle: toggleExpanded } = useToggle(defaultExpanded)
@@ -54,14 +55,14 @@ export default function CollapsiblePlanCard({
           <div className="bg-input-filled divide-y divide-border">
             <CollapsiblePlanCardFeatures plan={plan} />
           </div>
-          <CollapsiblePlanCardFooter
+          {showFooter && <CollapsiblePlanCardFooter
             plan={plan}
             isSelected={isSelected}
             isLowerThanCurrentPlan={isLowerThanCurrentPlan}
             onSelect={onSelect}
             isSelectionDisabled={isSelectionDisabled}
             isCurrentPlan={isCurrentPlan}
-          />
+          />}
         </div>
       </ExpandableCard>
     </Card>
