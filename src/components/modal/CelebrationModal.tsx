@@ -15,6 +15,8 @@ export default function CelebrationModal({
   heading,
   continueBtnText,
   backBtnText,
+  isContinueDisabled,
+  isGoBackDisabled
 }: CelebrationModalProps) {
   const { celebrationPopup } = useSupabaseGifs();
 
@@ -46,6 +48,8 @@ export default function CelebrationModal({
         </Heading>
         <div className="flex flex-col sm:flex-row gap-2.25 md:gap-3 w-full mt-8">
           <Button
+            disabled={isContinueDisabled}
+            loading={isContinueDisabled}
             variant="primary"
             onClick={onContinue}
             className="shrink-0 basis-1/2"
@@ -53,6 +57,7 @@ export default function CelebrationModal({
             {continueBtnText || <>Continue</>}
           </Button>
           <Button
+            disabled={isGoBackDisabled}
             variant="secondary"
             onClick={onGoBack}
             className="shrink-0 basis-1/2"
