@@ -56,9 +56,9 @@ export default function WebsiteCard({
 
   useWebsitePolling(isDiscoveringPages);
 
-  useWebsitePolling(
-    isEntireAndPending || website.discoveryStatus === "DISCOVERING",
-  );
+  // useWebsitePolling(
+  //   isEntireAndPending || website.discoveryStatus === "DISCOVERING",
+  // );
 
   return (
     <div
