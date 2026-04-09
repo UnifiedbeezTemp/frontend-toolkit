@@ -56,6 +56,10 @@ export default function WebsiteCard({
 
   useWebsitePolling(isDiscoveringPages);
 
+  useWebsitePolling(
+    isEntireAndPending || website.discoveryStatus === "DISCOVERING",
+  );
+
   return (
     <div
       className={`border border-border py-[1rem] px-[0.6rem] rounded-[0.8rem] ${

@@ -27,7 +27,7 @@ export default function CollapsiblePlanCardHeader({
           <h3 className="text-brand-primary font-bold text-base">
             {plan.title}
           </h3>
-          <span className="md:absolute lg:static xl:absolute block whitespace-nowrap md:left-16 ">{plan.tag}</span>
+          <span className="md:absolute lg:static xl:absolute block whitespace-nowrap md:left-20 lg:left-16 ">{plan.tag}</span>
         </div>
        {showChevron
         && <button
