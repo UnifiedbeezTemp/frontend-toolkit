@@ -17,10 +17,7 @@ function isVisitedStep(value: unknown): value is VisitedStep {
     return false;
   }
   const subStepId = record.subStepId;
-  if (
-    typeof subStepId !== "string" &&
-    typeof subStepId !== "number"
-  ) {
+  if (typeof subStepId !== "string" && typeof subStepId !== "number") {
     return false;
   }
   return true;
@@ -40,7 +37,9 @@ function isStoredPayload(value: unknown): value is StoredPayload {
   return (record.visitedSteps as unknown[]).every(isVisitedStep);
 }
 
-export function loadVisitedStepsFromSession(userId: string): VisitedStep[] | null {
+export function loadVisitedStepsFromSession(
+  userId: string,
+): VisitedStep[] | null {
   if (typeof window === "undefined") return null;
   if (!userId) return null;
 
@@ -63,7 +62,7 @@ export function loadVisitedStepsFromSession(userId: string): VisitedStep[] | nul
 
 export function saveVisitedStepsToSession(
   userId: string,
-  visitedSteps: VisitedStep[]
+  visitedSteps: VisitedStep[],
 ): void {
   if (typeof window === "undefined") return;
   if (!userId) return;

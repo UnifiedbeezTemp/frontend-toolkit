@@ -4,22 +4,6 @@ const STEP7_WEBCHAT_STORAGE_KEY = "step7_webchat_state";
 
 export interface PersistedWebchatState {
   selectedWebchatId: string | number | null;
-  webchatUrls: Array<{
-    id: string | number;
-    url: string;
-    isSelected?: boolean;
-    isConfigured?: boolean;
-    type: "webchat" | "website" | "added";
-    sourceAssistantId?: string | number;
-  }>;
-  addedWebchatUrls?: Array<{
-    id: string | number;
-    url: string;
-    isSelected?: boolean;
-    isConfigured?: boolean;
-    type: "webchat" | "website" | "added";
-    sourceAssistantId?: string | number;
-  }>;
 }
 
 export const step7WebchatPersistence = {
