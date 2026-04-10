@@ -31,6 +31,7 @@ export default function LiveChatConfig({
     setValue,
     prepareCreateFormData,
     prepareUpdatePayload,
+    reset,
   } = useLiveChatConfig(channelId, connection);
 
   const {
@@ -50,6 +51,7 @@ export default function LiveChatConfig({
     onEditConnection,
     prepareCreateFormData,
     prepareUpdatePayload,
+    reset,
   });
 
   if (showRequirements) {

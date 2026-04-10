@@ -20,13 +20,13 @@ export default function LiveChatRequirements({
         </Button>
       }
     >
-      <Text className="text-[1.2rem]">
+      {/* <Text className="text-[1.2rem]">
         Need help installing Live Chat? Learn how to{" "}
         <span className="text-brand-primary underline cursor-pointer">
           install
         </span>{" "}
         Live Chat on your website
-      </Text>
+      </Text> */}
     </ChannelRequirements>
   );
 }
