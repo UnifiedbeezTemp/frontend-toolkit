@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { LiveChatFormData } from "./useLiveChatConfig";
+import { useLiveChatConfig, LiveChatFormData } from "./useLiveChatConfig";
 import { useAppMutation } from "../../../../../api";
 import {
   LiveChatCreateResponse,
@@ -23,6 +23,7 @@ interface UseLiveChatHandlersProps {
   onEditConnection?: (connection: ChannelConnection | null) => void;
   prepareCreateFormData: (data: LiveChatFormData) => FormData;
   prepareUpdatePayload: (data: LiveChatFormData) => LiveChatUpdateRequest;
+  reset: (values?: LiveChatFormData) => void;
 }
 
 type UpdateLiveChatInput = {
@@ -37,6 +38,7 @@ export function useLiveChatHandlers({
   onEditConnection,
   prepareCreateFormData,
   prepareUpdatePayload,
+  reset,
 }: UseLiveChatHandlersProps) {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
@@ -80,6 +82,7 @@ export function useLiveChatHandlers({
         });
 
         refetchConnections();
+        reset();
         onEditConnection?.(null);
         setForceShowRequirements(true);
 

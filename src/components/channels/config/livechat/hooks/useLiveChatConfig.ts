@@ -97,5 +97,6 @@ export function useLiveChatConfig(
     register,
     prepareCreateFormData,
     prepareUpdatePayload,
+    reset,
   };
 }
