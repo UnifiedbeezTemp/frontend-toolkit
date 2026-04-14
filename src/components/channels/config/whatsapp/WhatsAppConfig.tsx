@@ -30,6 +30,7 @@ export default function WhatsAppConfig({
     showRequirements,
     showDeleteModal,
     isLoading,
+    isDeleting,
     handleContinue,
     handleSubmit,
     handleDeleteClick,
@@ -67,6 +68,7 @@ export default function WhatsAppConfig({
         onClose={handleCloseDeleteModal}
         onConfirm={handleConfirmDelete}
         channelName={channel.name}
+        isLoading={isDeleting}
       />
     </>
   );

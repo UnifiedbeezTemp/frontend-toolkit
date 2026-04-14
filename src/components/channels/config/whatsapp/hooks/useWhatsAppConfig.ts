@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import {
-  ChannelConnection,
-  ChannelConnectionFormData,
-} from "../../../../types/channelConnectionTypes";
+import { ChannelConnection, ChannelConnectionFormData } from "../../../../../types/channelConnectionTypes";
 
 export interface WhatsAppFormData {
   internalName: string;
