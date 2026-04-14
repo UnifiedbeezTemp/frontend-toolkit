@@ -16,11 +16,14 @@ export const initWabaSetup = async (): Promise<WabaSetupInitResponse> => {
 
 export const completeWabaCallback = async (
   token: string,
-  payload: WabaCallbackRequest
+  payload: WabaCallbackRequest,
 ): Promise<WabaCallbackResponse> => {
   return api.post<WabaCallbackRequest, WabaCallbackResponse>(
     `/waba/callback?token=${token}`,
-    payload
+    payload,
   );
 };
 
+export const deleteWabaChannel = async (channelId: string): Promise<void> => {
+  return api.delete(`/waba/channels/${channelId}`);
+};
