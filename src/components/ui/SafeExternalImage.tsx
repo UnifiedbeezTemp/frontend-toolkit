@@ -1,16 +1,10 @@
-"use client";
+"use client"
 
-import {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  startTransition,
-  memo,
-} from "react"
+import { useState, useEffect, useRef, useCallback, memo, ReactNode } from "react"
 
 import { cn } from "../../lib/utils"
 import { analyzeImageLuminance } from "../../utils/imageLuminance"
+
 interface SafeExternalImageProps {
   src: string | null | undefined
   alt: string
@@ -22,7 +16,9 @@ interface SafeExternalImageProps {
   autoBackground?: boolean
 }
 
-const BG_COLORS = {
+type BgType = "light" | "dark" | "neutral"
+
+const BG_COLORS: Record<BgType, string> = {
   light: "#ffffff",
   dark: "#374151",
   neutral: "#f3f4f6",
@@ -37,52 +33,38 @@ function SafeExternalImage({
   width = 100,
   height = 100,
   autoBackground = false,
-}: SafeExternalImageProps) {
-  const [hasError, setHasError] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [bgType, setBgType] = useState<"light" | "dark" | "neutral">("neutral")
+}: SafeExternalImageProps): ReactNode {
+  const [hasError, setHasError] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [bgType, setBgType] = useState<BgType>("neutral")
+  const [trackedSrc, setTrackedSrc] = useState<string | null | undefined>(src)
   const imgRef = useRef<HTMLImageElement>(null)
-  const isMountedRef = useRef(false)
 
-  useEffect(() => {
-    isMountedRef.current = true
-    return () => {
-      isMountedRef.current = false
+  // React's recommended pattern for resetting state on prop change: compare
+  // during render and update synchronously. Avoids the race where an effect-
+  // based reset runs after a cached image has already fired onLoad.
+  if (src !== trackedSrc) {
+    setTrackedSrc(src)
+    setHasError(false)
+    setIsLoading(true)
+    setBgType("neutral")
+  }
+
+  const handleLoad = useCallback((): void => {
+    setIsLoading(false)
+    if (autoBackground && imgRef.current) {
+      setBgType(analyzeImageLuminance(imgRef.current))
     }
-  }, [])
-
-  useEffect(() => {
-    if (!isMountedRef.current) return
-
-    const timer = setTimeout(() => {
-      if (isMountedRef.current) {
-        startTransition(() => {
-          setHasError(false)
-          setIsLoading(true)
-          setBgType("neutral")
-        })
-      }
-    }, 0)
-
-    return () => clearTimeout(timer)
-  }, [src])
-
-  const handleLoad = useCallback(() => {
-    if (!isMountedRef.current) return
-
-    requestAnimationFrame(() => {
-      if (!isMountedRef.current) return
-
-      startTransition(() => {
-        setIsLoading(false)
-
-        if (autoBackground && imgRef.current) {
-          const type = analyzeImageLuminance(imgRef.current)
-          setBgType(type)
-        }
-      })
-    })
   }, [autoBackground])
+
+  // Cached images can complete before React attaches the onLoad handler, so
+  // the load event is missed. Detect that case after mount/src change.
+  useEffect(() => {
+    const img = imgRef.current
+    if (img && img.complete && img.naturalWidth > 0) {
+      handleLoad()
+    }
+  }, [src, handleLoad])
 
   if (!src || hasError) {
     return (
@@ -115,20 +97,11 @@ function SafeExternalImage({
         ref={imgRef}
         src={src}
         alt={alt}
-        crossOrigin="anonymous"
         className={cn(
           "w-full h-full object-contain transition-opacity duration-300",
           isLoading ? "opacity-0" : "opacity-100"
         )}
-        onError={() => {
-          if (isMountedRef.current) {
-            requestAnimationFrame(() => {
-              if (isMountedRef.current) {
-                startTransition(() => setHasError(true))
-              }
-            })
-          }
-        }}
+        onError={() => setHasError(true)}
         onLoad={handleLoad}
       />
     </div>
