@@ -8,46 +8,46 @@ interface ChannelState {
   isSettingsOpen: boolean;
 }
 
-export function useChannelState(channelId: string) {
+export function useChannelState(channelId: string, initialExpanded = false) {
   const [states, setStates] = useState<Record<string, ChannelState>>({
     [channelId]: {
-      isExpanded: false,
+      isExpanded: initialExpanded,
       isConnected: false,
-      isSettingsOpen: false
-    }
+      isSettingsOpen: false,
+    },
   });
 
   const state = states[channelId];
 
   const toggleExpand = useCallback(() => {
-    setStates(prev => ({
+    setStates((prev) => ({
       ...prev,
       [channelId]: {
         ...prev[channelId],
-        isExpanded: !prev[channelId]?.isExpanded
-      }
+        isExpanded: !prev[channelId]?.isExpanded,
+      },
     }));
   }, [channelId]);
 
   const handleConnect = useCallback(() => {
-    setStates(prev => ({
+    setStates((prev) => ({
       ...prev,
       [channelId]: {
         ...prev[channelId],
         isConnected: true,
         isExpanded: false,
-        isSettingsOpen: true
-      }
+        isSettingsOpen: true,
+      },
     }));
   }, [channelId]);
 
   const toggleSettings = useCallback(() => {
-    setStates(prev => ({
+    setStates((prev) => ({
       ...prev,
       [channelId]: {
         ...prev[channelId],
-        isSettingsOpen: !prev[channelId]?.isSettingsOpen
-      }
+        isSettingsOpen: !prev[channelId]?.isSettingsOpen,
+      },
     }));
   }, [channelId]);
 
@@ -57,6 +57,6 @@ export function useChannelState(channelId: string) {
     isSettingsOpen: state?.isSettingsOpen || false,
     toggleExpand,
     handleConnect,
-    toggleSettings
+    toggleSettings,
   };
 }

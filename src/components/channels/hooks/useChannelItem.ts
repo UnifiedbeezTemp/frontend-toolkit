@@ -6,25 +6,30 @@ import { useChannelConnectionsData } from "./useChannelConnectionsData";
 
 interface UseChannelItemProps {
   channel: Channel;
+  defaultExpanded?: boolean;
 }
 
-export function useChannelItem({ channel }: UseChannelItemProps) {
-  const {
-    isExpanded,
-    toggleExpand,
-  } = useChannelState(channel.id);
-  
+export function useChannelItem({
+  channel,
+  defaultExpanded = false,
+}: UseChannelItemProps) {
+  const { isExpanded, toggleExpand } = useChannelState(
+    channel.id,
+    defaultExpanded,
+  );
+
   const { connections, isLoading } = useChannelConnectionsData(channel);
   const hasChannelConnections = connections.length > 0;
-  const [editingConnection, setEditingConnection] = useState<ConnectionDisplayData | null>(null);
+  const [editingConnection, setEditingConnection] =
+    useState<ConnectionDisplayData | null>(null);
 
   const handleEditConnection = (connection: ConnectionDisplayData | null) => {
     if (connection) {
       setEditingConnection(connection);
       setTimeout(() => {
-        const formElement = document.querySelector('form');
+        const formElement = document.querySelector("form");
         if (formElement) {
-          formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          formElement.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }, 100);
     } else {
@@ -48,4 +53,3 @@ export function useChannelItem({ channel }: UseChannelItemProps) {
     isLoading,
   };
 }
-

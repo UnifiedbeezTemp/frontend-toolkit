@@ -144,7 +144,9 @@ export interface LabelChannelItem {
   type: "channel";
   id: number;
   displayOrder: number;
-  connectedChannelId: number;
+  accountType?: string;
+  accountId?: number;
+  connectedChannelId?: number;
   displayName: string;
   icon: string;
   isActive: boolean;
