@@ -2,6 +2,9 @@ import { useState } from "react";
 import { WhatsAppFormData } from "./useWhatsAppConfig";
 import { useWhatsAppIntegration } from "./useWhatsAppIntegration";
 import { WabaCallbackResponse } from "../../../../../types/channelApiTypes";
+import { deleteWabaChannel } from "../../../../../services/wabaService";
+import { useToast } from "../../../../ui/toast/ToastProvider";
+import { extractErrorMessage } from "../../../../../utils/extractErrorMessage";
 import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
 
 interface UseWhatsAppHandlersProps {
@@ -16,7 +19,7 @@ interface UseWhatsAppHandlersProps {
  * Maps WabaChannel or WabaData from backend to ChannelConnectionFormData format
  */
 const mapWabaChannelToConnectionData = (
-  response: WabaCallbackResponse
+  response: WabaCallbackResponse,
 ): Record<string, unknown> => {
   const { channel, wabaData, channelId } = response;
 
@@ -45,8 +48,10 @@ export function useWhatsAppHandlers({
   readConfirmation,
   onRefetchChannels,
 }: UseWhatsAppHandlersProps) {
+  const { showToast } = useToast();
   const [showRequirements, setShowRequirements] = useState(!connection);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { startIntegration, isLoading } = useWhatsAppIntegration(
     async (response: WabaCallbackResponse) => {
@@ -61,7 +66,7 @@ export function useWhatsAppHandlers({
         setShowRequirements(false);
         onSave(connectionData);
       }
-    }
+    },
   );
 
   const handleContinue = () => {
@@ -80,9 +85,34 @@ export function useWhatsAppHandlers({
     setShowDeleteModal(true);
   };
 
-  const handleConfirmDelete = () => {
-    if (connection) {
-      onSave({ _delete: true });
+  const handleConfirmDelete = async () => {
+    if (!connection) return;
+
+    try {
+      setIsDeleting(true);
+      await deleteWabaChannel(connection.id);
+
+      showToast({
+        title: "Account Deleted",
+        description: "WhatsApp Business Account has been successfully deleted.",
+        variant: "success",
+      });
+
+      setShowDeleteModal(false);
+      if (onRefetchChannels) {
+        await onRefetchChannels();
+      }
+    } catch (error) {
+      showToast({
+        title: "Deletion Failed",
+        description: extractErrorMessage(
+          error,
+          "Failed to delete the WhatsApp Business Account. Please try again.",
+        ),
+        variant: "error",
+      });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -94,6 +124,7 @@ export function useWhatsAppHandlers({
     showRequirements,
     showDeleteModal,
     isLoading,
+    isDeleting,
     handleContinue,
     handleSubmit,
     handleDeleteClick,

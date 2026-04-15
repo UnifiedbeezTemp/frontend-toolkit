@@ -8,6 +8,18 @@ export interface LiveChatUpdateRequest {
   readReceipts: boolean;
 }
 
+export interface LiveChatAccount {
+  id: number;
+  connectedChannelId: number;
+  teamName: string | null;
+  chatName: string | null;
+  profilePic: string | null;
+  readReceipts: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface LiveChatCreateResponse {
   success: boolean;
   channel?: {
@@ -36,6 +48,11 @@ export interface LiveChatUpdateResponse {
     readReceipts?: boolean;
     profilePic?: string | null;
   };
+  message?: string;
+}
+
+export interface LiveChatDeleteResponse {
+  success: boolean;
   message?: string;
 }
 
@@ -83,11 +100,6 @@ export const uploadLiveChatProfilePic = async (
   return response;
 };
 
-export interface LiveChatDeleteResponse {
-  success: boolean;
-  message?: string;
-}
-
 export const deleteLiveChat = async (
   livechatId: number,
 ): Promise<LiveChatDeleteResponse> => {
@@ -95,4 +107,8 @@ export const deleteLiveChat = async (
     `/livechat/${livechatId}`,
   );
   return response;
+};
+
+export const getLivechats = async (): Promise<LiveChatAccount[]> => {
+  return api.get<LiveChatAccount[]>("/livechat");
 };

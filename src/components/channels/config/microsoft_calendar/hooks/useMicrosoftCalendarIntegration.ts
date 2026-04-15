@@ -30,7 +30,6 @@ export const useMicrosoftCalendarIntegration = ({
       const authUrl = `${apiBaseUrl}/channels/calendar/microsoft/auth`;
       showRedirectModal("Microsoft Calendar", authUrl, icons.microsoftCalendar);
     } catch (error) {
-      console.error("Failed to initiate Microsoft Calendar OAuth:", error);
       showToast({
         title: "Error",
         description: "Failed to start Microsoft Calendar connection",

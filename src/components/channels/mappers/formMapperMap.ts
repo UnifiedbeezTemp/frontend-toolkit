@@ -65,7 +65,8 @@ export const formMapperMap: Record<
   ) => ChannelConnection
 > = {
   webchat: (connection) =>
-    mapWebchatConnectionToFormData(connection as WebchatConnection),
+    // mapWebchatConnectionToFormData(connection as WebchatConnection),
+   mapLiveChatConnectionToFormData(connection as LiveChatConnection),
   livechat: (connection) =>
     mapLiveChatConnectionToFormData(connection as LiveChatConnection),
   gmail: (connection) => mapGmailAccountToFormData(connection as GmailAccount),
