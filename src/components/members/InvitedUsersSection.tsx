@@ -4,7 +4,6 @@ import { useEffect } from "react"
 import { useAppSelector } from "../../store/hooks/useRedux"
 import {
   selectFilteredInvitedUsers,
-  selectTotalInvitedUsers,
   selectSelectedInvitedCount,
 } from "../../store/onboarding/slices/membersSlice"
 import Heading from "../ui/Heading"
@@ -16,21 +15,20 @@ import EmptyState from "./EmptyState"
 import { useInvitedBulkActions } from "./hooks/useInvitedBulkActions"
 import { InvitedBulkActions } from "./components/InvitedBulkActions"
 import { ApiRole } from "../../types/api/memberTypes"
+import { useOptionalTeamManagementContext } from "./context/TeamManagementContext"
+import { InvitationFailure, UserInvitePayload } from "./types/teamManagement"
 
 interface InvitedUsersSectionProps {
   isLoading?: boolean
   error?: unknown
   onRetry?: () => void
-  onSendInvite?: (payload: {
-    invitationId: string
-    email: string
-    roleId: number
-  }) => void
-  isSendingInvite?: boolean
-  //(invitationId: string) => boolean
+  onSendInvite?: (
+    payload: UserInvitePayload | UserInvitePayload[],
+  ) => void | Promise<void>
+  isSendingInvite?: boolean | ((invitationId: string) => boolean)
   roles?: ApiRole[]
   onFailedInvitationsChange?: (
-    failures: Array<{ email: string; error: string }>,
+    failures: InvitationFailure[],
   ) => void
 }
 
@@ -43,15 +41,18 @@ export default function InvitedUsersSection({
   roles = [],
   onFailedInvitationsChange,
 }: InvitedUsersSectionProps) {
+  const teamManagement = useOptionalTeamManagementContext()
   const invitedUsers = useAppSelector(selectFilteredInvitedUsers)
-  const totalInvitedUsers = useAppSelector(selectTotalInvitedUsers)
   const selectedCount = useAppSelector(selectSelectedInvitedCount)
-  const hasFilter = useAppSelector(
-    (state) => state.members.statusFilterInvited !== null,
-  )
   const isDraftFilter = useAppSelector(
     (state) => state.members.statusFilterInvited === "draft",
   )
+  const resolvedRoles = teamManagement?.roles ?? roles
+  const resolvedIsLoading =
+    teamManagement?.isLoadingInvitations ?? isLoading
+  const resolvedError = teamManagement?.invitationsError ?? error
+  const resolvedRetry = teamManagement?.refetchInvitations ?? onRetry
+  const bulkSendState = teamManagement?.bulkSendState
   const {
     selectAll,
     clearSelection,
@@ -59,7 +60,7 @@ export default function InvitedUsersSection({
     bulkSend,
     isSending,
     failedInvitations,
-  } = useInvitedBulkActions({ roles, enable: isDraftFilter })
+  } = useInvitedBulkActions({ roles: resolvedRoles, enable: isDraftFilter })
 
   useEffect(() => {
     if (onFailedInvitationsChange) {
@@ -85,17 +86,41 @@ export default function InvitedUsersSection({
           isSending={isSending}
         />
 
-        {isLoading ? (
+        {bulkSendState && bulkSendState.status !== "idle" && bulkSendState.message && (
+          <p
+            className={`text-[1.4rem] ${
+              bulkSendState.status === "error"
+                ? "text-destructive"
+                : bulkSendState.status === "success"
+                  ? "text-brand-primary"
+                  : "text-secondary"
+            }`}
+          >
+            {bulkSendState.message}
+          </p>
+        )}
+
+        {failedInvitations.length > 0 && (
+          <div className="space-y-[0.6rem]">
+            {failedInvitations.map((failure) => (
+              <p key={`${failure.email}-${failure.error}`} className="text-[1.4rem] text-destructive">
+                <span className="font-[700]">{failure.email}:</span> {failure.error}
+              </p>
+            ))}
+          </div>
+        )}
+
+        {resolvedIsLoading ? (
           <MembersSkeleton />
-        ) : error ? (
+        ) : resolvedError ? (
           <ErrorState
             type="invitations"
             message={
-              error instanceof Error
-                ? error.message
+              resolvedError instanceof Error
+                ? resolvedError.message
                 : "Failed to load invitations"
             }
-            onRetry={onRetry || (() => {})}
+            onRetry={resolvedRetry || (() => {})}
           />
         ) : invitedUsers.length === 0 ? (
           <EmptyState type="invitations" />
@@ -103,7 +128,7 @@ export default function InvitedUsersSection({
           <UserList
             users={invitedUsers}
             type="invited"
-            onSendInvite={onSendInvite}
+            onSendInvite={teamManagement?.handleSendInviteToAddedEmail ?? onSendInvite}
             isSendingInvite={isSendingInvite}
             allowSelection={isDraftFilter}
           />

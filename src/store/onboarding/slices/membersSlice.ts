@@ -3,6 +3,39 @@ import { RootState } from '../..';
 import { TeamMember } from '../types/memberTypes';
 import { ApiRole } from '../../../types/api/memberTypes';
 
+const preserveSelection = (
+  nextItems: TeamMember[],
+  currentItems: TeamMember[],
+): TeamMember[] => {
+  const selectedById = new Map(
+    currentItems.map((item) => [item.id, item.isSelected ?? false]),
+  );
+
+  return nextItems.map((item) => ({
+    ...item,
+    isSelected: selectedById.get(item.id) ?? item.isSelected ?? false,
+  }));
+};
+
+const upsertMembersById = (
+  currentItems: TeamMember[],
+  incomingItems: TeamMember[],
+): TeamMember[] => {
+  const nextById = new Map(currentItems.map((item) => [item.id, item]));
+
+  incomingItems.forEach((item) => {
+    const currentItem = nextById.get(item.id);
+
+    nextById.set(item.id, {
+      ...currentItem,
+      ...item,
+      isSelected: currentItem?.isSelected ?? item.isSelected ?? false,
+    });
+  });
+
+  return Array.from(nextById.values());
+};
+
 export interface MembersState {
   members: TeamMember[];
   invitedUsers: TeamMember[];
@@ -32,10 +65,10 @@ const membersSlice = createSlice({
   initialState,
   reducers: {
     setMembers: (state, action: PayloadAction<TeamMember[]>) => {
-      state.members = action.payload;
+      state.members = preserveSelection(action.payload, state.members);
     },
     setInvitedUsers: (state, action: PayloadAction<TeamMember[]>) => {
-      state.invitedUsers = action.payload;
+      state.invitedUsers = preserveSelection(action.payload, state.invitedUsers);
     },
     setSearchQueryMembers: (state, action: PayloadAction<string>) => {
       state.searchQueryMembers = action.payload;
@@ -61,6 +94,9 @@ const membersSlice = createSlice({
     addInvitedUser: (state, action: PayloadAction<TeamMember>) => {
       state.invitedUsers.unshift(action.payload);
       state.emailInput = '';
+    },
+    upsertInvitedUsers: (state, action: PayloadAction<TeamMember[]>) => {
+      state.invitedUsers = upsertMembersById(state.invitedUsers, action.payload);
     },
     removeMember: (state, action: PayloadAction<string>) => {
       state.members = state.members.filter(member => member.id !== action.payload);
@@ -192,6 +228,7 @@ export const {
   setSelectedRole,
   setEmailInput,
   addInvitedUser,
+  upsertInvitedUsers,
   removeMember,
   cancelInvitation,
   updateMemberRole,

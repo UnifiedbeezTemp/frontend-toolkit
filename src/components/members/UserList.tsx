@@ -2,16 +2,15 @@
 
 import { TeamMember } from "../../store/onboarding/types/memberTypes"
 import UserItem from "./user-item/UserItem"
+import { UserInvitePayload } from "./types/teamManagement"
 
 interface UserListProps {
   users: TeamMember[]
   type: "invited" | "members"
-  onSendInvite?: (payload: {
-    invitationId: string
-    email: string
-    roleId: number
-  }) => void
-  isSendingInvite?: boolean //(invitationId: string) => boolean
+  onSendInvite?: (
+    payload: UserInvitePayload | UserInvitePayload[],
+  ) => void | Promise<void>
+  isSendingInvite?: boolean | ((invitationId: string) => boolean)
   allowSelection?: boolean
 }
 
@@ -39,8 +38,9 @@ export default function UserList({
           type={type}
           onSendInvite={onSendInvite}
           isSendingInvite={
-            isSendingInvite
-            //isSendingInvite?.(user.id)
+            typeof isSendingInvite === "function"
+              ? isSendingInvite(user.id)
+              : isSendingInvite
           }
           allowSelection={allowSelection}
         />

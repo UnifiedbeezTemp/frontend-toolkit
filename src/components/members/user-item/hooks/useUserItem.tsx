@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase"
 import {
@@ -17,26 +17,27 @@ import { TeamMember } from "../../../../store/onboarding/types/memberTypes"
 import useSession from "../../../../providers/hooks/useSession"
 import { api, useAppMutation } from "../../../../api"
 import { store } from "../../../../store"
+import { useToast } from "../../../ui/toast/useToast"
+import { extractErrorMessage } from "../../../../utils/extractErrorMessage"
+import { UserInvitePayload } from "../../types/teamManagement"
 
 export const useUserItem = (
   type: "invited" | "members",
   userId: string,
-  onSendInvite?: (payload: {
-    invitationId: string
-    email: string
-    roleId: number
-  }) => void,
+  onSendInvite?: (payload: UserInvitePayload) => void | Promise<void>,
   user?: TeamMember,
 ) => {
   const dispatch = useAppDispatch()
   const supabaseIcons = useSupabaseIcons()
   const { data: currentUser } = useSession()
+  const { showToast } = useToast()
   const invitedUsers = useAppSelector((state) => state.members.invitedUsers)
   const members = useAppSelector((state) => state.members.members)
   const roles = useAppSelector((state) => state.members.roles)
   const invitedStatusFilter = useAppSelector(
     (state) => state.members.statusFilterInvited,
   )
+  const [actionError, setActionError] = useState("")
 
   const queryClient = useQueryClient()
 
@@ -48,7 +49,10 @@ export const useUserItem = (
   const isCurrentUser = currentMember?.email === currentUser?.email
   const isOwner = currentMember?.role === "OWNER" || currentMember?.isOwner
 
-  const { mutate: cancelInvitationMutation, isPending: isCancelingInvitation } =
+  const {
+    mutateAsync: cancelInvitationMutation,
+    isPending: isCancelingInvitation,
+  } =
     useAppMutation<string, void>(
       async (invitationId) => {
         return await api.delete(`/invitations/${invitationId}`)
@@ -61,7 +65,7 @@ export const useUserItem = (
       },
     )
 
-  const { mutate: removeMemberMutation, isPending: isRemovingMember } =
+  const { mutateAsync: removeMemberMutation, isPending: isRemovingMember } =
     useAppMutation<string, void>(
       async (memberId) => {
         return await api.delete(`/team/members/${memberId}`)
@@ -73,7 +77,7 @@ export const useUserItem = (
         },
       },
     )
-  const { mutate: assignRoleMutation, isPending: isAssigningRole } =
+  const { mutateAsync: assignRoleMutation, isPending: isAssigningRole } =
     useAppMutation<{ userId: string; roleId: number }, void>(
       async (payload) => {
         return await api.post("/team/assign-role", payload)
@@ -108,28 +112,42 @@ export const useUserItem = (
     }
   }, [])
 
-  const handleRoleChange = useCallback(
-    (role: string) => {
-      if (type === "members") {
-        dispatch(updateMemberRole({ id: userId, role }))
-      } else {
-        dispatch(updateInvitedUserRole({ id: userId, role }))
-      }
-    },
-    [type, userId, dispatch],
-  )
-
-  const handleRemove = useCallback(() => {
-    console.log(user, "dajk;jja", user?.status === "cancelled")
+  const handleRemove = useCallback(async () => {
     if (isCurrentUser) return
-    if (user?.status === "accepted") removeMemberMutation(userId)
-    else cancelInvitationMutation(userId)
+
+    setActionError("")
+
+    try {
+      if (user?.status === "accepted") {
+        await removeMemberMutation(userId)
+      } else {
+        await cancelInvitationMutation(userId)
+      }
+    } catch (error) {
+      const message = extractErrorMessage(
+        error,
+        user?.status === "accepted"
+          ? "Failed to remove team member"
+          : "Failed to cancel invitation",
+      )
+
+      setActionError(message)
+      showToast({
+        title:
+          user?.status === "accepted"
+            ? "Failed to remove team member"
+            : "Failed to cancel invitation",
+        description: message,
+        variant: "error",
+      })
+    }
   }, [
     user,
     isCurrentUser,
     removeMemberMutation,
     userId,
     cancelInvitationMutation,
+    showToast,
   ])
 
   const handleToggle = useCallback(() => {
@@ -140,25 +158,83 @@ export const useUserItem = (
   }, [type, invitedStatusFilter, userId, dispatch])
 
   const handleSendInvite = useCallback(() => {
-    const user = invitedUsers.find((u) => u.id === userId)
-    console.log("test", user && user.status === "draft", onSendInvite)
-    if (user && user.status === "draft" && onSendInvite) {
+    const currentInvitedUser = invitedUsers.find((u) => u.id === userId)
+
+    setActionError("")
+
+    if (currentInvitedUser && currentInvitedUser.status === "draft" && onSendInvite) {
       const safeRoles = roles || []
-      const role = safeRoles.find((r) => r.type === user.role)
-      const roleId = role?.id || user.roleId || 0
-      onSendInvite({ invitationId: userId, email: user.email, roleId })
-    }
-  }, [userId, invitedUsers, roles, onSendInvite])
-  const handleRoleChangeWithId = useCallback(
-    (role: string) => {
-      // if (type === "members") {
-      if (isCurrentUser && isOwner) {
+      const role = safeRoles.find((r) => r.type === currentInvitedUser.role)
+      const roleId = role?.id || currentInvitedUser.roleId || 0
+
+      if (!roleId) {
+        const message = "Select a role before sending the invite."
+
+        setActionError(message)
         return
       }
+
+      Promise.resolve(
+        onSendInvite({
+          invitationId: userId,
+          email: currentInvitedUser.email,
+          roleId,
+        }),
+      ).catch((error) => {
+        const message = extractErrorMessage(error, "Failed to send invitation")
+
+        setActionError(message)
+        showToast({
+          title: "Failed to send invitation",
+          description: message,
+          variant: "error",
+        })
+      })
+    }
+  }, [userId, invitedUsers, roles, onSendInvite, showToast])
+
+  const handleRoleChangeWithId = useCallback(
+    async (role: string) => {
+      if (isCurrentUser && isOwner) return
+
+      setActionError("")
+
       const roleObj = roles.find((r) => r.type === role)
-      if (roleObj) assignRoleMutation({ userId, roleId: roleObj.id })
+
+      if (!roleObj) {
+        setActionError("Role is unavailable. Please refresh and try again.")
+        return
+      }
+
+      if (type === "invited") {
+        dispatch(updateInvitedUserRole({ id: userId, role: roleObj.type }))
+        dispatch(updateInvitedUserRoleId({ id: userId, roleId: roleObj.id }))
+        return
+      }
+
+      try {
+        await assignRoleMutation({ userId, roleId: roleObj.id })
+      } catch (error) {
+        const message = extractErrorMessage(error, "Failed to update role")
+
+        setActionError(message)
+        showToast({
+          title: "Failed to update role",
+          description: message,
+          variant: "error",
+        })
+      }
     },
-    [isCurrentUser, isOwner, roles, assignRoleMutation, userId],
+    [
+      assignRoleMutation,
+      dispatch,
+      isCurrentUser,
+      isOwner,
+      roles,
+      showToast,
+      type,
+      userId,
+    ],
   )
 
   return {
@@ -173,5 +249,6 @@ export const useUserItem = (
     isRemoving: isRemovingMember,
     isCanceling: isCancelingInvitation,
     isAssigningRole,
+    actionError,
   }
 }
