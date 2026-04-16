@@ -6,6 +6,27 @@ import {
 } from "../../../types/api/memberTypes"
 import { generateAvatarFromEmail } from "./avatarUtils"
 
+type InvitationStatus = ApiInvitation["status"]
+
+type PartialInvitationRole = Partial<ApiRole> | string | null | undefined
+
+type PartialApiInvitation = Partial<ApiInvitation> & {
+  id?: string | number | null
+  invitationId?: string | number | null
+  email?: string | null
+  role?: PartialInvitationRole
+  roleId?: number | null
+  status?: InvitationStatus | string | null
+  invitation?: Partial<ApiInvitation> & {
+    id?: string | number | null
+    invitationId?: string | number | null
+    email?: string | null
+    role?: PartialInvitationRole
+    roleId?: number | null
+    status?: InvitationStatus | string | null
+  }
+}
+
 export const transformApiMemberToTeamMember = (
   apiMember: ApiMember,
 ): TeamMember => {
@@ -32,6 +53,27 @@ export const transformApiMemberToTeamMember = (
 export const transformApiInvitationToTeamMember = (
   apiInvitation: ApiInvitation,
 ): TeamMember => {
+  const transformedInvitation =
+    tryTransformApiInvitationToTeamMember(apiInvitation)
+
+  if (!transformedInvitation) {
+    throw new Error("Invalid invitation payload")
+  }
+
+  return transformedInvitation
+}
+
+export const tryTransformApiInvitationToTeamMember = (
+  apiInvitation: PartialApiInvitation,
+): TeamMember | null => {
+  const normalizedInvitation = apiInvitation.invitation
+    ? {
+        ...apiInvitation,
+        ...apiInvitation.invitation,
+        role: apiInvitation.invitation.role ?? apiInvitation.role,
+      }
+    : apiInvitation
+
   const statusMap: Record<string, TeamMember["status"]> = {
     PENDING: "pending",
     ACCEPTED: "accepted",
@@ -40,14 +82,32 @@ export const transformApiInvitationToTeamMember = (
     EXPIRED: "expired",
     DRAFT: "draft",
   }
+  const invitationId =
+    normalizedInvitation.id ?? normalizedInvitation.invitationId
+
+  if (invitationId === null || invitationId === undefined) {
+    return null
+  }
+
+  if (!normalizedInvitation.email) {
+    return null
+  }
+
+  const role =
+    typeof normalizedInvitation.role === "string"
+      ? normalizedInvitation.role
+      : normalizedInvitation.role?.type
 
   return {
-    id: apiInvitation.id.toString(),
-    email: apiInvitation.email,
-    avatar: generateAvatarFromEmail(apiInvitation.email),
-    role: apiInvitation.role?.type || "MEMBER",
-    roleId: apiInvitation.roleId,
-    status: statusMap[apiInvitation.status] || "draft",
+    id: String(invitationId),
+    email: normalizedInvitation.email,
+    avatar: generateAvatarFromEmail(normalizedInvitation.email),
+    role: role || "MEMBER",
+    roleId:
+      typeof normalizedInvitation.roleId === "number"
+        ? normalizedInvitation.roleId
+        : undefined,
+    status: statusMap[normalizedInvitation.status ?? "DRAFT"] || "draft",
     isSelected: false,
   }
 }

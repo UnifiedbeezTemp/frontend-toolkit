@@ -23,7 +23,10 @@ import {
 import { TeamMember } from "../../../store/onboarding/types/memberTypes"
 import { ApiInvitation, ApiRole } from "../../../types/api/memberTypes"
 import { extractErrorMessage } from "../../../utils/extractErrorMessage"
-import { transformApiInvitationToTeamMember } from "../utils/transformers"
+import {
+  transformApiInvitationToTeamMember,
+  tryTransformApiInvitationToTeamMember,
+} from "../utils/transformers"
 import { useTeamInvitations } from "./useTeamInvitations"
 import { useTeamMembers } from "./useTeamMembers"
 import { useTeamRoles } from "./useTeamRoles"
@@ -351,10 +354,19 @@ export const useTeamManagement = (): TeamManagementController => {
         })),
       })
 
-      const successfulInvitations = (response.successful ?? []).map(
-        transformApiInvitationToTeamMember,
+      const successfulInvitations = (response.successful ?? []).flatMap(
+        (invitation) => {
+          const transformedInvitation =
+            tryTransformApiInvitationToTeamMember(invitation)
+
+          return transformedInvitation ? [transformedInvitation] : []
+        },
       )
       const skippedCount = selfInvites.length + duplicateEmails.length
+      const successfulCount =
+        response.summary?.successful ??
+        response.successful?.length ??
+        successfulInvitations.length
       const failureCount = response.failed?.length ?? 0
 
       if (successfulInvitations.length > 0) {
@@ -366,20 +378,17 @@ export const useTeamManagement = (): TeamManagementController => {
         normalizeInvitationFailures(response.failed, "Unable to add draft"),
       )
       setAddDraftState({
-        status: successfulInvitations.length > 0 ? "success" : "error",
+        status: successfulCount > 0 ? "success" : "error",
         message:
-          successfulInvitations.length > 0
-            ? buildDraftSuccessMessage(successfulInvitations.length, skippedCount)
+          successfulCount > 0
+            ? buildDraftSuccessMessage(successfulCount, skippedCount)
             : response.message ?? "No draft invitations were added.",
       })
 
-      if (successfulInvitations.length > 0) {
+      if (successfulCount > 0) {
         showToast({
           title: "Drafts added",
-          description: buildDraftSuccessMessage(
-            successfulInvitations.length,
-            skippedCount,
-          ),
+          description: buildDraftSuccessMessage(successfulCount, skippedCount),
           variant: failureCount > 0 ? "warning" : "success",
         })
       }
@@ -463,8 +472,13 @@ export const useTeamManagement = (): TeamManagementController => {
             })),
           })
 
-          const successfulInvitations = (response.successful ?? []).map(
-            transformApiInvitationToTeamMember,
+          const successfulInvitations = (response.successful ?? []).flatMap(
+            (invitation) => {
+              const transformedInvitation =
+                tryTransformApiInvitationToTeamMember(invitation)
+
+              return transformedInvitation ? [transformedInvitation] : []
+            },
           )
 
           if (successfulInvitations.length > 0) {
