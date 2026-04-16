@@ -1,12 +1,12 @@
-import Image from "next/image";
-import RoleDropdown from "../RoleDropdown";
-import CheckboxButton from "./CheckboxButton";
-import StatusBadge from "./StatusBadge";
-import RemoveButton from "./RemoveButton";
-import SendInviteButton from "./SendInviteButton";
-import { DesktopSectionProps } from "./types";
-import { useAppSelector } from "../../../store/hooks/useRedux";
-import { getRoleName } from "../utils/transformers";
+import Image from "next/image"
+import RoleDropdown from "../RoleDropdown"
+import CheckboxButton from "./CheckboxButton"
+import StatusBadge from "./StatusBadge"
+import RemoveButton from "./RemoveButton"
+import SendInviteButton from "./SendInviteButton"
+import { DesktopSectionProps } from "./types"
+import { useAppSelector } from "../../../store/hooks/useRedux"
+import { getRoleName } from "../utils/transformers"
 
 export default function DesktopSection({
   user,
@@ -25,10 +25,10 @@ export default function DesktopSection({
   isOwner,
   allowSelection = true,
 }: DesktopSectionProps) {
-  const isDraft = user.status === "draft";
-  const canChangeRole = !(isCurrentUser && isOwner);
-  const isLoading = isRemoving || isCanceling || isAssigningRole;
-  const hideOwnerControls = type === "members" && isCurrentUser && isOwner;
+  const isDraft = user.status === "draft"
+  const canChangeRole = !(isCurrentUser && isOwner)
+  const isLoading = isRemoving || isCanceling || isAssigningRole
+  const hideOwnerControls = type === "members" && isCurrentUser && isOwner
 
   return (
     <div className="hidden lg:flex items-center justify-between">
@@ -84,27 +84,29 @@ export default function DesktopSection({
                 loading={isSendingInvite}
               />
             )}
-            <RemoveButton
-              type={type}
-              status={user.status}
-              onRemove={onRemove}
-              disabled={isCurrentUser}
-              loading={isLoading}
-            />
+            {user.status !== "cancelled" && (
+              <RemoveButton
+                type={type}
+                status={user.status}
+                onRemove={onRemove}
+                disabled={isCurrentUser}
+                loading={isLoading}
+              />
+            )}
           </>
         )}
       </div>
     </div>
-  );
+  )
 }
 
 function DesktopRoleBadge({ role }: { role: string }) {
-  const roles = useAppSelector((state) => state.members.roles);
-  const roleName = getRoleName(role, roles);
+  const roles = useAppSelector((state) => state.members.roles)
+  const roleName = getRoleName(role, roles)
 
   return (
     <p className="text-[1.2rem] text-text-primary border border-input-stroke rounded-[0.4rem] p-[0.4rem] px-[0.8rem] bg-border/50">
       {roleName}
     </p>
-  );
+  )
 }

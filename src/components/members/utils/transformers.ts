@@ -1,17 +1,17 @@
-import { TeamMember } from "../../../store/onboarding/types/memberTypes";
+import { TeamMember } from "../../../store/onboarding/types/memberTypes"
 import {
   ApiInvitation,
   ApiMember,
   ApiRole,
-} from "../../../types/api/memberTypes";
-import { generateAvatarFromEmail } from "./avatarUtils";
+} from "../../../types/api/memberTypes"
+import { generateAvatarFromEmail } from "./avatarUtils"
 
 export const transformApiMemberToTeamMember = (
-  apiMember: ApiMember
+  apiMember: ApiMember,
 ): TeamMember => {
   const primaryRole = apiMember.isOwner
     ? "OWNER"
-    : apiMember.roles[0]?.type || "MEMBER";
+    : apiMember.roles[0]?.type || "MEMBER"
 
   return {
     id: apiMember.id.toString(),
@@ -26,18 +26,20 @@ export const transformApiMemberToTeamMember = (
     isOwner: apiMember.isOwner,
     joinedAt: apiMember.joinedAt,
     lastLoginAt: apiMember.lastLoginAt,
-  };
-};
+  }
+}
 
 export const transformApiInvitationToTeamMember = (
-  apiInvitation: ApiInvitation
+  apiInvitation: ApiInvitation,
 ): TeamMember => {
   const statusMap: Record<string, TeamMember["status"]> = {
-    pending: "pending",
-    accepted: "accepted",
-    rejected: "denied",
-    expired: "expired",
-  };
+    PENDING: "pending",
+    ACCEPTED: "accepted",
+    CANCELLED: "cancelled",
+    DECLINED: "denied",
+    EXPIRED: "expired",
+    DRAFT: "draft",
+  }
 
   return {
     id: apiInvitation.id.toString(),
@@ -45,13 +47,13 @@ export const transformApiInvitationToTeamMember = (
     avatar: generateAvatarFromEmail(apiInvitation.email),
     role: apiInvitation.role?.type || "MEMBER",
     roleId: apiInvitation.roleId,
-    status: statusMap[apiInvitation.status] || "pending",
+    status: statusMap[apiInvitation.status] || "draft",
     isSelected: false,
-  };
-};
+  }
+}
 
 export const transformApiRolesToOptions = (
-  apiRoles: ApiRole[] = []
+  apiRoles: ApiRole[] = [],
 ): Array<{ label: string; value: string }> => {
   return (apiRoles || [])
     .filter((role) => role.isActive)
@@ -60,19 +62,19 @@ export const transformApiRolesToOptions = (
       value: role.type,
     }))
     .sort((a, b) => {
-      if (a.value === "OWNER") return -1;
-      if (b.value === "OWNER") return 1;
-      return a.label.localeCompare(b.label);
-    });
-};
+      if (a.value === "OWNER") return -1
+      if (b.value === "OWNER") return 1
+      return a.label.localeCompare(b.label)
+    })
+}
 
 export const getRoleName = (
   roleType: string,
-  apiRoles: ApiRole[] = []
+  apiRoles: ApiRole[] = [],
 ): string => {
-  const role = apiRoles?.find((r) => r.type === roleType);
+  const role = apiRoles?.find((r) => r.type === roleType)
   return (
     role?.name ||
     roleType.charAt(0).toUpperCase() + roleType.slice(1).toLowerCase()
-  );
-};
+  )
+}

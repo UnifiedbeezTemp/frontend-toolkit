@@ -1,32 +1,37 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { useAppSelector } from "../../store/hooks/useRedux";
+import { useEffect } from "react"
+import { useAppSelector } from "../../store/hooks/useRedux"
 import {
   selectFilteredInvitedUsers,
   selectTotalInvitedUsers,
   selectSelectedInvitedCount,
-} from "../../store/onboarding/slices/membersSlice";
-import Heading from "../ui/Heading";
-import SearchAndFilter from "./SearchAndFilter";
-import UserList from "./UserList";
-import MembersSkeleton from "./MembersSkeleton";
-import ErrorState from "./ErrorState";
-import EmptyState from "./EmptyState";
-import { useInvitedBulkActions } from "./hooks/useInvitedBulkActions";
-import { InvitedBulkActions } from "./components/InvitedBulkActions";
-import { ApiRole } from "../../types/api/memberTypes";
+} from "../../store/onboarding/slices/membersSlice"
+import Heading from "../ui/Heading"
+import SearchAndFilter from "./SearchAndFilter"
+import UserList from "./UserList"
+import MembersSkeleton from "./MembersSkeleton"
+import ErrorState from "./ErrorState"
+import EmptyState from "./EmptyState"
+import { useInvitedBulkActions } from "./hooks/useInvitedBulkActions"
+import { InvitedBulkActions } from "./components/InvitedBulkActions"
+import { ApiRole } from "../../types/api/memberTypes"
 
 interface InvitedUsersSectionProps {
-  isLoading?: boolean;
-  error?: unknown;
-  onRetry?: () => void;
-  onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
-  isSendingInvite?: (invitationId: string) => boolean;
-  roles?: ApiRole[];
+  isLoading?: boolean
+  error?: unknown
+  onRetry?: () => void
+  onSendInvite?: (payload: {
+    invitationId: string
+    email: string
+    roleId: number
+  }) => void
+  isSendingInvite?: boolean
+  //(invitationId: string) => boolean
+  roles?: ApiRole[]
   onFailedInvitationsChange?: (
-    failures: Array<{ email: string; error: string }>
-  ) => void;
+    failures: Array<{ email: string; error: string }>,
+  ) => void
 }
 
 export default function InvitedUsersSection({
@@ -38,15 +43,15 @@ export default function InvitedUsersSection({
   roles = [],
   onFailedInvitationsChange,
 }: InvitedUsersSectionProps) {
-  const invitedUsers = useAppSelector(selectFilteredInvitedUsers);
-  const totalInvitedUsers = useAppSelector(selectTotalInvitedUsers);
-  const selectedCount = useAppSelector(selectSelectedInvitedCount);
+  const invitedUsers = useAppSelector(selectFilteredInvitedUsers)
+  const totalInvitedUsers = useAppSelector(selectTotalInvitedUsers)
+  const selectedCount = useAppSelector(selectSelectedInvitedCount)
   const hasFilter = useAppSelector(
-    (state) => state.members.statusFilterInvited !== null
-  );
+    (state) => state.members.statusFilterInvited !== null,
+  )
   const isDraftFilter = useAppSelector(
-    (state) => state.members.statusFilterInvited === "draft"
-  );
+    (state) => state.members.statusFilterInvited === "draft",
+  )
   const {
     selectAll,
     clearSelection,
@@ -54,13 +59,13 @@ export default function InvitedUsersSection({
     bulkSend,
     isSending,
     failedInvitations,
-  } = useInvitedBulkActions({ roles, enable: isDraftFilter });
+  } = useInvitedBulkActions({ roles, enable: isDraftFilter })
 
   useEffect(() => {
     if (onFailedInvitationsChange) {
-      onFailedInvitationsChange(failedInvitations);
+      onFailedInvitationsChange(failedInvitations)
     }
-  }, [failedInvitations, onFailedInvitationsChange]);
+  }, [failedInvitations, onFailedInvitationsChange])
 
   return (
     <div className="border-border pb-[2.4rem] border-b">
@@ -105,5 +110,5 @@ export default function InvitedUsersSection({
         )}
       </div>
     </div>
-  );
+  )
 }

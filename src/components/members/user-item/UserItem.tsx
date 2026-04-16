@@ -1,22 +1,26 @@
-"use client";
+"use client"
 
-import { TeamMember } from "../../../store/onboarding/types/memberTypes";
-import DesktopSection from "./DesktopSection";
-import { useUserItem } from "./hooks/useUserItem";
-import MobileBottomRow from "./MobileBottomRow";
-import MobileRoleBadge from "./MobileRoleBadge";
-import MobileTopRow from "./MobileTopRow";
-import { UserItemProps } from "./types";
+import { TeamMember } from "../../../store/onboarding/types/memberTypes"
+import DesktopSection from "./DesktopSection"
+import { useUserItem } from "./hooks/useUserItem"
+import MobileBottomRow from "./MobileBottomRow"
+import MobileRoleBadge from "./MobileRoleBadge"
+import MobileTopRow from "./MobileTopRow"
+import { UserItemProps } from "./types"
 
 interface UserItemWithSendProps extends UserItemProps {
-  onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
-  isSendingInvite?: boolean;
+  onSendInvite?: (payload: {
+    invitationId: string
+    email: string
+    roleId: number
+  }) => void
+  isSendingInvite?: boolean
 }
 
-export default function UserItem({ 
-  user, 
-  type, 
-  onSendInvite, 
+export default function UserItem({
+  user,
+  type,
+  onSendInvite,
   isSendingInvite,
   allowSelection = true,
 }: UserItemWithSendProps) {
@@ -32,7 +36,7 @@ export default function UserItem({
     isRemoving,
     isCanceling,
     isAssigningRole,
-  } = useUserItem(type, user.id, onSendInvite);
+  } = useUserItem(type, user.id, onSendInvite, user)
 
   return (
     <div className="border border-input-stroke p-[0.8rem] rounded-[0.8rem]">
@@ -44,7 +48,9 @@ export default function UserItem({
           allowSelection={allowSelection}
         />
 
-        {type === "invited" && user.status !== "draft" && <MobileRoleBadge role={user.role} />}
+        {type === "invited" && user.status !== "draft" && (
+          <MobileRoleBadge role={user.role} />
+        )}
 
         <MobileBottomRow
           user={user}
@@ -80,5 +86,5 @@ export default function UserItem({
         allowSelection={allowSelection}
       />
     </div>
-  );
+  )
 }

@@ -1,17 +1,18 @@
-import Link from "next/link";
-import useSession from "../../providers/hooks/useSession";
-import { useAppSelector } from "../../store/hooks/useRedux";
-import { selectTotalMembers } from "../../store/onboarding/slices/membersSlice";
-import Input from "../forms/Input";
-import Button from "../ui/Button";
-import Text from "../ui/Text";
+import Link from "next/link"
+import useSession from "../../providers/hooks/useSession"
+import { useAppSelector } from "../../store/hooks/useRedux"
+import { selectTotalMembers } from "../../store/onboarding/slices/membersSlice"
+import Input from "../forms/Input"
+import Button from "../ui/Button"
+import Text from "../ui/Text"
 
 interface InviteSectionProps {
-  emailInput: string;
-  error: string;
-  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onAddInvite: () => void;
-  failedInvitations?: Array<{ email: string; error: string }>;
+  emailInput: string
+  error: string
+  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onAddInvite: () => void
+  failedInvitations?: Array<{ email: string; error: string }>
+  isSending: boolean
 }
 
 export const InviteSection = ({
@@ -20,14 +21,15 @@ export const InviteSection = ({
   onEmailChange,
   onAddInvite,
   failedInvitations = [],
+  isSending,
 }: InviteSectionProps) => {
-  const { data } = useSession();
-  const totalMembers = useAppSelector(selectTotalMembers);
-  const maxSeats = data?.planFeatures?.maxSeats;
-  const isUnlimited = maxSeats === null;
+  const { data } = useSession()
+  const totalMembers = useAppSelector(selectTotalMembers)
+  const maxSeats = data?.planFeatures?.maxSeats
+  const isUnlimited = maxSeats === null
   const seatsLeft = isUnlimited
     ? "Unlimited"
-    : Math.max(0, (maxSeats || 0) - totalMembers);
+    : Math.max(0, (maxSeats || 0) - totalMembers)
 
   return (
     <div className="mt-[4rem] sm:mt-[3rem] lg:mt-[2.4rem] w-full">
@@ -35,6 +37,7 @@ export const InviteSection = ({
         <Input
           value={emailInput}
           onChange={onEmailChange}
+          disabled={isSending}
           placeholder="Emails, comma separated"
           type="text"
           className="w-full text-[1.4rem] lg:text-[1.6rem]"
@@ -43,6 +46,8 @@ export const InviteSection = ({
         <Button
           className="w-[10rem] font-[700] text-[1.6rem] rounded-[0.8rem] lg:min-w-[12.8rem]"
           onClick={onAddInvite}
+          disabled={isSending}
+          loading={isSending}
         >
           Add
         </Button>
@@ -77,5 +82,5 @@ export const InviteSection = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
