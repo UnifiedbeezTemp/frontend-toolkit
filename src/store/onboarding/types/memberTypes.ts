@@ -19,4 +19,5 @@ export interface TeamMember {
   isOwner?: boolean
   joinedAt?: string
   lastLoginAt?: string
+  isActive?: boolean
 }

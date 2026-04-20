@@ -140,7 +140,6 @@ const membersSlice = createSlice({
       action: PayloadAction<{ id: string; apiInvitationId: string | number }>,
     ) => {
       const user = state.invitedUsers.find((u) => u.id === action.payload.id)
-      console.log(action.payload, "ppaylowad")
       if (user) {
         user.id = action.payload.apiInvitationId?.toString()
         user.status = "pending"
@@ -206,7 +205,7 @@ export const selectFilteredMembers = createSelector(
         .includes(searchQueryMembers.toLowerCase())
       const matchesRole =
         !roleFilterMembers || member.role === roleFilterMembers
-      return matchesSearch && matchesRole
+      return matchesSearch && matchesRole && member.isActive === true
     })
   },
 )
@@ -241,6 +240,8 @@ export const selectSelectedInvitedCount = createSelector(
 
 export const selectTotalMembers = (state: RootState) =>
   state.members.members.length
+export const selectTotalActiveMembers = (state: RootState) =>
+  state.members.members.filter((member) => member.isActive).length
 export const selectSelectedMembersCount = (state: RootState) =>
   state.members.members.filter((member) => member.isSelected).length
 export const selectTotalInvitedUsers = (state: RootState) =>

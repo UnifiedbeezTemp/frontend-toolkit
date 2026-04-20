@@ -7,6 +7,7 @@ export interface ApiMember {
   roles: ApiMemberRole[]
   joinedAt: string
   lastLoginAt: string
+  isActive: boolean
 }
 
 export interface ApiMemberRole {

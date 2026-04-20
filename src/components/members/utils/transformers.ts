@@ -47,6 +47,7 @@ export const transformApiMemberToTeamMember = (
     isOwner: apiMember.isOwner,
     joinedAt: apiMember.joinedAt,
     lastLoginAt: apiMember.lastLoginAt,
+    isActive: apiMember.isActive,
   }
 }
 
