@@ -63,19 +63,7 @@ export default function InboxList({
     phone: "twilioPhoneIcon",
     "website-chat": "websiteWebChatIcon",
   }
-
-  const iconNames = {
-    whatsapp: "whatsappIcon",
-    instagram: "instagramLogo",
-    facebook: "facebookMessengerLogo",
-    telegram: "telegramLogo",
-    linkedin: "linkedinLogo",
-    sms: "twilioSmsIcon",
-    email: "emailRedIcon",
-    phone: "twilioPhoneIcon",
-    "website-chat": "websiteWebChatIcon",
-  };
-
+  
   return (
     <div className="absolute flex w-full">
       <PanelShell
