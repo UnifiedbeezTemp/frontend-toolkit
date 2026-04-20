@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { getInitialMembers, getInitialInvitedUsers } from "./utils/data";
 import ModalHeaderSection from "./ModalHeaderSection";
-import InviteSection from "./InviteSection";
+import { InviteSection } from "./InviteSection";
 import UsersSections from "./UsersSection";
 import ModalActions from "./ModalActions";
 import { useSupabaseImages } from "../../lib/supabase/useSupabase";

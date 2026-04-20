@@ -1,32 +1,35 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { useAppSelector } from "../../store/hooks/useRedux";
+import { useEffect } from "react"
+import { useAppSelector } from "../../store/hooks/useRedux"
 import {
   selectFilteredInvitedUsers,
-  selectTotalInvitedUsers,
   selectSelectedInvitedCount,
-} from "../../store/onboarding/slices/membersSlice";
-import Heading from "../ui/Heading";
-import SearchAndFilter from "./SearchAndFilter";
-import UserList from "./UserList";
-import MembersSkeleton from "./MembersSkeleton";
-import ErrorState from "./ErrorState";
-import EmptyState from "./EmptyState";
-import { useInvitedBulkActions } from "./hooks/useInvitedBulkActions";
-import { InvitedBulkActions } from "./components/InvitedBulkActions";
-import { ApiRole } from "../../types/api/memberTypes";
+} from "../../store/onboarding/slices/membersSlice"
+import Heading from "../ui/Heading"
+import SearchAndFilter from "./SearchAndFilter"
+import UserList from "./UserList"
+import MembersSkeleton from "./MembersSkeleton"
+import ErrorState from "./ErrorState"
+import EmptyState from "./EmptyState"
+import { useInvitedBulkActions } from "./hooks/useInvitedBulkActions"
+import { InvitedBulkActions } from "./components/InvitedBulkActions"
+import { ApiRole } from "../../types/api/memberTypes"
+import { useOptionalTeamManagementContext } from "./context/TeamManagementContext"
+import { InvitationFailure, UserInvitePayload } from "./types/teamManagement"
 
 interface InvitedUsersSectionProps {
-  isLoading?: boolean;
-  error?: unknown;
-  onRetry?: () => void;
-  onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
-  isSendingInvite?: (invitationId: string) => boolean;
-  roles?: ApiRole[];
+  isLoading?: boolean
+  error?: unknown
+  onRetry?: () => void
+  onSendInvite?: (
+    payload: UserInvitePayload | UserInvitePayload[],
+  ) => void | Promise<void>
+  isSendingInvite?: boolean | ((invitationId: string) => boolean)
+  roles?: ApiRole[]
   onFailedInvitationsChange?: (
-    failures: Array<{ email: string; error: string }>
-  ) => void;
+    failures: InvitationFailure[],
+  ) => void
 }
 
 export default function InvitedUsersSection({
@@ -38,15 +41,18 @@ export default function InvitedUsersSection({
   roles = [],
   onFailedInvitationsChange,
 }: InvitedUsersSectionProps) {
-  const invitedUsers = useAppSelector(selectFilteredInvitedUsers);
-  const totalInvitedUsers = useAppSelector(selectTotalInvitedUsers);
-  const selectedCount = useAppSelector(selectSelectedInvitedCount);
-  const hasFilter = useAppSelector(
-    (state) => state.members.statusFilterInvited !== null
-  );
+  const teamManagement = useOptionalTeamManagementContext()
+  const invitedUsers = useAppSelector(selectFilteredInvitedUsers)
+  const selectedCount = useAppSelector(selectSelectedInvitedCount)
   const isDraftFilter = useAppSelector(
-    (state) => state.members.statusFilterInvited === "draft"
-  );
+    (state) => state.members.statusFilterInvited === "draft",
+  )
+  const resolvedRoles = teamManagement?.roles ?? roles
+  const resolvedIsLoading =
+    teamManagement?.isLoadingInvitations ?? isLoading
+  const resolvedError = teamManagement?.invitationsError ?? error
+  const resolvedRetry = teamManagement?.refetchInvitations ?? onRetry
+  const bulkSendState = teamManagement?.bulkSendState
   const {
     selectAll,
     clearSelection,
@@ -54,13 +60,13 @@ export default function InvitedUsersSection({
     bulkSend,
     isSending,
     failedInvitations,
-  } = useInvitedBulkActions({ roles, enable: isDraftFilter });
+  } = useInvitedBulkActions({ roles: resolvedRoles, enable: isDraftFilter })
 
   useEffect(() => {
     if (onFailedInvitationsChange) {
-      onFailedInvitationsChange(failedInvitations);
+      onFailedInvitationsChange(failedInvitations)
     }
-  }, [failedInvitations, onFailedInvitationsChange]);
+  }, [failedInvitations, onFailedInvitationsChange])
 
   return (
     <div className="border-border pb-[2.4rem] border-b">
@@ -80,17 +86,41 @@ export default function InvitedUsersSection({
           isSending={isSending}
         />
 
-        {isLoading ? (
+        {bulkSendState && bulkSendState.status !== "idle" && bulkSendState.message && (
+          <p
+            className={`text-[1.4rem] ${
+              bulkSendState.status === "error"
+                ? "text-destructive"
+                : bulkSendState.status === "success"
+                  ? "text-brand-primary"
+                  : "text-secondary"
+            }`}
+          >
+            {bulkSendState.message}
+          </p>
+        )}
+
+        {failedInvitations.length > 0 && (
+          <div className="space-y-[0.6rem]">
+            {failedInvitations.map((failure) => (
+              <p key={`${failure.email}-${failure.error}`} className="text-[1.4rem] text-destructive">
+                <span className="font-[700]">{failure.email}:</span> {failure.error}
+              </p>
+            ))}
+          </div>
+        )}
+
+        {resolvedIsLoading ? (
           <MembersSkeleton />
-        ) : error ? (
+        ) : resolvedError ? (
           <ErrorState
             type="invitations"
             message={
-              error instanceof Error
-                ? error.message
+              resolvedError instanceof Error
+                ? resolvedError.message
                 : "Failed to load invitations"
             }
-            onRetry={onRetry || (() => {})}
+            onRetry={resolvedRetry || (() => {})}
           />
         ) : invitedUsers.length === 0 ? (
           <EmptyState type="invitations" />
@@ -98,12 +128,12 @@ export default function InvitedUsersSection({
           <UserList
             users={invitedUsers}
             type="invited"
-            onSendInvite={onSendInvite}
+            onSendInvite={teamManagement?.handleSendInviteToAddedEmail ?? onSendInvite}
             isSendingInvite={isSendingInvite}
             allowSelection={isDraftFilter}
           />
         )}
       </div>
     </div>
-  );
+  )
 }
