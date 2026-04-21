@@ -1,17 +1,20 @@
-import Link from "next/link";
-import useSession from "../../providers/hooks/useSession";
-import { useAppSelector } from "../../store/hooks/useRedux";
-import { selectTotalMembers } from "../../store/onboarding/slices/membersSlice";
-import Input from "../forms/Input";
-import Button from "../ui/Button";
-import Text from "../ui/Text";
+import Link from "next/link"
+import useSession from "../../providers/hooks/useSession"
+import { useAppSelector } from "../../store/hooks/useRedux"
+import { selectTotalMembers } from "../../store/onboarding/slices/membersSlice"
+import Input from "../forms/Input"
+import Button from "../ui/Button"
+import Text from "../ui/Text"
+import { useOptionalTeamManagementContext } from "./context/TeamManagementContext"
+import { createIdleAsyncActionState, InvitationFailure } from "./types/teamManagement"
 
 interface InviteSectionProps {
-  emailInput: string;
-  error: string;
-  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onAddInvite: () => void;
-  failedInvitations?: Array<{ email: string; error: string }>;
+  emailInput?: string
+  error?: string
+  onEmailChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onAddInvite?: () => void | Promise<void>
+  failedInvitations?: InvitationFailure[]
+  isSending?: boolean
 }
 
 export const InviteSection = ({
@@ -20,21 +23,42 @@ export const InviteSection = ({
   onEmailChange,
   onAddInvite,
   failedInvitations = [],
+  isSending,
 }: InviteSectionProps) => {
-  const { data } = useSession();
-  const totalMembers = useAppSelector(selectTotalMembers);
-  const maxSeats = data?.planFeatures?.maxSeats;
-  const isUnlimited = maxSeats === null;
+  const teamManagement = useOptionalTeamManagementContext()
+  const { data } = useSession()
+  const totalMembers = useAppSelector(selectTotalMembers)
+  const maxSeats = data?.planFeatures?.maxSeats
+  const isUnlimited = maxSeats === null
   const seatsLeft = isUnlimited
     ? "Unlimited"
-    : Math.max(0, (maxSeats || 0) - totalMembers);
+    : Math.max(0, (maxSeats || 0) - totalMembers)
+  const addDraftState =
+    teamManagement?.addDraftState ?? createIdleAsyncActionState()
+  const resolvedEmailInput = teamManagement?.emailInput ?? emailInput ?? ""
+  const resolvedError = teamManagement?.error ?? error ?? ""
+  const resolvedOnEmailChange =
+    teamManagement?.handleEmailChange ?? onEmailChange ?? (() => {})
+  const resolvedOnAddInvite =
+    teamManagement?.handleAddInvite ?? onAddInvite ?? (() => {})
+  const resolvedFailedInvitations =
+    teamManagement?.failedInvitations ?? failedInvitations
+  const resolvedIsSending =
+    teamManagement?.addDraftState.status === "pending" || isSending || false
+  const feedbackClassName =
+    addDraftState.status === "error"
+      ? "text-destructive"
+      : addDraftState.status === "success"
+        ? "text-brand-primary"
+        : "text-secondary"
 
   return (
     <div className="mt-[4rem] sm:mt-[3rem] lg:mt-[2.4rem] w-full">
       <div className="flex items-center gap-[1rem] mb-[0.8rem] w-full">
         <Input
-          value={emailInput}
-          onChange={onEmailChange}
+          value={resolvedEmailInput}
+          onChange={resolvedOnEmailChange}
+          disabled={resolvedIsSending}
           placeholder="Emails, comma separated"
           type="text"
           className="w-full text-[1.4rem] lg:text-[1.6rem]"
@@ -42,17 +66,27 @@ export const InviteSection = ({
 
         <Button
           className="w-[10rem] font-[700] text-[1.6rem] rounded-[0.8rem] lg:min-w-[12.8rem]"
-          onClick={onAddInvite}
+          onClick={resolvedOnAddInvite}
+          disabled={resolvedIsSending}
+          loading={resolvedIsSending}
         >
           Add
         </Button>
       </div>
 
-      {error && <p className="text-destructive text-[14px] mt-2">{error}</p>}
+      {resolvedError && (
+        <p className="text-destructive text-[14px] mt-2">{resolvedError}</p>
+      )}
 
-      {failedInvitations.length > 0 && (
+      {!resolvedError && addDraftState.status !== "idle" && addDraftState.message && (
+        <p className={`text-[14px] mt-2 ${feedbackClassName}`}>
+          {addDraftState.message}
+        </p>
+      )}
+
+      {resolvedFailedInvitations.length > 0 && (
         <div className="mt-2 space-y-1">
-          {failedInvitations.map((failed, index) => (
+          {resolvedFailedInvitations.map((failed, index) => (
             <p key={index} className="text-destructive text-[14px]">
               <span className="font-bold">{failed.email}:</span> {failed.error}
             </p>
@@ -77,5 +111,5 @@ export const InviteSection = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

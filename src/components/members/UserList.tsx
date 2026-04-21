@@ -1,20 +1,23 @@
-"use client";
+"use client"
 
-import { TeamMember } from "../../store/onboarding/types/memberTypes";
-import UserItem from "./user-item/UserItem";
+import { TeamMember } from "../../store/onboarding/types/memberTypes"
+import UserItem from "./user-item/UserItem"
+import { UserInvitePayload } from "./types/teamManagement"
 
 interface UserListProps {
-  users: TeamMember[];
-  type: "invited" | "members";
-  onSendInvite?: (invitationId: string, email: string, roleId: number) => void;
-  isSendingInvite?: (invitationId: string) => boolean;
-  allowSelection?: boolean;
+  users: TeamMember[]
+  type: "invited" | "members"
+  onSendInvite?: (
+    payload: UserInvitePayload | UserInvitePayload[],
+  ) => void | Promise<void>
+  isSendingInvite?: boolean | ((invitationId: string) => boolean)
+  allowSelection?: boolean
 }
 
-export default function UserList({ 
-  users, 
-  type, 
-  onSendInvite, 
+export default function UserList({
+  users,
+  type,
+  onSendInvite,
   isSendingInvite,
   allowSelection = true,
 }: UserListProps) {
@@ -23,7 +26,7 @@ export default function UserList({
       <div className="text-center py-8 text-text-primary">
         No {type === "invited" ? "invited users" : "team members"} found
       </div>
-    );
+    )
   }
 
   return (
@@ -34,10 +37,14 @@ export default function UserList({
           user={user}
           type={type}
           onSendInvite={onSendInvite}
-          isSendingInvite={isSendingInvite?.(user.id)}
+          isSendingInvite={
+            typeof isSendingInvite === "function"
+              ? isSendingInvite(user.id)
+              : isSendingInvite
+          }
           allowSelection={allowSelection}
         />
       ))}
     </>
-  );
+  )
 }

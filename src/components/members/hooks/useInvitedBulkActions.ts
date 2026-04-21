@@ -14,6 +14,7 @@ import { api } from "../../../api";
 import { ApiRole } from "../../../types/api/memberTypes";
 import { useToast } from "../../ui/toast/ToastProvider";
 import { useQueryClient } from "@tanstack/react-query";
+import { useOptionalTeamManagementContext } from "../context/TeamManagementContext";
 
 interface BulkInvitationResponse {
   message: string;
@@ -43,6 +44,7 @@ export function useInvitedBulkActions({
   roles,
   enable,
 }: UseInvitedBulkActionsParams) {
+  const teamManagement = useOptionalTeamManagementContext();
   const dispatch = useAppDispatch();
   const { showToast } = useToast();
   const queryClient = useQueryClient();
@@ -56,21 +58,36 @@ export function useInvitedBulkActions({
   const defaultRole = roles.find((r) => r.isDefault) ?? roles[0];
 
   const selectAll = useCallback(() => {
+    if (teamManagement) {
+      teamManagement.selectAllDraftInvites();
+      return;
+    }
+
     if (!enable) return;
     dispatch(
       setInvitedSelection({ ids: invited.map((u) => u.id), selected: true })
     );
-  }, [dispatch, invited, enable]);
+  }, [dispatch, enable, invited, teamManagement]);
 
   const clearSelection = useCallback(() => {
+    if (teamManagement) {
+      teamManagement.clearDraftInviteSelection();
+      return;
+    }
+
     if (!enable) return;
     dispatch(
       setInvitedSelection({ ids: invited.map((u) => u.id), selected: false })
     );
-  }, [dispatch, invited, enable]);
+  }, [dispatch, enable, invited, teamManagement]);
 
   const assignRole = useCallback(
     (roleId: number) => {
+      if (teamManagement) {
+        teamManagement.assignRoleToSelectedDrafts(roleId);
+        return;
+      }
+
       if (!enable) return;
       const role = roles.find((r) => r.id === roleId) ?? defaultRole;
       if (!role) return;
@@ -83,10 +100,15 @@ export function useInvitedBulkActions({
         })
       );
     },
-    [dispatch, selectedInvited, roles, defaultRole, enable]
+    [defaultRole, dispatch, enable, roles, selectedInvited, teamManagement]
   );
 
   const bulkSend = useCallback(async () => {
+    if (teamManagement) {
+      await teamManagement.sendSelectedDraftInvites();
+      return;
+    }
+
     if (!enable || selectedInvited.length === 0 || isSending) return;
     try {
       setIsSending(true);
@@ -175,6 +197,7 @@ export function useInvitedBulkActions({
     enable,
     isSending,
     roles,
+    teamManagement,
   ]);
 
   return {
@@ -185,7 +208,11 @@ export function useInvitedBulkActions({
     assignRole,
     bulkSend,
     defaultRoleId: defaultRole?.id ?? 0,
-    isSending,
-    failedInvitations,
+    isSending: teamManagement
+      ? teamManagement.bulkSendState.status === "pending"
+      : isSending,
+    failedInvitations: teamManagement
+      ? teamManagement.failedInvitations
+      : failedInvitations,
   };
 }
