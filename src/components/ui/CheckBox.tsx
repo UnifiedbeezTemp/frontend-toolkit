@@ -11,6 +11,7 @@ interface CheckboxProps {
   size?: "sm" | "md" | "lg";
   as?: string;
   isLoading?: boolean;
+  type?: "check" | "radio"
 }
 
 export default function Checkbox({
@@ -21,6 +22,7 @@ export default function Checkbox({
   size = "md",
   as,
   isLoading = false,
+  type = "check",
 }: CheckboxProps) {
   const icons = useSupabaseIcons();
 
@@ -59,7 +61,7 @@ export default function Checkbox({
       return (
         <ImageComponent
           alt="checkbox"
-          src={icons.checkbox}
+          src={type === "check" ? icons.checkbox : icons.checkboxBase2}
           width={size === "sm" ? 14 : size === "md" ? 16 : 18}
           height={size === "sm" ? 14 : size === "md" ? 16 : 18}
           className="object-cover text-white"
