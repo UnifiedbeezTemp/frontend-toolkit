@@ -84,13 +84,15 @@ export default function DesktopSection({
                 loading={isSendingInvite}
               />
             )}
-            <RemoveButton
-              type={type}
-              status={user.status}
-              onRemove={onRemove}
-              disabled={isCurrentUser}
-              loading={isLoading}
-            />
+            {user.status !== "cancelled" && (
+              <RemoveButton
+                type={type}
+                status={user.status}
+                onRemove={onRemove}
+                disabled={isCurrentUser}
+                loading={isLoading}
+              />
+            )}
           </>
         )}
       </div>
