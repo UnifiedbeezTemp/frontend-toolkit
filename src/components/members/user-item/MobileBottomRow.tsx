@@ -54,14 +54,16 @@ export default function MobileBottomRow({
                 mobile
               />
             )}
-            <RemoveButton
-              type={type}
-              status={user.status}
-              onRemove={onRemove}
-              mobile
-              disabled={isCurrentUser}
-              loading={isLoading}
-            />
+            {user.status !== "cancelled" && (
+              <RemoveButton
+                type={type}
+                status={user.status}
+                onRemove={onRemove}
+                mobile
+                disabled={isCurrentUser}
+                loading={isLoading}
+              />
+            )}
           </>
         )}
       </div>
