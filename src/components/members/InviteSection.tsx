@@ -1,3 +1,4 @@
+import { useCallback } from "react"
 import Link from "next/link"
 import useSession from "../../providers/hooks/useSession"
 import { useAppSelector } from "../../store/hooks/useRedux"
@@ -6,6 +7,7 @@ import Input from "../forms/Input"
 import Button from "../ui/Button"
 import Text from "../ui/Text"
 import { useOptionalTeamManagementContext } from "./context/TeamManagementContext"
+import { useInlineFeedbackDismiss } from "./hooks/useInlineFeedbackDismiss"
 import { createIdleAsyncActionState, InvitationFailure } from "./types/teamManagement"
 
 interface InviteSectionProps {
@@ -45,6 +47,18 @@ export const InviteSection = ({
     teamManagement?.failedInvitations ?? failedInvitations
   const resolvedIsSending =
     teamManagement?.addDraftState.status === "pending" || isSending || false
+  const clearInlineFeedback = useCallback(() => {
+    teamManagement?.clearInlineStatuses()
+  }, [teamManagement])
+  const hasInlineFeedback = Boolean(
+    resolvedError ||
+      (addDraftState.status !== "idle" && addDraftState.message) ||
+      resolvedFailedInvitations.length > 0,
+  )
+  const dismissInlineFeedbackProps = useInlineFeedbackDismiss({
+    enabled: Boolean(teamManagement) && hasInlineFeedback,
+    onClear: clearInlineFeedback,
+  })
   const feedbackClassName =
     addDraftState.status === "error"
       ? "text-destructive"
@@ -53,7 +67,10 @@ export const InviteSection = ({
         : "text-secondary"
 
   return (
-    <div className="mt-[4rem] sm:mt-[3rem] lg:mt-[2.4rem] w-full">
+    <div
+      className="mt-[4rem] sm:mt-[3rem] lg:mt-[2.4rem] w-full"
+      {...dismissInlineFeedbackProps}
+    >
       <div className="flex items-center gap-[1rem] mb-[0.8rem] w-full">
         <Input
           value={resolvedEmailInput}

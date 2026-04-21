@@ -6,6 +6,7 @@ import useSession from "../../../providers/hooks/useSession"
 import { TeamMember } from "../../../store/onboarding/types/memberTypes"
 import { extractErrorMessage } from "../../../utils/extractErrorMessage"
 import { useOptionalTeamManagementContext } from "../context/TeamManagementContext"
+import { useInlineFeedbackDismiss } from "../hooks/useInlineFeedbackDismiss"
 import {
   TeamManagementController,
   UserInvitePayload,
@@ -40,7 +41,10 @@ interface UserItemLayoutProps {
   isCurrentUser?: boolean
   isOwner?: boolean
   actionError?: string
+  onClearActionError?: () => void
 }
+
+const noop = () => {}
 
 const getStatusStyles = (status: string) => {
   switch (status) {
@@ -71,9 +75,18 @@ function UserItemLayout({
   isCurrentUser,
   isOwner,
   actionError,
+  onClearActionError,
 }: UserItemLayoutProps) {
+  const dismissInlineFeedbackProps = useInlineFeedbackDismiss({
+    enabled: Boolean(actionError && onClearActionError),
+    onClear: onClearActionError ?? noop,
+  })
+
   return (
-    <div className="border border-input-stroke p-[0.8rem] rounded-[0.8rem]">
+    <div
+      className="border border-input-stroke p-[0.8rem] rounded-[0.8rem]"
+      {...dismissInlineFeedbackProps}
+    >
       <div className="lg:hidden flex flex-col gap-[3.2rem]">
         <MobileTopRow
           user={user}
@@ -155,6 +168,10 @@ function ManagedUserItem({
         : userActionState.remove.status === "error"
           ? userActionState.remove.message
           : undefined)
+  const clearActionError = useCallback(() => {
+    setCompatibilityActionError(undefined)
+    teamManagement.clearUserActionError(user.id)
+  }, [teamManagement, user.id])
 
   const handleRoleChange = useCallback(
     (role: string) => {
@@ -162,10 +179,10 @@ function ManagedUserItem({
         return
       }
 
-      setCompatibilityActionError(undefined)
+      clearActionError()
       void teamManagement.handleRoleChange(user, type, role)
     },
-    [isCurrentUser, isOwner, teamManagement, type, user],
+    [clearActionError, isCurrentUser, isOwner, teamManagement, type, user],
   )
 
   const handleRemove = useCallback(() => {
@@ -173,17 +190,17 @@ function ManagedUserItem({
       return
     }
 
-    setCompatibilityActionError(undefined)
+    clearActionError()
     void teamManagement.handleRemoveUser(user, type)
-  }, [isCurrentUser, teamManagement, type, user])
+  }, [clearActionError, isCurrentUser, teamManagement, type, user])
 
   const handleToggle = useCallback(() => {
-    setCompatibilityActionError(undefined)
+    clearActionError()
     teamManagement.handleToggleSelection(type, user.id)
-  }, [teamManagement, type, user.id])
+  }, [clearActionError, teamManagement, type, user.id])
 
   const handleSendDraftInvite = useCallback(() => {
-    setCompatibilityActionError(undefined)
+    clearActionError()
 
     if (onSendInvite) {
       const roleId =
@@ -211,7 +228,7 @@ function ManagedUserItem({
     }
 
     void teamManagement.handleSendDraftInvite(user)
-  }, [onSendInvite, teamManagement, user])
+  }, [clearActionError, onSendInvite, teamManagement, user])
 
   return (
     <UserItemLayout
@@ -232,6 +249,7 @@ function ManagedUserItem({
       isCurrentUser={isCurrentUser}
       isOwner={isOwner}
       actionError={actionError}
+      onClearActionError={clearActionError}
     />
   )
 }
@@ -255,6 +273,7 @@ function LegacyUserItem({
     isCanceling,
     isAssigningRole,
     actionError,
+    clearActionError,
   } = useUserItem(type, user.id, onSendInvite, user)
 
   return (
@@ -274,6 +293,7 @@ function LegacyUserItem({
       isCurrentUser={isCurrentUser}
       isOwner={isOwner}
       actionError={actionError}
+      onClearActionError={clearActionError}
     />
   )
 }

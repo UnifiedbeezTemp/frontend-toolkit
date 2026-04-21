@@ -7,6 +7,10 @@ import {
   setRoles,
   setSelectedRole,
 } from "../../../store/onboarding/slices/membersSlice"
+import {
+  requestBulkCancelledInvitationDeletion,
+  requestCancelledInvitationDeletion,
+} from "../utils/cancelledInvitationRequests"
 
 export const useTeamRoles = () => {
   const dispatch = useAppDispatch()
@@ -47,8 +51,66 @@ interface UpdateInvitationRolePayload {
   roleId: number
 }
 
+interface UpdateInvitationRolesBulkPayload {
+  invitations: Array<{
+    id: string
+    roleId: number
+  }>
+}
+
+export interface UpdateInvitationRolesBulkResponse {
+  message?: string
+  successful?: Array<{
+    id: string
+    email: string
+    role: string
+  }>
+  failed?: Array<{
+    id?: string
+    email: string
+    error: string
+  }>
+  summary?: {
+    total?: number
+    successful?: number
+    failed?: number
+  }
+}
+
+interface DeleteCancelledInvitationPayload {
+  invitationId: string
+}
+
+interface DeleteCancelledInvitationsBulkPayload {
+  invitationIds: string[]
+}
+
+export const useUpdateInvitationRolesBulk = () => {
+  return useAppMutation<
+    UpdateInvitationRolesBulkPayload,
+    UpdateInvitationRolesBulkResponse
+  >(
+    (payload) =>
+      api.patch<
+        UpdateInvitationRolesBulkPayload,
+        UpdateInvitationRolesBulkResponse
+      >(
+        "/invitations/bulk/role",
+        payload,
+      ),
+    {},
+  )
+}
 export const useUpdateInvitationRole = () => {
-  return useAppMutation<UpdateInvitationRolePayload, unknown>(
+  return useAppMutation<
+    UpdateInvitationRolePayload,
+    {
+      id: string
+      email: string
+      role: string
+      status: string
+    }
+  >(
     ({ invitationId, roleId }) =>
       api.patch<
         { roleId: number },
@@ -59,6 +121,21 @@ export const useUpdateInvitationRole = () => {
           status: string
         }
       >(`/invitations/${invitationId}/role`, { roleId }),
+    {},
+  )
+}
+
+export const useDeleteCancelledInvitation = () => {
+  return useAppMutation<DeleteCancelledInvitationPayload, unknown>(
+    ({ invitationId }) => requestCancelledInvitationDeletion(invitationId),
+    {},
+  )
+}
+
+export const useDeleteCancelledInvitationsBulk = () => {
+  return useAppMutation<DeleteCancelledInvitationsBulkPayload, unknown>(
+    ({ invitationIds }) =>
+      requestBulkCancelledInvitationDeletion(invitationIds),
     {},
   )
 }

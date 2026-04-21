@@ -108,6 +108,11 @@ const membersSlice = createSlice({
         (user) => user.id !== action.payload,
       )
     },
+    removeInvitedUsers: (state, action: PayloadAction<string[]>) => {
+      state.invitedUsers = state.invitedUsers.filter(
+        (user) => !action.payload.includes(user.id),
+      )
+    },
     updateMemberRole: (
       state,
       action: PayloadAction<{ id: string; role: string }>,
@@ -261,6 +266,7 @@ export const {
   upsertInvitedUsers,
   removeMember,
   cancelInvitation,
+  removeInvitedUsers,
   updateMemberRole,
   updateInvitedUserRole,
   updateInvitedUserRoleId,

@@ -39,7 +39,9 @@ export default function RemoveButton({
   const buttonText =
     type === "members"
       ? "Remove"
-      : status === "pending"
+      : status === "cancelled"
+        ? "Delete invitation"
+        : status === "pending"
         ? "Cancel invitation"
         : "Remove";
 

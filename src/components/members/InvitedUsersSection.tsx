@@ -1,11 +1,8 @@
 "use client"
 
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { useAppSelector } from "../../store/hooks/useRedux"
-import {
-  selectFilteredInvitedUsers,
-  selectSelectedInvitedCount,
-} from "../../store/onboarding/slices/membersSlice"
+import { selectFilteredInvitedUsers } from "../../store/onboarding/slices/membersSlice"
 import Heading from "../ui/Heading"
 import SearchAndFilter from "./SearchAndFilter"
 import UserList from "./UserList"
@@ -13,6 +10,7 @@ import MembersSkeleton from "./MembersSkeleton"
 import ErrorState from "./ErrorState"
 import EmptyState from "./EmptyState"
 import { useInvitedBulkActions } from "./hooks/useInvitedBulkActions"
+import { useInlineFeedbackDismiss } from "./hooks/useInlineFeedbackDismiss"
 import { InvitedBulkActions } from "./components/InvitedBulkActions"
 import { ApiRole } from "../../types/api/memberTypes"
 import { useOptionalTeamManagementContext } from "./context/TeamManagementContext"
@@ -43,24 +41,51 @@ export default function InvitedUsersSection({
 }: InvitedUsersSectionProps) {
   const teamManagement = useOptionalTeamManagementContext()
   const invitedUsers = useAppSelector(selectFilteredInvitedUsers)
-  const selectedCount = useAppSelector(selectSelectedInvitedCount)
-  const isDraftFilter = useAppSelector(
-    (state) => state.members.statusFilterInvited === "draft",
-  )
+  const invitedBulkMode = useAppSelector((state) => {
+    const statusFilter = state.members.statusFilterInvited
+
+    return statusFilter === "draft" || statusFilter === "cancelled"
+      ? statusFilter
+      : null
+  })
+  const selectedCount = invitedUsers.filter((user) => user.isSelected).length
+  const allowSelection = invitedBulkMode !== null
+  const bulkActionState =
+    invitedBulkMode === "cancelled"
+      ? teamManagement?.bulkDeleteState
+      : teamManagement?.bulkSendState
   const resolvedRoles = teamManagement?.roles ?? roles
   const resolvedIsLoading =
     teamManagement?.isLoadingInvitations ?? isLoading
   const resolvedError = teamManagement?.invitationsError ?? error
   const resolvedRetry = teamManagement?.refetchInvitations ?? onRetry
-  const bulkSendState = teamManagement?.bulkSendState
   const {
     selectAll,
     clearSelection,
     assignRole,
     bulkSend,
+    bulkDelete,
+    isAssigningRole,
     isSending,
+    isDeleting,
     failedInvitations,
-  } = useInvitedBulkActions({ roles: resolvedRoles, enable: isDraftFilter })
+    clearFeedback,
+  } = useInvitedBulkActions({ roles: resolvedRoles, mode: invitedBulkMode })
+  const inlineBulkActionState =
+    bulkActionState &&
+    bulkActionState.status !== "idle" &&
+    bulkActionState.message
+      ? bulkActionState
+      : null
+  const hasInlineFeedback =
+    Boolean(inlineBulkActionState) || failedInvitations.length > 0
+  const clearInlineFeedback = useCallback(() => {
+    clearFeedback()
+  }, [clearFeedback])
+  const dismissInlineFeedbackProps = useInlineFeedbackDismiss({
+    enabled: hasInlineFeedback,
+    onClear: clearInlineFeedback,
+  })
 
   useEffect(() => {
     if (onFailedInvitationsChange) {
@@ -74,29 +99,32 @@ export default function InvitedUsersSection({
 
       <SearchAndFilter section="invited" />
 
-      <div className="space-y-[1.6rem]">
+      <div className="space-y-[1.6rem]" {...dismissInlineFeedbackProps}>
         <InvitedBulkActions
+          mode={invitedBulkMode}
           selectedCount={selectedCount}
           total={invitedUsers.length}
-          hasFilter={isDraftFilter}
           onSelectAll={selectAll}
           onClear={clearSelection}
           onAssignRole={assignRole}
           onBulkSend={bulkSend}
+          onBulkDelete={bulkDelete}
+          isAssigningRole={isAssigningRole}
           isSending={isSending}
+          isDeleting={isDeleting}
         />
 
-        {bulkSendState && bulkSendState.status !== "idle" && bulkSendState.message && (
+        {inlineBulkActionState && (
           <p
             className={`text-[1.4rem] ${
-              bulkSendState.status === "error"
+              inlineBulkActionState.status === "error"
                 ? "text-destructive"
-                : bulkSendState.status === "success"
+                : inlineBulkActionState.status === "success"
                   ? "text-brand-primary"
                   : "text-secondary"
             }`}
           >
-            {bulkSendState.message}
+            {inlineBulkActionState.message}
           </p>
         )}
 
@@ -130,7 +158,7 @@ export default function InvitedUsersSection({
             type="invited"
             onSendInvite={teamManagement?.handleSendInviteToAddedEmail ?? onSendInvite}
             isSendingInvite={isSendingInvite}
-            allowSelection={isDraftFilter}
+            allowSelection={allowSelection}
           />
         )}
       </div>
