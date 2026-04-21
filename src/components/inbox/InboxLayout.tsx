@@ -21,7 +21,7 @@ export default function InboxPageLayout({
   return (
     <div
       className={cn(
-        "mt-14.25 grid grid-cols-[38%_1fr] xl:grid-cols-[35%_1fr]",
+        "mt-14.25 grid grid-cols-[38%_1fr] xl:grid-cols-[25%_1fr]",
         isLiveDashboard && "mt-0 bg-input-filled h-full",
         containerClassNames,
       )}
