@@ -29,7 +29,7 @@ import {
 } from "../utils/transformers"
 import { useTeamInvitations } from "./useTeamInvitations"
 import { useTeamMembers } from "./useTeamMembers"
-import { useTeamRoles } from "./useTeamRoles"
+import { useTeamRoles, useUpdateInvitationRole } from "./useTeamRoles"
 import {
   AsyncActionState,
   createIdleAsyncActionState,
@@ -167,6 +167,7 @@ export const useTeamManagement = (): TeamManagementController => {
   const { isLoadingInvitations, invitationsError, refetchInvitations } =
     useTeamInvitations()
   const { isLoadingRoles, rolesError, refetchRoles } = useTeamRoles()
+  const { mutateAsync: updateInvitationRole } = useUpdateInvitationRole()
 
   const updateUserActionState = useCallback(
     (
@@ -825,10 +826,16 @@ export const useTeamManagement = (): TeamManagementController => {
           dispatch(updateMemberRole({ id: user.id, role: roleOption.type }))
           await invalidateMembers()
         } else {
+          await updateInvitationRole({
+            invitationId: user.id,
+            roleId: roleOption.id,
+          })
+
           dispatch(updateInvitedUserRole({ id: user.id, role: roleOption.type }))
           dispatch(
             updateInvitedUserRoleId({ id: user.id, roleId: roleOption.id }),
           )
+          await invalidateInvitations()
         }
 
         updateUserActionState(user.id, "assignRole", createIdleAsyncActionState())
@@ -849,7 +856,15 @@ export const useTeamManagement = (): TeamManagementController => {
         })
       }
     },
-    [dispatch, invalidateMembers, roles, showToast, updateUserActionState],
+    [
+      dispatch,
+      invalidateInvitations,
+      invalidateMembers,
+      roles,
+      showToast,
+      updateInvitationRole,
+      updateUserActionState,
+    ],
   )
 
   const selectAllDraftInvites = useCallback(() => {

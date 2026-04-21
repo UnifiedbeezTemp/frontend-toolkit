@@ -1,40 +1,64 @@
-import { useEffect } from "react";
+import { useEffect } from "react"
 
-import { api, useAppQuery } from "../../../api";
-import { ApiRole } from "../../../types/api/memberTypes";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux";
-import { setRoles, setSelectedRole } from "../../../store/onboarding/slices/membersSlice";
+import { api, useAppMutation, useAppQuery } from "../../../api"
+import { ApiRole } from "../../../types/api/memberTypes"
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux"
+import {
+  setRoles,
+  setSelectedRole,
+} from "../../../store/onboarding/slices/membersSlice"
 
 export const useTeamRoles = () => {
-  const dispatch = useAppDispatch();
-  const { selectedRole } = useAppSelector((state) => state.members);
+  const dispatch = useAppDispatch()
+  const { selectedRole } = useAppSelector((state) => state.members)
 
   const {
     data: rolesData,
     isLoading: isLoadingRoles,
     error: rolesError,
     refetch: refetchRoles,
-  } = useAppQuery<ApiRole[]>(["roles"], () => api.get("/roles"), {});
+  } = useAppQuery<ApiRole[]>(["roles"], () => api.get("/roles"), {})
 
   useEffect(() => {
     if (rolesData && rolesData.length > 0) {
-      dispatch(setRoles(rolesData));
+      dispatch(setRoles(rolesData))
       if (!selectedRole || selectedRole === "owner") {
         const defaultRole =
           rolesData.find((r) => r.type === "OWNER") ||
           rolesData.find((r) => r.isActive) ||
-          rolesData[0];
+          rolesData[0]
         if (defaultRole) {
-          dispatch(setSelectedRole(defaultRole.type));
+          dispatch(setSelectedRole(defaultRole.type))
         }
       }
     }
-  }, [rolesData, dispatch, selectedRole]);
+  }, [rolesData, dispatch, selectedRole])
 
   return {
     rolesData,
     isLoadingRoles,
     rolesError,
     refetchRoles,
-  };
-};
+  }
+}
+
+interface UpdateInvitationRolePayload {
+  invitationId: string
+  roleId: number
+}
+
+export const useUpdateInvitationRole = () => {
+  return useAppMutation<UpdateInvitationRolePayload, unknown>(
+    ({ invitationId, roleId }) =>
+      api.patch<
+        { roleId: number },
+        {
+          id: string
+          email: string
+          role: string
+          status: string
+        }
+      >(`/invitations/${invitationId}/role`, { roleId }),
+    {},
+  )
+}
