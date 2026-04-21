@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks/useRedux"
 import {
   cancelInvitation,
   removeMember,
+  removeInvitedUsers,
   selectFilteredInvitedUsers,
   selectSelectedInvitedUsers,
   setEmailInput,
@@ -29,7 +30,13 @@ import {
 } from "../utils/transformers"
 import { useTeamInvitations } from "./useTeamInvitations"
 import { useTeamMembers } from "./useTeamMembers"
-import { useTeamRoles } from "./useTeamRoles"
+import {
+  useDeleteCancelledInvitation,
+  useDeleteCancelledInvitationsBulk,
+  useTeamRoles,
+  useUpdateInvitationRole,
+  useUpdateInvitationRolesBulk,
+} from "./useTeamRoles"
 import {
   AsyncActionState,
   createIdleAsyncActionState,
@@ -72,6 +79,24 @@ interface DispatchInvitationsResponse {
     found?: number
     missing?: number
     dispatched?: number
+    failed?: number
+  }
+}
+
+interface BulkCancelledInvitationDeleteResponse {
+  message?: string
+  successful?: Array<{
+    id?: string
+    email?: string
+  }>
+  failed?: Array<{
+    id?: string
+    email?: string
+    error?: string
+  }>
+  summary?: {
+    total?: number
+    successful?: number
     failed?: number
   }
 }
@@ -123,6 +148,52 @@ const getFallbackRole = (roles: ApiRole[], selectedRole: string) =>
   roles.find((role) => role.isDefault) ??
   roles[0]
 
+const isSelectableInvitedStatus = (statusFilter: string | null) =>
+  statusFilter === "draft" || statusFilter === "cancelled"
+
+const getBulkCount = (
+  summaryCount: number | undefined,
+  items: Array<unknown> | undefined,
+) => summaryCount ?? items?.length ?? 0
+
+const resolveDeletedInvitationIds = (
+  selectedInvitations: TeamMember[],
+  response: BulkCancelledInvitationDeleteResponse,
+) => {
+  const successfulIds =
+    response.successful
+      ?.map((invitation) => invitation.id)
+      .filter((id): id is string => Boolean(id)) ?? []
+
+  if (successfulIds.length > 0) {
+    return successfulIds
+  }
+
+  const failedKeys = new Set(
+    (response.failed ?? []).flatMap((failure) => {
+      const keys: string[] = []
+
+      if (failure.id) {
+        keys.push(failure.id)
+      }
+
+      if (failure.email) {
+        keys.push(failure.email.toLowerCase())
+      }
+
+      return keys
+    }),
+  )
+
+  return selectedInvitations
+    .filter(
+      (invitation) =>
+        !failedKeys.has(invitation.id) &&
+        !failedKeys.has(invitation.email.toLowerCase()),
+    )
+    .map((invitation) => invitation.id)
+}
+
 export const useTeamManagement = (): TeamManagementController => {
   const dispatch = useAppDispatch()
   const queryClient = useQueryClient()
@@ -138,6 +209,9 @@ export const useTeamManagement = (): TeamManagementController => {
     createIdleAsyncActionState(),
   )
   const [bulkSendState, setBulkSendState] = useState<AsyncActionState>(
+    createIdleAsyncActionState(),
+  )
+  const [bulkDeleteState, setBulkDeleteState] = useState<AsyncActionState>(
     createIdleAsyncActionState(),
   )
   const [legacySendingInvitationIds, setLegacySendingInvitationIds] = useState<
@@ -167,6 +241,13 @@ export const useTeamManagement = (): TeamManagementController => {
   const { isLoadingInvitations, invitationsError, refetchInvitations } =
     useTeamInvitations()
   const { isLoadingRoles, rolesError, refetchRoles } = useTeamRoles()
+  const { mutateAsync: updateInvitationRole } = useUpdateInvitationRole()
+  const { mutateAsync: updateInvitationRolesBulk } =
+    useUpdateInvitationRolesBulk()
+  const { mutateAsync: deleteCancelledInvitation } =
+    useDeleteCancelledInvitation()
+  const { mutateAsync: deleteCancelledInvitationsBulk } =
+    useDeleteCancelledInvitationsBulk()
 
   const updateUserActionState = useCallback(
     (
@@ -228,8 +309,10 @@ export const useTeamManagement = (): TeamManagementController => {
   )
 
   const resetInlineStatuses = useCallback(() => {
+    setError("")
     setAddDraftState(createIdleAsyncActionState())
     setBulkSendState(createIdleAsyncActionState())
+    setBulkDeleteState(createIdleAsyncActionState())
     setFailedInvitations([])
   }, [])
 
@@ -259,7 +342,7 @@ export const useTeamManagement = (): TeamManagementController => {
 
   const handleToggleSelection = useCallback(
     (type: "invited" | "members", userId: string) => {
-      if (type === "invited" && statusFilterInvited !== "draft") {
+      if (type === "invited" && !isSelectableInvitedStatus(statusFilterInvited)) {
         return
       }
 
@@ -746,6 +829,8 @@ export const useTeamManagement = (): TeamManagementController => {
         message:
           type === "members" || user.status === "accepted"
             ? "Removing team member..."
+            : user.status === "cancelled"
+              ? "Deleting cancelled invitation..."
             : "Cancelling invitation...",
       })
 
@@ -759,6 +844,17 @@ export const useTeamManagement = (): TeamManagementController => {
             variant: "success",
           })
           await Promise.all([invalidateMembers(), invalidateInvitations()])
+        } else if (user.status === "cancelled") {
+          await deleteCancelledInvitation({
+            invitationId: user.id,
+          })
+          dispatch(cancelInvitation(user.id))
+          showToast({
+            title: "Cancelled invitation deleted",
+            description: `${user.email} was deleted.`,
+            variant: "success",
+          })
+          await invalidateInvitations()
         } else {
           await api.delete(`/invitations/${user.id}`)
           dispatch(cancelInvitation(user.id))
@@ -776,6 +872,8 @@ export const useTeamManagement = (): TeamManagementController => {
           requestError,
           type === "members"
             ? "Failed to remove team member"
+            : user.status === "cancelled"
+              ? "Failed to delete cancelled invitation"
             : "Failed to cancel invitation",
         )
 
@@ -787,13 +885,22 @@ export const useTeamManagement = (): TeamManagementController => {
           title:
             type === "members"
               ? "Failed to remove team member"
+              : user.status === "cancelled"
+                ? "Failed to delete cancelled invitation"
               : "Failed to cancel invitation",
           description: message,
           variant: "error",
         })
       }
     },
-    [dispatch, invalidateInvitations, invalidateMembers, showToast, updateUserActionState],
+    [
+      deleteCancelledInvitation,
+      dispatch,
+      invalidateInvitations,
+      invalidateMembers,
+      showToast,
+      updateUserActionState,
+    ],
   )
 
   const handleRoleChange = useCallback(
@@ -825,10 +932,16 @@ export const useTeamManagement = (): TeamManagementController => {
           dispatch(updateMemberRole({ id: user.id, role: roleOption.type }))
           await invalidateMembers()
         } else {
+          await updateInvitationRole({
+            invitationId: user.id,
+            roleId: roleOption.id,
+          })
+
           dispatch(updateInvitedUserRole({ id: user.id, role: roleOption.type }))
           dispatch(
             updateInvitedUserRoleId({ id: user.id, roleId: roleOption.id }),
           )
+          await invalidateInvitations()
         }
 
         updateUserActionState(user.id, "assignRole", createIdleAsyncActionState())
@@ -849,11 +962,19 @@ export const useTeamManagement = (): TeamManagementController => {
         })
       }
     },
-    [dispatch, invalidateMembers, roles, showToast, updateUserActionState],
+    [
+      dispatch,
+      invalidateInvitations,
+      invalidateMembers,
+      roles,
+      showToast,
+      updateInvitationRole,
+      updateUserActionState,
+    ],
   )
 
   const selectAllDraftInvites = useCallback(() => {
-    if (statusFilterInvited !== "draft") {
+    if (!isSelectableInvitedStatus(statusFilterInvited)) {
       return
     }
 
@@ -866,7 +987,7 @@ export const useTeamManagement = (): TeamManagementController => {
   }, [dispatch, filteredInvitedUsers, statusFilterInvited])
 
   const clearDraftInviteSelection = useCallback(() => {
-    if (statusFilterInvited !== "draft") {
+    if (!isSelectableInvitedStatus(statusFilterInvited)) {
       return
     }
 
@@ -879,35 +1000,141 @@ export const useTeamManagement = (): TeamManagementController => {
   }, [dispatch, filteredInvitedUsers, statusFilterInvited])
 
   const assignRoleToSelectedDrafts = useCallback(
-    (roleId: number) => {
+    async (roleId: number) => {
       if (statusFilterInvited !== "draft" || selectedInvitedUsers.length === 0) {
         return
       }
 
+      const selectedDraftInvitations = selectedInvitedUsers.filter(
+        (user) => user.status === "draft",
+      )
       const selectedRoleOption = roles.find((role) => role.id === roleId)
 
-      if (!selectedRoleOption) {
+      if (!selectedRoleOption || selectedDraftInvitations.length === 0) {
         return
       }
 
-      dispatch(
-        updateInvitedUserRoleBulk({
-          ids: selectedInvitedUsers.map((user) => user.id),
-          role: selectedRoleOption.type,
-          roleId: selectedRoleOption.id,
-        }),
-      )
+      selectedDraftInvitations.forEach((user) => {
+        updateUserActionState(user.id, "assignRole", {
+          status: "pending",
+          message: "Saving role...",
+        })
+      })
+
+      try {
+        const response = await updateInvitationRolesBulk({
+          invitations: selectedDraftInvitations.map((user) => ({
+            id: user.id,
+            roleId: selectedRoleOption.id,
+          })),
+        })
+        const failedById = new Map(
+          (response.failed ?? []).flatMap((failure) =>
+            failure.id ? [[failure.id, failure.error] as const] : [],
+          ),
+        )
+        const successfulIds =
+          response.successful?.map((invitation) => invitation.id) ?? []
+        const successfulCount = getBulkCount(
+          response.summary?.successful,
+          response.successful,
+        )
+        const failedCount = getBulkCount(response.summary?.failed, response.failed)
+
+        if (successfulIds.length > 0) {
+          dispatch(
+            updateInvitedUserRoleBulk({
+              ids: successfulIds,
+              role: selectedRoleOption.type,
+              roleId: selectedRoleOption.id,
+            }),
+          )
+        }
+
+        setFailedInvitations(
+          (response.failed ?? []).map((failure) => ({
+            email: failure.email,
+            error: failure.error,
+          })),
+        )
+
+        selectedDraftInvitations.forEach((user) => {
+          const errorMessage = failedById.get(user.id)
+
+          updateUserActionState(
+            user.id,
+            "assignRole",
+            errorMessage
+              ? {
+                  status: "error",
+                  message: errorMessage,
+                }
+              : createIdleAsyncActionState(),
+          )
+        })
+
+        await invalidateInvitations()
+
+        showToast({
+          title:
+            response.message ??
+            (failedCount > 0 ? "Role update completed with issues" : "Roles updated"),
+          description:
+            failedCount > 0
+              ? `${successfulCount} updated, ${failedCount} failed.`
+              : `Updated ${successfulCount} draft invitation${
+                  successfulCount === 1 ? "" : "s"
+                }.`,
+          variant:
+            failedCount > 0
+              ? successfulCount > 0
+                ? "warning"
+                : "error"
+              : "success",
+        })
+      } catch (requestError) {
+        const message = extractErrorMessage(
+          requestError,
+          "Failed to update draft invitation roles",
+        )
+
+        selectedDraftInvitations.forEach((user) => {
+          updateUserActionState(user.id, "assignRole", {
+            status: "error",
+            message,
+          })
+        })
+
+        showToast({
+          title: "Failed to update roles",
+          description: message,
+          variant: "error",
+        })
+      }
     },
-    [dispatch, roles, selectedInvitedUsers, statusFilterInvited],
+    [
+      dispatch,
+      invalidateInvitations,
+      roles,
+      selectedInvitedUsers,
+      showToast,
+      statusFilterInvited,
+      updateInvitationRolesBulk,
+      updateUserActionState,
+    ],
   )
 
   const sendSelectedDraftInvites = useCallback(async () => {
-    if (selectedInvitedUsers.length === 0) {
+    const selectedDraftInvitations = selectedInvitedUsers.filter(
+      (user) => user.status === "draft",
+    )
+
+    if (selectedDraftInvitations.length === 0) {
       return
     }
 
     const fallbackRole = getFallbackRole(roles, selectedRole)
-    const invitations = selectedInvitedUsers.map((user) => ({
+    const invitations = selectedDraftInvitations.map((user) => ({
       invitationId: user.id,
       roleId:
         user.roleId ??
@@ -918,6 +1145,166 @@ export const useTeamManagement = (): TeamManagementController => {
 
     await handleSendInviteToAddedEmail(invitations)
   }, [handleSendInviteToAddedEmail, roles, selectedInvitedUsers, selectedRole])
+
+  const deleteSelectedCancelledInvites = useCallback(async () => {
+    if (statusFilterInvited !== "cancelled") {
+      return
+    }
+
+    const selectedCancelledInvitations = selectedInvitedUsers.filter(
+      (user) => user.status === "cancelled",
+    )
+
+    if (selectedCancelledInvitations.length === 0) {
+      return
+    }
+
+    selectedCancelledInvitations.forEach((user) => {
+      updateUserActionState(user.id, "remove", {
+        status: "pending",
+        message: "Deleting cancelled invitation...",
+      })
+    })
+
+    setBulkDeleteState({
+      status: "pending",
+      message: `Deleting ${selectedCancelledInvitations.length} cancelled invitation${
+        selectedCancelledInvitations.length === 1 ? "" : "s"
+      }...`,
+    })
+    setFailedInvitations([])
+
+    try {
+      const responseResult = await deleteCancelledInvitationsBulk({
+        invitationIds: selectedCancelledInvitations.map((user) => user.id),
+      })
+      const response: BulkCancelledInvitationDeleteResponse =
+        typeof responseResult === "object" && responseResult !== null
+          ? responseResult
+          : {}
+      const deletedIds = resolveDeletedInvitationIds(
+        selectedCancelledInvitations,
+        response,
+      )
+      const deletedIdSet = new Set(deletedIds)
+      const failedByKey = new Map(
+        (response.failed ?? []).flatMap((failure) => {
+          const entries: Array<readonly [string, string]> = []
+
+          if (failure.id) {
+            entries.push([
+              failure.id,
+              failure.error ?? "Failed to delete cancelled invitation",
+            ])
+          }
+
+          if (failure.email) {
+            entries.push([
+              failure.email.toLowerCase(),
+              failure.error ?? "Failed to delete cancelled invitation",
+            ])
+          }
+
+          return entries
+        }),
+      )
+      const deletedCount =
+        response.summary?.successful ?? deletedIds.length
+      const failedCount = getBulkCount(response.summary?.failed, response.failed)
+
+      if (deletedIds.length > 0) {
+        dispatch(removeInvitedUsers(deletedIds))
+      }
+
+      setFailedInvitations(
+        (response.failed ?? []).map((failure) => ({
+          email: failure.email ?? "Unknown email",
+          error: failure.error ?? "Failed to delete cancelled invitation",
+        })),
+      )
+
+      selectedCancelledInvitations.forEach((user) => {
+        const errorMessage =
+          failedByKey.get(user.id) ??
+          failedByKey.get(user.email.toLowerCase())
+
+        updateUserActionState(
+          user.id,
+          "remove",
+          deletedIdSet.has(user.id)
+            ? createIdleAsyncActionState()
+            : {
+                status: "error",
+                message:
+                  errorMessage ?? "Failed to delete cancelled invitation",
+              },
+        )
+      })
+
+      setBulkDeleteState({
+        status: failedCount > 0 ? "error" : "success",
+        message:
+          failedCount > 0
+            ? `${deletedCount} deleted, ${failedCount} failed.`
+            : `Deleted ${deletedCount} cancelled invitation${
+                deletedCount === 1 ? "" : "s"
+              }.`,
+      })
+
+      showToast({
+        title:
+          response.message ??
+          (failedCount > 0
+            ? "Cancelled invitation delete completed with issues"
+            : "Cancelled invitations deleted"),
+        description:
+          failedCount > 0
+            ? `${deletedCount} deleted, ${failedCount} failed.`
+            : `Deleted ${deletedCount} cancelled invitation${
+                deletedCount === 1 ? "" : "s"
+              }.`,
+        variant:
+          failedCount > 0
+            ? deletedCount > 0
+              ? "warning"
+              : "error"
+            : "success",
+      })
+
+      await invalidateInvitations()
+    } catch (requestError) {
+      const message = extractErrorMessage(
+        requestError,
+        "Failed to delete cancelled invitations",
+      )
+
+      selectedCancelledInvitations.forEach((user) => {
+        updateUserActionState(user.id, "remove", {
+          status: "error",
+          message,
+        })
+      })
+
+      setBulkDeleteState({
+        status: "error",
+        message,
+      })
+
+      showToast({
+        title: "Failed to delete cancelled invitations",
+        description: message,
+        variant: "error",
+      })
+    }
+  }, [
+    deleteCancelledInvitationsBulk,
+    dispatch,
+    invalidateInvitations,
+    selectedInvitedUsers,
+    showToast,
+    statusFilterInvited,
+    updateUserActionState,
+  ])
 
   const isSendingInvite = useCallback(
     (invitationId: string) => legacySendingInvitationIds.includes(invitationId),
@@ -952,6 +1339,7 @@ export const useTeamManagement = (): TeamManagementController => {
     failedInvitations,
     addDraftState,
     bulkSendState,
+    bulkDeleteState,
     hasDraftedUsers,
     isLoadingMembers,
     isLoadingInvitations,
@@ -966,6 +1354,7 @@ export const useTeamManagement = (): TeamManagementController => {
     refetchMembers,
     refetchInvitations,
     refetchRoles,
+    clearInlineStatuses: resetInlineStatuses,
     handleSendInvitation,
     handleSendInviteToAddedEmail,
     isSendingInvite,
@@ -981,5 +1370,6 @@ export const useTeamManagement = (): TeamManagementController => {
     clearDraftInviteSelection,
     assignRoleToSelectedDrafts,
     sendSelectedDraftInvites,
+    deleteSelectedCancelledInvites,
   }
 }

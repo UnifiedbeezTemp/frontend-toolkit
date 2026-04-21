@@ -46,6 +46,7 @@ export interface TeamManagementController {
   failedInvitations: InvitationFailure[]
   addDraftState: AsyncActionState
   bulkSendState: AsyncActionState
+  bulkDeleteState: AsyncActionState
   hasDraftedUsers: boolean
   isLoadingMembers: boolean
   isLoadingInvitations: boolean
@@ -60,6 +61,7 @@ export interface TeamManagementController {
   refetchMembers: () => Promise<unknown>
   refetchInvitations: () => Promise<unknown>
   refetchRoles: () => Promise<unknown>
+  clearInlineStatuses: () => void
   handleSendInvitation: (
     payload: SendInvitationPayload | SendInvitationPayload[],
     addOnly?: boolean,
@@ -88,13 +90,16 @@ export interface TeamManagementController {
   handleSendDraftInvite: (user: TeamMember) => Promise<void>
   selectAllDraftInvites: () => void
   clearDraftInviteSelection: () => void
-  assignRoleToSelectedDrafts: (roleId: number) => void
+  assignRoleToSelectedDrafts: (roleId: number) => Promise<void>
   sendSelectedDraftInvites: () => Promise<void>
+  deleteSelectedCancelledInvites: () => Promise<void>
 }
 
 export const createIdleAsyncActionState = (): AsyncActionState => ({
   status: "idle",
 })
+
+export const INLINE_FEEDBACK_TIMEOUT_MS = 4000
 
 export const createIdleUserActionStates = (): UserActionStates => ({
   sendInvite: createIdleAsyncActionState(),
