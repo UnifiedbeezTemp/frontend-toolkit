@@ -94,6 +94,7 @@ export const getConversation = (
     page: query.data?.page ?? 1,
     limit: query.data?.limit ?? 50,
     isLoading: query.isLoading,
+    isFetching: query.isFetching,
     isError: query.isError,
     error: query.error,
     refetch: query.refetch,

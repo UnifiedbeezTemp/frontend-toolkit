@@ -6,7 +6,9 @@ import React, {
   useCallback,
   useMemo,
   useState,
+  useEffect,
 } from "react";
+import { useParams } from "next/navigation";
 import { io, Socket } from "socket.io-client";
 import { useInboxEvents } from "../../hooks/inbox/useInboxEvents";
 import { messagesSocketUrl } from "../../api/rootUrls";
@@ -25,12 +27,17 @@ export function MessagesSocketProvider({
 }: {
   children: React.ReactNode;
 }) {
+  // 1. URL & Infrastructure State
+  const params = useParams();
+  const conversationIdFromUrl = params.conversationId as string;
+  const inboxEvents = useInboxEvents();
+
   const [isConnected, setIsConnected] = useState(false);
   const [activeConversationId, setActiveConversationId] = useState<
     string | null
   >(null);
-  const inboxEvents = useInboxEvents();
 
+  // Initialize socket instance (Persistent State)
   const [socket] = useState<Socket | null>(() => {
     if (typeof window === "undefined") return null;
     return io(messagesSocketUrl, {
@@ -39,39 +46,56 @@ export function MessagesSocketProvider({
     });
   });
 
-  // Attach/Detach listeners via modular hook
-  useSocketListeners({
-    socket,
-    setIsConnected,
-    setActiveConversationId,
-    inboxEvents,
-  });
+  // 2. State Synchronization: Link URL Path to Active Conversation State
+  useEffect(() => {
+    const targetId = conversationIdFromUrl || null;
+    if (activeConversationId !== targetId) {
+      setActiveConversationId(targetId);
+    }
+  }, [conversationIdFromUrl, activeConversationId]);
 
+  // 3. Socket Action Callbacks
   const markAsRead = useCallback(
     (conversationId: string) => {
-      if (socket && isConnected) {
+      if (socket?.connected) {
         socket.emit("mark_messages_read", { conversationId });
       }
     },
-    [socket, isConnected],
+    [socket],
   );
 
   const joinConversation = useCallback(
     (conversationId: string) => {
-      if (socket && isConnected) {
-        // Leave previous conversation if any (Automated Room Management)
+      if (socket?.connected) {
+        // Automatically leave previous conversation to maintain clean room state
         if (activeConversationId && activeConversationId !== conversationId) {
           socket.emit("leave_conversation", {
             conversationId: activeConversationId,
           });
         }
-
         socket.emit("join_conversation", { conversationId });
       }
     },
-    [socket, isConnected, activeConversationId],
+    [socket, activeConversationId],
   );
 
+  // 4. Room Orchestration: Automated Rejoin on Connection Restore or URL Load
+  useEffect(() => {
+    if (isConnected && activeConversationId) {
+      joinConversation(activeConversationId);
+    }
+  }, [isConnected, activeConversationId, joinConversation]);
+
+  // 5. Attach Global Event Listeners
+  useSocketListeners({
+    socket,
+    setIsConnected,
+    activeConversationId,
+    setActiveConversationId,
+    inboxEvents,
+  });
+
+  // 6. Context Provisioning
   const value = useMemo(
     () => ({
       socket,

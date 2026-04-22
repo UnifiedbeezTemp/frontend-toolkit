@@ -14,13 +14,13 @@ interface UseDropdownInteractionsProps {
 
 /**
  * HOOK: useDropdownInteractions
- * 
+ *
  * PURPOSE:
  * Handles all dropdown interactions including:
  * - Outside clicks
  * - Keyboard navigation
  * - Scroll and resize events
- * 
+ *
  * USAGE:
  * useDropdownInteractions({
  *   isOpen,
@@ -29,7 +29,7 @@ interface UseDropdownInteractionsProps {
  *   triggerRef,
  *   closeOnOutsideClick: true
  * });
- * 
+ *
  * FEATURES:
  * - ESC key to close
  * - Arrow key navigation
@@ -111,7 +111,7 @@ export function useDropdownInteractions({
     };
 
     window.addEventListener("resize", handleDebouncedResize);
-    
+
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
