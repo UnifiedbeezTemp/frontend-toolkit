@@ -1,21 +1,20 @@
-import { Message } from "@/shared/src/components/inbox/types";
-
-export interface MessageGroup {
+export interface MessageGroup<T> {
   dateLabel: string;
-  messages: Message[];
+  messages: T[];
 }
 
 /**
  * Groups messages by date with WhatsApp-style labels
+ * Generic implementation to support different Message models (API or UI)
  */
-export function groupMessagesByDate(
-  messages: Message[],
-  getCreatedAt: (m: Message) => string | undefined,
-): MessageGroup[] {
+export function groupMessagesByDate<T>(
+  messages: T[],
+  getCreatedAt: (m: T) => string | undefined,
+): MessageGroup<T>[] {
   if (!messages || messages.length === 0) return [];
 
-  const groups: MessageGroup[] = [];
-  const map: Record<string, Message[]> = {};
+  const groups: MessageGroup<T>[] = [];
+  const map: Record<string, T[]> = {};
 
   messages.forEach((message) => {
     const createdAt = getCreatedAt(message);
