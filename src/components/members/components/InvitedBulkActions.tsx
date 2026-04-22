@@ -1,41 +1,49 @@
-"use client";
+"use client"
 
-import Button from "../../ui/Button";
-import Checkbox from "../../ui/CheckBox";
-import ImageComponent from "../../ui/ImageComponent";
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
-import { cn } from "../../../lib/utils";
-import { useAppSelector } from "../../../store/hooks/useRedux";
-import RoleDropdown from "../RoleDropdown";
+import Button from "../../ui/Button"
+import ImageComponent from "../../ui/ImageComponent"
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
+import { cn } from "../../../lib/utils"
+import { useAppSelector } from "../../../store/hooks/useRedux"
+import RoleDropdown from "../RoleDropdown"
 
 interface InvitedBulkActionsProps {
-  selectedCount: number;
-  total: number;
-  hasFilter: boolean;
-  onSelectAll: () => void;
-  onClear: () => void;
-  onAssignRole: (roleId: number) => void;
-  onBulkSend: () => void;
+  mode: "draft" | "cancelled" | null
+  selectedCount: number
+  total: number
+  onSelectAll: () => void
+  onClear: () => void
+  onAssignRole: (roleId: number) => void | Promise<void>
+  onBulkSend: () => void
+  onBulkDelete: () => void
+  isAssigningRole?: boolean
+  isSending?: boolean
+  isDeleting?: boolean
 }
 
 export function InvitedBulkActions({
+  mode,
   selectedCount,
   total,
-  hasFilter,
   onSelectAll,
   onClear,
   onAssignRole,
   onBulkSend,
+  onBulkDelete,
+  isAssigningRole,
   isSending,
-}: InvitedBulkActionsProps & { isSending?: boolean }) {
-  if (!hasFilter) {
-    return null;
+  isDeleting,
+}: InvitedBulkActionsProps) {
+  const isAllSelected = selectedCount === total && total > 0
+  const supabaseIcons = useSupabaseIcons()
+  const roles = useAppSelector((state) => state.members.roles)
+
+  if (!mode) {
+    return null
   }
 
-  const isAllSelected = selectedCount === total && total > 0;
-  const supabaseIcons = useSupabaseIcons();
-  const roles = useAppSelector((state) => state.members.roles);
-  
+  const isDraftMode = mode === "draft"
+
   return (
     <div className="space-y-[1.2rem]">
       <div className="bg-input-filled rounded-[0.8rem] p-[0.8rem] flex items-center justify-between">
@@ -59,7 +67,7 @@ export function InvitedBulkActions({
             )}
           </button>
           <p className="text-[14px] text-text-primary leading-[1.96rem]">
-            Select all Invites
+            Select all invitations
           </p>
         </div>
 
@@ -70,15 +78,15 @@ export function InvitedBulkActions({
         <div className="flex items-center justify-between flex-wrap gap-[1rem] bg-input-filled px-[1.6rem] py-[0.8rem] rounded-[0.8rem] border border-primary-50 bg-soft-green">
           <div className="flex items-center gap-[0.8rem] text-[1.4rem] text-text-primary">
             <span className="font-[400] flex items-center text-brand-primary gap-[0.8rem]">
-              {" "}
               <ImageComponent
-                alt="mail"
-                src={supabaseIcons.mail}
+                alt={isDraftMode ? "mail" : "delete"}
+                src={isDraftMode ? supabaseIcons.mail : supabaseIcons.trash}
                 width={16}
                 height={16}
                 className="object-cover"
-              />{" "}
-              {selectedCount} members selected
+              />
+              {selectedCount} invitation{selectedCount === 1 ? "" : "s"}{" "}
+              selected
             </span>
           </div>
 
@@ -89,37 +97,56 @@ export function InvitedBulkActions({
               onClick={onClear}
               className={cn(
                 "rounded-[0.4rem] px-[1.6rem] py-[0.8rem]",
-                "text-[1.4rem] border border-input-stroke"
+                "text-[1.4rem] border border-input-stroke",
               )}
             >
               Clear selection
             </Button>
 
-            <RoleDropdown
-              currentRole={roles[0]?.type ?? ""}
-              onRoleChange={(role) => {
-                const roleObj = roles.find((r) => r.type === role) ?? roles[0];
-                if (roleObj) {
-                  onAssignRole(roleObj.id);
-                }
-              }}
-              disabled={roles.length === 0}
-            />
+            {isDraftMode ? (
+              <>
+                <RoleDropdown
+                  currentRole={roles[0]?.type ?? ""}
+                  onRoleChange={(role) => {
+                    const roleObj =
+                      roles.find((r) => r.type === role) ?? roles[0]
+                    if (roleObj) {
+                      void onAssignRole(roleObj.id)
+                    }
+                  }}
+                  disabled={roles.length === 0}
+                  loading={isAssigningRole}
+                />
 
-            <Button
-              size="sm"
-              onClick={onBulkSend}
-              className={cn(
-                "rounded-[0.4rem] px-[1.6rem] py-[0.8rem]",
-                "text-[1.4rem]"
-              )}
-              loading={isSending}
-            >
-              Bulk Send invite
-            </Button>
+                <Button
+                  size="sm"
+                  onClick={onBulkSend}
+                  className={cn(
+                    "rounded-[0.4rem] px-[1.6rem] py-[0.8rem]",
+                    "text-[1.4rem]",
+                  )}
+                  loading={isSending}
+                >
+                  Bulk Send invite
+                </Button>
+              </>
+            ) : (
+              <Button
+                size="sm"
+                variant="danger"
+                onClick={onBulkDelete}
+                className={cn(
+                  "rounded-[0.4rem] px-[1.6rem] py-[0.8rem]",
+                  "text-[1.4rem] text-primary border border-destructive/20",
+                )}
+                loading={isDeleting}
+              >
+                Delete invitations
+              </Button>
+            )}
           </div>
         </div>
       )}
     </div>
-  );
+  )
 }

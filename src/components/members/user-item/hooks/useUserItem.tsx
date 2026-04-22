@@ -20,6 +20,7 @@ import { store } from "../../../../store"
 import { useToast } from "../../../ui/toast/useToast"
 import { extractErrorMessage } from "../../../../utils/extractErrorMessage"
 import { UserInvitePayload } from "../../types/teamManagement"
+import { useDeleteCancelledInvitation } from "../../hooks/useTeamRoles"
 
 export const useUserItem = (
   type: "invited" | "members",
@@ -64,6 +65,10 @@ export const useUserItem = (
         },
       },
     )
+  const {
+    mutateAsync: deleteCancelledInvitationMutation,
+    isPending: isDeletingCancelledInvitation,
+  } = useDeleteCancelledInvitation()
 
   const { mutateAsync: removeMemberMutation, isPending: isRemovingMember } =
     useAppMutation<string, void>(
@@ -112,6 +117,10 @@ export const useUserItem = (
     }
   }, [])
 
+  const clearActionError = useCallback(() => {
+    setActionError("")
+  }, [])
+
   const handleRemove = useCallback(async () => {
     if (isCurrentUser) return
 
@@ -120,14 +129,35 @@ export const useUserItem = (
     try {
       if (user?.status === "accepted") {
         await removeMemberMutation(userId)
+        showToast({
+          title: "Team member removed",
+          description: `${user.email} was removed.`,
+          variant: "success",
+        })
+      } else if (user?.status === "cancelled") {
+        await deleteCancelledInvitationMutation({ invitationId: userId })
+        dispatch(cancelInvitation(userId))
+        queryClient.invalidateQueries({ queryKey: ["invitations"] })
+        showToast({
+          title: "Cancelled invitation deleted",
+          description: `${user.email} was deleted.`,
+          variant: "success",
+        })
       } else {
         await cancelInvitationMutation(userId)
+        showToast({
+          title: "Invitation removed",
+          description: `${user?.email ?? "Invitation"} was removed from invitations.`,
+          variant: "success",
+        })
       }
     } catch (error) {
       const message = extractErrorMessage(
         error,
         user?.status === "accepted"
           ? "Failed to remove team member"
+          : user?.status === "cancelled"
+            ? "Failed to delete cancelled invitation"
           : "Failed to cancel invitation",
       )
 
@@ -136,6 +166,8 @@ export const useUserItem = (
         title:
           user?.status === "accepted"
             ? "Failed to remove team member"
+            : user?.status === "cancelled"
+              ? "Failed to delete cancelled invitation"
             : "Failed to cancel invitation",
         description: message,
         variant: "error",
@@ -147,11 +179,18 @@ export const useUserItem = (
     removeMemberMutation,
     userId,
     cancelInvitationMutation,
+    deleteCancelledInvitationMutation,
+    dispatch,
+    queryClient,
     showToast,
   ])
 
   const handleToggle = useCallback(() => {
-    if (type === "invited" && invitedStatusFilter !== "draft") {
+    if (
+      type === "invited" &&
+      invitedStatusFilter !== "draft" &&
+      invitedStatusFilter !== "cancelled"
+    ) {
       return
     }
     dispatch(toggleMemberSelection(userId))
@@ -247,8 +286,9 @@ export const useUserItem = (
     isCurrentUser,
     isOwner,
     isRemoving: isRemovingMember,
-    isCanceling: isCancelingInvitation,
+    isCanceling: isCancelingInvitation || isDeletingCancelledInvitation,
     isAssigningRole,
     actionError,
+    clearActionError,
   }
 }

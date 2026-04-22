@@ -25,6 +25,7 @@ export function useFilterDropdown({ section, onClose }: UseFilterDropdownParams)
     { label: "Rejected", value: "denied" },
     { label: "Expired", value: "expired" },
     { label: "Draft", value: "draft" },
+    { label: "Cancelled", value: "cancelled" },
   ];
 
   const roleOptions = transformApiRolesToOptions(roles);
@@ -77,4 +78,3 @@ export function useFilterDropdown({ section, onClose }: UseFilterDropdownParams)
     closeDropdown,
   };
 }
-
