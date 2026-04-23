@@ -19,9 +19,11 @@ export default function MobileBottomRow({
   isOwner,
 }: MobileBottomRowProps) {
   const isDraft = user.status === "draft"
+  const isCancelled = user.status === "cancelled"
   const canChangeRole = !(isCurrentUser && isOwner)
   const isLoading = isRemoving || isCanceling || isAssigningRole
   const hideOwnerControls = type === "members" && isCurrentUser && isOwner
+  const inviteActionLabel = isCancelled ? "Re-add invite" : "Send Invite"
 
   return (
     <div className="flex items-center justify-between">
@@ -47,9 +49,10 @@ export default function MobileBottomRow({
         )}
         {!hideOwnerControls && (
           <>
-            {isDraft && (
+            {(isDraft || isCancelled) && (
               <SendInviteButton
                 onClick={onSendInvite || (() => {})}
+                label={inviteActionLabel}
                 loading={isSendingInvite}
                 mobile
               />

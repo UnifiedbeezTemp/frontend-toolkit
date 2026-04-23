@@ -7,10 +7,6 @@ import {
   setRoles,
   setSelectedRole,
 } from "../../../store/onboarding/slices/membersSlice"
-import {
-  requestBulkCancelledInvitationDeletion,
-  requestCancelledInvitationDeletion,
-} from "../utils/cancelledInvitationRequests"
 
 export const useTeamRoles = () => {
   const dispatch = useAppDispatch()
@@ -77,14 +73,6 @@ export interface UpdateInvitationRolesBulkResponse {
   }
 }
 
-interface DeleteCancelledInvitationPayload {
-  invitationId: string
-}
-
-interface DeleteCancelledInvitationsBulkPayload {
-  invitationIds: string[]
-}
-
 export const useUpdateInvitationRolesBulk = () => {
   return useAppMutation<
     UpdateInvitationRolesBulkPayload,
@@ -121,21 +109,6 @@ export const useUpdateInvitationRole = () => {
           status: string
         }
       >(`/invitations/${invitationId}/role`, { roleId }),
-    {},
-  )
-}
-
-export const useDeleteCancelledInvitation = () => {
-  return useAppMutation<DeleteCancelledInvitationPayload, unknown>(
-    ({ invitationId }) => requestCancelledInvitationDeletion(invitationId),
-    {},
-  )
-}
-
-export const useDeleteCancelledInvitationsBulk = () => {
-  return useAppMutation<DeleteCancelledInvitationsBulkPayload, unknown>(
-    ({ invitationIds }) =>
-      requestBulkCancelledInvitationDeletion(invitationIds),
     {},
   )
 }

@@ -202,6 +202,11 @@ function ManagedUserItem({
   const handleSendDraftInvite = useCallback(() => {
     clearActionError()
 
+    if (user.status === "cancelled") {
+      void teamManagement.handleReAddCancelledInvitation(user)
+      return
+    }
+
     if (onSendInvite) {
       const roleId =
         user.roleId ??
@@ -239,7 +244,10 @@ function ManagedUserItem({
       onRemove={handleRemove}
       onSendInvite={handleSendDraftInvite}
       isSendingInvite={
-        isSendingInvite ?? teamManagement.isSendingInviteToAddedEmail(user.id)
+        user.status === "cancelled"
+          ? userActionState.sendInvite.status === "pending"
+          : (isSendingInvite ??
+              teamManagement.isSendingInviteToAddedEmail(user.id))
       }
       isRemoving={userActionState.remove.status === "pending"}
       isCanceling={false}
@@ -271,6 +279,7 @@ function LegacyUserItem({
     isOwner,
     isRemoving,
     isCanceling,
+    isReAddingCancelledInvitation,
     isAssigningRole,
     actionError,
     clearActionError,
@@ -284,7 +293,11 @@ function LegacyUserItem({
       onRoleChange={handleRoleChange}
       onRemove={handleRemove}
       onSendInvite={handleSendInvite}
-      isSendingInvite={isSendingInvite}
+      isSendingInvite={
+        user.status === "cancelled"
+          ? isReAddingCancelledInvitation
+          : isSendingInvite
+      }
       isRemoving={isRemoving}
       isCanceling={isCanceling}
       isAssigningRole={isAssigningRole}

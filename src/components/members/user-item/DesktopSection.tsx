@@ -26,9 +26,11 @@ export default function DesktopSection({
   allowSelection = true,
 }: DesktopSectionProps) {
   const isDraft = user.status === "draft"
+  const isCancelled = user.status === "cancelled"
   const canChangeRole = !(isCurrentUser && isOwner)
   const isLoading = isRemoving || isCanceling || isAssigningRole
   const hideOwnerControls = type === "members" && isCurrentUser && isOwner
+  const inviteActionLabel = isCancelled ? "Re-add invite" : "Send Invite"
 
   return (
     <div className="hidden lg:flex items-center justify-between">
@@ -78,9 +80,10 @@ export default function DesktopSection({
         )}
         {!hideOwnerControls && (
           <>
-            {isDraft && (
+            {(isDraft || isCancelled) && (
               <SendInviteButton
                 onClick={onSendInvite || (() => {})}
+                label={inviteActionLabel}
                 loading={isSendingInvite}
               />
             )}
