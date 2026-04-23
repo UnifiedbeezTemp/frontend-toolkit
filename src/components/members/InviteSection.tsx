@@ -32,8 +32,6 @@ export const InviteSection = ({
   onAddInvite,
   failedInvitations = [],
   isSending,
-  isAddingBlocked,
-  reasonForBlockedAdding,
 }: InviteSectionProps) => {
   const teamManagement = useOptionalTeamManagementContext()
   const { data } = useSession()
@@ -43,6 +41,11 @@ export const InviteSection = ({
   const seatsLeft = isUnlimited
     ? "Unlimited"
     : Math.max(0, (maxSeats || 0) - totalMembers)
+
+  const isAddingBlocked =
+    seatsLeft !== "Unlimited" && totalMembers >= (maxSeats || 0)
+  const reasonForBlockedAdding =
+    "You have reached the maximum number of seats on your plan"
   const addDraftState =
     teamManagement?.addDraftState ?? createIdleAsyncActionState()
   const resolvedEmailInput = teamManagement?.emailInput ?? emailInput ?? ""
