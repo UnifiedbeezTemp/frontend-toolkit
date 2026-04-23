@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { ReactNode, useRef } from "react";
 import { cn } from "../../../lib/utils";
@@ -15,6 +15,12 @@ import { TagPill } from "../components/TagPill";
 import Attributes from "../components/attributes/Attributes";
 import ImageComponent from "../../ui/ImageComponent";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import Avatar from "../../ui/Avatar";
+import {
+  getChannelIconKey,
+  getChannelIconKeyFromChannelType,
+} from "../../../utils/channels/getChannelIconKey";
+import { ChannelType } from "../../../types/conversationApiTypes";
 
 export function ConversationHeader({
   platformIcon,
@@ -26,8 +32,10 @@ export function ConversationHeader({
   className,
   onBack,
   isLiveDashboard,
+  avatarUrl,
+  channelType,
 }: {
-  platformIcon: ReactNode;
+  platformIcon?: ReactNode;
   title: string;
   tag?: string | ReactNode;
   status?: string;
@@ -36,6 +44,8 @@ export function ConversationHeader({
   className?: string;
   onBack?: () => void;
   isLiveDashboard?: boolean;
+  avatarUrl?: string;
+  channelType?: ChannelType;
 }) {
   const { arrowLeft } = useSupabaseIcons();
   const tagNode = typeof tag === "string" ? <TagPill label={tag} /> : tag;
@@ -52,6 +62,12 @@ export function ConversationHeader({
     setTrue: openAttributes,
     setFalse: closeAttributes,
   } = useToggle();
+
+  const icons = useSupabaseIcons();
+  const iconKey = channelType
+    ? getChannelIconKeyFromChannelType(channelType)
+    : null;
+  const channelIcon = iconKey ? icons[iconKey as keyof typeof icons] : null;
 
   return (
     <header
@@ -78,7 +94,21 @@ export function ConversationHeader({
               ariaLabel="Back to inbox"
             />
           )}
-          <div className="shrink-0">{platformIcon}</div>
+
+          <div className="relative shrink-0">
+            <Avatar src={avatarUrl} alt={title} name={title} size="md" />
+            {channelIcon && (
+              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-[.1rem] border border-gray-100 shadow-sm flex items-center justify-center translate-x-1 translate-y-1">
+                <ImageComponent
+                  src={channelIcon}
+                  alt={channelType || "channel"}
+                  width={18}
+                  height={18}
+                  className="rounded-full"
+                />
+              </div>
+            )}
+          </div>
 
           <div className="min-w-0">
             <div className="flex min-w-0 items-center gap-3">

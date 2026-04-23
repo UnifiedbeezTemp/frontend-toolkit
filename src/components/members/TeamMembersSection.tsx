@@ -1,20 +1,26 @@
-"use client";
+"use client"
 
-import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/useRedux";
-import { selectFilteredMembers, selectTotalMembers, selectSelectedMembersCount, selectAllMembers } from "../../store/onboarding/slices/membersSlice";
-import Heading from "../ui/Heading";
-import SearchAndFilter from "./SearchAndFilter";
-import UserList from "./UserList";
-import MembersSkeleton from "./MembersSkeleton";
-import ErrorState from "./ErrorState";
-import EmptyState from "./EmptyState";
-import Image from "next/image";
+import { useSupabaseIcons } from "../../lib/supabase/useSupabase"
+import { useAppDispatch, useAppSelector } from "../../store/hooks/useRedux"
+import {
+  selectFilteredMembers,
+  selectTotalActiveMembers,
+  selectSelectedMembersCount,
+  selectAllMembers,
+} from "../../store/onboarding/slices/membersSlice"
+import Heading from "../ui/Heading"
+import SearchAndFilter from "./SearchAndFilter"
+import UserList from "./UserList"
+import MembersSkeleton from "./MembersSkeleton"
+import ErrorState from "./ErrorState"
+import EmptyState from "./EmptyState"
+import Image from "next/image"
+import { useOptionalTeamManagementContext } from "./context/TeamManagementContext"
 
 interface TeamMembersSectionProps {
-  isLoading?: boolean;
-  error?: unknown;
-  onRetry?: () => void;
+  isLoading?: boolean
+  error?: unknown
+  onRetry?: () => void
 }
 
 export default function TeamMembersSection({
@@ -22,17 +28,22 @@ export default function TeamMembersSection({
   error,
   onRetry,
 }: TeamMembersSectionProps) {
-  const dispatch = useAppDispatch();
-  const members = useAppSelector(selectFilteredMembers);
-  const totalMembers = useAppSelector(selectTotalMembers);
-  const selectedCount = useAppSelector(selectSelectedMembersCount);
-  const supabaseIcons = useSupabaseIcons();
+  const teamManagement = useOptionalTeamManagementContext()
+  const dispatch = useAppDispatch()
+  const members = useAppSelector(selectFilteredMembers)
+  const totalActiveMembers = useAppSelector(selectTotalActiveMembers)
+  const selectedCount = useAppSelector(selectSelectedMembersCount)
+  const supabaseIcons = useSupabaseIcons()
+  const resolvedIsLoading = teamManagement?.isLoadingMembers ?? isLoading
+  const resolvedError = teamManagement?.membersError ?? error
+  const resolvedRetry = teamManagement?.refetchMembers ?? onRetry
 
   const handleSelectAll = () => {
-    dispatch(selectAllMembers());
-  };
+    dispatch(selectAllMembers())
+  }
 
-  const isAllSelected = selectedCount === totalMembers && totalMembers > 0;
+  const isAllSelected =
+    selectedCount === totalActiveMembers && totalActiveMembers > 0
 
   return (
     <div className="py-[2rem]">
@@ -40,7 +51,7 @@ export default function TeamMembersSection({
 
       <SearchAndFilter section="members" />
 
-      {!isLoading && !error && totalMembers > 0 && (
+      {!resolvedIsLoading && !resolvedError && totalActiveMembers > 0 && (
         <div className="bg-input-filled rounded-[0.8rem] p-[0.8rem] flex items-center justify-between">
           <div className="flex items-center gap-[1.6rem]">
             <button
@@ -66,28 +77,31 @@ export default function TeamMembersSection({
             </p>
           </div>
 
-          <p className="text-[14px] text-text-primary">{totalMembers} Total</p>
+          <p className="text-[14px] text-text-primary">
+            {totalActiveMembers} Total
+          </p>
         </div>
       )}
 
       <div className="mt-[1.6rem] space-y-[1.6rem]">
-        {isLoading ? (
+        {resolvedIsLoading ? (
           <MembersSkeleton />
-        ) : error ? (
+        ) : resolvedError ? (
           <ErrorState
             type="members"
-            message={error instanceof Error ? error.message : "Failed to load team members"}
-            onRetry={onRetry || (() => {})}
+            message={
+              resolvedError instanceof Error
+                ? resolvedError.message
+                : "Failed to load team members"
+            }
+            onRetry={resolvedRetry || (() => {})}
           />
         ) : members.length === 0 ? (
           <EmptyState type="members" />
         ) : (
-          <UserList 
-            users={members} 
-            type="members"
-          />
+          <UserList users={members} type="members" />
         )}
       </div>
     </div>
-  );
+  )
 }

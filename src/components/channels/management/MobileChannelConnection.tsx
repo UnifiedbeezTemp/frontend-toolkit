@@ -46,11 +46,12 @@ export default function MobileChannelConnection({
         </div>
 
         <div>
-          {selectedChannels.map((channel) => (
+          {selectedChannels.map((channel, index) => (
             <ChannelItem
               key={channel.id}
               channel={channel}
               onRefetchChannels={onRefetchChannels}
+              defaultExpanded={index === 0}
             />
           ))}
         </div>

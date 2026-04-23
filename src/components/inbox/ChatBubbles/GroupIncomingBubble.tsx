@@ -1,24 +1,25 @@
-import { ReactNode } from "react"
-import { cn } from "../../../lib/utils"
-import Avatar from "../../ui/Avatar"
-import LinkPill from "./LinkPill"
+import { cn } from "../../../lib/utils";
+import Avatar from "../../ui/Avatar";
+import LinkifiedText from "./LinkifiedText";
+import { formatBubbleTime } from "../../../utils/formatChatTime";
 
 export function GroupIncomingBubble({
   avatar,
   name,
   message,
+  timestamp,
   className,
   maxWidthClass = "max-w-[38rem]",
 }: {
-  avatar?: string
-  name: string
-  message: ReactNode
-  timestamp?: string
-  className?: string
-  maxWidthClass?: string
+  avatar?: string;
+  name: string;
+  message: string;
+  timestamp?: string;
+  className?: string;
+  maxWidthClass?: string;
 }) {
-  const isColorClass = avatar?.startsWith("bg-")
-  const avatarSrc = isColorClass ? undefined : avatar
+  const isColorClass = avatar?.startsWith("bg-");
+  const avatarSrc = isColorClass ? undefined : avatar;
 
   return (
     <div
@@ -46,12 +47,13 @@ export function GroupIncomingBubble({
         <div className="text-base font-bold text-dark-base-100">{name}</div>
 
         <div className="my-1 whitespace-pre-wrap text-md lg:text-base leading-relaxed text-dark-base-40">
-          {message}
-          <LinkPill />
+          <LinkifiedText text={message} />
         </div>
 
-        <span className="text-sm text-dark-base-50 font-normal">12:57 am</span>
+        <span className="text-sm text-dark-base-50 font-normal">
+          {formatBubbleTime(timestamp)}
+        </span>
       </div>
     </div>
-  )
+  );
 }
