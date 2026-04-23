@@ -67,6 +67,9 @@ const membersSlice = createSlice({
     setMembers: (state, action: PayloadAction<TeamMember[]>) => {
       state.members = preserveSelection(action.payload, state.members)
     },
+    updateMembers: (state, action: PayloadAction<TeamMember[]>) => {
+      state.members = state.members.concat(action.payload)
+    },
     setInvitedUsers: (state, action: PayloadAction<TeamMember[]>) => {
       state.invitedUsers = preserveSelection(action.payload, state.invitedUsers)
     },
@@ -254,6 +257,7 @@ export const selectTotalInvitedUsers = (state: RootState) =>
 
 export const {
   setMembers,
+  updateMembers,
   setInvitedUsers,
   setRoles,
   setSearchQueryMembers,
