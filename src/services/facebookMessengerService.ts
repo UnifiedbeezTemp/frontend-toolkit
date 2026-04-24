@@ -104,7 +104,7 @@ export const getFacebookConnectUrl = (): string => {
 export const disconnectFacebookMessenger = async (
   connectionId: number
 ): Promise<void> => {
-  return api.delete(`/auth/facebook/disconnect/${connectionId}`);
+  return api.delete(`/auth/facebook/account/${connectionId}`);
 };
 
 /**

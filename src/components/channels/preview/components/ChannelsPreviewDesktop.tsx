@@ -13,7 +13,7 @@ export default function ChannelsPreviewDesktop({
   searchQuery,
   onSearchChange,
 }: ChannelsPreviewDesktopProps) {
-  const activeChannel = channels.find((ch) => ch.id === activeChannelId);
+  const activeChannel = channels?.find((ch) => String(ch?.id) === activeChannelId);
 
   return (
     <div className="grid grid-cols-10 bg-primary rounded-[0.8rem] h-[calc(100vh-10rem)]">
@@ -26,12 +26,12 @@ export default function ChannelsPreviewDesktop({
 
         <div className="overflow-y-auto flex-1">
           <div className="p-[1.6rem] pt-[2.4rem] space-y-[1.8rem]">
-            {channels.map((channel) => (
+            {channels?.map((channel) => (
               <ChannelsPreviewSidebarItem
                 key={channel.id}
                 channel={channel}
-                isActive={activeChannelId === channel.id}
-                onClick={() => onSelectChannel(channel.id)}
+                isActive={activeChannelId === String(channel.id)}
+                onClick={() => onSelectChannel(String(channel.id))}
               />
             ))}
           </div>

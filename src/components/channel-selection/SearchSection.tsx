@@ -6,16 +6,15 @@ import ImageComponent from "../ui/ImageComponent";
 
 interface ChildProps {
   searchQuery: string;
-  setSearchQuery: (value: string) => void;
+  setSearchQuery?: (value: string) => void;
   filter: string;
-  setFilter: (value: string) => void;
+  setFilter?: (value: string) => void;
 }
 
 const filterOptions: DropdownOption[] = [
-  { label: "Most Popular", value: "popular" },
-  { label: "Communication Channels", value: "Communication Channels" },
-  { label: "CRM & Calendar Sync", value: "CRM & Calendar Sync" },
-  { label: "Ecommerce & Payment", value: "Ecommerce & Payment" },
+  { label: "Communication Channels", value: "communication" },
+  { label: "CRM & Calendar Sync", value: "crmCalendar" },
+  { label: "Ecommerce & Payment", value: "ecommerce" },
   { label: "Upcoming / Future Integrations", value: "upcoming" },
 ];
 
@@ -38,7 +37,7 @@ export default function SearchSection({
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    setSearchQuery?.(e.target.value);
   };
 
   return (
