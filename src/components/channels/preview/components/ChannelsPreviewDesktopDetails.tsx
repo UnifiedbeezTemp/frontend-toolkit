@@ -8,9 +8,14 @@ import { Channel } from "../../../../store/onboarding/types/channelTypes";
 import SearchBar from "./SearchBar";
 import ChannelConnectionsList from "./ChannelConnectionsList/ChannelConnectionsList";
 import { useChannelConnectionsData } from "../../hooks/useChannelConnectionsData";
+import { SelectedChannel } from "../../../../types/channelApiTypes";
+import { getChannelAccountsMetadata } from "../../../../utils/channels/getSelectedChannelAccountsMetadata";
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
+import { useMemo } from "react";
+import { getChannelIconKey } from "../../../../utils/channels/getChannelIconKey";
 
 interface ChannelsPreviewDesktopDetailsProps {
-  channel: Channel;
+  channel: SelectedChannel;
   onClose: () => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
@@ -22,8 +27,13 @@ export default function ChannelsPreviewDesktopDetails({
   searchQuery,
   onSearchChange,
 }: ChannelsPreviewDesktopDetailsProps) {
-  // Fetch connections for this specific channel
-  const { connections } = useChannelConnectionsData(channel);
+  const icons = useSupabaseIcons() as Record<string, string>;
+  const { accounts } = getChannelAccountsMetadata(channel);
+
+  const icon = useMemo(() => {
+    const channelIconKey = getChannelIconKey(channel?.availableChannel.name);
+    return icons[channelIconKey] || icons.linkExternal;
+  }, [channel?.availableChannel.name, icons]);
 
   return (
     <>
@@ -31,17 +41,17 @@ export default function ChannelsPreviewDesktopDetails({
         <div className="flex items-center justify-between mb-[1.6rem]">
           <div className="flex items-center gap-[1.2rem]">
             <ImageComponent
-              src={channel.icon}
-              alt={channel.name}
+              src={icon}
+              alt={channel.channelName}
               width={32}
               height={32}
             />
             <div>
               <Heading className="text-[1.6rem] font-[700]">
-                {channel.name}
+                {channel.channelName}
               </Heading>
               <Text size="sm" className="text-text-secondary">
-                Select a {channel.name} account to connect
+                Select a {channel.channelName} account to connect
               </Text>
             </div>
           </div>
@@ -57,10 +67,10 @@ export default function ChannelsPreviewDesktopDetails({
         />
 
         <ChannelConnectionsList
-          connections={connections}
+          connections={accounts}
           searchQuery={searchQuery}
-          channelName={channel.name}
-          channelIcon={channel.icon}
+          channelName={channel.channelName}
+          channelIcon={icon}
         />
       </div>
     </>

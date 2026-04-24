@@ -13,11 +13,10 @@ import {
   ShopifyAccount,
   LiveChatAccount,
 } from "../../types/channelAccountDetailTypes";
-import { Channel } from "../../store/onboarding/types/channelTypes";
 import { SelectedChannel } from "../../types/channelApiTypes";
 
 export const getChannelAccounts = (
-  channel?: Channel | SelectedChannel | null,
+  channel?: SelectedChannel | null,
 ) => {
   const accounts = useMemo(() => {
     if (!channel) return [];

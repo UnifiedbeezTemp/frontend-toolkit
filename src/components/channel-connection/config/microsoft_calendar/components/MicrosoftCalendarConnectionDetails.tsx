@@ -1,0 +1,80 @@
+"use client";
+
+import Heading from "../../../../../components/ui/Heading";
+import Text from "../../../../../components/ui/Text";
+import Button from "../../../../../components/ui/Button";
+import ImageComponent from "../../../../../components/ui/ImageComponent";
+import { useSupabaseIcons } from "../../../../../lib/supabase/useSupabase";
+import {
+  extractMicrosoftCalendarDisplayData,
+  getMicrosoftCalendarStatusColors,
+  getMicrosoftCalendarStatusText,
+} from "../utils/microsoftCalendarConnectionDisplayUtils";
+import { MicrosoftCalendarConnectionDetailsProps } from "./shared/types";
+import Input from "../../../../../components/forms/Input";
+
+export default function MicrosoftCalendarConnectionDetails({
+  connection,
+  onDelete,
+  isDeleting = false,
+  variant = "desktop",
+}: MicrosoftCalendarConnectionDetailsProps) {
+  const icons = useSupabaseIcons();
+  const isMobile = variant === "mobile";
+  const containerPadding = isMobile
+    ? "px-[1.2rem] pb-[5rem]"
+    : "px-[2.8rem] py-[3.1rem] pr-[1.7rem]";
+  const innerPadding = "px-[1.6rem] py-[2.4rem]";
+
+  const { email, provider, verificationStatus, isActive, fullName } =
+    extractMicrosoftCalendarDisplayData(connection);
+
+  return (
+    <div className={containerPadding}>
+      <div className="space-y-[1.6rem]">
+        <Heading className="text-[1.6rem] lg:text-[2rem] mt-[2rem] lg:mt-0">
+          Profile
+        </Heading>
+        <div
+          className={`bg-input-filled border border-input-stroke space-y-[2.4rem] ${innerPadding} rounded-[0.8rem]`}
+        >
+          <div className="space-y-[2.4rem]">
+            <div>
+              <Heading className="text-[1.4rem] lg:text-[1.6rem] mb-[0.8rem]">
+                Email
+              </Heading>
+
+              <Input value={email} onChange={() => {}} />
+            </div>
+
+            <div>
+              <Heading className="text-[1.4rem] lg:text-[1.6rem] mb-[0.8rem]">
+                Full name
+              </Heading>
+
+              <Input value={fullName} onChange={() => {}} />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end mt-[4.7rem]">
+          <Button
+            variant="dangerReverse"
+            className="flex items-center gap-[1rem]"
+            onClick={onDelete}
+            disabled={isDeleting}
+            loading={isDeleting}
+          >
+            <ImageComponent
+              src={icons.trashRed}
+              alt="trash"
+              width={20}
+              height={20}
+            />
+            Delete account
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

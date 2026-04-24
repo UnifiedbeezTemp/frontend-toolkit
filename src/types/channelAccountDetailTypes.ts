@@ -153,3 +153,12 @@ export interface LiveChatAccount {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface AccountDisplayData {
+  id: string | number;
+  title: string;
+  subtitle?: string;
+  isActive: boolean;
+  isConnected: boolean;
+  metadata?: Record<string, unknown>;
+}

@@ -10,12 +10,26 @@ interface SelectChannelResponse {
   message?: string;
 }
 
+export interface PatchChannelSelectionRequest {
+  isSelected: boolean;
+}
+
+export const patchChannelSelection = async (
+  availableChannelId: number,
+  data: PatchChannelSelectionRequest,
+): Promise<SelectChannelResponse> => {
+  return api.patch<PatchChannelSelectionRequest, SelectChannelResponse>(
+    `/channels/${availableChannelId}/selection`,
+    data,
+  );
+};
+
 export const selectChannel = async (
-  channelId: number
+  channelId: number,
 ): Promise<SelectChannelResponse> => {
   return api.post<SelectChannelRequest, SelectChannelResponse>(
     "/channels/select",
-    { availableChannelId: channelId }
+    { availableChannelId: channelId },
   );
 };
 
@@ -26,7 +40,7 @@ interface UnselectChannelRequest {
 
 export const unselectChannel = async (
   availableChannelId?: number,
-  connectedChannelId?: number
+  connectedChannelId?: number,
 ): Promise<SelectChannelResponse> => {
   const body: UnselectChannelRequest = {};
   if (connectedChannelId) {
@@ -34,15 +48,14 @@ export const unselectChannel = async (
   } else if (availableChannelId) {
     body.availableChannelId = availableChannelId;
   }
-  
+
   return api.post<UnselectChannelRequest, SelectChannelResponse>(
     `/channels/unselect?availableChannelId=${availableChannelId}`,
-    body
+    body,
   );
 };
 
-export const getSelectedChannels = async (): Promise<SelectedChannelsResponse> => {
-  return api.get<SelectedChannelsResponse>("/channels/selected");
-};
-
-
+export const getSelectedChannels =
+  async (): Promise<SelectedChannelsResponse> => {
+    return api.get<SelectedChannelsResponse>("/channels/selected");
+  };
