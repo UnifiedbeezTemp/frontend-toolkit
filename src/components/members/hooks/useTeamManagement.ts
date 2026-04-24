@@ -10,6 +10,7 @@ import {
   selectSelectedInvitedUsers,
   setEmailInput,
   setInvitedSelection,
+  updateMembers,
   setSelectedRole,
   setStatusFilterInvited,
   toggleMemberSelection,
@@ -633,6 +634,7 @@ export const useTeamManagement = (): TeamManagementController => {
         const dispatchedInvitations = (response.dispatched ?? []).map(
           transformApiInvitationToTeamMember,
         )
+        dispatch(updateMembers(dispatchedInvitations))
         const dispatchedIds = dispatchedInvitations.map(
           (invitation) => invitation.id,
         )
@@ -781,7 +783,11 @@ export const useTeamManagement = (): TeamManagementController => {
         roleId,
       })
     },
-    [handleSendInviteToAddedEmail, resolveInvitationRoleId, updateUserActionState],
+    [
+      handleSendInviteToAddedEmail,
+      resolveInvitationRoleId,
+      updateUserActionState,
+    ],
   )
 
   const handleReAddCancelledInvitation = useCallback(
@@ -1306,19 +1312,17 @@ export const useTeamManagement = (): TeamManagementController => {
       )
       const allFailures = [...validationFailures, ...responseFailures]
       const failedByEmail = new Map(
-        allFailures.map((failure) => [
-          failure.email.toLowerCase(),
-          failure.error,
-        ] as const),
+        allFailures.map(
+          (failure) => [failure.email.toLowerCase(), failure.error] as const,
+        ),
       )
       const successfulCount = getBulkCount(
         response.summary?.successful,
         response.successful,
       )
-      const failedCount = getBulkCount(
-        response.summary?.failed,
-        response.failed,
-      ) + validationFailures.length
+      const failedCount =
+        getBulkCount(response.summary?.failed, response.failed) +
+        validationFailures.length
 
       if (successfulInvitations.length > 0) {
         dispatch(upsertInvitedUsers(successfulInvitations))
