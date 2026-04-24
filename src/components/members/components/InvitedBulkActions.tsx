@@ -15,10 +15,10 @@ interface InvitedBulkActionsProps {
   onClear: () => void
   onAssignRole: (roleId: number) => void | Promise<void>
   onBulkSend: () => void
-  onBulkDelete: () => void
+  onBulkResend: () => void
   isAssigningRole?: boolean
   isSending?: boolean
-  isDeleting?: boolean
+  isReAdding?: boolean
 }
 
 export function InvitedBulkActions({
@@ -29,10 +29,10 @@ export function InvitedBulkActions({
   onClear,
   onAssignRole,
   onBulkSend,
-  onBulkDelete,
+  onBulkResend,
   isAssigningRole,
   isSending,
-  isDeleting,
+  isReAdding,
 }: InvitedBulkActionsProps) {
   const isAllSelected = selectedCount === total && total > 0
   const supabaseIcons = useSupabaseIcons()
@@ -79,8 +79,8 @@ export function InvitedBulkActions({
           <div className="flex items-center gap-[0.8rem] text-[1.4rem] text-text-primary">
             <span className="font-[400] flex items-center text-brand-primary gap-[0.8rem]">
               <ImageComponent
-                alt={isDraftMode ? "mail" : "delete"}
-                src={isDraftMode ? supabaseIcons.mail : supabaseIcons.trash}
+                alt="invite"
+                src={supabaseIcons.mail}
                 width={16}
                 height={16}
                 className="object-cover"
@@ -133,15 +133,15 @@ export function InvitedBulkActions({
             ) : (
               <Button
                 size="sm"
-                variant="danger"
-                onClick={onBulkDelete}
+                variant="primary"
+                onClick={onBulkResend}
                 className={cn(
                   "rounded-[0.4rem] px-[1.6rem] py-[0.8rem]",
-                  "text-[1.4rem] text-primary border border-destructive/20",
+                  "text-[1.4rem]",
                 )}
-                loading={isDeleting}
+                loading={isReAdding}
               >
-                Delete invitations
+                Re-add invitations
               </Button>
             )}
           </div>

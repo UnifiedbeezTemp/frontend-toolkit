@@ -14,6 +14,7 @@ export default function FontSelector({
   onChange,
   className,
   isFamily,
+  disabled = false,
 }: FontSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -23,8 +24,15 @@ export default function FontSelector({
     <div className={cn("relative flex-1", className)}>
       <div
         ref={triggerRef}
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between px-[1.6rem] py-[1.2rem] bg-white border border-input-stroke rounded-[0.8rem] cursor-pointer hover:border-brand-primary transition-all shadow-sm h-[4.8rem]"
+        onClick={() => {
+          if (!disabled) setIsOpen(!isOpen);
+        }}
+        className={cn(
+          "flex items-center justify-between px-[1.6rem] py-[1.2rem] bg-white border border-input-stroke rounded-[0.8rem] transition-all shadow-sm h-[4.8rem]",
+          disabled
+            ? "cursor-not-allowed opacity-60"
+            : "cursor-pointer hover:border-brand-primary",
+        )}
       >
         <span
           className="text-[1.4rem] text-text-primary truncate"
@@ -42,7 +50,7 @@ export default function FontSelector({
       </div>
 
       <SmartDropdown
-        isOpen={isOpen}
+        isOpen={isOpen && !disabled}
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
         placement="bottom-start"

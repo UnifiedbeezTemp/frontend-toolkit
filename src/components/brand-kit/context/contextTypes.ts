@@ -5,6 +5,7 @@ import {
   BrandKitState,
   BrandColorsState,
   BrandFontState,
+  BrandKitReadonlyState,
   SocialLink,
 } from "../types/brandKitTypes";
 import {
@@ -31,11 +32,17 @@ export interface UseBrandKitActionsProps {
   logo: string | null;
   pendingLogoFile: File | null;
   brandKitData?: ApiBrandKit;
+  websiteUrl: string;
+  detectedFaviconUrl: string;
+  readonlyFields: BrandKitReadonlyState;
   // State Setters
   setColors: Dispatch<SetStateAction<BrandColorsState>>;
   setFonts: Dispatch<SetStateAction<BrandFontState>>;
   setLinks: Dispatch<SetStateAction<SocialLink[]>>;
   setLogo: Dispatch<SetStateAction<string | null>>;
+  setWebsiteUrl: Dispatch<SetStateAction<string>>;
+  setDetectedFaviconUrl: Dispatch<SetStateAction<string>>;
+  setReadonlyFields: Dispatch<SetStateAction<BrandKitReadonlyState>>;
   setPendingLogoFile: Dispatch<SetStateAction<File | null>>;
   removeLogo: () => void;
   setDetectionOverride: (override: BrandDetectionOverride | null) => void;

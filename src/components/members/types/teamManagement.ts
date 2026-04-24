@@ -46,7 +46,7 @@ export interface TeamManagementController {
   failedInvitations: InvitationFailure[]
   addDraftState: AsyncActionState
   bulkSendState: AsyncActionState
-  bulkDeleteState: AsyncActionState
+  bulkReAddState: AsyncActionState
   hasDraftedUsers: boolean
   isLoadingMembers: boolean
   isLoadingInvitations: boolean
@@ -88,11 +88,12 @@ export interface TeamManagementController {
     userId: string,
   ) => void
   handleSendDraftInvite: (user: TeamMember) => Promise<void>
+  handleReAddCancelledInvitation: (user: TeamMember) => Promise<void>
   selectAllDraftInvites: () => void
   clearDraftInviteSelection: () => void
   assignRoleToSelectedDrafts: (roleId: number) => Promise<void>
   sendSelectedDraftInvites: () => Promise<void>
-  deleteSelectedCancelledInvites: () => Promise<void>
+  reAddSelectedCancelledInvites: () => Promise<void>
 }
 
 export const createIdleAsyncActionState = (): AsyncActionState => ({
