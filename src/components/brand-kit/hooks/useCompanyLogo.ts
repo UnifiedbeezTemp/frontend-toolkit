@@ -1,32 +1,32 @@
-"use client";
+"use client"
 
-import { useState, useRef } from "react";
+import { useState, useRef } from "react"
 
 export function useCompanyLogo() {
-  const [logo, setLogo] = useState<string | null>(null);
-  const [pendingLogoFile, setPendingLogoFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [logo, setLogo] = useState<string | null>(null)
+  const [pendingLogoFile, setPendingLogoFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      setPendingLogoFile(file);
-      const reader = new FileReader();
+      setPendingLogoFile(file)
+      const reader = new FileReader()
       reader.onloadend = () => {
-        setLogo(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        setLogo(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const triggerUpload = () => {
-    fileInputRef.current?.click();
-  };
+    fileInputRef.current?.click()
+  }
 
   const removeLogo = () => {
-    setLogo(null);
-    setPendingLogoFile(null);
-  };
+    setLogo(null)
+    setPendingLogoFile(null)
+  }
 
   return {
     logo,
@@ -37,5 +37,5 @@ export function useCompanyLogo() {
     removeLogo,
     setLogo,
     setPendingLogoFile,
-  };
+  }
 }

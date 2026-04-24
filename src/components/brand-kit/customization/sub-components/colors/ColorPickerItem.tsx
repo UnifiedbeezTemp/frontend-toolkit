@@ -15,6 +15,7 @@ export default function ColorPickerItem({
   onChange,
   onDelete,
   className,
+  disabled = false,
 }: ColorPickerItemProps) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -28,8 +29,15 @@ export default function ColorPickerItem({
       <div className="flex items-center gap-[0.8rem]">
         <div
           ref={triggerRef}
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex-1 flex items-center justify-between px-[1.6rem] py-[1.2rem] bg-white border border-input-stroke rounded-[0.8rem] cursor-pointer hover:border-brand-primary transition-all shadow-sm"
+          onClick={() => {
+            if (!disabled) setIsOpen(!isOpen);
+          }}
+          className={cn(
+            "flex-1 flex items-center justify-between px-[1.6rem] py-[1.2rem] bg-white border border-input-stroke rounded-[0.8rem] transition-all shadow-sm",
+            disabled
+              ? "cursor-not-allowed opacity-60"
+              : "cursor-pointer hover:border-brand-primary",
+          )}
         >
           <div className="flex items-center gap-[1.2rem]">
             <div
@@ -52,6 +60,7 @@ export default function ColorPickerItem({
         {onDelete && (
           <button
             onClick={onDelete}
+            disabled={disabled}
             className="p-[0.8rem] hover:bg-soft-green rounded-[0.4rem] transition-colors"
           >
             <ImageComponent
@@ -65,7 +74,7 @@ export default function ColorPickerItem({
       </div>
 
       <SmartDropdown
-        isOpen={isOpen}
+        isOpen={isOpen && !disabled}
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
         placement="bottom-start"

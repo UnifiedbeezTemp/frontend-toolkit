@@ -4,6 +4,8 @@ export const getPlatformIcon = (platform: string, icons: IconsType) => {
   switch (platform) {
     case "Instagram":
       return icons.igIcon;
+    case "WhatsApp":
+      return icons.whatsappIcon || icons.riWhatsappLine || icons.link;
     case "Facebook":
       return icons.fbIcon;
     case "X":
@@ -15,6 +17,19 @@ export const getPlatformIcon = (platform: string, icons: IconsType) => {
     default:
       return icons.link;
   }
+};
+
+export const getSocialHref = (platform: string, value: string) => {
+  if (platform === "WhatsApp") {
+    const trimmed = value.trim();
+    if (!trimmed) return trimmed;
+    if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+      return trimmed;
+    }
+    return `https://wa.me/${trimmed.replace(/[^\d]/g, "")}`;
+  }
+
+  return value;
 };
 
 export const getFontWeightStyle = (weight: string, style?: string) => {

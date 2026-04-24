@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Card from "../../ui/Card";
 import {
   useSupabaseIcons,
   useSupabaseImages,
@@ -72,22 +71,22 @@ export default function BrandPreviewCard({ onBack }: Props) {
           <EmailMainImage src={icons.emailpreviewImage} />
 
           <EmailFeatureText
-            colors={currentColors}
             fonts={fonts}
+            fontColors={colors.font}
             buttonColors={colors.button}
           />
 
           <EmailProductGrid
             products={EMAIL_PREVIEW_PRODUCTS}
             images={images}
-            colors={currentColors}
             fonts={fonts}
+            fontColors={colors.font}
             buttonColors={colors.button}
           />
 
           <EmailFooter
-            colors={currentColors}
             fonts={fonts}
+            fontColors={colors.font}
             socialLinks={socialLinks}
           />
         </EmailMockupContainer>

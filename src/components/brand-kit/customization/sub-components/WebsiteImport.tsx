@@ -1,25 +1,23 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
-import Button from "../../../ui/Button";
-import ImageComponent from "../../../ui/ImageComponent";
-import Heading from "../../../ui/Heading";
-import Text from "../../../ui/Text";
-import Input from "../../../forms/Input";
-import Card from "../../../ui/Card";
-import { useBrandKit } from "../../context/BrandKitContext";
-import { MOCK_BRAND_DATA } from "../../constants/mockBrandData";
+import React from "react"
+import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase"
+import Button from "../../../ui/Button"
+import ImageComponent from "../../../ui/ImageComponent"
+import Heading from "../../../ui/Heading"
+import Text from "../../../ui/Text"
+import Input from "../../../forms/Input"
+import Card from "../../../ui/Card"
+import { useBrandKit } from "../../context/BrandKitContext"
 
 export default function WebsiteImport() {
-  const icons = useSupabaseIcons();
-  const { detectBrand, isDetecting } = useBrandKit();
-  const [websiteUrl, setLocalWebsiteUrl] = useState("");
+  const icons = useSupabaseIcons()
+  const { websiteUrl, detectBrand, setWebsiteUrl, isDetecting } = useBrandKit()
 
   const handleImport = async () => {
-    if (!websiteUrl) return;
-    await detectBrand(websiteUrl);
-  };
+    if (!websiteUrl) return
+    await detectBrand(websiteUrl)
+  }
 
   return (
     <div className="px-[1rem] sm:px-[0]">
@@ -50,7 +48,8 @@ export default function WebsiteImport() {
           value={websiteUrl}
           placeholder="Enter your website URL"
           className="mt-[1rem]"
-          onChange={(e) => setLocalWebsiteUrl(e.target.value)}
+          disabled={isDetecting}
+          onChange={(e) => setWebsiteUrl(e.target.value)}
         />
 
         <div className="flex gap-3 mt-[20px]">
@@ -65,5 +64,5 @@ export default function WebsiteImport() {
         </div>
       </Card>
     </div>
-  );
+  )
 }

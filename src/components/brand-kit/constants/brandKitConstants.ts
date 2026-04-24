@@ -2,10 +2,11 @@ import { SocialPlatform, FontWeight } from "../types/brandKitTypes";
 
 export const PLATFORMS: SocialPlatform[] = [
   "Instagram",
-  "Facebook",
+  "WhatsApp",
   "X",
-  "LinkedIn",
   "YouTube",
+  "Facebook",
+  "LinkedIn",
 ];
 
 export const WEIGHT_OPTIONS: FontWeight[] = [

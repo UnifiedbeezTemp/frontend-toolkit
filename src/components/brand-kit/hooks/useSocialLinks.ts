@@ -2,35 +2,47 @@
 
 import { useState } from "react";
 import { SocialPlatform } from "../types/brandKitTypes";
+import { PLATFORMS } from "../constants/brandKitConstants";
 
 export interface SocialLink {
   platform: SocialPlatform;
   url: string;
 }
 
+export const INITIAL_SOCIAL_LINKS: SocialLink[] = PLATFORMS.map((platform) => ({
+  platform,
+  url: "",
+}));
+
 export function useSocialLinks() {
-  const [links, setLinks] = useState<SocialLink[]>([
-    { platform: "Instagram", url: "" },
-  ]);
+  const [links, setLinks] = useState<SocialLink[]>(INITIAL_SOCIAL_LINKS);
 
   const handleUpdateLink = (index: number, url: string) => {
-    const newLinks = [...links];
-    newLinks[index].url = url;
-    setLinks(newLinks);
+    setLinks((prev) =>
+      prev.map((link, currentIndex) =>
+        currentIndex === index ? { ...link, url } : link,
+      ),
+    );
   };
 
   const handleUpdatePlatform = (index: number, platform: SocialPlatform) => {
-    const newLinks = [...links];
-    newLinks[index].platform = platform;
-    setLinks(newLinks);
+    setLinks((prev) =>
+      prev.map((link, currentIndex) =>
+        currentIndex === index ? { ...link, platform } : link,
+      ),
+    );
   };
 
   const handleAddLink = () => {
-    setLinks([...links, { platform: "Instagram", url: "" }]);
+    setLinks((prev) => prev);
   };
 
   const handleRemoveLink = (index: number) => {
-    setLinks(links.filter((_, i) => i !== index));
+    setLinks((prev) =>
+      prev.map((link, currentIndex) =>
+        currentIndex === index ? { ...link, url: "" } : link,
+      ),
+    );
   };
 
   return {
