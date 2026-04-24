@@ -15,6 +15,7 @@ export default function FontPickerItem({
   weight,
   onFamilyChange,
   onWeightChange,
+  disabled,
 }: FontPickerItemProps) {
   return (
     <div className="flex flex-col gap-[0.8rem] flex-1">
@@ -27,11 +28,13 @@ export default function FontPickerItem({
           options={EMAIL_SAFE_FONTS}
           onChange={onFamilyChange}
           isFamily
+          disabled={disabled}
         />
         <FontSelector
           value={weight}
           options={WEIGHT_OPTIONS}
           onChange={onWeightChange}
+          disabled={disabled}
         />
       </div>
     </div>
