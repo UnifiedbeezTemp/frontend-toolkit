@@ -280,33 +280,4 @@ export const webchatService = {
   ): Promise<void> {
     return api.post(`/webchat/links/${linkId}/move-to-label/${labelId}`);
   },
-
-  async generateInstallScript(
-    webchatConfigId: string | number,
-    websiteUrl: string
-  ): Promise<InstallScriptResponse> {
-    return api.post<{ websiteUrl: string }, InstallScriptResponse>(
-      `/webchat/${webchatConfigId}/install-script`,
-      { websiteUrl }
-    );
-  },
-
-  async verifyInstallation(
-    webchatConfigId: string | number
-  ): Promise<VerifyInstallationResponse> {
-    return api.post<Record<string, never>, VerifyInstallationResponse>(
-      `/webchat/${webchatConfigId}/verify-install`,
-      {}
-    );
-  },
-
-  async sendInstallationInstructions(
-    webchatConfigId: string | number,
-    recipientEmail: string
-  ): Promise<void> {
-    return api.post<{ emails: string[] }, void>(
-      `/webchat/${webchatConfigId}/send-instructions-by-email`,
-      { emails: [recipientEmail] }
-    );
-  },
 };
