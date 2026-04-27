@@ -1,8 +1,13 @@
 import { useCallback, useState } from "react";
-import { extractErrorMessage } from "../../webchat/utils/errorUtils";
 import { useAppMutation } from "../../../../../api";
-import { CustomEmailSetupResponse, CustomEmailSetupRequest, setupCustomEmailReceiving } from "../../../../../services/customEmailService";
+import {
+  CustomEmailSetupResponse,
+  CustomEmailSetupRequest,
+  setupCustomEmailReceiving,
+  disconnectCustomEmail,
+} from "../../../../../services/customEmailService";
 import { useToast } from "../../../../ui/toast/ToastProvider";
+import { extractErrorMessage } from "../../../../../utils/extractErrorMessage";
 
 interface UseCustomEmailIntegrationProps {
   channelId: number;
@@ -25,7 +30,10 @@ export const useCustomEmailIntegration = ({
     }>
   >([]);
 
-  const setupMutation = useAppMutation<CustomEmailSetupRequest, CustomEmailSetupResponse>(
+  const setupMutation = useAppMutation<
+    CustomEmailSetupRequest,
+    CustomEmailSetupResponse
+  >(
     async (data) => {
       return await setupCustomEmailReceiving(data);
     },
@@ -36,7 +44,8 @@ export const useCustomEmailIntegration = ({
         }
         showToast({
           title: "Success",
-          description: response.message || "Custom email setup initiated successfully",
+          description:
+            response.message || "Custom email setup initiated successfully",
           variant: "success",
         });
         if (onRefetchChannels) {
@@ -49,11 +58,46 @@ export const useCustomEmailIntegration = ({
       onError: (error: unknown) => {
         showToast({
           title: "Error",
-          description: extractErrorMessage(error, "Failed to setup custom email"),
+          description: extractErrorMessage(
+            error,
+            "Failed to setup custom email",
+          ),
           variant: "error",
         });
       },
-    }
+    },
+  );
+
+  const disconnectMutation = useAppMutation<
+    number,
+    { success: boolean; message?: string }
+  >(
+    async (accountId) => {
+      return await disconnectCustomEmail(accountId);
+    },
+    {
+      onSuccess: async () => {
+        showToast({
+          title: "Disconnected",
+          description: "Custom email disconnected successfully",
+          variant: "success",
+        });
+        setDnsRecords([]); // Clear DNS records on disconnect
+        if (onRefetchChannels) {
+          await onRefetchChannels();
+        }
+      },
+      onError: (error: unknown) => {
+        showToast({
+          title: "Error",
+          description: extractErrorMessage(
+            error,
+            "Failed to disconnect custom email",
+          ),
+          variant: "error",
+        });
+      },
+    },
   );
 
   const startIntegration = useCallback(
@@ -63,13 +107,21 @@ export const useCustomEmailIntegration = ({
         domain,
       });
     },
-    [channelId, setupMutation]
+    [channelId, setupMutation],
+  );
+
+  const handleConfirmDelete = useCallback(
+    (accountId: number) => {
+      disconnectMutation.mutate(accountId);
+    },
+    [disconnectMutation],
   );
 
   return {
     startIntegration,
     isLoading: setupMutation.isPending,
+    isDeleting: disconnectMutation.isPending,
     dnsRecords,
+    handleConfirmDelete,
   };
 };
-

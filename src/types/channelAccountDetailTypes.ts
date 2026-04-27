@@ -154,6 +154,22 @@ export interface LiveChatAccount {
   updatedAt: string;
 }
 
+export interface StripeAccount {
+  id: number;
+  connectedChannelId: number;
+  stripeAccountId: string;
+  stripeUserId: string;
+  accountType: string;
+  scope: string;
+  accessToken: string;
+  tokenType: string;
+  publishableKey: string;
+  webhookSecret: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AccountDisplayData {
   id: string | number;
   title: string;

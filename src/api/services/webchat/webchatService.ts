@@ -137,7 +137,9 @@ export const webchatService = {
   async getWebchatEmbed(
     webchatId: string | number,
   ): Promise<WebchatEmbedResponse> {
-    return api.get<WebchatEmbedResponse>(`/webchat/${webchatId}/embed`);
+    return api.get<WebchatEmbedResponse>(`/webchat/${webchatId}/embed`, {
+      withCredentials: false,
+    });
   },
 
   async sendInstructionsByEmail(

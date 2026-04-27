@@ -24,9 +24,27 @@ export default function CustomEmailConfig({
   onEditConnection,
 }: CustomEmailConfigProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const startIntegrationRef = useRef<((domain: string) => void) | undefined>(undefined);
+  const startIntegrationRef = useRef<((domain: string) => void) | undefined>(
+    undefined,
+  );
 
-  const channelId = parseInt(channel.id) || 0;
+  const channelId = Number(channel.id) || 0;
+
+  const {
+    startIntegration,
+    isLoading: isCustomEmailConnecting,
+    isDeleting,
+    dnsRecords,
+    handleConfirmDelete: handleIntegrationDelete,
+  } = useCustomEmailIntegration({
+    channelId,
+    onComplete: (response) => {
+      if (response.success) {
+        handleConnectionSuccess();
+      }
+    },
+    onRefetchChannels,
+  });
 
   const {
     showRequirements,
@@ -46,16 +64,7 @@ export default function CustomEmailConfig({
       }
     },
     onEditConnection,
-  });
-
-  const { startIntegration, isLoading: isCustomEmailConnecting, dnsRecords } = useCustomEmailIntegration({
-    channelId,
-    onComplete: (response) => {
-      if (response.success) {
-        handleConnectionSuccess();
-      }
-    },
-    onRefetchChannels,
+    onConfirmDelete: handleIntegrationDelete,
   });
 
   useEffect(() => {
@@ -66,7 +75,9 @@ export default function CustomEmailConfig({
     return (
       <div>
         {dnsRecords.length > 0 ? (
-          <div className={`${isDesktop ? "px-[2.8rem] py-[3.1rem] pr-[1.7rem]" : "px-[1.6rem] pb-[4rem]"}`}>
+          <div
+            className={`${isDesktop ? "px-[2.8rem] py-[3.1rem] pr-[1.7rem]" : "px-[1.6rem] pb-[4rem]"}`}
+          >
             <DNSRecordsDisplay dnsRecords={dnsRecords} />
           </div>
         ) : (
@@ -85,7 +96,7 @@ export default function CustomEmailConfig({
         <CustomEmailConnectionDetails
           connection={connection}
           onDelete={handleDeleteClick}
-          isDeleting={isLoading}
+          isDeleting={isDeleting}
           variant={isDesktop ? "desktop" : "mobile"}
         />
         <DeleteChannelModal
@@ -93,7 +104,7 @@ export default function CustomEmailConfig({
           onClose={handleCloseDeleteModal}
           onConfirm={handleConfirmDelete}
           channelName={channel.channelName ?? ""}
-          isLoading={isLoading}
+          isLoading={isDeleting}
         />
       </>
     );
@@ -101,4 +112,3 @@ export default function CustomEmailConfig({
 
   return null;
 }
-

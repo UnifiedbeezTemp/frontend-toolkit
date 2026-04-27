@@ -7,19 +7,19 @@ import ImageComponent from "../../../../../components/ui/ImageComponent";
 import { useSupabaseIcons } from "../../../../../lib/supabase/useSupabase";
 import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
 
-interface StripeConnectionDetailsProps {
+interface InstagramConnectionDetailsProps {
   connection: ChannelConnection;
   onDelete: () => void;
   isDeleting: boolean;
   variant?: "desktop" | "mobile";
 }
 
-export default function StripeConnectionDetails({
+export default function InstagramConnectionDetails({
   connection,
   onDelete,
   isDeleting,
   variant = "desktop",
-}: StripeConnectionDetailsProps) {
+}: InstagramConnectionDetailsProps) {
   const icons = useSupabaseIcons();
   const isMobile = variant === "mobile";
   const containerPadding = isMobile
@@ -31,7 +31,7 @@ export default function StripeConnectionDetails({
     <div className={containerPadding}>
       <div className="space-y-[1.6rem]">
         <Heading className="text-[1.6rem] lg:text-[2rem] mt-[2rem] lg:mt-0">
-          Profile
+          Instagram Profile
         </Heading>
         <div
           className={`bg-input-filled border border-input-stroke space-y-[2.4rem] ${innerPadding} rounded-[0.8rem]`}
@@ -39,19 +39,18 @@ export default function StripeConnectionDetails({
           <div className="flex items-center gap-4">
             <div>
               <Heading size="lg" className="text-[1.8rem]">
-                Stripe Connected
+                Instagram Connected
               </Heading>
-             
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Text size="sm" className="font-bold">
-                Account ID
+                Profile Name
               </Text>
               <Text size="sm" className="text-text-secondary">
-                {connection?.name || "Stripe"}
+                {connection?.name || "Instagram Account"}
               </Text>
             </div>
             <div className="flex items-center justify-between">

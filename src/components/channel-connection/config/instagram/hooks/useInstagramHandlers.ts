@@ -7,6 +7,7 @@ interface UseInstagramHandlersProps {
   startInstagramIntegration?: () => void;
   onConnectionSuccess?: () => void;
   onEditConnection?: (connection: ChannelConnection | null) => void;
+  onConfirmDelete?: (accountId: number) => void;
 }
 
 export function useInstagramHandlers({
@@ -15,6 +16,7 @@ export function useInstagramHandlers({
   startInstagramIntegration,
   onConnectionSuccess,
   onEditConnection,
+  onConfirmDelete,
 }: UseInstagramHandlersProps) {
   const [showRequirements, setShowRequirements] = useState(!connection);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -25,7 +27,7 @@ export function useInstagramHandlers({
       setShowRequirements(true);
       return;
     }
-    
+
     if (connection?.id) {
       setShowRequirements(false);
     } else {
@@ -52,8 +54,8 @@ export function useInstagramHandlers({
   };
 
   const handleConfirmDelete = () => {
-    if (connection) {
-      onSave({ _delete: true });
+    if (connection?.id && onConfirmDelete) {
+      onConfirmDelete(Number(connection.id));
     }
   };
 
@@ -71,4 +73,3 @@ export function useInstagramHandlers({
     handleConnectionSuccess,
   };
 }
-

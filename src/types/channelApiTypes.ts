@@ -84,6 +84,7 @@ export interface SelectedChannel {
   calendlyAccounts: unknown[];
   zoomAccounts: unknown[];
   shopifyAccounts: unknown[];
+  stripeAccounts: unknown[];
 }
 
 export interface GroupedChannelAccount {

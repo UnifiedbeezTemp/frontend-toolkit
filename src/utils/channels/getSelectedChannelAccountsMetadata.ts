@@ -14,6 +14,7 @@ import {
   ZoomAccount,
   ShopifyAccount,
   LiveChatAccount,
+  StripeAccount,
 } from "../../types/channelAccountDetailTypes";
 
 export const getChannelAccountsMetadata = (channel?: SelectedChannel | null) => {
@@ -428,6 +429,30 @@ export const getChannelAccountsMetadata = (channel?: SelectedChannel | null) => 
             shopName: account.shopName,
             shopEmail: account.shopEmail,
             shopifyStoreId: account.shopifyStoreId,
+            connectedChannelId: account.connectedChannelId,
+          },
+        };
+      });
+    }
+    if (channelName === "stripe") {
+      const accounts = ((channel as SelectedChannel).stripeAccounts ||
+      [])  as unknown as StripeAccount[];
+        console.log(accounts)
+      return accounts.map<AccountDisplayData>((account) => {
+        const title = account.stripeAccountId ||  "Stripe account";
+        const subtitle = account.stripeUserId || "Stripe";
+        return {
+          id: account.id,
+          title,
+          subtitle,
+          isActive: Boolean(account.isActive),
+          isConnected: Boolean(account.isActive),
+          metadata: {
+            provider: "stripe",
+            stripeUserId: account.stripeUserId,
+            stripeAccountId: account.stripeAccountId,
+            publishableKey: account.publishableKey,
+            accessToken: account.accessToken,
             connectedChannelId: account.connectedChannelId,
           },
         };

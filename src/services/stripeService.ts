@@ -1,3 +1,4 @@
+import { api } from "../api";
 import { apiBaseUrl } from "../api/rootUrls";
 
 export interface StripeConnectResponse {
@@ -18,4 +19,13 @@ export const getStripeAuthUrl = (): string => {
 
 export const initiateStripeAuth = (): void => {
   window.location.href = getStripeAuthUrl();
+};
+
+export const disconnectStripeAccount = async (
+  accountId: number,
+): Promise<{ success: boolean; message?: string }> => {
+  return api.post<
+    { accountId: number },
+    { success: boolean; message?: string }
+  >(`/channels/stripe/disconnect`, { accountId });
 };

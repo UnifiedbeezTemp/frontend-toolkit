@@ -43,6 +43,7 @@ export function useChannelConnectionToast<T>(onRefetch?: () => T | Promise<T>) {
       status === "success" ||
       status === "outlook_connected" ||
       (calendarConnected && provider === "microsoft") ||
+      (calendarConnected && provider === "google") ||
       !!channelId;
 
     if (isSuccess || error) {
@@ -74,6 +75,8 @@ export function useChannelConnectionToast<T>(onRefetch?: () => T | Promise<T>) {
           description = "Shopify connected successfully!";
         else if (calendarConnected && provider === "microsoft")
           description = "Microsoft Calendar connected successfully!";
+        else if (calendarConnected && provider === "google")
+          description = "Google Calendar connected successfully!";
         else if (calendlyConnected)
           description = "Calendly connected successfully!";
         else if (googleCalendarConnected)

@@ -19,7 +19,6 @@ export interface GoogleCalendarStatusColors {
 export const extractGoogleCalendarDisplayData = (
   connection: ChannelConnection
 ): GoogleCalendarDisplayData => {
-  console.log(connection);
   const email =
     (connection.configuration as Record<string, unknown>)?.email || connection.name || "Unknown Email";
   const fullName = (connection.configuration as Record<string, unknown>)?.fullName || "Unknown Name";
