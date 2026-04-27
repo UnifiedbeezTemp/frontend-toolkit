@@ -12,6 +12,7 @@ import {
   toggleMemberSelection,
   cancelInvitation,
   removeMember,
+  setInvitedSelection,
 } from "../../../../store/onboarding/slices/membersSlice"
 import { TeamMember } from "../../../../store/onboarding/types/memberTypes"
 import useSession from "../../../../providers/hooks/useSession"
@@ -20,7 +21,22 @@ import { store } from "../../../../store"
 import { useToast } from "../../../ui/toast/useToast"
 import { extractErrorMessage } from "../../../../utils/extractErrorMessage"
 import { UserInvitePayload } from "../../types/teamManagement"
-import { useDeleteCancelledInvitation } from "../../hooks/useTeamRoles"
+
+interface BulkInvitationResponse {
+  message?: string
+  successful?: Array<{
+    email: string
+  }>
+  failed?: Array<{
+    email: string
+    error: string
+  }>
+  summary?: {
+    total?: number
+    successful?: number
+    failed?: number
+  }
+}
 
 export const useUserItem = (
   type: "invited" | "members",
@@ -39,6 +55,8 @@ export const useUserItem = (
     (state) => state.members.statusFilterInvited,
   )
   const [actionError, setActionError] = useState("")
+  const [isReAddingCancelledInvitation, setIsReAddingCancelledInvitation] =
+    useState(false)
 
   const queryClient = useQueryClient()
 
@@ -65,10 +83,6 @@ export const useUserItem = (
         },
       },
     )
-  const {
-    mutateAsync: deleteCancelledInvitationMutation,
-    isPending: isDeletingCancelledInvitation,
-  } = useDeleteCancelledInvitation()
 
   const { mutateAsync: removeMemberMutation, isPending: isRemovingMember } =
     useAppMutation<string, void>(
@@ -127,20 +141,18 @@ export const useUserItem = (
     setActionError("")
 
     try {
+      if (user?.status === "cancelled") {
+        const message = "Cancelled invitations can be re-added instead."
+
+        setActionError(message)
+        return
+      }
+
       if (user?.status === "accepted") {
         await removeMemberMutation(userId)
         showToast({
           title: "Team member removed",
           description: `${user.email} was removed.`,
-          variant: "success",
-        })
-      } else if (user?.status === "cancelled") {
-        await deleteCancelledInvitationMutation({ invitationId: userId })
-        dispatch(cancelInvitation(userId))
-        queryClient.invalidateQueries({ queryKey: ["invitations"] })
-        showToast({
-          title: "Cancelled invitation deleted",
-          description: `${user.email} was deleted.`,
           variant: "success",
         })
       } else {
@@ -156,8 +168,6 @@ export const useUserItem = (
         error,
         user?.status === "accepted"
           ? "Failed to remove team member"
-          : user?.status === "cancelled"
-            ? "Failed to delete cancelled invitation"
           : "Failed to cancel invitation",
       )
 
@@ -166,8 +176,6 @@ export const useUserItem = (
         title:
           user?.status === "accepted"
             ? "Failed to remove team member"
-            : user?.status === "cancelled"
-              ? "Failed to delete cancelled invitation"
             : "Failed to cancel invitation",
         description: message,
         variant: "error",
@@ -179,9 +187,6 @@ export const useUserItem = (
     removeMemberMutation,
     userId,
     cancelInvitationMutation,
-    deleteCancelledInvitationMutation,
-    dispatch,
-    queryClient,
     showToast,
   ])
 
@@ -201,11 +206,84 @@ export const useUserItem = (
 
     setActionError("")
 
-    if (currentInvitedUser && currentInvitedUser.status === "draft" && onSendInvite) {
-      const safeRoles = roles || []
-      const role = safeRoles.find((r) => r.type === currentInvitedUser.role)
-      const roleId = role?.id || currentInvitedUser.roleId || 0
+    if (!currentInvitedUser) {
+      return
+    }
 
+    const safeRoles = roles || []
+    const role =
+      safeRoles.find((currentRole) => currentRole.type === currentInvitedUser.role) ??
+      safeRoles.find((currentRole) => currentRole.isDefault) ??
+      safeRoles[0]
+    const roleId = role?.id || currentInvitedUser.roleId || 0
+
+    if (currentInvitedUser.status === "cancelled") {
+      if (!roleId) {
+        const message = "Select a role before re-adding the invite."
+
+        setActionError(message)
+        return
+      }
+
+      setIsReAddingCancelledInvitation(true)
+
+      void api
+        .post<
+          { invitations: Array<{ email: string; roleId: number }> },
+          BulkInvitationResponse
+        >("/invitations/bulk?addOnly=true", {
+          invitations: [{ email: currentInvitedUser.email, roleId }],
+        })
+        .then(async (response) => {
+          const failedCount = response.summary?.failed ?? response.failed?.length ?? 0
+          const successfulCount =
+            response.summary?.successful ?? response.successful?.length ?? 0
+
+          if (failedCount > 0) {
+            const message =
+              response.failed?.[0]?.error ?? "Failed to re-add invitation"
+
+            setActionError(message)
+            showToast({
+              title: response.message ?? "Failed to re-add invitation",
+              description: message,
+              variant: "error",
+            })
+            return
+          }
+
+          dispatch(
+            setInvitedSelection({
+              ids: [currentInvitedUser.id],
+              selected: false,
+            }),
+          )
+          await queryClient.invalidateQueries({ queryKey: ["invitations"] })
+          showToast({
+            title: response.message ?? "Invitation re-added",
+            description: `Re-added ${currentInvitedUser.email} as draft${
+              successfulCount === 1 ? "" : "s"
+            }.`,
+            variant: "success",
+          })
+        })
+        .catch((error) => {
+          const message = extractErrorMessage(error, "Failed to re-add invitation")
+
+          setActionError(message)
+          showToast({
+            title: "Failed to re-add invitation",
+            description: message,
+            variant: "error",
+          })
+        })
+        .finally(() => {
+          setIsReAddingCancelledInvitation(false)
+        })
+      return
+    }
+
+    if (currentInvitedUser.status === "draft" && onSendInvite) {
       if (!roleId) {
         const message = "Select a role before sending the invite."
 
@@ -230,7 +308,7 @@ export const useUserItem = (
         })
       })
     }
-  }, [userId, invitedUsers, roles, onSendInvite, showToast])
+  }, [dispatch, onSendInvite, queryClient, roles, showToast, userId, invitedUsers])
 
   const handleRoleChangeWithId = useCallback(
     async (role: string) => {
@@ -286,7 +364,8 @@ export const useUserItem = (
     isCurrentUser,
     isOwner,
     isRemoving: isRemovingMember,
-    isCanceling: isCancelingInvitation || isDeletingCancelledInvitation,
+    isCanceling: isCancelingInvitation,
+    isReAddingCancelledInvitation,
     isAssigningRole,
     actionError,
     clearActionError,

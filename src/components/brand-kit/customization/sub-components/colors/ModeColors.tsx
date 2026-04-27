@@ -11,6 +11,7 @@ export default function ModeColors({
   primary,
   background,
   onColorChange,
+  disabled,
 }: ModeColorsProps) {
   return (
     <div className="flex flex-col gap-[2.4rem] bg-input-filled rounded px-[1.6rem] py-[2.4rem] border border-input-stroke rounded-[0.8rem]">
@@ -25,11 +26,13 @@ export default function ModeColors({
           <ColorPickerItem
             label="Primary"
             color={primary}
+            disabled={disabled}
             onChange={(color) => onColorChange("primary", color)}
           />
           <ColorPickerItem
             label="Background"
             color={background}
+            disabled={disabled}
             onChange={(color) => onColorChange("background", color)}
           />
         </div>

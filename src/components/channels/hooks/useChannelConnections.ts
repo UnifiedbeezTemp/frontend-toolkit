@@ -79,7 +79,7 @@ export function useChannelConnections() {
   );
 
   const hasConnections = useCallback(
-    (channelId: string): boolean => {
+    (channelId: number): boolean => {
       return (connections[channelId]?.length || 0) > 0;
     },
     [connections]

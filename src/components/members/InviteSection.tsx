@@ -8,7 +8,11 @@ import Button from "../ui/Button"
 import Text from "../ui/Text"
 import { useOptionalTeamManagementContext } from "./context/TeamManagementContext"
 import { useInlineFeedbackDismiss } from "./hooks/useInlineFeedbackDismiss"
-import { createIdleAsyncActionState, InvitationFailure } from "./types/teamManagement"
+import {
+  createIdleAsyncActionState,
+  InvitationFailure,
+} from "./types/teamManagement"
+import Tooltip from "../ui/Tooltip"
 
 interface InviteSectionProps {
   emailInput?: string
@@ -17,6 +21,8 @@ interface InviteSectionProps {
   onAddInvite?: () => void | Promise<void>
   failedInvitations?: InvitationFailure[]
   isSending?: boolean
+  isAddingBlocked?: boolean
+  reasonForBlockedAdding?: string
 }
 
 export const InviteSection = ({
@@ -35,6 +41,11 @@ export const InviteSection = ({
   const seatsLeft = isUnlimited
     ? "Unlimited"
     : Math.max(0, (maxSeats || 0) - totalMembers)
+
+  const isAddingBlocked =
+    seatsLeft !== "Unlimited" && totalMembers >= (maxSeats || 0)
+  const reasonForBlockedAdding =
+    "You have reached the maximum number of seats on your plan"
   const addDraftState =
     teamManagement?.addDraftState ?? createIdleAsyncActionState()
   const resolvedEmailInput = teamManagement?.emailInput ?? emailInput ?? ""
@@ -52,8 +63,8 @@ export const InviteSection = ({
   }, [teamManagement])
   const hasInlineFeedback = Boolean(
     resolvedError ||
-      (addDraftState.status !== "idle" && addDraftState.message) ||
-      resolvedFailedInvitations.length > 0,
+    (addDraftState.status !== "idle" && addDraftState.message) ||
+    resolvedFailedInvitations.length > 0,
   )
   const dismissInlineFeedbackProps = useInlineFeedbackDismiss({
     enabled: Boolean(teamManagement) && hasInlineFeedback,
@@ -71,35 +82,43 @@ export const InviteSection = ({
       className="mt-[4rem] sm:mt-[3rem] lg:mt-[2.4rem] w-full"
       {...dismissInlineFeedbackProps}
     >
-      <div className="flex items-center gap-[1rem] mb-[0.8rem] w-full">
-        <Input
-          value={resolvedEmailInput}
-          onChange={resolvedOnEmailChange}
-          disabled={resolvedIsSending}
-          placeholder="Emails, comma separated"
-          type="text"
-          className="w-full text-[1.4rem] lg:text-[1.6rem]"
-        />
+      <Tooltip
+        content={isAddingBlocked && reasonForBlockedAdding}
+        containerClassNames="w-full"
+        position="top"
+      >
+        <div className="flex items-center gap-[1rem] mb-[0.8rem] w-full">
+          <Input
+            value={resolvedEmailInput}
+            onChange={resolvedOnEmailChange}
+            disabled={isAddingBlocked || resolvedIsSending}
+            placeholder="Emails, comma separated"
+            type="text"
+            className="w-full text-[1.4rem] lg:text-[1.6rem]"
+          />
 
-        <Button
-          className="w-[10rem] font-[700] text-[1.6rem] rounded-[0.8rem] lg:min-w-[12.8rem]"
-          onClick={resolvedOnAddInvite}
-          disabled={resolvedIsSending}
-          loading={resolvedIsSending}
-        >
-          Add
-        </Button>
-      </div>
+          <Button
+            className="w-[10rem] font-[700] text-[1.6rem] rounded-[0.8rem] lg:min-w-[12.8rem]"
+            onClick={resolvedOnAddInvite}
+            disabled={isAddingBlocked || resolvedIsSending}
+            loading={resolvedIsSending}
+          >
+            Add
+          </Button>
+        </div>
+      </Tooltip>
 
       {resolvedError && (
         <p className="text-destructive text-[14px] mt-2">{resolvedError}</p>
       )}
 
-      {!resolvedError && addDraftState.status !== "idle" && addDraftState.message && (
-        <p className={`text-[14px] mt-2 ${feedbackClassName}`}>
-          {addDraftState.message}
-        </p>
-      )}
+      {!resolvedError &&
+        addDraftState.status !== "idle" &&
+        addDraftState.message && (
+          <p className={`text-[14px] mt-2 ${feedbackClassName}`}>
+            {addDraftState.message}
+          </p>
+        )}
 
       {resolvedFailedInvitations.length > 0 && (
         <div className="mt-2 space-y-1">

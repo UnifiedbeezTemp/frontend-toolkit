@@ -1,25 +1,32 @@
-"use client";
+"use client"
 
-import { useMemo } from "react";
+import { useMemo } from "react"
 import {
   BrandKitState,
   BrandColorsState,
   BrandFontState,
   SocialLink,
-} from "../types/brandKitTypes";
+} from "../types/brandKitTypes"
 import {
   ApiBrandKit,
+  EDITABLE_BRAND_KIT_FIELDS,
   UpdateBrandKitPayload,
-} from "../../../types/brandKitApiTypes";
+} from "../../../types/brandKitApiTypes"
 
 interface UseChangeDetectionProps {
-  brandKitData?: ApiBrandKit;
-  colors: BrandColorsState;
-  fonts: BrandFontState;
-  links: SocialLink[];
-  logo: string | null;
-  pendingLogoFile: File | null;
-  mapStateToPayload: (state: BrandKitState) => UpdateBrandKitPayload;
+  brandKitData?: ApiBrandKit
+  colors: BrandColorsState
+  fonts: BrandFontState
+  links: SocialLink[]
+  logo: string | null
+  pendingLogoFile: File | null
+  mapStateToPayload: (state: BrandKitState) => UpdateBrandKitPayload
+}
+
+const normalizeComparableValue = (value: unknown) => {
+  if (value == null) return ""
+  if (typeof value === "object") return JSON.stringify(value)
+  return value.toString().trim()
 }
 
 export function useBrandKitChangeDetection({
@@ -32,50 +39,31 @@ export function useBrandKitChangeDetection({
   mapStateToPayload,
 }: UseChangeDetectionProps) {
   return useMemo(() => {
-    if (!brandKitData) return false;
+    if (!brandKitData) return false
 
     // 1. Check for staged logo file
-    if (pendingLogoFile) return true;
+    if (pendingLogoFile) return true
 
     const currentState: BrandKitState = {
+      websiteUrl: brandKitData.websiteUrl ?? "",
       colors,
       fonts,
       socialLinks: links,
       logo,
-    };
-    const payload = mapStateToPayload(currentState);
-    const initialPayload = brandKitData;
+      readonlyFields: {
+        companyLogoUrl: brandKitData.companyLogoUrl ?? "",
+      },
+    }
+    const payload = mapStateToPayload(currentState)
+    const initialPayload = brandKitData
 
-    // Compare relevant metadata fields (excluding logo)
-    const fields: (keyof UpdateBrandKitPayload)[] = [
-      "lightPrimary",
-      "lightBackground",
-      "darkPrimary",
-      "darkBackground",
-      "accentColor",
-      "buttonColor",
-      "buttonBackgroundColor",
-      "buttonStrokeColor",
-      "headerFontStyle",
-      "headerFontWeight",
-      "bodyFontStyle",
-      "bodyFontWeight",
-      "instagram",
-      "whatsapp",
-      "twitter",
-      "youtube",
-      "facebook",
-      "linkedin",
-    ];
-
-    return fields.some((field) => {
-      const current = (payload[field] ?? "").toString().toLowerCase().trim();
-      const initial = (initialPayload[field as keyof ApiBrandKit] ?? "")
-        .toString()
-        .toLowerCase()
-        .trim();
-      return current !== initial;
-    });
+    return EDITABLE_BRAND_KIT_FIELDS.some((field) => {
+      const current = normalizeComparableValue(payload[field])
+      const initial = normalizeComparableValue(
+        initialPayload[field as keyof ApiBrandKit],
+      )
+      return current !== initial
+    })
   }, [
     brandKitData,
     colors,
@@ -84,5 +72,5 @@ export function useBrandKitChangeDetection({
     logo,
     mapStateToPayload,
     pendingLogoFile,
-  ]);
+  ])
 }

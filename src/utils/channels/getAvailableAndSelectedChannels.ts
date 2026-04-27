@@ -9,8 +9,8 @@ export const getAvailableAndSelectedChannels = () => {
     refetch: refetchAvailable,
     isFetching: isFetchingAvailable,
   } = useAppQuery<ChannelsApiResponse>(
-    ["channels", "available"],
-    () => api.get("/channels/available"),
+    ["channels", "all"],
+    () => api.get("/channels/available/all"),
     {
       refetchOnWindowFocus: false,
     },

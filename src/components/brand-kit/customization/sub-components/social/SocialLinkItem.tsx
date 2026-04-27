@@ -14,20 +14,38 @@ export default function SocialLinkItem({
   platform,
   url,
   onUrlChange,
+  onUrlBlur,
   onPlatformChange,
   onDelete,
+  isPlatformLocked = false,
+  hideDelete = false,
+  disabled = false,
+  error,
 }: SocialLinkItemProps) {
   const icons = useSupabaseIcons();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
+  const placeholder =
+    platform === "WhatsApp"
+      ? "Enter WhatsApp URL or number"
+      : `Enter ${platform} URL`;
 
   return (
     <div className="flex items-center gap-[1.2rem] w-full animate-in fade-in slide-in-from-top-2 duration-300">
       <div className="relative">
         <div
           ref={triggerRef}
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex items-center gap-[0.8rem] px-[1.2rem] py-[1.2rem] bg-white border border-input-stroke rounded-[0.8rem] cursor-pointer hover:border-brand-primary transition-all shadow-sm h-[4.8rem] min-w-[14rem]"
+          onClick={() => {
+            if (!disabled && !isPlatformLocked) {
+              setIsDropdownOpen(!isDropdownOpen);
+            }
+          }}
+          className={cn(
+            "flex items-center gap-[0.8rem] px-[1.2rem] py-[1.2rem] bg-white border border-input-stroke rounded-[0.8rem] transition-all shadow-sm h-[4.8rem] min-w-[14rem]",
+            disabled || isPlatformLocked
+              ? "cursor-default opacity-70"
+              : "cursor-pointer hover:border-brand-primary",
+          )}
         >
           <ImageComponent
             src={getPlatformIcon(platform, icons)}
@@ -38,20 +56,22 @@ export default function SocialLinkItem({
           <span className="text-[1.4rem] font-[500] text-text-primary">
             {platform}
           </span>
-          <ImageComponent
-            src={icons.smArrowDown}
-            alt="dropdown"
-            width={14}
-            height={14}
-            className={cn(
-              "ml-auto transition-transform",
-              isDropdownOpen && "rotate-180",
-            )}
-          />
+          {!isPlatformLocked && (
+            <ImageComponent
+              src={icons.smArrowDown}
+              alt="dropdown"
+              width={14}
+              height={14}
+              className={cn(
+                "ml-auto transition-transform",
+                isDropdownOpen && "rotate-180",
+              )}
+            />
+          )}
         </div>
 
         <SmartDropdown
-          isOpen={isDropdownOpen}
+          isOpen={isDropdownOpen && !disabled && !isPlatformLocked}
           onClose={() => setIsDropdownOpen(false)}
           triggerRef={triggerRef}
           placement="bottom-start"
@@ -62,7 +82,7 @@ export default function SocialLinkItem({
               <div
                 key={p}
                 onClick={() => {
-                  onPlatformChange(p);
+                  onPlatformChange?.(p);
                   setIsDropdownOpen(false);
                 }}
                 className={cn(
@@ -87,25 +107,31 @@ export default function SocialLinkItem({
 
       <div className="flex-1">
         <Input
-          placeholder={`Enter ${platform} URL`}
+          placeholder={placeholder}
           value={url}
+          disabled={disabled}
+          error={error}
           onChange={(e) => onUrlChange(e.target.value)}
+          onBlur={() => onUrlBlur?.()}
           className="h-[4.8rem]"
         />
       </div>
 
-      <button
-        onClick={onDelete}
-        className="p-[1.2rem] text-text-secondary cursor-pointer hover:text-error transition-colors rounded-[0.8rem]"
-      >
-        <ImageComponent
-          src={icons.trash}
-          alt="delete"
-          width={20}
-          height={20}
-          className="group-hover:grayscale-0 grayscale transition-all"
-        />
-      </button>
+      {!hideDelete && onDelete && (
+        <button
+          onClick={onDelete}
+          disabled={disabled}
+          className="p-[1.2rem] text-text-secondary cursor-pointer hover:text-error transition-colors rounded-[0.8rem]"
+        >
+          <ImageComponent
+            src={icons.trash}
+            alt="delete"
+            width={20}
+            height={20}
+            className="group-hover:grayscale-0 grayscale transition-all"
+          />
+        </button>
+      )}
     </div>
   );
 }

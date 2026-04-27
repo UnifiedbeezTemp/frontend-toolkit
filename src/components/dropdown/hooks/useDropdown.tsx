@@ -11,7 +11,7 @@ export interface DropdownOption {
 interface UseDropdownProps {
   options: DropdownOption[];
   value: string;
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
   placeholder?: string;
 }
 
@@ -39,14 +39,14 @@ export function useDropdown({
   }, []);
 
   const handleSelect = (selectedValue: string) => {
-    onSelect(selectedValue);
+    onSelect?.(selectedValue);
     setIsOpen(false);
   };
 
   const clearSelection = (e?: React.MouseEvent) => {
     e?.stopPropagation();
     setIsOpen(false);
-    onSelect("");
+    onSelect?.("");
   };
 
   const toggleDropdown = () => {

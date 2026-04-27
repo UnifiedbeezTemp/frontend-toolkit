@@ -1,8 +1,5 @@
 import {
   BrandKitState,
-  BrandColorsState,
-  BrandFontState,
-  SocialLink,
 } from "../types/brandKitTypes";
 
 export const MOCK_BRAND_DATA: Partial<BrandKitState> = {
@@ -17,9 +14,15 @@ export const MOCK_BRAND_DATA: Partial<BrandKitState> = {
     },
     accentColor: "#007AFF",
     button: {
-      color: "#FFFFFF",
-      background: "#0A84FF",
+      color: "#0A84FF",
+      text: "#FFFFFF",
       stroke: "#0A84FF",
+    },
+    font: {
+      headingColor: "#111111",
+      bodyColor: "#333333",
+      linkColor: "#0066cc",
+      mutedColor: "#888888",
     },
   },
   fonts: {
@@ -33,6 +36,12 @@ export const MOCK_BRAND_DATA: Partial<BrandKitState> = {
       weight: "400",
       style: "Normal",
     },
+    scale: {
+      h1: "48px",
+      h2: "36px",
+      h3: "24px",
+      body: "16px",
+    },
   },
   socialLinks: [
     { platform: "Instagram", url: "https://instagram.com/unifiedbeez" },
@@ -40,4 +49,13 @@ export const MOCK_BRAND_DATA: Partial<BrandKitState> = {
     { platform: "LinkedIn", url: "https://linkedin.com/company/unifiedbeez" },
   ],
   logo: "https://via.placeholder.com/150?text=Beez+Logo",
+  detectedFaviconUrl: "https://via.placeholder.com/150?text=Beez+Logo",
+  websiteUrl: "https://unifiedbeez.com",
+  readonlyFields: {
+    id: "1",
+    userId: "1",
+    companyLogoUrl: "",
+    createdAt: "",
+    updatedAt: "",
+  },
 };

@@ -1,6 +1,6 @@
 import { ChannelAccountConfigStatus } from "./channelAccountTypes";
 
-export type TimeUnit = "MINUTES" | "HOURS" | "DAYS";
+export type TimeUnit = "SECONDS" | "MINUTES" | "HOURS" | "DAYS";
 
 export interface ChannelAccountEscalationConfig {
   enabled: boolean;

@@ -12,13 +12,11 @@ import {
   ZoomAccount,
   ShopifyAccount,
   LiveChatAccount,
+  StripeAccount,
 } from "../../types/channelAccountDetailTypes";
-import { Channel } from "../../store/onboarding/types/channelTypes";
 import { SelectedChannel } from "../../types/channelApiTypes";
 
-export const getChannelAccounts = (
-  channel?: Channel | SelectedChannel | null,
-) => {
+export const getChannelAccounts = (channel?: SelectedChannel | null) => {
   const accounts = useMemo(() => {
     if (!channel) return [];
 
@@ -29,10 +27,7 @@ export const getChannelAccounts = (
     if (channelName === "webchat" || channelName === "livechat") {
       const accountsList = (channel.liveChatConfigs || []) as LiveChatAccount[];
       return accountsList.map<ConnectionDisplayData>((account) => {
-        const title =
-          account.teamName ||
-          account.chatName ||
-          "Live Chat";
+        const title = account.teamName || account.chatName || "Live Chat";
         const subtitle = account.chatName || undefined;
         return {
           id: account.id,
@@ -338,6 +333,24 @@ export const getChannelAccounts = (
           shopName: account.shopName,
           shopEmail: account.shopEmail,
           shopifyStoreId: account.shopifyStoreId,
+          connectedChannelId: account.connectedChannelId,
+        },
+      }));
+    }
+    if (channelName === "stripe") {
+      const accountsList = (channel.stripeAccounts || []) as StripeAccount[];
+      return accountsList.map<ConnectionDisplayData>((account) => ({
+        id: account.id,
+        title: account.stripeAccountId || "Stripe Store",
+        subtitle: account.stripeUserId || "Stripe",
+        isActive: account.isActive,
+        isConnected: account.isActive,
+        metadata: {
+          provider: "stripe",
+          publishableKey: account.publishableKey,
+          stripeAccountId: account.stripeAccountId,
+          stripeUserId: account.stripeUserId,
+          accessToken: account.accessToken,
           connectedChannelId: account.connectedChannelId,
         },
       }));

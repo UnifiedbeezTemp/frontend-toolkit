@@ -2,9 +2,8 @@
 
 import { useState, useMemo, useCallback } from "react";
 import {
-  ModeColorsProps,
   BrandColorsState,
-  ButtonColorState,
+  FontColorState,
 } from "../types/brandKitTypes";
 
 export const INITIAL_COLORS: BrandColorsState = {
@@ -18,9 +17,15 @@ export const INITIAL_COLORS: BrandColorsState = {
   },
   accentColor: "#FFFFFF",
   button: {
-    color: "#FFFFFF",
-    background: "#FFFFFF",
-    stroke: "#FFFFFF",
+    color: "#053d27",
+    text: "#FFFFFF",
+    stroke: "#053d27",
+  },
+  font: {
+    headingColor: "#1A1A1A",
+    bodyColor: "#4A4A4A",
+    linkColor: "#4A4A4A",
+    mutedColor: "#6E6E6E",
   },
 };
 
@@ -67,10 +72,20 @@ export function useBrandColors() {
   );
 
   const handleButtonColorChange = useCallback(
-    (field: "color" | "background" | "stroke", color: string) => {
+    (field: "color" | "text" | "stroke", color: string) => {
       setColors((prev) => ({
         ...prev,
         button: { ...prev.button, [field]: color },
+      }));
+    },
+    [],
+  );
+
+  const handleFontColorChange = useCallback(
+    (field: keyof FontColorState, color: string) => {
+      setColors((prev) => ({
+        ...prev,
+        font: { ...prev.font, [field]: color },
       }));
     },
     [],
@@ -90,12 +105,20 @@ export function useBrandColors() {
     [handleAccentColorChange],
   );
 
+  const fontColorHandlers = useMemo(
+    () => ({
+      onColorChange: handleFontColorChange,
+    }),
+    [handleFontColorChange],
+  );
+
   return {
     colors,
     lightHandlers,
     darkHandlers,
     buttonHandlers,
     accentHandlers,
+    fontColorHandlers,
     setColors,
   };
 }

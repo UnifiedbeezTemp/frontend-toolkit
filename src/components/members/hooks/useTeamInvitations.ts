@@ -38,5 +38,6 @@ export const useTeamInvitations = () => {
     isLoadingInvitations,
     invitationsError,
     refetchInvitations,
+    invitationsData,
   }
 }

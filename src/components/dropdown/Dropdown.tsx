@@ -10,7 +10,7 @@ import { cn } from "../../lib/utils";
 export interface DropdownProps {
   options: DropdownOption[];
   value: string;
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
   placeholder?: string;
   icon?: React.ReactNode;
   className?: string;

@@ -8,9 +8,10 @@ import Text from "../../../../ui/Text";
 
 export default function ButtonColors({
   color,
-  background,
+  text,
   stroke,
   onColorChange,
+  disabled,
 }: ButtonColorsProps) {
   return (
     <div className="flex flex-col gap-[2.4rem] mt-[1.6rem]">
@@ -21,18 +22,21 @@ export default function ButtonColors({
 
       <div className="flex flex-col gap-[1.6rem]">
         <ColorPickerItem
-          label="Color"
+          label="Button Color"
           color={color}
+          disabled={disabled}
           onChange={(c) => onColorChange("color", c)}
         />
         <ColorPickerItem
-          label="Background"
-          color={background}
-          onChange={(c) => onColorChange("background", c)}
+          label="Button Text Color"
+          color={text}
+          disabled={disabled}
+          onChange={(c) => onColorChange("text", c)}
         />
         <ColorPickerItem
-          label="Stroke"
+          label="Button Stroke Color"
           color={stroke}
+          disabled={disabled}
           onChange={(c) => onColorChange("stroke", c)}
         />
       </div>
