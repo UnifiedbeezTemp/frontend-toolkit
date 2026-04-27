@@ -12,6 +12,7 @@ interface JsonFormatInstructionProps {
   tagLabel?: string;
   tagClassName?: string;
   copyLabel?: string;
+  copyDisabled?: boolean;
 }
 
 export default function JsonFormatInstruction({
@@ -21,6 +22,7 @@ export default function JsonFormatInstruction({
   tagLabel,
   tagClassName,
   copyLabel = "Copy code",
+  copyDisabled = false,
 }: JsonFormatInstructionProps) {
   const icons = useSupabaseIcons();
 
@@ -63,7 +65,8 @@ export default function JsonFormatInstruction({
         <div className="px-[1.6rem] py-[1.2rem] bg-soft-green border-t border-input-stroke bg-primary flex items-center justify-between">
           <button
             onClick={onCopy}
-            className="flex items-center gap-[0.8rem] text-text-primary text-[1.2rem] font-[700] hover:opacity-70 transition-opacity"
+            disabled={copyDisabled}
+            className="flex items-center gap-[0.8rem] text-text-primary text-[1.2rem] font-[700] hover:opacity-70 transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ImageComponent
               src={icons.copy3}
