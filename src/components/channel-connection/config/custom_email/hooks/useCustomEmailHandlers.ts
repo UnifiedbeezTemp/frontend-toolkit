@@ -7,6 +7,7 @@ interface UseCustomEmailHandlersProps {
   startCustomEmailIntegration?: (domain: string) => void;
   onConnectionSuccess?: () => void;
   onEditConnection?: (connection: ChannelConnection | null) => void;
+  onConfirmDelete?: (accountId: number) => void;
 }
 
 export function useCustomEmailHandlers({
@@ -15,6 +16,7 @@ export function useCustomEmailHandlers({
   startCustomEmailIntegration,
   onConnectionSuccess,
   onEditConnection,
+  onConfirmDelete,
 }: UseCustomEmailHandlersProps) {
   const [showRequirements, setShowRequirements] = useState(!connection);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -25,7 +27,7 @@ export function useCustomEmailHandlers({
       setShowRequirements(true);
       return;
     }
-    
+
     if (connection?.id) {
       setShowRequirements(false);
     } else {
@@ -44,8 +46,8 @@ export function useCustomEmailHandlers({
   };
 
   const handleConfirmDelete = () => {
-    if (connection) {
-      onSave({ _delete: true });
+    if (connection && onConfirmDelete) {
+      onConfirmDelete(Number(connection.id));
     }
   };
 
@@ -71,4 +73,3 @@ export function useCustomEmailHandlers({
     handleConnectionSuccess,
   };
 }
-

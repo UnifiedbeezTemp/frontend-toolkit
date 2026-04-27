@@ -19,12 +19,21 @@ export interface CustomEmailSetupResponse {
 }
 
 export const setupCustomEmailReceiving = async (
-  data: CustomEmailSetupRequest
+  data: CustomEmailSetupRequest,
 ): Promise<CustomEmailSetupResponse> => {
-  const response = await api.post<CustomEmailSetupRequest, CustomEmailSetupResponse>(
-    "/channels/email/custom/setup-receiving",
-    data
-  );
+  const response = await api.post<
+    CustomEmailSetupRequest,
+    CustomEmailSetupResponse
+  >("/channels/email/custom/setup-receiving", data);
   return response;
 };
 
+export const disconnectCustomEmail = async (
+  accountId: number,
+): Promise<{ success: boolean; message?: string }> => {
+  const response = await api.post<
+    { accountId: number },
+    { success: boolean; message?: string }
+  >("/channels/email/disconnect/custom", { accountId });
+  return response;
+};

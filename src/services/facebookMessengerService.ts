@@ -53,13 +53,13 @@ export interface SelectedChannelsResponse {
  * Select a Facebook Messenger channel
  */
 export const selectMessengerChannel = async (
-  availableChannelId: number
+  availableChannelId: number,
 ): Promise<SelectChannelResponse> => {
   return api.post<SelectChannelRequest, SelectChannelResponse>(
     "/channels/select",
     {
       availableChannelId,
-    }
+    },
   );
 };
 
@@ -69,9 +69,8 @@ export const selectMessengerChannel = async (
 export const getConnectedMessengerChannels = async (): Promise<
   MessengerChannel[]
 > => {
-  const response = await api.get<SelectedChannelsResponse>(
-    "/channels/selected"
-  );
+  const response =
+    await api.get<SelectedChannelsResponse>("/channels/selected");
 
   return response.channels
     .filter((ch) => ch.availableChannel.channelType === "FACEBOOK_MESSENGER")
@@ -95,14 +94,17 @@ export const getConnectedMessengerChannels = async (): Promise<
  */
 export const getFacebookConnectUrl = (): string => {
   // Use the same base URL as the API
-  return `${apiBaseUrl}/auth/facebook/connect?type=messenger`;
+  const currentPath = window.location.pathname + window.location.search;
+  const encodedPath = encodeURIComponent(currentPath);
+  // window.location.href = `${apiBaseUrl}/auth/facebook/connect?redirect_path=${encodedPath}`;
+  return `${apiBaseUrl}/auth/facebook/connect?redirect_path=${encodedPath}`;
 };
 
 /**
  * Disconnect a Facebook Messenger connection from the backend
  */
 export const disconnectFacebookMessenger = async (
-  connectionId: number
+  connectionId: number,
 ): Promise<void> => {
   return api.delete(`/auth/facebook/account/${connectionId}`);
 };
@@ -111,7 +113,7 @@ export const disconnectFacebookMessenger = async (
  * Disconnect a Facebook Messenger channel
  */
 export const disconnectMessengerChannel = async (
-  channelId: number
+  channelId: number,
 ): Promise<void> => {
   return api.delete(`/channels/unselect/${channelId}`);
 };

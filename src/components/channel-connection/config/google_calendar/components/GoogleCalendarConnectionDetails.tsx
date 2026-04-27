@@ -49,13 +49,13 @@ export default function GoogleCalendarConnectionDetails({
               <Input value={email} onChange={() => {}} />
             </div>
 
-            <div>
+            {/* <div>
               <Heading className="text-[1.4rem] lg:text-[1.6rem] mb-[0.8rem]">
                 Full name
               </Heading>
 
               <Input value={fullName} onChange={() => {}} />
-            </div>
+            </div> */}
           </div>
         </div>
 

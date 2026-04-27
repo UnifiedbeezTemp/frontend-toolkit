@@ -40,6 +40,8 @@ import { ChannelConnection } from "../../../types/channelConnectionTypes";
 import { GoogleCalendarAccount } from "../config/google_calendar/types";
 import { MicrosoftCalendarAccount } from "../config/microsoft_calendar/types";
 import { LiveChatConnection, mapLiveChatConnectionToFormData } from "./livechatFormMapper";
+import { StripeAccount } from "../../../types/channelAccountDetailTypes";
+import { mapStripeAccountToFormData } from "./StripeFormMapper";
 
 export const formMapperMap: Record<
   string,
@@ -58,7 +60,8 @@ export const formMapperMap: Record<
       | PayPalAccount
       | CalendlyAccount
       | ZoomAccount
-      | ShopifyAccount,
+      | ShopifyAccount
+      | StripeAccount,
   ) => ChannelConnection
 > = {
   webchat: (connection) =>
@@ -77,6 +80,8 @@ export const formMapperMap: Record<
     mapCustomEmailConnectionToFormData(connection as CustomEmailAccount),
   facebook_messenger: (connection) =>
     mapFacebookAccountToFormData(connection as FacebookAccount),
+  instagram_direct: (connection) =>
+    mapFacebookAccountToFormData(connection as FacebookAccount),
   whatsapp: (connection) =>
     mapWhatsAppAccountToFormData(connection as WhatsAppAccount),
   outlook: (connection) =>
@@ -92,4 +97,6 @@ export const formMapperMap: Record<
   zoom: (connection) => mapZoomAccountToFormData(connection as ZoomAccount),
   shopify: (connection) =>
     mapShopifyAccountToFormData(connection as unknown as ShopifyAccount),
+  stripe: (connection) =>
+    mapStripeAccountToFormData(connection as unknown as StripeAccount),
 };

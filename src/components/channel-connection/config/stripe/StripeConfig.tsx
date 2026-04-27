@@ -30,14 +30,18 @@ export default function StripeConfig({
     }
   };
 
-  const channelId = parseInt(channel.id) || 0;
+  const channelId = Number(channel.id) || 0;
 
-  const { startIntegration, isLoading: isStripeConnecting } =
-    useStripeIntegration({
-      channelId,
-      onComplete: handleStripeComplete,
-      onRefetchChannels,
-    });
+  const {
+    startIntegration,
+    isLoading: isStripeConnecting,
+    isDeleting,
+    handleConfirmDelete: handleIntegrationDelete,
+  } = useStripeIntegration({
+    channelId,
+    onComplete: handleStripeComplete,
+    onRefetchChannels,
+  });
 
   const {
     showRequirements,
@@ -48,8 +52,8 @@ export default function StripeConfig({
     handleCloseDeleteModal,
   } = useStripeHandlers({
     connection,
-    onSave,
     startStripeIntegration: startIntegration,
+    onConfirmDelete: handleIntegrationDelete,
   });
 
   if (showRequirements && !connection) {
@@ -67,7 +71,7 @@ export default function StripeConfig({
         <StripeConnectionDetails
           connection={connection}
           onDelete={handleDeleteClick}
-          isDeleting={isLoading}
+          isDeleting={isDeleting}
           variant={isDesktop ? "desktop" : "mobile"}
         />
         <DeleteChannelModal
@@ -75,7 +79,7 @@ export default function StripeConfig({
           onClose={handleCloseDeleteModal}
           onConfirm={handleConfirmDelete}
           channelName={channel.channelName ?? "Stripe"}
-          isLoading={isLoading}
+          isLoading={isDeleting}
         />
       </>
     );
