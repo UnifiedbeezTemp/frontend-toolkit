@@ -10,8 +10,14 @@ export function useChannelConnection() {
   const [activeChannelId, setActiveChannelId] = useState<string | null>(null);
 
   const activeChannel = selectedChannels.find(
-    (ch) => ch.id === activeChannelId
+    (ch) => ch.id === activeChannelId,
   );
+
+  useEffect(() => {
+    if (!activeChannelId && selectedChannels.length > 0) {
+      setActiveChannelId(selectedChannels[0].id);
+    }
+  }, [selectedChannels, activeChannelId]);
 
   const handleConnect = (channelId: string) => {
     setActiveChannelId(channelId);

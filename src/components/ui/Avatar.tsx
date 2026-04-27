@@ -53,26 +53,59 @@ const sizeClasses = {
 };
 
 const indicatorSizeClasses = {
-  xs: "w-1.5 h-1.5 border",
-  sm: "w-2 h-2 border",
-  md: "w-2.5 h-2.5 border-2",
-  lg: "w-3 h-3 border-2",
-  xl: "w-4 h-4 border-2",
+  xs: "w-1.5 h-1.5 ",
+  sm: "w-2 h-2 ",
+  md: "w-2.5 h-2.5 -2",
+  lg: "w-3 h-3 -2",
+  xl: "w-4 h-4 -2",
 };
 
 const statusColors = {
-  online: "bg-input-stroke",
+  online: "bg-success",
   offline: "bg-muted",
   away: "bg-warning",
 };
 
+const AVATAR_COLORS = [
+  "bg-red-500",
+  "bg-orange-500",
+  "bg-amber-500",
+  "bg-yellow-500",
+  "bg-lime-500",
+  "bg-green-500",
+  "bg-emerald-500",
+  "bg-teal-500",
+  "bg-cyan-500",
+  "bg-sky-500",
+  "bg-blue-500",
+  "bg-indigo-500",
+  "bg-violet-500",
+  "bg-purple-500",
+  "bg-fuchsia-500",
+  "bg-pink-500",
+  "bg-rose-500",
+];
+
+const getColorFromName = (name: string): string => {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[index];
+};
+
 // Get initial of the user name and use as fallback
 const getInitials = (name: string): string => {
-  const names = name.trim().split(" ");
+  const trimmed = (name || "").trim();
+  if (!trimmed) return "?";
+  const names = trimmed.split(" ");
   if (names.length === 1) {
     return names[0].charAt(0).toUpperCase();
   }
-  return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+  return (
+    (names[0].charAt(0) || "") + (names[names.length - 1].charAt(0) || "")
+  ).toUpperCase();
 };
 
 export default function Avatar({
@@ -91,25 +124,32 @@ export default function Avatar({
   onLoad,
 }: AvatarProps & { onLoad?: () => void }) {
   const hasImage = !!src;
-  const initials = name ? getInitials(name) : alt.charAt(0).toUpperCase();
+  const initials = name
+    ? getInitials(name)
+    : (alt || "U").charAt(0).toUpperCase();
+  const backgroundColor = name
+    ? getColorFromName(name)
+    : getColorFromName(alt || "U");
 
   return (
     <div
       className={cn(
         "relative inline-flex items-center justify-center shrink-0",
         onClick && "cursor-pointer",
-        className
+        className,
       )}
       onClick={onClick}
     >
       <div
         className={cn(
-          "rounded-full bg-primary transition-all duration-200",
+          "rounded-full transition-all duration-200",
+          !hasImage && backgroundColor,
+          hasImage && "bg-primary",
           sizeClasses[size],
           onClick && "hover:scale-105 active:scale-95",
           hasBorder && "border-border border",
           hideOverflow && "overflow-hidden",
-          imageContainerClassName
+          imageContainerClassName,
         )}
       >
         {hasImage ? (
@@ -124,8 +164,8 @@ export default function Avatar({
         ) : (
           <div
             className={cn(
-              "w-full h-full flex items-center justify-center bg-brand-primary text-white font-bold",
-              initialsClassName
+              "w-full h-full flex items-center justify-center text-white font-bold",
+              initialsClassName,
             )}
           >
             {initials}
@@ -136,9 +176,9 @@ export default function Avatar({
       {showOnline && (
         <span
           className={cn(
-            "absolute bottom-0 right-0 rounded-full border-primary",
+            "absolute bottom-0 right-0 rounded-full  shrink-o",
             indicatorSizeClasses[size],
-            statusColors[onlineStatus]
+            statusColors[onlineStatus],
           )}
           aria-label={`Status: ${onlineStatus}`}
         />

@@ -23,6 +23,7 @@ import {
   cleanAndPrepareUrl,
 } from "../../../../../../knowledge-files/websites/utils/websiteValidators";
 import { extractErrorMessage } from "../../../../../../../utils/extractErrorMessage";
+import { invalidateAiAssistantsAndSession } from "../../../../../../../api/invalidateAiAssistantsAndSession";
 
 export function useAssistantWebsites(assistant: AIAssistant | null) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -81,6 +82,7 @@ export function useAssistantWebsites(assistant: AIAssistant | null) {
     {
       onSuccess: (data) => {
         refetchWebsites();
+        void invalidateAiAssistantsAndSession({ refetchActive: true });
         showToast({
           variant: "success",
           title: "Website added",
@@ -118,8 +120,8 @@ export function useAssistantWebsites(assistant: AIAssistant | null) {
       baseUrl: fullUrl,
       displayName: displayName,
       crawlType: crawlType,
-      maxPages: 100,
-      maxDepth: crawlType === "SPECIFIC_PAGES" ? 1 : 3,
+      // maxPages: 100,
+      // maxDepth: crawlType === "SPECIFIC_PAGES" ? 1 : 3,
       isDefaultKnowledge: false,
     };
 
@@ -139,6 +141,7 @@ export function useAssistantWebsites(assistant: AIAssistant | null) {
   const handleDeleteWebsite = async (websiteId: number) => {
     try {
       await deleteWebsite({ websiteId });
+      void invalidateAiAssistantsAndSession({ refetchActive: true });
       setDeleteConfirmOpen(false);
       setWebsiteToDelete(null);
     } catch (error) {}

@@ -25,8 +25,8 @@ import {
   DeleteAiAssistantResponse,
 } from "../types/aiAssistantTypes";
 import { useAppMutation, useAppQuery } from "../api/query";
-import { queryClient } from "../api/client";
 import { useToast } from "../components/ui/toast/useToast";
+import { invalidateAiAssistantsAndSession } from "../api/invalidateAiAssistantsAndSession";
 
 type ApiError = { message?: { message: string }; status?: number };
 
@@ -125,7 +125,7 @@ export function useAiAssistants(
           description: data.message || `${normalized.name} is ready.`,
         });
       }
-      queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+      void invalidateAiAssistantsAndSession({ refetchActive: true });
     },
     onError: (error) => {
       if (showToasts) {
@@ -153,7 +153,7 @@ export function useAiAssistants(
           description: `${variables.name} saved successfully.`,
         });
       }
-      queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+      void invalidateAiAssistantsAndSession({ refetchActive: true });
     },
     onError: (error) => {
       if (showToasts) {
@@ -181,7 +181,7 @@ export function useAiAssistants(
           description: "Tone and style saved successfully.",
         });
       }
-      queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+      void invalidateAiAssistantsAndSession({ refetchActive: true });
     },
     onError: (error) => {
       if (showToasts) {
@@ -209,7 +209,7 @@ export function useAiAssistants(
           description: "Assistant instructions saved successfully.",
         });
       }
-      queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+      void invalidateAiAssistantsAndSession({ refetchActive: true });
     },
     onError: (error) => {
       if (showToasts) {
@@ -240,7 +240,7 @@ export function useAiAssistants(
           description: "The assistant has been deleted.",
         });
       }
-      queryClient.invalidateQueries({ queryKey: ["ai-assistants"] });
+      void invalidateAiAssistantsAndSession({ refetchActive: true });
     },
     onError: (error) => {
       if (showToasts) {

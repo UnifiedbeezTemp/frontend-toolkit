@@ -1,4 +1,5 @@
 import { OriginalPlan as _OriginalPlan } from "../../api/services/plan/types";
+import { Addon as PurchasedAddon } from "../../store/onboarding/types/addonTypes";
 
 export type OriginalPlan = _OriginalPlan
 export interface Plan {
@@ -43,6 +44,7 @@ export interface PlanSummaryCardProps {
   showHighlightOfPlan?: boolean
   isLoading?: boolean
   isUpgradePlanDisabled: boolean
+  purchasedAddons?: PurchasedAddon[]
   onAddonsClick?: () => void
   onSelect?: () => void
 }

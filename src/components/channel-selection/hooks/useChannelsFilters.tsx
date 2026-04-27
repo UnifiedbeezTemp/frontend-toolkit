@@ -24,6 +24,7 @@ export const useChannelFilters = (
     });
   }, [channels, searchQuery, filter]);
 
+
   const channelsByType = useMemo(() => {
     if (filter === "popular") {
       return filteredChannels.length > 0

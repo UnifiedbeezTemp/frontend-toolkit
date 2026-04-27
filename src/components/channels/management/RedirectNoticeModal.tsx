@@ -11,12 +11,18 @@ interface RedirectNoticeModalProps {
   isOpen: boolean;
   onClose: () => void;
   onProceed: () => void;
+  title?: string;
+  description?: string;
+  infoText?: string;
 }
 
 export default function RedirectNoticeModal({
   isOpen,
   onClose,
   onProceed,
+  title = "Ready to Connect Your Channels?",
+  description = "To connect some channels, you'll be redirected to their respective platforms to authorize the connection. This is required to securely link your accounts.",
+  infoText = "After authorizing on the external platform, you'll be automatically redirected back to complete the setup.",
 }: RedirectNoticeModalProps) {
   const icons = useSupabaseIcons();
 
@@ -25,33 +31,31 @@ export default function RedirectNoticeModal({
       isOpen={isOpen}
       onClose={onClose}
       className="bg-primary rounded-[2rem] p-[2.4rem] w-[90dvw] max-w-[44rem]"
-      closeOnOverlayClick={false}
+      // closeOnOverlayClick={false}
     >
       <div className="flex flex-col items-center text-center">
-        <div className="mb-[2rem] rounded-full bg-gradient-to-br from-brand-primary/20 to-brand-primary/5 p-[1.6rem]">
+        <div className="mb-[2rem] rounded-full bg-input-filled p-[1.6rem]">
           <ImageComponent
             src={icons.linkExternal2}
             alt="External Link"
-            width={48}
-            height={48}
+            width={40}
+            height={40}
             className="w-[4.8rem] h-[4.8rem]"
           />
         </div>
 
-        <Heading size="xl" className="text-[2rem] font-bold mb-[0.8rem]">
-          Ready to Connect Your Channels?
+        <Heading size="xl" className="text-[2rem] font-bold mb-[0.8rem] text-center">
+          {title}
         </Heading>
 
         <Text
           size="md"
-          className="text-text-secondary mb-[2.4rem] max-w-[36rem] leading-relaxed"
+          className="text-text-secondary text-center mb-[2.4rem] max-w-[36rem] leading-relaxed"
         >
-          To connect some channels, you&apos;ll be redirected to their
-          respective platforms to authorize the connection. This is required to
-          securely link your accounts.
+          {description}
         </Text>
 
-        <div className="bg-secondary/50 rounded-[1.2rem] p-[1.6rem] mb-[2.4rem] w-full">
+        <div className="bg-input-filled rounded-[1.2rem] p-[1.6rem] mb-[2.4rem] w-full">
           <div className="flex items-start gap-[1.2rem]">
             <div className="shrink-0 mt-[0.2rem]">
               <ImageComponent
@@ -63,8 +67,7 @@ export default function RedirectNoticeModal({
               />
             </div>
             <Text size="sm" className="text-left text-text-secondary">
-              After authorizing on the external platform, you&apos;ll be
-              automatically redirected back to complete the setup.
+              {infoText}
             </Text>
           </div>
         </div>

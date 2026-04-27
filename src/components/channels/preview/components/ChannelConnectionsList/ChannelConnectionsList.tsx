@@ -2,7 +2,6 @@
 
 import Heading from "../../../../../components/ui/Heading";
 import Text from "../../../../../components/ui/Text";
-// import DotsMenu from "../../../../../components/ui/DotsMenu";
 import ImageComponent from "../../../../../components/ui/ImageComponent";
 import { ChannelConnectionsListProps } from "../../types";
 import { useChannelConnectionsList } from "./hooks/useChannelConnectionsList";

@@ -1,16 +1,26 @@
 import { useState, useMemo, useCallback } from "react";
-import { FontState, BrandFontState } from "../types/brandKitTypes";
+import {
+  FontState,
+  BrandFontState,
+  TypographyScaleState,
+} from "../types/brandKitTypes";
 
 export const INITIAL_FONTS: BrandFontState = {
   header: {
     family: "Times New Roman",
-    weight: "Bold",
+    weight: "700",
     style: "Normal",
   },
   body: {
     family: "Times New Roman",
-    weight: "Regular",
+    weight: "400",
     style: "Normal",
+  },
+  scale: {
+    h1: "72px",
+    h2: "48px",
+    h3: "20px",
+    body: "16px",
   },
 };
 
@@ -47,10 +57,29 @@ export function useBrandFont() {
     [handleFontChange],
   );
 
+  const handleScaleChange = useCallback(
+    (field: keyof TypographyScaleState, value: string) => {
+      setFonts((prev) => ({
+        ...prev,
+        scale: { ...prev.scale, [field]: value },
+      }));
+    },
+    [],
+  );
+
+  const scaleHandlers = useMemo(
+    () => ({
+      values: fonts.scale,
+      onScaleChange: handleScaleChange,
+    }),
+    [fonts.scale, handleScaleChange],
+  );
+
   return {
     fonts,
     headerHandlers,
     bodyHandlers,
+    scaleHandlers,
     setFonts,
   };
 }

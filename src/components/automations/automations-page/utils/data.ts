@@ -28,7 +28,7 @@ export const getTemplatesData = (
       icon: assets.featuredIcon1,
       info: {
         desription:
-          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing — all within your growth automation setup.",
+          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing, all within your growth automation setup.",
         lists: [
           {
             title: "This integration lets you:",
@@ -48,7 +48,7 @@ export const getTemplatesData = (
               "Sign in with your Stripe credentials",
               "Authorize UnifiedBeez to access your account",
               "Choose the events (e.g., new charge, failed payment) you want to automate",
-              "Click “Finish Setup” — your Stripe automation is live 🎉",
+              "Click “Finish Setup”, your Stripe automation is live 🎉",
             ],
             ordered: true,
           },
@@ -74,7 +74,7 @@ export const getTemplatesData = (
       icon: assets.featuredIcon2,
       info: {
         desription:
-          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing — all within your growth automation setup.",
+          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing, all within your growth automation setup.",
         lists: [
           {
             title: "This integration lets you:",
@@ -94,7 +94,7 @@ export const getTemplatesData = (
               "Sign in with your Stripe credentials",
               "Authorize UnifiedBeez to access your account",
               "Choose the events (e.g., new charge, failed payment) you want to automate",
-              "Click “Finish Setup” — your Stripe automation is live 🎉",
+              "Click “Finish Setup”, your Stripe automation is live 🎉",
             ],
             ordered: true,
           },
@@ -120,7 +120,7 @@ export const getTemplatesData = (
       icon: assets.featuredIcon3,
       info: {
         desription:
-          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing — all within your growth automation setup.",
+          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing, all within your growth automation setup.",
         lists: [
           {
             title: "This integration lets you:",
@@ -140,7 +140,7 @@ export const getTemplatesData = (
               "Sign in with your Stripe credentials",
               "Authorize UnifiedBeez to access your account",
               "Choose the events (e.g., new charge, failed payment) you want to automate",
-              "Click “Finish Setup” — your Stripe automation is live 🎉",
+              "Click “Finish Setup”, your Stripe automation is live 🎉",
             ],
             ordered: true,
           },
@@ -166,7 +166,7 @@ export const getTemplatesData = (
       icon: assets.featuredIcon4,
       info: {
         desription:
-          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing — all within your growth automation setup.",
+          "Easily connect Stripe to your UnifiedBeez workspace to enable automated sales tracking, payment workflows, and customer billing, all within your growth automation setup.",
         lists: [
           {
             title: "This integration lets you:",
@@ -186,7 +186,7 @@ export const getTemplatesData = (
               "Sign in with your Stripe credentials",
               "Authorize UnifiedBeez to access your account",
               "Choose the events (e.g., new charge, failed payment) you want to automate",
-              "Click “Finish Setup” — your Stripe automation is live 🎉",
+              "Click “Finish Setup”, your Stripe automation is live 🎉",
             ],
             ordered: true,
           },

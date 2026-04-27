@@ -18,6 +18,7 @@ export default function ExpandedPlanCard({
   className,
   isSelectionDisabled,
   handleAddonClick,
+  showFooter = false
 }: CollapsiblePlanCardProps) {
   const { displayPrice } = useCollapsiblePlanCard(plan, isYearly);
 
@@ -48,25 +49,25 @@ export default function ExpandedPlanCard({
         </div>
       ))}
 
-
+      {showFooter && <>
         <CollapsiblePlanCardFooter
-        plan={plan}
-        isSelected={isSelected}
-        isLowerThanCurrentPlan={isLowerThanCurrentPlan}
-        onSelect={onSelect}
-        isCurrentPlan={isCurrentPlan}
-        isSelectionDisabled={isSelectionDisabled}
-      />
+          plan={plan}
+          isSelected={isSelected}
+          isLowerThanCurrentPlan={isLowerThanCurrentPlan}
+          onSelect={onSelect}
+          isCurrentPlan={isCurrentPlan}
+          isSelectionDisabled={isSelectionDisabled}
+        />
 
-      <div className="flex justify-center items-center text-xs gap-1 text-dark-base-70 mt-4">
-        <ImageComponent
-          src={plan.footerIcon}
-          alt=""
-          width={8}
-          height={8}
+        <div className="flex justify-center items-center text-xs gap-1 text-dark-base-70 mt-4">
+          <ImageComponent
+            src={plan.footerIcon}
+            alt=""
+            width={8}
+            height={8}
           />
-        {plan.footerText}
-      </div>
+          {plan.footerText}
+        </div></>}
 
     </div>
   );

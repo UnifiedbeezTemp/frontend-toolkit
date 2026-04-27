@@ -1,14 +1,17 @@
-import { ReactNode } from "react"
-import { cn } from "../../../lib/utils"
+import { cn } from "../../../lib/utils";
+import { formatBubbleTime } from "../../../utils/formatChatTime";
+import LinkifiedText from "./LinkifiedText";
 
 export function OwnChatBubble({
   children,
   className,
+  timestamp,
   maxWidthClass = "max-w-[38rem]",
 }: {
-  children: ReactNode
-  className?: string
-  maxWidthClass?: string
+  children: string;
+  className?: string;
+  timestamp?: string;
+  maxWidthClass?: string;
 }) {
   return (
     <div
@@ -25,9 +28,14 @@ export function OwnChatBubble({
           maxWidthClass,
         )}
       >
-        {children}
+        <LinkifiedText
+          text={children}
+          linkClassName="text-white hover:text-white/80 underline"
+        />
       </div>
-      <span className="text-xs text-dark-base-50 font-normal">12:57 am</span>
+      <span className="text-xs text-dark-base-50 font-normal">
+        {formatBubbleTime(timestamp)}
+      </span>
     </div>
-  )
+  );
 }

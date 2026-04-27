@@ -1,4 +1,4 @@
-import { Channel } from "../../../store/onboarding/types/channelTypes";
+import { SelectedChannel } from "../../../types/channelApiTypes";
 import { ConnectionDisplayData } from "../connections/types";
 
 export interface ChannelsPreviewProps {
@@ -6,7 +6,7 @@ export interface ChannelsPreviewProps {
 }
 
 export interface ChannelsPreviewItemProps {
-  channel: Channel;
+  channel: SelectedChannel;
   isExpanded: boolean;
   isSelected: boolean;
   onToggle: () => void;
@@ -16,7 +16,7 @@ export interface ChannelsPreviewItemProps {
 }
 
 export interface ChannelsPreviewDesktopProps {
-  channels: Channel[];
+  channels?: SelectedChannel[];
   activeChannelId: string | null;
   onSelectChannel: (channelId: string) => void;
   searchQuery: string;
@@ -24,7 +24,7 @@ export interface ChannelsPreviewDesktopProps {
 }
 
 export interface ChannelsPreviewMobileProps {
-  channels: Channel[];
+  channels?: SelectedChannel[];
   expandedChannelId: string | null;
   selectedChannelId: string | null;
   onToggleChannel: (channelId: string) => void;

@@ -31,6 +31,10 @@ export const fetchWebsites = (
   return api.get<ApiWebsitesResponse>(url);
 };
 
+export const fetchWebsite = (id: number): Promise<ApiWebsite> => {
+  return api.get<ApiWebsite>(`/websites/${id}`);
+};
+
 export const addWebsite = (
   payload: CreateWebsitePayload,
   aiAssistantId?: number,

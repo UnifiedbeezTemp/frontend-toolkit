@@ -8,4 +8,6 @@ export interface CelebrationModalProps {
   heading: ReactNode
   backBtnText?: ReactNode
   continueBtnText?: ReactNode
+  isContinueDisabled?: boolean
+  isGoBackDisabled?: boolean
 }

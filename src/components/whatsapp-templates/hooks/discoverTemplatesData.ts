@@ -21,7 +21,7 @@ export const DISCOVER_TEMPLATES: Template[] = [
       category: "MARKETING",
       language: "en_US",
       message:
-        "Hi {{First Name}} Just checking in — wanted to be sure you saw my last message about service. Let me know if you need any help.",
+        "Hi {{First Name}} Just checking in, wanted to be sure you saw my last message about service. Let me know if you need any help.",
       hasHeader: false,
       headerType: "attachment",
       hasFooter: false,

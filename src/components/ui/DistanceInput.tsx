@@ -67,7 +67,7 @@ export default function DistanceInput({
           onClick={handleDecrement}
           disabled={!canDecrement}
           className={cn(
-            "p-3 flex items-center justify-center",
+            "p-3 flex items-center bg-primary justify-center",
             "transition-colors",
             canDecrement
               ? "hover:bg-input-hover cursor-pointer"
@@ -90,7 +90,7 @@ export default function DistanceInput({
           disabled={disabled}
           className={cn(
             "text-center border-0 rounded-none focus:outline-none focus:ring-0 focus:shadow-none",
-            "bg-input-filled text-black text-md inline"
+            "bg-input-filled text-black text-md inline border-r"
           )}
           min={min}
           max={max}
@@ -100,7 +100,7 @@ export default function DistanceInput({
           onClick={handleIncrement}
           disabled={!canIncrement}
           className={cn(
-            "px-3 py-2 flex items-center justify-center",
+            "px-3 py-2 flex bg-primary items-center justify-center",
             "transition-colors",
             canIncrement
               ? "hover:bg-input-hover cursor-pointer"

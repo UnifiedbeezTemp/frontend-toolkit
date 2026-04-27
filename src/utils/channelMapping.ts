@@ -13,7 +13,8 @@ interface ChannelIconMap {
 export const getChannelIconKey = (channelName: string): string => {
   const iconMap: ChannelIconMap = {
     whatsapp: "whatsappIcon",
-    webchat: "websiteWebChat",
+    webchat: "websiteWebChatIcon",
+    livechat: "websiteWebChatIcon",
     facebook_messenger: "facebookMessengerLogo",
     instagram_direct: "instagramLogo",
     telegram: "telegramLogo",
@@ -223,8 +224,11 @@ export const transformChannelsResponse = (
 
   try {
     // Process communication channels
-    if (response.categories.communication?.available?.length) {
-      const commChannels = response.categories.communication.available
+    const commCategory = response.categories.communication;
+    const commChannelsList = commCategory?.channels || commCategory?.available;
+
+    if (commChannelsList?.length) {
+      const commChannels = commChannelsList
         .filter((channel) => channel && channel.name)
         .map((channel) => {
           const selected = selectedChannelMap.get(channel.id);
@@ -236,7 +240,7 @@ export const transformChannelsResponse = (
             return transformBackendChannelToUI(
               channel,
               assets,
-              response.categories.communication.limits,
+              commCategory.limits,
             );
           }
         });
@@ -244,8 +248,11 @@ export const transformChannelsResponse = (
     }
 
     // Process CRM Calendar channels
-    if (response.categories.crmCalendar?.available?.length) {
-      const crmChannels = response.categories.crmCalendar.available
+    const crmCategory = response.categories.crmCalendar;
+    const crmChannelsList = crmCategory?.channels || crmCategory?.available;
+
+    if (crmChannelsList?.length) {
+      const crmChannels = crmChannelsList
         .filter((channel) => channel && channel.name)
         .map((channel) => {
           const selected = selectedChannelMap.get(channel.id);
@@ -259,8 +266,11 @@ export const transformChannelsResponse = (
     }
 
     // Process Ecommerce channels
-    if (response.categories.ecommerce?.available?.length) {
-      const ecomChannels = response.categories.ecommerce.available
+    const ecomCategory = response.categories.ecommerce;
+    const ecomChannelsList = ecomCategory?.channels || ecomCategory?.available;
+
+    if (ecomChannelsList?.length) {
+      const ecomChannels = ecomChannelsList
         .filter((channel) => channel && channel.name)
         .map((channel) => {
           const selected = selectedChannelMap.get(channel.id);
@@ -276,8 +286,11 @@ export const transformChannelsResponse = (
     // Process Upcoming channels
     const upcomingCategory =
       response.categories.upcoming || response.categories.upcomingchannels;
-    if (upcomingCategory?.available?.length) {
-      const upcomingChannels = upcomingCategory.available
+    const upcomingChannelsList =
+      upcomingCategory?.channels || upcomingCategory?.available;
+
+    if (upcomingChannelsList?.length) {
+      const upcomingChannels = upcomingChannelsList
         .filter((channel) => channel && channel.name)
         .map((channel) => {
           const selected = selectedChannelMap.get(channel.id);

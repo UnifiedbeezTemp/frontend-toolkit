@@ -6,14 +6,15 @@ import { useChannelItem } from "../hooks/useChannelItem";
 import ChannelPreview from "../preview/ChannelPreview";
 import { ChannelItemProps } from "../types";
 
-
 interface ChannelItemPropsWithRefetch extends ChannelItemProps {
   onRefetchChannels?: () => void;
+  defaultExpanded?: boolean;
 }
 
 export default function ChannelItem({
   channel,
   onRefetchChannels,
+  defaultExpanded = false,
 }: ChannelItemPropsWithRefetch) {
   const {
     isExpanded,
@@ -24,7 +25,7 @@ export default function ChannelItem({
     handleEditConnection,
     handleClose,
     isLoading,
-  } = useChannelItem({ channel });
+  } = useChannelItem({ channel, defaultExpanded });
 
   const handleEditConnectionWrapper = (
     connection: ChannelConnection | null,
