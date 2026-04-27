@@ -86,9 +86,9 @@ export default function LinkifiedText({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onProceed={handleProceed}
-        title="Leaving Beehive"
+        title="Leaving Unifiedbeez"
         description="You are about to be redirected to an external website. For your security, please ensure you trust this link before proceeding."
-        infoText="External links may lead to sites not controlled by Beehive. Proceed with caution."
+        infoText="External links may lead to sites not controlled by Unifiedbeez. Proceed with caution."
       />
     </div>
   );
