@@ -35,9 +35,10 @@ export default function PlanCardPreview({
     user?.planBillingInterval === "YEARLY" ? true : isYearly;
 
   const isOrganisation = planType?.toUpperCase() === "ORGANISATION";
-  const { bulkSeatsCount, hasActiveBulkSeats } = useBulkSeatStatsPreview({
-    enabled: isOrganisation && !isAddons,
-  });
+  const { bulkSeatsCount, hasActiveBulkSeats, bulkSeatsMonthlyTotal } =
+    useBulkSeatStatsPreview({
+      enabled: isOrganisation && !isAddons,
+    });
 
   const { plan: backendPlan, loading, error, retry } = usePlan({ planType });
   const { plan, displayPrice, monthlyPrice } = useCheckoutPlan({
@@ -74,6 +75,7 @@ export default function PlanCardPreview({
     isYearly: effectiveIsYearly,
     enableReturnTo,
     onSelectPlan,
+    bulkSeatsMonthlyTotal,
   });
 
   if (loading) {

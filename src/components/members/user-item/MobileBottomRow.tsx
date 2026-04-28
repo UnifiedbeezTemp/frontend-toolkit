@@ -1,10 +1,8 @@
-import { TeamMember } from "../../../store/onboarding/types/memberTypes";
-import RoleDropdown from "../RoleDropdown";
-import Button from "../../ui/Button";
-import StatusBadge from "./StatusBadge";
-import RemoveButton from "./RemoveButton";
-import SendInviteButton from "./SendInviteButton";
-import { MobileBottomRowProps } from "./types";
+import RoleDropdown from "../RoleDropdown"
+import StatusBadge from "./StatusBadge"
+import RemoveButton from "./RemoveButton"
+import SendInviteButton from "./SendInviteButton"
+import { MobileBottomRowProps } from "./types"
 
 export default function MobileBottomRow({
   user,
@@ -20,10 +18,12 @@ export default function MobileBottomRow({
   isCurrentUser,
   isOwner,
 }: MobileBottomRowProps) {
-  const isDraft = user.status === "draft";
-  const canChangeRole = !(isCurrentUser && isOwner);
-  const isLoading = isRemoving || isCanceling || isAssigningRole;
-  const hideOwnerControls = type === "members" && isCurrentUser && isOwner;
+  const isDraft = user.status === "draft"
+  const isCancelled = user.status === "cancelled"
+  const canChangeRole = !(isCurrentUser && isOwner)
+  const isLoading = isRemoving || isCanceling || isAssigningRole
+  const hideOwnerControls = type === "members" && isCurrentUser && isOwner
+  const inviteActionLabel = isCancelled ? "Re-add invite" : "Send Invite"
 
   return (
     <div className="flex items-center justify-between">
@@ -49,24 +49,27 @@ export default function MobileBottomRow({
         )}
         {!hideOwnerControls && (
           <>
-            {isDraft && (
+            {(isDraft || isCancelled) && (
               <SendInviteButton
                 onClick={onSendInvite || (() => {})}
+                label={inviteActionLabel}
                 loading={isSendingInvite}
                 mobile
               />
             )}
-            <RemoveButton
-              type={type}
-              status={user.status}
-              onRemove={onRemove}
-              mobile
-              disabled={isCurrentUser}
-              loading={isLoading}
-            />
+            {user.status !== "cancelled" && (
+              <RemoveButton
+                type={type}
+                status={user.status}
+                onRemove={onRemove}
+                mobile
+                disabled={isCurrentUser}
+                loading={isLoading}
+              />
+            )}
           </>
         )}
       </div>
     </div>
-  );
+  )
 }

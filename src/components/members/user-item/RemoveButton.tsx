@@ -1,8 +1,8 @@
-import Image from "next/image";
-import { cn } from "../../../lib/utils";
-import Button from "../../ui/Button";
-import { RemoveButtonProps } from "./types";
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import Image from "next/image"
+import { cn } from "../../../lib/utils"
+import Button from "../../ui/Button"
+import { RemoveButtonProps } from "./types"
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
 
 export default function RemoveButton({
   type,
@@ -12,8 +12,8 @@ export default function RemoveButton({
   disabled = false,
   loading = false,
 }: RemoveButtonProps & { loading?: boolean }) {
-  const icons = useSupabaseIcons();
-  const isDraft = status === "draft";
+  const icons = useSupabaseIcons()
+  const isDraft = status === "draft"
 
   if (isDraft) {
     return (
@@ -33,7 +33,7 @@ export default function RemoveButton({
           className="opacity-70 hover:opacity-100 transition-opacity"
         />
       </Button>
-    );
+    )
   }
 
   const buttonText =
@@ -41,7 +41,7 @@ export default function RemoveButton({
       ? "Remove"
       : status === "pending"
         ? "Cancel invitation"
-        : "Remove";
+        : "Remove"
 
   return (
     <Button
@@ -57,5 +57,5 @@ export default function RemoveButton({
     >
       {buttonText}
     </Button>
-  );
+  )
 }

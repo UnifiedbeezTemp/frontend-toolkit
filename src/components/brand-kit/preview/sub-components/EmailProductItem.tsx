@@ -4,36 +4,36 @@ import React from "react";
 import ImageComponent from "../../../ui/ImageComponent";
 import { ProductItem } from "../constants/previewConstants";
 import {
-  ModeColorState,
   BrandFontState,
   ButtonColorState,
+  FontColorState,
 } from "../../types/brandKitTypes";
 import { getFontWeightStyle } from "../../utils/brandKitUtils";
 
 interface Props {
   product: ProductItem;
   image: string;
-  colors: ModeColorState;
   fonts: BrandFontState;
+  fontColors: FontColorState;
   buttonColors: ButtonColorState;
 }
 
 export default function EmailProductItem({
   product,
   image,
-  colors,
   fonts,
+  fontColors,
   buttonColors,
 }: Props) {
   const headerStyle = {
     fontFamily: fonts.header.family,
     ...getFontWeightStyle(fonts.header.weight, fonts.header.style),
-    color: colors.primary,
+    color: fontColors.headingColor,
   };
   const bodyStyle = {
     fontFamily: fonts.body.family,
     ...getFontWeightStyle(fonts.body.weight, fonts.body.style),
-    color: colors.primary,
+    color: fontColors.bodyColor,
   };
 
   return (
@@ -58,9 +58,9 @@ export default function EmailProductItem({
         <button
           className="px-[15px] py-[9px] text-[13px] font-[600] mt-[10px] rounded-[7px] w-full transition-all hover:opacity-90"
           style={{
-            backgroundColor: buttonColors.background,
+            backgroundColor: buttonColors.color,
             border: `1px solid ${buttonColors.stroke}`,
-            color: buttonColors.color,
+            color: buttonColors.text,
           }}
         >
           Buy

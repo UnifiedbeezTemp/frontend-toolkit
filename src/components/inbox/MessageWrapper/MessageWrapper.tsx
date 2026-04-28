@@ -7,16 +7,7 @@ import { GroupIncomingBubble } from "../ChatBubbles/GroupIncomingBubble";
 import { useMessageWrapper } from "./hooks/useMessageWrapper";
 import { cn } from "../../../lib/utils";
 
-export type MessageType = "incoming" | "own" | "group";
-
-export interface Message {
-  id: string;
-  type: MessageType;
-  text: string;
-  timestamp: string;
-  senderName?: string;
-  senderAvatar?: string;
-}
+import { Message, MessageType } from "../types";
 
 interface MessageWrapperProps {
   message: Message;
@@ -30,21 +21,30 @@ export default function MessageWrapper({
   const { longPressHandlers, handleContextMenu } = useMessageWrapper({
     messageId: message.id,
     onLongPress,
-  })
+  });
 
   const renderBubble = (): ReactNode => {
     if (message.type === "own") {
-      return <OwnChatBubble>{message.text}</OwnChatBubble>;
+      return (
+        <OwnChatBubble timestamp={message.createdAt}>
+          {message.text}
+        </OwnChatBubble>
+      );
     } else if (message.type === "group") {
       return (
         <GroupIncomingBubble
           avatar={message.senderAvatar || ""}
           name={message.senderName || "Team Member"}
           message={message.text}
+          timestamp={message.createdAt}
         />
       );
     } else {
-      return <IncomingChatBubble>{message.text}</IncomingChatBubble>;
+      return (
+        <IncomingChatBubble timestamp={message.createdAt}>
+          {message.text}
+        </IncomingChatBubble>
+      );
     }
   };
 

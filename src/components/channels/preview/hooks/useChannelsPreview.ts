@@ -1,12 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
-import { useChannels } from "../../../channel-selection/hooks/useChannels";
 import { hasConnectedAccounts } from "../../utils/channelConnections";
+import { getAvailableAndSelectedChannels } from "../../../../utils/channels/getAvailableAndSelectedChannels";
 
 export function useChannelsPreview() {
-  const { selectedChannels } = useChannels();
+  const { selectedChannels } = getAvailableAndSelectedChannels()
   const connectedChannels = useMemo(
-    () => selectedChannels.filter(hasConnectedAccounts),
+    () => selectedChannels?.channels.filter(hasConnectedAccounts),
     [selectedChannels],
   );
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -19,6 +19,16 @@ export function useChannelsPreview() {
     null,
   );
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (connectedChannels && connectedChannels?.length > 0) {
+      if (isDesktop && !activeChannelId && connectedChannels) {
+        setActiveChannelId(String(connectedChannels?.[0].id));
+      } else if (!isDesktop && !expandedChannelId) {
+        setExpandedChannelId(String(connectedChannels?.[0].id));
+      }
+    }
+  }, []);
 
   const handleSelectChannel = (channelId: string) => {
     if (isDesktop) {

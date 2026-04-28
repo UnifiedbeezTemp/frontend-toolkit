@@ -2,27 +2,35 @@
 
 import React from "react";
 import {
-  ModeColorState,
   BrandFontState,
+  FontColorState,
   SocialLink,
 } from "../../types/brandKitTypes";
-import { getFontWeightStyle, getPlatformIcon } from "../../utils/brandKitUtils";
+import {
+  getFontWeightStyle,
+  getPlatformIcon,
+  getSocialHref,
+} from "../../utils/brandKitUtils";
 import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
 import ImageComponent from "../../../ui/ImageComponent";
 
 interface Props {
-  colors: ModeColorState;
   fonts: BrandFontState;
+  fontColors: FontColorState;
   socialLinks: SocialLink[];
 }
 
-export default function EmailFooter({ colors, fonts, socialLinks }: Props) {
+export default function EmailFooter({
+  fonts,
+  fontColors,
+  socialLinks,
+}: Props) {
   const icons = useSupabaseIcons();
 
   const bodyStyle = {
     fontFamily: fonts.body.family,
     ...getFontWeightStyle(fonts.body.weight, fonts.body.style),
-    color: colors.primary,
+    color: fontColors.bodyColor,
   };
 
   const activeLinks = socialLinks.filter((link) => link.url);
@@ -34,7 +42,7 @@ export default function EmailFooter({ colors, fonts, socialLinks }: Props) {
           {activeLinks.map((link, index) => (
             <a
               key={index}
-              href={link.url}
+              href={getSocialHref(link.platform, link.url)}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -60,7 +68,7 @@ export default function EmailFooter({ colors, fonts, socialLinks }: Props) {
         No longer want to receive these emails?{" "}
         <span
           className="underline cursor-pointer"
-          style={{ color: colors.primary }}
+          style={{ color: fontColors.linkColor }}
         >
           Unsubscribe
         </span>

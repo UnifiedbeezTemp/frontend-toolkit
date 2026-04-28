@@ -1,4 +1,6 @@
 export const EMAIL_SAFE_FONTS = [
+  "ui-sans-serif",
+  "Inter",
   "Arial",
   "Verdana",
   "Helvetica",

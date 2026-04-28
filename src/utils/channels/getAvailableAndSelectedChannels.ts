@@ -1,7 +1,7 @@
-import { useAppQuery, api } from "../../../api";
-import { ChannelsApiResponse, SelectedChannelsResponse } from "../../../types/channelApiTypes";
+import { useAppQuery, api } from "../../api";
+import { ChannelsApiResponse, SelectedChannelsResponse } from "../../types/channelApiTypes";
 
-export const useStep5Channels = () => {
+export const getAvailableAndSelectedChannels = () => {
   const {
     data: availableChannels,
     isLoading: isLoadingAvailable,
@@ -9,13 +9,11 @@ export const useStep5Channels = () => {
     refetch: refetchAvailable,
     isFetching: isFetchingAvailable,
   } = useAppQuery<ChannelsApiResponse>(
-    ["channels", "available"],
-    () => api.get("/channels/available"),
+    ["channels", "all"],
+    () => api.get("/channels/available/all"),
     {
-      enabled: true,
-      refetchOnMount: true,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const {
@@ -28,27 +26,23 @@ export const useStep5Channels = () => {
     ["channels", "selected"],
     () => api.get("/channels/selected"),
     {
-      enabled: true,
-      refetchOnMount: true,
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
   const isLoading = isLoadingAvailable || isLoadingSelected;
   const isFetching = isFetchingAvailable || isFetchingSelected;
   const error = availableError || selectedError;
 
-  const refetch = async (): Promise<{
-    availableChannels: ChannelsApiResponse | null;
-    selectedChannels: SelectedChannelsResponse | null;
-  }> => {
+  const refetch = async () => {
     const [availableResult, selectedResult] = await Promise.all([
       refetchAvailable(),
       refetchSelected(),
     ]);
+
     return {
-      availableChannels: (availableResult.data as ChannelsApiResponse) || null,
-      selectedChannels: (selectedResult.data as SelectedChannelsResponse) || null,
+      availableChannels: availableResult.data || null,
+      selectedChannels: selectedResult.data || null,
     };
   };
 
@@ -61,4 +55,3 @@ export const useStep5Channels = () => {
     refetch,
   };
 };
-

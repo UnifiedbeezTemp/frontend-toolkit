@@ -1,6 +1,20 @@
 import { ReactNode } from "react";
+import { ChannelType } from "../../types/conversationApiTypes";
+export type { ChannelType };
 
 export type InboxType = "general" | "team";
+
+export type MessageType = "incoming" | "own" | "group";
+
+export interface Message {
+  id: string;
+  type: MessageType;
+  text: string;
+  timestamp: string;
+  senderName?: string;
+  senderAvatar?: string;
+  createdAt?: string;
+}
 
 export interface LabelContactMethod {
   id: string;
@@ -47,13 +61,14 @@ export interface Conversation {
     | "sms"
     | "email"
     | "phone"
-    | "website-chat";
+    | "website-chat"
+    | ChannelType;
   labelIds?: string[];
   assignedTo?: AssignedUser[];
 }
 
 export interface TagPillProps {
-  label: string| ReactNode;
+  label: string | ReactNode;
   showIcon?: boolean;
   className?: string;
   isDismissable?: boolean;
