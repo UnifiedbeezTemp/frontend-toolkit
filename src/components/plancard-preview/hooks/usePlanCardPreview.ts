@@ -15,6 +15,7 @@ interface UsePlanCardPreviewProps {
   isYearly?: boolean;
   enableReturnTo?: boolean;
   onSelectPlan?: (planId: string) => void;
+  bulkSeatsMonthlyTotal?: number;
 }
 
 export const usePlanCardPreview = ({
@@ -24,6 +25,7 @@ export const usePlanCardPreview = ({
   isYearly = false,
   enableReturnTo = false,
   onSelectPlan,
+  bulkSeatsMonthlyTotal = 0,
 }: UsePlanCardPreviewProps) => {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -134,12 +136,13 @@ export const usePlanCardPreview = ({
   };
 
   const addonsTotal = useMemo(() => {
-    if (!addonsToUse || addonsToUse.length === 0) return 0;
-    const monthlyTotal = addonsToUse.reduce((total, addon) => {
+    const monthlyTotal = (addonsToUse || []).reduce((total, addon) => {
       return total + addon.price * (addon.used || 1);
     }, 0);
-    return isYearly ? monthlyTotal * 12 : monthlyTotal;
-  }, [addonsToUse, isYearly]);
+
+    const combinedMonthlyTotal = monthlyTotal + bulkSeatsMonthlyTotal;
+    return isYearly ? combinedMonthlyTotal * 12 : combinedMonthlyTotal;
+  }, [addonsToUse, isYearly, bulkSeatsMonthlyTotal]);
 
   const yearlyPriceEur = plan?.originalPlan?.yearlyPriceEur;
 
