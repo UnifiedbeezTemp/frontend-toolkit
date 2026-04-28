@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Plan } from "../../../api/services/plan/types";
 import { Addon } from "../../../store/onboarding/types/addonTypes";
 import { usePurchasedAddons } from "./usePurchasedAddons";
-import { calculateTotalWithAddons } from "../../../utils/priceUtils";
 import { useAddonsAccess } from "../../../hooks/useAddonsAccess";
+import { usePlanPreviewPricing } from "./usePlanPreviewPricing";
 
 interface UsePlanCardPreviewProps {
   plan: Plan | null;
@@ -135,24 +135,13 @@ export const usePlanCardPreview = ({
     }
   };
 
-  const addonsTotal = useMemo(() => {
-    const monthlyTotal = (addonsToUse || []).reduce((total, addon) => {
-      return total + addon.price * (addon.used || 1);
-    }, 0);
-
-    const combinedMonthlyTotal = monthlyTotal + bulkSeatsMonthlyTotal;
-    return isYearly ? combinedMonthlyTotal * 12 : combinedMonthlyTotal;
-  }, [addonsToUse, isYearly, bulkSeatsMonthlyTotal]);
-
-  const yearlyPriceEur = plan?.originalPlan?.yearlyPriceEur;
-
-  const displayPrice = isYearly
-    ? yearlyPriceEur
-      ? yearlyPriceEur
-      : Math.floor(monthlyPrice * 12 * 0.85)
-    : monthlyPrice;
-
-  const totalPrice = displayPrice + addonsTotal;
+  const { addonsTotal, totalPrice } = usePlanPreviewPricing({
+    plan,
+    addons: addonsToUse,
+    monthlyPrice,
+    isYearly,
+    bulkSeatsMonthlyTotal,
+  });
 
   const isHighestPlan =
     plan?.originalPlan?.planType?.toLowerCase() === "organisation";

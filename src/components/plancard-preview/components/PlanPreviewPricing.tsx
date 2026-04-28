@@ -17,6 +17,8 @@ interface PlanPreviewPricingProps {
   onMenuToggle: () => void;
   onSeeDetailsClick: () => void;
   menuRef: React.RefObject<HTMLDivElement | null>;
+  actionLabel?: string;
+  isActionDisabled?: boolean;
 }
 
 export default function PlanPreviewPricing({
@@ -30,6 +32,8 @@ export default function PlanPreviewPricing({
   onMenuToggle,
   onSeeDetailsClick,
   menuRef,
+  actionLabel = "Change plan",
+  isActionDisabled = false,
 }: PlanPreviewPricingProps) {
   const icons = useSupabaseIcons();
 
@@ -58,8 +62,9 @@ export default function PlanPreviewPricing({
             isOneSided ? "w-full" : "w-full",
           )}
           onClick={onUpgradeClick}
+          disabled={isActionDisabled}
         >
-          Change plan
+          {actionLabel}
         </Button>
         <div className="relative" ref={menuRef}>
           <Button variant="secondary" className="h-full" onClick={onMenuToggle}>
