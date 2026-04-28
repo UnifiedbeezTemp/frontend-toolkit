@@ -6,6 +6,8 @@ export type InboxType = "general" | "team";
 
 export type MessageType = "incoming" | "own" | "group";
 
+export type MessageStatus = "sending" | "sent" | "failed";
+
 export interface Message {
   id: string;
   type: MessageType;
@@ -14,6 +16,8 @@ export interface Message {
   senderName?: string;
   senderAvatar?: string;
   createdAt?: string;
+  status?: MessageStatus;
+  errorText?: string;
 }
 
 export interface LabelContactMethod {
