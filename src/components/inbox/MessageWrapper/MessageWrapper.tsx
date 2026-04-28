@@ -7,7 +7,7 @@ import { GroupIncomingBubble } from "../ChatBubbles/GroupIncomingBubble";
 import { useMessageWrapper } from "./hooks/useMessageWrapper";
 import { cn } from "../../../lib/utils";
 
-import { Message, MessageType } from "../types";
+import { Message } from "../types";
 
 interface MessageWrapperProps {
   message: Message;
@@ -22,6 +22,9 @@ export default function MessageWrapper({
     messageId: message.id,
     onLongPress,
   });
+
+  const isSending = message.status === "sending";
+  const isFailed = message.status === "failed";
 
   const renderBubble = (): ReactNode => {
     if (message.type === "own") {
@@ -52,9 +55,23 @@ export default function MessageWrapper({
     <div
       {...longPressHandlers}
       onContextMenu={handleContextMenu}
-      className={cn("relative w-fit", message.type === "own" && "ml-auto")}
+      className={cn(
+        "relative w-fit",
+        message.type === "own" && "ml-auto",
+        isSending && "opacity-60",
+      )}
     >
       {renderBubble()}
+      {isFailed && message.errorText && (
+        <p
+          className={cn(
+            "mt-1 text-xs text-red-500",
+            message.type === "own" && "text-right",
+          )}
+        >
+          {message.errorText}
+        </p>
+      )}
     </div>
   );
 }

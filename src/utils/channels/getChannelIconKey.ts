@@ -13,6 +13,7 @@ export const getChannelIconKeyFromChannelType = (
     WHATSAPP: "whatsappIcon",
     FACEBOOK_MESSENGER: "facebookMessengerLogo",
     INSTAGRAM: "instagramLogo",
+    INSTAGRAM_DIRECT: "instagramLogo",
     TELEGRAM: "telegramLogo",
     EMAIL: "emailRedIcon",
     SMS: "twilioSmsIcon",
