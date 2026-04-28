@@ -1,38 +1,80 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import BrandColors from "./sub-components/BrandColors";
-import BrandFont from "./sub-components/BrandFont";
-import SocialLinks from "./sub-components/SocialLinks";
-import ButtonColors from "./sub-components/colors/ButtonColors";
-import { useBrandKit } from "../context/BrandKitContext";
-import { cn } from "../../../lib/utils";
-import Heading from "../../ui/Heading";
-import Text from "../../ui/Text";
-import ImageComponent from "../../ui/ImageComponent";
-import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
-import CompanyLogo from "./sub-components/CompanyLogo";
-import { motion, AnimatePresence } from "framer-motion";
-import WebsiteImport from "./sub-components/WebsiteImport";
-import Button from "../../ui/Button";
+import React, { useState } from "react"
+import BrandColors from "./sub-components/BrandColors"
+import BrandFont from "./sub-components/BrandFont"
+import SocialLinks from "./sub-components/SocialLinks"
+import ButtonColors from "./sub-components/colors/ButtonColors"
+import { useBrandKit } from "../context/BrandKitContext"
+import { cn } from "../../../lib/utils"
+import Heading from "../../ui/Heading"
+import Text from "../../ui/Text"
+import ImageComponent from "../../ui/ImageComponent"
+import { useSupabaseIcons } from "../../../lib/supabase/useSupabase"
+import CompanyLogo from "./sub-components/CompanyLogo"
+import { motion, AnimatePresence } from "framer-motion"
+import WebsiteImport from "./sub-components/WebsiteImport"
+import Button from "../../ui/Button"
+import Tooltip from "../../ui/Tooltip"
+import {
+  getInvalidTypographyScaleMessage,
+  getInvalidTypographyScaleFields,
+} from "../utils/typographyScaleValidation"
+import {
+  getInvalidSocialLinkMessage,
+  getInvalidSocialLinks,
+} from "../utils/socialLinkValidation"
 
 interface Props {
-  onShowPreview?: () => void;
+  onShowPreview?: () => void
 }
 
-type TabType = "logo" | "colors" | "fonts" | "links";
+type TabType = "logo" | "colors" | "fonts" | "links"
 export default function BrandCustomizationCard({ onShowPreview }: Props) {
-  const { colorHandlers, saveBrandKit, revertChanges, isSaving, hasChanges } =
-    useBrandKit();
-  const icons = useSupabaseIcons();
-  const [activeTab, setActiveTab] = useState<TabType>("logo");
+  const {
+    colorHandlers,
+    fonts,
+    socialLinks,
+    saveBrandKit,
+    revertChanges,
+    isSaving,
+    isDetecting,
+    hasChanges,
+  } = useBrandKit()
+  const icons = useSupabaseIcons()
+  const [activeTab, setActiveTab] = useState<TabType>("logo")
+  const invalidTypographyScaleFields = getInvalidTypographyScaleFields(
+    fonts.scale,
+  )
+  const hasInvalidTypographyScaleFields =
+    invalidTypographyScaleFields.length > 0
+  const invalidSocialLinks = getInvalidSocialLinks(socialLinks)
+  const hasInvalidSocialLinks = invalidSocialLinks.length > 0
+  const isSaveDisabled =
+    isDetecting ||
+    isSaving ||
+    !hasChanges ||
+    hasInvalidTypographyScaleFields ||
+    hasInvalidSocialLinks
+  const hasValidationErrors =
+    hasInvalidTypographyScaleFields || hasInvalidSocialLinks
+  const saveTooltip = [
+    hasInvalidTypographyScaleFields
+      ? getInvalidTypographyScaleMessage(invalidTypographyScaleFields)
+      : "",
+    hasInvalidSocialLinks
+      ? getInvalidSocialLinkMessage(invalidSocialLinks)
+      : "",
+  ]
+    .filter(Boolean)
+    .join(" ")
 
   const tabs = [
     { id: "logo", label: "Company Logo" },
     { id: "colors", label: "Brand Colors" },
     { id: "fonts", label: "Brand Font" },
     { id: "links", label: "Social Links" },
-  ] as const;
+  ] as const
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -42,12 +84,12 @@ export default function BrandCustomizationCard({ onShowPreview }: Props) {
         staggerChildren: 0.1,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0 },
-  };
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -111,7 +153,9 @@ export default function BrandCustomizationCard({ onShowPreview }: Props) {
                 </motion.div>
               </div>
 
-              <div className={cn(activeTab !== "fonts" && "hidden lg:block")}>
+              <div
+                className={cn(activeTab !== "fonts" && "hidden lg:block mt-4")}
+              >
                 <motion.div variants={itemVariants}>
                   <BrandFont />
                 </motion.div>
@@ -161,23 +205,44 @@ export default function BrandCustomizationCard({ onShowPreview }: Props) {
 
       {/* Sticky Save Footer */}
       {hasChanges && (
-        <div className="sticky bottom-0 p-[1.6rem] sm:p-[2.4rem] border-t border-input-stroke bg-primary flex gap-4">
+        <div className="shrink-0 p-[1.6rem] sm:p-[2.4rem] border-t border-input-stroke bg-primary flex gap-4">
           <Button
             variant="secondary"
             onClick={revertChanges}
             className="flex-1"
+            disabled={isDetecting || isSaving || !hasChanges}
           >
             Cancel
           </Button>
-          <Button
-            onClick={saveBrandKit}
-            loading={isSaving}
-            className="flex-[2]"
-          >
-            {isSaving ? "Saving..." : "Save Brand Kit"}
-          </Button>
+          {hasValidationErrors ? (
+            <Tooltip
+              content={saveTooltip}
+              containerClassNames=""
+              contentClassName="text-text-primary"
+            >
+              <span className="block w-full">
+                <Button
+                  onClick={saveBrandKit}
+                  loading={isSaving}
+                  disabled={isSaveDisabled}
+                  className="w-full"
+                >
+                  Save Changes
+                </Button>
+              </span>
+            </Tooltip>
+          ) : (
+            <Button
+              onClick={saveBrandKit}
+              loading={isSaving}
+              disabled={isSaveDisabled}
+              className="flex-[1.5]"
+            >
+              Save Changes
+            </Button>
+          )}
         </div>
       )}
     </div>
-  );
+  )
 }

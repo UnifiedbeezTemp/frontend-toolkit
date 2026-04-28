@@ -35,6 +35,9 @@ export default function ContactsTable({ onViewDetails }: ContactsTableProps) {
     }
   };
 
+  console.log(filteredContacts)
+
+
   if (filteredContacts.length === 0) {
     return (
       <div className="py-20 flex flex-col items-center justify-center text-center">

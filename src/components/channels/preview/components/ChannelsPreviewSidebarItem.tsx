@@ -4,11 +4,15 @@ import ImageComponent from "../../../../components/ui/ImageComponent";
 import Text from "../../../../components/ui/Text";
 import { cn } from "../../../../lib/utils";
 import { useSupabaseIcons } from "../../../../lib/supabase/useSupabase";
-import { Channel } from "../../../../store/onboarding/types/channelTypes";
 import { useChannelConnectionsData } from "../../hooks/useChannelConnectionsData";
+import { SelectedChannel } from "../../../../types/channelApiTypes";
+import { getSelectedChannels } from "../../../../services/channelService";
+import { getChannelAccountsMetadata } from "../../../../utils/channels/getSelectedChannelAccountsMetadata";
+import { useMemo } from "react";
+import { getChannelIconKey } from "../../../../utils/channels/getChannelIconKey";
 
 interface ChannelsPreviewSidebarItemProps {
-  channel: Channel;
+  channel: SelectedChannel;
   isActive: boolean;
   onClick: () => void;
 }
@@ -18,10 +22,13 @@ export default function ChannelsPreviewSidebarItem({
   isActive,
   onClick,
 }: ChannelsPreviewSidebarItemProps) {
-  const icons = useSupabaseIcons();
-  // Fetch connections to display count
-  const { connections } = useChannelConnectionsData(channel);
-  const hasConnections = connections.length > 0;
+  const icons = useSupabaseIcons() as Record<string, string>;
+  const { accounts } = getChannelAccountsMetadata(channel)
+
+   const icon = useMemo(() => {
+      const channelIconKey = getChannelIconKey(channel?.availableChannel.name);
+      return icons[channelIconKey] || icons.linkExternal;
+    }, [channel?.availableChannel.name, icons]);
 
   return (
     <div
@@ -34,8 +41,8 @@ export default function ChannelsPreviewSidebarItem({
       )}
     >
       <ImageComponent
-        src={channel.icon}
-        alt={channel.name}
+        src={icon}
+        alt={channel.channelName}
         width={24}
         height={24}
         className={cn("shrink-0")}
@@ -49,7 +56,7 @@ export default function ChannelsPreviewSidebarItem({
             isActive ? "text-text-secondary" : "text-text-secondary",
           )}
         >
-          {channel.name}
+          {channel?.channelName}
         </Text>
         {/* {hasConnections && (
           <Text size="xs" className="text-text-secondary truncate text-[1.2rem] opacity-70">

@@ -15,6 +15,7 @@ import { GoogleCalendarAccount } from "../config/google_calendar/types";
 import { MicrosoftCalendarAccount } from "../config/microsoft_calendar/types";
 import { ZoomAccount } from "../mappers/zoomFormMapper";
 import { ShopifyAccount } from "../mappers/shopifyFormMapper";
+import { LiveChatConnection } from "../connections/types";
 
 export const useConnectionData = (
   channelName: string,
@@ -40,12 +41,61 @@ export const useConnectionData = (
       }
     }
     if (channelName === "webchat") {
-      const webchats = connections?.webchats || [];
-      const connection = webchats.find(
+      const livechats = (channel?.liveChatConfigs ||
+        []) as unknown as LiveChatConnection[];
+      const connection = livechats.find(
         (conn) => String(conn.id) === String(connectionId),
       );
+
       if (connection) {
-        return mapper(connection);
+        const liveChatConn: LiveChatConnection = {
+          ...connection,
+          connectedChannel: {
+            id: Number(channel?.id ?? 0),
+            userId: channel?.userId ?? 0,
+            availableChannelId: channel?.availableChannelId ?? 0,
+            channelName: channel?.channelName ?? "",
+            isActive: channel?.isActive ?? false,
+            isConnected: channel?.isConnected ?? false,
+            credentials: channel?.credentials,
+            connectedAt: channel?.connectedAt ?? "",
+            lastSyncAt: channel?.lastSyncAt ?? null,
+          },
+        };
+        return mapper(liveChatConn);
+      }
+      // const webchats = connections?.webchats || [];
+      // const connection = webchats.find(
+      //   (conn) => String(conn.id) === String(connectionId),
+      // );
+
+      // if (connection) {
+      //   return mapper(connection);
+      // }
+    }
+    if (channelName === "livechat" && channel) {
+      const livechats = (channel.liveChatConfigs ||
+        []) as unknown as LiveChatConnection[];
+      const connection = livechats.find(
+        (conn) => String(conn.id) === String(connectionId),
+      );
+
+      if (connection) {
+        const liveChatConn: LiveChatConnection = {
+          ...connection,
+          connectedChannel: {
+            id: Number(channel.id),
+            userId: channel.userId,
+            availableChannelId: channel.availableChannelId,
+            channelName: channel.channelName,
+            isActive: channel.isActive,
+            isConnected: channel.isConnected,
+            credentials: channel.credentials,
+            connectedAt: channel.connectedAt || null,
+            lastSyncAt: channel.lastSyncAt,
+          },
+        };
+        return mapper(liveChatConn);
       }
     }
 

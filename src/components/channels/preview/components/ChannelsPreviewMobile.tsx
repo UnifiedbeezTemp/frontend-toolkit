@@ -23,16 +23,16 @@ export default function ChannelsPreviewMobile({
       </div>
 
       <div className="space-y-[0.8rem]">
-        {channels.length === 0 ? (
+        {channels?.length === 0 ? (
           <div className="text-center py-[3.2rem]">
             <Text size="sm" className="text-text-secondary">
               No channels connected yet.
             </Text>
           </div>
         ) : (
-          channels.map((channel) => {
-            const isExpanded = expandedChannelId === channel.id;
-            const isSelected = selectedChannelId === channel.id;
+          channels?.map((channel) => {
+            const isExpanded = expandedChannelId === String(channel.id);
+            const isSelected = selectedChannelId === String(channel.id);
 
             return (
               <ChannelsPreviewItem
@@ -40,8 +40,8 @@ export default function ChannelsPreviewMobile({
                 channel={channel}
                 isExpanded={isExpanded}
                 isSelected={isSelected}
-                onToggle={() => onToggleChannel(channel.id)}
-                onSelect={() => onSelectChannel(channel.id)}
+                onToggle={() => onToggleChannel(String(channel.id))}
+                onSelect={() => onSelectChannel(String(channel.id))}
                 searchQuery={searchQuery}
                 onSearchChange={onSearchChange}
               />

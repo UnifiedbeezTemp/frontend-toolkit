@@ -11,6 +11,14 @@ export interface BackendChannel {
   requiresAddon: string | null;
   createdAt: string;
   updatedAt: string;
+  isSelected: boolean;
+  access: {
+    allowed: boolean;
+    blockedBy: string | null;
+    requiredPlans: string[] | null;
+    requiredAddon: string | null;
+    reason: string | null;
+  };
 }
 
 export interface ChannelLimits {
@@ -22,11 +30,13 @@ export interface ChannelLimits {
 }
 
 export interface ChannelCategory {
-  available: BackendChannel[];
+  channels: BackendChannel[];
+  available?: BackendChannel[];
   limits: ChannelLimits;
 }
 
 export interface ChannelsApiResponse {
+  userPlan: string;
   categories: {
     communication: ChannelCategory;
     crmCalendar: ChannelCategory;
@@ -68,11 +78,13 @@ export interface SelectedChannel {
   smsAccounts: unknown[];
   calendarAccounts: unknown[];
   webchatConfigs: unknown[];
+  liveChatConfigs: unknown[];
   telegramAccounts: unknown[];
   paypalAccounts: unknown[];
   calendlyAccounts: unknown[];
   zoomAccounts: unknown[];
   shopifyAccounts: unknown[];
+  stripeAccounts: unknown[];
 }
 
 export interface GroupedChannelAccount {

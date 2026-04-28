@@ -1,4 +1,5 @@
 import { api } from "../..";
+import { fetchSseJson } from "../../sse";
 import {
   BrandKitResponse,
   UpdateBrandKitPayload,
@@ -41,8 +42,21 @@ export const deleteBrandLogo = (): Promise<{ message: string }> => {
 export const detectBrandKit = (
   payload: BrandDetectionPayload,
 ): Promise<BrandDetectionResponse> => {
-  return api.post<BrandDetectionPayload, BrandDetectionResponse>(
-    `/brand-kit/detect`,
-    payload,
+  return fetchSseJson<BrandDetectionResponse>(
+    `/brand-kit/detect?websiteUrl=${encodeURIComponent(payload.websiteUrl)}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "text/event-stream",
+      },
+      terminalEvent: "complete",
+      onEvent: ({ event, data }) => {
+        payload.onEvent?.({ event, data: data as BrandDetectionResponse });
+
+        if (!payload.onEvent && process.env.NODE_ENV !== "production") {
+          console.log(`[brand-kit/detect] ${event}`, data);
+        }
+      },
+    },
   );
 };

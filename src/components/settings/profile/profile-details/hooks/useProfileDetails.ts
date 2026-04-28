@@ -91,7 +91,13 @@ export function useProfileDetails() {
     setSelectedFile(null);
   };
 
-  const handleImageSelect = (file: File) => {
+  const handleImageSelect = (file: File | null) => {
+    if (!file) {
+      setProfileImage(userInfo.profileImage);
+      setSelectedFile(null);
+      return;
+    }
+
     const url = URL.createObjectURL(file);
     setProfileImage(url);
     setSelectedFile(file);

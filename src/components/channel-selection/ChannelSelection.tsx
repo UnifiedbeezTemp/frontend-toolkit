@@ -1,10 +1,12 @@
-import SelectedChannelsBadge from "./SelectedChannelsBadge";
-import { useChannelSelection } from "./hooks/useChannelSelection";
-import ChannelTypeSection from "./ChannelTypeSection";
 import SearchSection from "./SearchSection";
-import { ChannelsApiResponse, SelectedChannelsResponse } from "../../types/channelApiTypes";
+import {
+  ChannelsApiResponse,
+  SelectedChannelsResponse,
+} from "../../types/channelApiTypes";
 import Heading from "../ui/Heading";
 import Text from "../ui/Text";
+import ChannelCategory from "./ChannelCategory";
+import { useChannelSearch } from "./hooks/useChannelSearch";
 
 interface ChannelSelectionProps {
   backendData?: ChannelsApiResponse | null;
@@ -15,21 +17,17 @@ interface ChannelSelectionProps {
 
 export default function ChannelSelection({
   backendData,
-  selectedChannels,
   title = "Selected channels you would like to connect",
   subTitle = "Connect as many channels as you like",
 }: ChannelSelectionProps) {
   const {
-    selectedChannels: selectedChannelsList,
-    filteredChannels,
-    typeEntries,
-    toggleChannel,
     searchQuery,
     setSearchQuery,
     filter,
     setFilter,
-    isChannelLoading,
-  } = useChannelSelection({ backendData, selectedChannels });
+    filteredData,
+    hasResults,
+  } = useChannelSearch(backendData);
 
   return (
     <div className="">
@@ -44,26 +42,30 @@ export default function ChannelSelection({
           <Heading className="text-[1.8rem]">{title}</Heading>
           <Text className="text-[1.4rem]">{subTitle}</Text>
         </div>
-        <SelectedChannelsBadge count={selectedChannelsList.length} />
       </div>
 
       <div className="mt-[4rem] lg:mt-[1rem]">
-        <div className="mt-[1.5rem]">
-          {typeEntries.length > 0 ? (
-            typeEntries.map(([type, typeChannels], index) => (
-              <ChannelTypeSection
-                key={type}
-                type={type}
-                channels={typeChannels}
-                isLast={index === typeEntries.length - 1}
-                onToggleChannel={toggleChannel}
-                isChannelLoading={isChannelLoading}
-              />
-            ))
+        <div className="mt-[1.5rem] min-h-[40rem]">
+          {hasResults ? (
+            filteredData &&
+            Object.entries(filteredData.categories).map(
+              ([categoryName, categoryData]) => (
+                <ChannelCategory
+                  key={categoryName}
+                  title={categoryName}
+                  data={categoryData}
+                  className="py-[2rem] border-inactive-color border-b last:border-b-0"
+                />
+              ),
+            )
           ) : (
-            <div className="text-center py-[4rem]">
-              <Text size="base" className="text-secondary">
-                No channels available at the moment.
+            <div className="flex flex-col items-center justify-center py-[8rem] text-center">
+              <Heading size="sm" className="text-text-secondary">
+                No channels found
+              </Heading>
+              <Text className="mt-[0.5rem] text-text-tertiary">
+                Try adjusting your search or filter to find what you're looking
+                for.
               </Text>
             </div>
           )}

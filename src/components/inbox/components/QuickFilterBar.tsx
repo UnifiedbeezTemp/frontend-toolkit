@@ -33,7 +33,7 @@ export function QuickFilterBar({
   onSelect,
   handleDropdownOptionSelect = () => {},
   className,
-  justify = "between",
+  justify = "around",
   itemClassName,
   activeItemClassName,
   inactiveItemClassName,
@@ -150,7 +150,7 @@ export function QuickFilterOption({
           isOpen={isOpen}
           onClose={closeDropdown}
           triggerRef={dropdownTriggerRef}
-          className="min-w-37.5 -mt-1"
+          className="min-w-[20rem] -mt-1"
           maxHeight=""
           placement="bottom-end"
         >

@@ -4,12 +4,10 @@ import ImageComponent from "../../../../../components/ui/ImageComponent";
 import { useSupabaseIcons } from "../../../../../lib/supabase/useSupabase";
 import { cn } from "../../../../../lib/utils";
 import CloseModalButton from "../../../../modal/CloseModalButton";
-import { useChannelConnectionsData } from "../../../hooks/useChannelConnectionsData";
 import { ChannelsPreviewItemProps } from "../../types";
 import SearchBar from "../SearchBar";
 import { useChannelsPreviewItem } from "./hooks/useChannelsPreviewItem";
 import Text from "../../../../ui/Text";
-import Heading from "../../../../ui/Heading";
 import ChannelConnectionsList from "../ChannelConnectionsList/ChannelConnectionsList";
 
 export default function ChannelsPreviewItem({
@@ -21,29 +19,23 @@ export default function ChannelsPreviewItem({
   searchQuery: externalSearchQuery,
   onSearchChange: externalOnSearchChange,
 }: ChannelsPreviewItemProps) {
-  const icons = useSupabaseIcons();
+  const icons = useSupabaseIcons() as Record<string, string>;
 
-  // Fetch connections here
-  const { connections } = useChannelConnectionsData(channel);
-
-  const { searchQuery, hasConnections, handleSearchChange } =
-    useChannelsPreviewItem({
-      connections,
-      searchQuery: externalSearchQuery,
-      onSearchChange: externalOnSearchChange,
-    });
-
-  const handleClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const isCheckboxClick = target.closest("[data-checkbox]");
-    const isConnectionClick = target.closest("[data-connection-item]");
-
-    if (isCheckboxClick) {
-      onSelect();
-    } else if (!isConnectionClick) {
-      onToggle();
-    }
-  };
+  const {
+    searchQuery,
+    hasAccounts,
+    handleSearchChange,
+    accounts,
+    icon,
+    handleClick,
+  } = useChannelsPreviewItem({
+    channel,
+    onSelect,
+    onToggle,
+    searchQuery: externalSearchQuery,
+    onSearchChange: externalOnSearchChange,
+    icons,
+  });
 
   return (
     <div className={cn("")}>
@@ -56,8 +48,8 @@ export default function ChannelsPreviewItem({
       >
         <div className="flex items-center gap-[1.2rem] flex-1 min-w-0">
           <ImageComponent
-            src={channel.icon}
-            alt={channel.name}
+            src={icon}
+            alt={channel.channelName}
             width={30}
             height={30}
           />
@@ -70,12 +62,12 @@ export default function ChannelsPreviewItem({
                 isExpanded ? "text-text-secondary" : "text-text-secondary",
               )}
             >
-              {channel.name}
+              {channel.channelName}
             </Text>
           </div>
         </div>
 
-        {hasConnections && (
+        {hasAccounts && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -101,10 +93,9 @@ export default function ChannelsPreviewItem({
         )}
       </div>
 
-      {isExpanded && hasConnections && (
+      {isExpanded && hasAccounts && (
         <div className="pb-[1.6rem] pt-[0.8rem]">
           <div className="w-full flex items-center justify-between">
-            {/* <Text size="sm">Select a {channel.name} account to connect</Text> */}
             <CloseModalButton
               onClick={onToggle}
               className="ml-auto p-[.4rem]"
@@ -116,10 +107,10 @@ export default function ChannelsPreviewItem({
             placeholder="Search"
           />
           <ChannelConnectionsList
-            connections={connections}
+            connections={accounts}
             searchQuery={searchQuery}
-            channelName={channel.name}
-            channelIcon={channel.icon}
+            channelName={channel.channelName}
+            channelIcon={icon}
           />
         </div>
       )}

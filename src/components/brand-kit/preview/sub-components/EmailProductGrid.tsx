@@ -4,44 +4,44 @@ import React from "react";
 import { ProductItem } from "../constants/previewConstants";
 import EmailProductItem from "./EmailProductItem";
 import {
-  ModeColorState,
   BrandFontState,
   ButtonColorState,
+  FontColorState,
 } from "../../types/brandKitTypes";
 import { getFontWeightStyle } from "../../utils/brandKitUtils";
 
 interface Props {
   products: ProductItem[];
   images: Record<string, string>;
-  colors: ModeColorState;
   fonts: BrandFontState;
+  fontColors: FontColorState;
   buttonColors: ButtonColorState;
 }
 
 export default function EmailProductGrid({
   products,
   images,
-  colors,
   fonts,
+  fontColors,
   buttonColors,
 }: Props) {
   const headerStyle = {
     fontFamily: fonts.header.family,
     ...getFontWeightStyle(fonts.header.weight, fonts.header.style),
-    color: colors.primary,
+    color: fontColors.headingColor,
   };
   const bodyStyle = {
     fontFamily: fonts.body.family,
     ...getFontWeightStyle(fonts.body.weight, fonts.body.style),
-    color: colors.primary,
+    color: fontColors.bodyColor,
   };
 
   return (
     <div className="mt-[5rem] w-full px-[2rem]">
-      <p style={headerStyle} className="text-[2rem] font-[600]">
+      <p style={{ ...headerStyle, fontSize: fonts.scale.h3 }} className="font-[600]">
         Timeless Charm
       </p>
-      <p style={bodyStyle} className="text-[1.2rem] mt-2">
+      <p style={{ ...bodyStyle, fontSize: fonts.scale.body }} className="mt-2">
         Classic designs that never go out of style. Experience enduring elegance
       </p>
 
@@ -51,8 +51,8 @@ export default function EmailProductGrid({
             key={i}
             product={product}
             image={images[product.image]}
-            colors={colors}
             fonts={fonts}
+            fontColors={fontColors}
             buttonColors={buttonColors}
           />
         ))}

@@ -219,13 +219,13 @@
   --focus-ring: rgba(5, 61, 39, 0.2);
   --shadow-ring: 0 1px 2px rgba(16, 24, 40, 0.05);
   --soft-green: #f7fffc;
-  --whatsapp-green: #24D366;
-  --orange-100: #CC4A00; 
-  --yellow-100: #FFDE00;
-  --blue-100: #006BFF;
-  --faded-green-100: #77A326;
-  --purple-200: #7113F4;
-  --cyan-100: #03AA8C;
+  --whatsapp-green: #24d366;
+  --orange-100: #cc4a00;
+  --yellow-100: #ffde00;
+  --blue-100: #006bff;
+  --faded-green-100: #77a326;
+  --purple-200: #7113f4;
+  --cyan-100: #03aa8c;
 
   --mid-green: #e8fff6;
   --light-green: #e9f7f2;
@@ -272,7 +272,7 @@
   --leaf-green-110: #0b6341;
   --leaf-green-105: #005d38;
   --leaf-green-100: #29953e;
-  --leaf-green-50: #60D669;
+  --leaf-green-50: #60d669;
   --leaf-green-5: #d5eae2;
   --red-100: #cc0e11;
   --red-10: #fee4e2;
@@ -434,6 +434,16 @@ button:disabled {
     color-mix(in srgb, var(--brand-primary) 8%, white) -11.22%,
     color-mix(in srgb, var(--brand-secondary) 20%, white) 219.35%
   );
+}
+
+.grad-txt {
+  background: var(
+    --gradient,
+    linear-gradient(143deg, var(--brand-primary) 21.47%, var(--brand-secondary) 289.64%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .card-base {

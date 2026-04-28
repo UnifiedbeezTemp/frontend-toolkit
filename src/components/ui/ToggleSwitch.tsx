@@ -15,6 +15,7 @@ export default function ToggleSwitch({
   return (
     <button
       onClick={onToggle}
+      type="button"
       disabled={isDisabled}
       className={`rounded-full w-[4rem] h-[2rem] p-[.21rem] transition-all duration-300 relative ${
         isActive ? "bg-brand-primary" : "bg-inactive-color"

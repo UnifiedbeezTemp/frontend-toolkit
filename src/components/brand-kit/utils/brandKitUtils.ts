@@ -4,6 +4,8 @@ export const getPlatformIcon = (platform: string, icons: IconsType) => {
   switch (platform) {
     case "Instagram":
       return icons.igIcon;
+    case "WhatsApp":
+      return icons.whatsappIcon || icons.riWhatsappLine || icons.link;
     case "Facebook":
       return icons.fbIcon;
     case "X":
@@ -17,20 +19,32 @@ export const getPlatformIcon = (platform: string, icons: IconsType) => {
   }
 };
 
+export const getSocialHref = (platform: string, value: string) => {
+  if (platform === "WhatsApp") {
+    const trimmed = value.trim();
+    if (!trimmed) return trimmed;
+    if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+      return trimmed;
+    }
+    return `https://wa.me/${trimmed.replace(/[^\d]/g, "")}`;
+  }
+
+  return value;
+};
+
 export const getFontWeightStyle = (weight: string, style?: string) => {
+  const lower = weight.trim().toLowerCase();
+  const numeric = Number.parseInt(lower, 10);
+
   let fontWeight = 400;
-  switch (weight) {
-    case "Bold":
-      fontWeight = 700;
-      break;
-    case "Extra Bold":
-      fontWeight = 800;
-      break;
-    case "Light":
-      fontWeight = 300;
-      break;
-    default:
-      fontWeight = 400;
+  if (Number.isFinite(numeric)) {
+    fontWeight = numeric;
+  } else if (lower.includes("bold")) {
+    fontWeight = 700;
+  } else if (lower.includes("light")) {
+    fontWeight = 400;
+  } else {
+    fontWeight = 400;
   }
 
   return {

@@ -39,13 +39,16 @@ import {
 import { ChannelConnection } from "../../../types/channelConnectionTypes";
 import { GoogleCalendarAccount } from "../config/google_calendar/types";
 import { MicrosoftCalendarAccount } from "../config/microsoft_calendar/types";
-import { WebchatConnection } from "../connections/types";
+import { LiveChatConnection, WebchatConnection } from "../connections/types";
+
+import { mapLiveChatConnectionToFormData } from "./livechatFormMapper";
 
 export const formMapperMap: Record<
   string,
   (
     connection:
       | WebchatConnection
+      | LiveChatConnection
       | GmailAccount
       | GoogleCalendarAccount
       | MicrosoftCalendarAccount
@@ -62,7 +65,10 @@ export const formMapperMap: Record<
   ) => ChannelConnection
 > = {
   webchat: (connection) =>
-    mapWebchatConnectionToFormData(connection as WebchatConnection),
+    // mapWebchatConnectionToFormData(connection as WebchatConnection),
+   mapLiveChatConnectionToFormData(connection as LiveChatConnection),
+  livechat: (connection) =>
+    mapLiveChatConnectionToFormData(connection as LiveChatConnection),
   gmail: (connection) => mapGmailAccountToFormData(connection as GmailAccount),
   google_calendar: (connection) =>
     mapGoogleCalendarConnectionToFormData(connection as GoogleCalendarAccount),
