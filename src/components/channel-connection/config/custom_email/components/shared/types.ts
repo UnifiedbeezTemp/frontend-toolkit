@@ -1,21 +1,29 @@
+import {
+  DNSRecords,
+  CustomEmailSetupResponse,
+} from "../../../../../../services/customEmailService";
+import { ChannelConnection } from "../../../../../../types/channelConnectionTypes";
+
 export interface CustomEmailRequirementsProps {
-  onConnect: (domain: string) => void;
+  onConnect: (fromEmail: string) => void;
   isLoading?: boolean;
 }
 
 export interface DNSRecordsDisplayProps {
-  dnsRecords: Array<{
-    type: string;
-    name: string;
-    value: string;
-    priority?: number;
-  }>;
+  dnsRecords: DNSRecords;
+  instructions?: CustomEmailSetupResponse["instructions"] | null;
+  onVerify?: () => void;
+  isVerifying?: boolean;
+  verificationError?: string;
 }
 
 export interface CustomEmailConnectionDetailsProps {
-  connection: import("../../../../../types/channelConnectionTypes").ChannelConnection;
+  connection: ChannelConnection;
   onDelete: () => void;
   isDeleting?: boolean;
   variant?: "desktop" | "mobile";
+  onVerify?: () => void;
+  isVerifying?: boolean;
+  verificationError?: string;
 }
 

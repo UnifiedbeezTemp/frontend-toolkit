@@ -80,6 +80,7 @@ export const useUserItem = (
         onSuccess: (_, invitationId) => {
           dispatch(cancelInvitation(invitationId))
           queryClient.invalidateQueries({ queryKey: ["invitations"] })
+          queryClient.invalidateQueries({ queryKey: ["members"] })
         },
       },
     )
@@ -93,6 +94,7 @@ export const useUserItem = (
         onSuccess: (_, memberId) => {
           dispatch(removeMember(memberId))
           queryClient.invalidateQueries({ queryKey: ["members"] })
+          queryClient.invalidateQueries({ queryKey: ["invitations"] })
         },
       },
     )
@@ -114,6 +116,7 @@ export const useUserItem = (
             }
           }
           queryClient.invalidateQueries({ queryKey: ["members"] })
+          queryClient.invalidateQueries({ queryKey: ["invitations"] })
         },
       },
     )
@@ -259,6 +262,7 @@ export const useUserItem = (
             }),
           )
           await queryClient.invalidateQueries({ queryKey: ["invitations"] })
+          await queryClient.invalidateQueries({ queryKey: ["members"] })
           showToast({
             title: response.message ?? "Invitation re-added",
             description: `Re-added ${currentInvitedUser.email} as draft${
