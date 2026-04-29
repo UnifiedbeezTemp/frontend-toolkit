@@ -9,17 +9,15 @@ import Heading from "../ui/Heading";
 import Text from "../ui/Text";
 import { usePlan } from "../../api/services/plan/hooks/usePlan";
 import PlanCardPreviewSkeleton from "./PlanCardPreviewSkeleton";
-import { cn } from "../../lib/utils";
 import { usePlanCardPreview } from "./hooks/usePlanCardPreview";
 import { PlanCardPreviewProps } from "./types";
 import PlanSelectionRequiredModal from "../plan-selection/modals/PlanSelectionRequiredModal";
 import PlanPreviewModal from "./components/PlanPreviewModal";
-import PlanPreviewAddons from "./components/PlanPreviewAddons";
-import PlanPreviewPricing from "./components/PlanPreviewPricing";
 import ComparisonModal from "../comparison-table/ComparisonModal";
 import { AvailableAddonsPreviewModal } from "../plan-selection/modals/AvailableAddonsPreviewModal";
 import { useUser } from "../../contexts/UserContext";
 import { useBulkSeatStatsPreview } from "./hooks/useBulkSeatStatsPreview";
+import PlanCardPreviewDisplay from "./components/PlanCardPreviewDisplay";
 
 export default function PlanCardPreview({
   isAddons,
@@ -41,7 +39,7 @@ export default function PlanCardPreview({
     });
 
   const { plan: backendPlan, loading, error, retry } = usePlan({ planType });
-  const { plan, displayPrice, monthlyPrice } = useCheckoutPlan({
+  const { plan, monthlyPrice } = useCheckoutPlan({
     backendPlan,
     isYearly: effectiveIsYearly,
   });
@@ -139,82 +137,24 @@ export default function PlanCardPreview({
 
   return (
     <>
-      <div
-        className={cn(
-          "border border-input-stroke p-[1rem] rounded-[1rem] mt-[2.3rem] layout-body shadow flex flex-col gap-[3.1rem]",
-          isOneSided
-            ? " sm:flex-col lg:flex-row lg:justify-between"
-            : " sm:flex-row",
-        )}
-      >
-        <div className={cn("flex-1", isOneSided ? "sm:w-[50%]" : "w-full")}>
-          <div className="">{plan.badge}</div>
-
-          <div className="flex items-center gap-[1rem] mt-[1rem]">
-            <Heading className="text-[2rem] sm:text-[2.4rem]">
-              {plan.title}
-            </Heading>
-
-            <div className="border border-brand-primary rounded-full text-brand-primary p-[0.5rem] py-[0.2rem] text-[1rem] bg-brand-primary/5 sm:text-[1.2rem] sm:font-[700]">
-              Your plan
-            </div>
-          </div>
-
-          <div
-            className={cn(
-              "flex text-[1.4rem] flex-col mt-[1rem] gap-[1.3rem] sm:gap-[0.4rem]",
-              isOneSided ? "sm:flex-col lg:flex-row" : "sm:flex-row",
-            )}
-          >
-            <p
-              className={cn(
-                "whitespace-nowrap",
-                isOneSided
-                  ? "sm:flex-col lg:flex lg:flex-row"
-                  : "sm:flex sm:flex-row gap-[0.4rem] text-[1.4rem]",
-              )}
-            >
-              The most important features of your plan.{" "}
-              <button
-                onClick={handleComparePlansClick}
-                className="underline font-[700] text-brand-primary flex items-center gap-[1rem] hover:opacity-80 transition-opacity"
-              >
-                Compare plans{" "}
-                <ImageComponent
-                  src={icons.linkExternal}
-                  alt=""
-                  width={15}
-                  height={15}
-                  className="lg:hidden"
-                />
-              </button>
-            </p>
-          </div>
-
-          <PlanPreviewAddons
-            isAddons={isAddons}
-            planType={planType}
-            addonsTotal={addonsTotal}
-            selectedAddons={addonsToUse}
-            bulkSeatsCount={hasActiveBulkSeats ? bulkSeatsCount : 0}
-            onAddonsClick={() => handleAddonsClick(planType)}
-            isYearly={effectiveIsYearly}
-          />
-        </div>
-
-        <PlanPreviewPricing
-          totalPrice={totalPrice}
-          addonsTotal={addonsTotal}
-          isYearly={effectiveIsYearly}
-          isOneSided={isOneSided}
-          planType={planType}
-          isMenuOpen={isMenuOpen}
-          onUpgradeClick={handleUpgradeClick}
-          onMenuToggle={handleMenuToggle}
-          onSeeDetailsClick={handleSeeDetailsClick}
-          menuRef={menuRef}
-        />
-      </div>
+      <PlanCardPreviewDisplay
+        plan={plan}
+        isAddons={isAddons}
+        planType={planType}
+        addonsTotal={addonsTotal}
+        totalPrice={totalPrice}
+        selectedAddons={addonsToUse}
+        bulkSeatsCount={hasActiveBulkSeats ? bulkSeatsCount : 0}
+        isYearly={effectiveIsYearly}
+        isOneSided={isOneSided}
+        isMenuOpen={isMenuOpen}
+        menuRef={menuRef}
+        onAddonsClick={() => handleAddonsClick(planType)}
+        onComparePlansClick={handleComparePlansClick}
+        onUpgradeClick={handleUpgradeClick}
+        onMenuToggle={handleMenuToggle}
+        onSeeDetailsClick={handleSeeDetailsClick}
+      />
 
       <PlanPreviewModal
         isOpen={isModalOpen}

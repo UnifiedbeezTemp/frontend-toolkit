@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "./rootUrls";
+import { notifySessionExpired } from "./authSessionEvents";
 
 type FetchSseJsonOptions = {
   headers?: HeadersInit;
@@ -91,7 +92,12 @@ export async function fetchSseJson<TResult>(
   }
 
   if (!res.ok) {
-    return Promise.reject(await toRequestError(res));
+    const requestError = await toRequestError(res);
+    if (requestError.status === 401) {
+      notifySessionExpired(requestError);
+    }
+
+    return Promise.reject(requestError);
   }
 
   const contentType = res.headers.get("content-type") ?? "";

@@ -62,3 +62,4 @@ export function fakeRequest<TSuccess, TError>(
 
 export * from "./client";
 export * from "./query";
+export * from "./authSessionEvents";
