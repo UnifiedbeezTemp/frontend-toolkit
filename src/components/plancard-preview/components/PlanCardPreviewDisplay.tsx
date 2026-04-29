@@ -87,11 +87,11 @@ export default function PlanCardPreviewDisplay({
             className={cn(
               "whitespace-nowrap",
               isOneSided
-                ? "sm:flex-col lg:flex lg:flex-row"
+                ? "sm:flex-col lg:flex lg:flex-row items-end"
                 : "sm:flex sm:flex-row gap-[0.4rem] text-[1.4rem]",
             )}
           >
-            The most important features of your plan.{" "}
+            The most important {isOneSided && <br className="hidden lg:inline"/>}features of your plan.{" "}
             <button
               onClick={onComparePlansClick}
               className="underline font-[700] text-brand-primary flex items-center gap-[1rem] hover:opacity-80 transition-opacity"
