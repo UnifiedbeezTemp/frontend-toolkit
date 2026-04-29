@@ -97,6 +97,7 @@ export const useSendTeamInvitation = () => {
           })
 
         queryClient.invalidateQueries({ queryKey: ["invitations"] })
+        queryClient.invalidateQueries({ queryKey: ["members"] })
       },
       onError: (error: unknown) => {
         let description = "An unknown error occurred"
@@ -194,6 +195,7 @@ export const useSendTeamInvitation = () => {
 
           setSendingInvitationId(null)
           queryClient.invalidateQueries({ queryKey: ["invitations"] })
+          queryClient.invalidateQueries({ queryKey: ["members"] })
         },
         onError: (error: unknown) => {
           let description = "An unknown error occurred"
@@ -298,6 +300,7 @@ export const useSendTeamInvitation = () => {
 
           setSendingInvitationId(null)
           queryClient.invalidateQueries({ queryKey: ["invitations"] })
+          queryClient.invalidateQueries({ queryKey: ["members"] })
         },
         onError: (error: unknown) => {
           let description = "An unknown error occurred"

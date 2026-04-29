@@ -17,6 +17,28 @@ export interface CustomEmailAccount {
   verifiedAt: string | null;
   verificationAttempts: number;
   verificationError: string | null;
+  emailConfig?: {
+    id: number;
+    userId: number;
+    connectedChannelId: number;
+    provider: string;
+    email: string;
+    displayName: string;
+    dnsRecords: {
+      mx: Array<{ value: string; priority: number }>;
+      txt: string[];
+      cname: Array<{ name: string; value: string }>;
+      setupAt: string;
+      fromEmail: string;
+      dkimTokens: string[];
+      verificationToken: string;
+      verificationStatus: string;
+    };
+    isActive: boolean;
+    isDefault: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 export const mapCustomEmailConnectionToFormData = (
@@ -39,6 +61,7 @@ export const mapCustomEmailConnectionToFormData = (
       verificationError: account.verificationError,
       sharedCredentialId: account.sharedCredentialId,
       customEmailAccountId: account.id,
+      emailConfig: account.emailConfig,
     },
     isActive: account.isActive,
     createdAt: account.createdAt,

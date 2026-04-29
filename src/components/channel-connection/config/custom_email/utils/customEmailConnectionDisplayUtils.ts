@@ -1,4 +1,5 @@
 import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
+import { CustomEmailAccount } from "../../../mappers/customEmailFormMapper";
 
 export interface CustomEmailDisplayData {
   email: string;
@@ -11,6 +12,7 @@ export interface CustomEmailDisplayData {
   verifiedAt: string | null;
   verificationAttempts: number;
   verificationError: string | null;
+  emailConfig?: CustomEmailAccount["emailConfig"];
 }
 
 export interface CustomEmailStatusColors {
@@ -19,20 +21,37 @@ export interface CustomEmailStatusColors {
 }
 
 export const extractCustomEmailDisplayData = (
-  connection: ChannelConnection
+  connection: ChannelConnection,
 ): CustomEmailDisplayData => {
   const email =
-    (connection.configuration as Record<string, unknown>)?.email || connection.name || "Unknown Email";
-  const displayName = (connection.configuration as Record<string, unknown>)?.displayName || "";
-  const customDomain = (connection.configuration as Record<string, unknown>)?.customDomain || "";
-  const provider = (connection.configuration as Record<string, unknown>)?.provider || "custom";
-  const canReceive = (connection.configuration as Record<string, unknown>)?.canReceive ?? false;
-  const canSend = (connection.configuration as Record<string, unknown>)?.canSend ?? false;
+    (connection.configuration as Record<string, unknown>)?.email ||
+    connection.name ||
+    "Unknown Email";
+  const displayName =
+    (connection.configuration as Record<string, unknown>)?.displayName || "";
+  const customDomain =
+    (connection.configuration as Record<string, unknown>)?.customDomain || "";
+  const provider =
+    (connection.configuration as Record<string, unknown>)?.provider || "custom";
+  const canReceive =
+    (connection.configuration as Record<string, unknown>)?.canReceive ?? false;
+  const canSend =
+    (connection.configuration as Record<string, unknown>)?.canSend ?? false;
   const verificationStatus =
-    (connection.configuration as Record<string, unknown>)?.verificationStatus || "PENDING";
-  const verifiedAt = (connection.configuration as Record<string, unknown>)?.verifiedAt as string | null || null;
-  const verificationAttempts = (connection.configuration as Record<string, unknown>)?.verificationAttempts as number || 0;
-  const verificationError = (connection.configuration as Record<string, unknown>)?.verificationError as string | null || null;
+    (connection.configuration as Record<string, unknown>)?.verificationStatus ||
+    "PENDING";
+  const verifiedAt =
+    ((connection.configuration as Record<string, unknown>)?.verifiedAt as
+      | string
+      | null) || null;
+  const verificationAttempts =
+    ((connection.configuration as Record<string, unknown>)
+      ?.verificationAttempts as number) || 0;
+  const verificationError =
+    ((connection.configuration as Record<string, unknown>)
+      ?.verificationError as string | null) || null;
+  const emailConfig = (connection.configuration as Record<string, unknown>)
+    ?.emailConfig as CustomEmailAccount["emailConfig"];
 
   return {
     email: typeof email === "string" ? email : "",
@@ -41,10 +60,12 @@ export const extractCustomEmailDisplayData = (
     provider: typeof provider === "string" ? provider : "custom",
     canReceive: typeof canReceive === "boolean" ? canReceive : false,
     canSend: typeof canSend === "boolean" ? canSend : false,
-    verificationStatus: typeof verificationStatus === "string" ? verificationStatus : "PENDING",
+    verificationStatus:
+      typeof verificationStatus === "string" ? verificationStatus : "PENDING",
     verifiedAt,
     verificationAttempts,
     verificationError,
+    emailConfig,
   };
 };
 

@@ -182,6 +182,7 @@ export function useInvitedBulkActions({
         }
 
         await queryClient.invalidateQueries({ queryKey: ["invitations"] })
+        await queryClient.invalidateQueries({ queryKey: ["members"] })
 
         showToast({
           title:
@@ -270,6 +271,7 @@ export function useInvitedBulkActions({
       }
 
       await queryClient.invalidateQueries({ queryKey: ["invitations"] })
+      await queryClient.invalidateQueries({ queryKey: ["members"] })
       dispatch(setStatusFilterInvited(null))
 
       const successfulCount = getResponseCount(
@@ -364,6 +366,7 @@ export function useInvitedBulkActions({
         ) || []
       dispatch(setInvitedUsers([...transformedInvitations]))
       await queryClient.invalidateQueries({ queryKey: ["invitations"] })
+      await queryClient.invalidateQueries({ queryKey: ["members"] })
       dispatch(
         setInvitedSelection({
           ids: selectedCancelledInvited.map((invitation) => invitation.id),

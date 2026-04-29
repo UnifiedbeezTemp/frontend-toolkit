@@ -4,7 +4,7 @@ import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
 interface UseCustomEmailHandlersProps {
   connection?: ChannelConnection | null;
   onSave: (data: Record<string, unknown>) => void;
-  startCustomEmailIntegration?: (domain: string) => void;
+  startCustomEmailIntegration?: (fromEmail: string) => void;
   onConnectionSuccess?: () => void;
   onEditConnection?: (connection: ChannelConnection | null) => void;
   onConfirmDelete?: (accountId: number) => void;
@@ -35,9 +35,9 @@ export function useCustomEmailHandlers({
     }
   }, [connection?.id, forceShowRequirements]);
 
-  const handleConnect = (domain: string) => {
+  const handleConnect = (fromEmail: string) => {
     if (startCustomEmailIntegration) {
-      startCustomEmailIntegration(domain);
+      startCustomEmailIntegration(fromEmail);
     }
   };
 

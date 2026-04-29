@@ -15,6 +15,7 @@ import { ZoomAccount } from "../mappers/zoomFormMapper";
 import { ShopifyAccount } from "../mappers/shopifyFormMapper";
 import { SelectedChannel } from "../../../types/channelApiTypes";
 import { LiveChatConnection } from "../mappers/livechatFormMapper";
+import { CustomEmailAccount } from "../mappers/customEmailFormMapper";
 
 export const useAccountData = (
   channelName: string,
@@ -118,7 +119,7 @@ export const useAccountData = (
     }
 
     if (channelName === "custom_email" && channel) {
-      const accounts = (channel.emailAccounts || []) as GmailAccount[];
+      const accounts = (channel.emailAccounts || []) as CustomEmailAccount[];
       const customAccounts = accounts.filter(
         (acc) => acc.provider === "custom",
       );

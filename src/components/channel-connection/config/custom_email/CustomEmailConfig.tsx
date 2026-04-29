@@ -24,23 +24,42 @@ export default function CustomEmailConfig({
   onEditConnection,
 }: CustomEmailConfigProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const startIntegrationRef = useRef<((domain: string) => void) | undefined>(
+  const startIntegrationRef = useRef<((email: string) => void) | undefined>(
     undefined,
   );
 
   const channelId = Number(channel.id) || 0;
+  const initialEmailAccountId = (
+    connection?.configuration as Record<string, unknown>
+  )?.customEmailAccountId as number | undefined;
 
   const {
     startIntegration,
+    handleVerify,
     isLoading: isCustomEmailConnecting,
+    isVerifying,
     isDeleting,
     dnsRecords,
+    instructions,
+    verificationError,
     handleConfirmDelete: handleIntegrationDelete,
   } = useCustomEmailIntegration({
     channelId,
+    initialEmailAccountId,
     onComplete: (response) => {
+      // if (response.success) {
+      //   handleConnectionSuccess();
+      // }
+    },
+    onVerificationSuccess: (response) => {
       if (response.success) {
-        handleConnectionSuccess();
+        if (onRefetchChannels) {
+          onRefetchChannels();
+        }
+        // Only close flow if we were in the initial requirements flow
+        if (!connection) {
+          onCancel?.();
+        }
       }
     },
     onRefetchChannels,
@@ -74,11 +93,17 @@ export default function CustomEmailConfig({
   if (showRequirements && !connection) {
     return (
       <div>
-        {dnsRecords.length > 0 ? (
+        {dnsRecords ? (
           <div
             className={`${isDesktop ? "px-[2.8rem] py-[3.1rem] pr-[1.7rem]" : "px-[1.6rem] pb-[4rem]"}`}
           >
-            <DNSRecordsDisplay dnsRecords={dnsRecords} />
+            <DNSRecordsDisplay
+              dnsRecords={dnsRecords}
+              instructions={instructions}
+              onVerify={handleVerify}
+              isVerifying={isVerifying}
+              verificationError={verificationError}
+            />
           </div>
         ) : (
           <CustomEmailRequirements
@@ -98,6 +123,9 @@ export default function CustomEmailConfig({
           onDelete={handleDeleteClick}
           isDeleting={isDeleting}
           variant={isDesktop ? "desktop" : "mobile"}
+          onVerify={handleVerify}
+          isVerifying={isVerifying}
+          verificationError={verificationError}
         />
         <DeleteChannelModal
           isOpen={showDeleteModal}
