@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
+import { notifySessionExpired } from '../authSessionEvents';
 
-interface UseFetchOptions extends RequestInit {}
+type UseFetchOptions = RequestInit;
 
 export const useFetch = <T>(url: string, options?: UseFetchOptions) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -18,6 +19,13 @@ export const useFetch = <T>(url: string, options?: UseFetchOptions) => {
       });
 
       if (!response.ok) {
+        if (response.status === 401) {
+          notifySessionExpired({
+            status: response.status,
+            message: response.statusText || 'Invalid or expired session',
+          });
+        }
+
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -28,11 +36,11 @@ export const useFetch = <T>(url: string, options?: UseFetchOptions) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [options, url]);
 
   useEffect(() => {
     fetchData();
-  }, [url]);
+  }, [fetchData]);
 
   const retry = () => {
     fetchData();

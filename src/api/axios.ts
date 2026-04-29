@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiBaseUrl } from "./rootUrls";
+import { notifySessionExpired } from "./authSessionEvents";
 
 const axiosInstance = axios.create({
   baseURL: apiBaseUrl,
@@ -26,7 +27,7 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     const status = error.response?.status ?? 500;
-    return Promise.reject({
+    const apiError = {
       status,
       message:
         (error?.status === 0 || error?.code === "OFFLINE" || error?.code === "NETWORK_ERROR")
@@ -36,7 +37,13 @@ axiosInstance.interceptors.response.use(
           error.message ||
           "Something went wrong",
       details: error.response?.data || null,
-    });
+    };
+
+    if (status === 401) {
+      notifySessionExpired(apiError);
+    }
+
+    return Promise.reject(apiError);
   }
 );
 

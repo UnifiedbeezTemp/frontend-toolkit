@@ -17,6 +17,8 @@ interface PlanPreviewPricingProps {
   onMenuToggle: () => void;
   onSeeDetailsClick: () => void;
   menuRef: React.RefObject<HTMLDivElement | null>;
+  actionLabel?: string;
+  isActionDisabled?: boolean;
 }
 
 export default function PlanPreviewPricing({
@@ -30,6 +32,8 @@ export default function PlanPreviewPricing({
   onMenuToggle,
   onSeeDetailsClick,
   menuRef,
+  actionLabel = "Change plan",
+  isActionDisabled = false,
 }: PlanPreviewPricingProps) {
   const icons = useSupabaseIcons();
 
@@ -38,11 +42,11 @@ export default function PlanPreviewPricing({
       className={cn(
         "flex flex-col sm:flex-col-reverse gap-[1rem] sm:justify-between",
         isOneSided
-          ? "w-full sm:w-[50%] lg:w-[40%] sm:flex-col lg:items-end"
+          ? "w-full ml-auto lg:ml-[unset] sm:w-[50%] lg:w-[40%] sm:flex-col lg:items-end"
           : "sm:flex-col-reverse",
       )}
     >
-      <div className="sm:mb-[-1rem] md:text-right">
+      <div className={cn("sm:mb-[-1rem] md:text-right", isOneSided && "sm:text-right")}>
         <span className="text-[4rem] font-[700] text-brand-primary">
           £{totalPrice}
         </span>
@@ -58,8 +62,9 @@ export default function PlanPreviewPricing({
             isOneSided ? "w-full" : "w-full",
           )}
           onClick={onUpgradeClick}
+          disabled={isActionDisabled}
         >
-          Change plan
+          {actionLabel}
         </Button>
         <div className="relative" ref={menuRef}>
           <Button variant="secondary" className="h-full" onClick={onMenuToggle}>
