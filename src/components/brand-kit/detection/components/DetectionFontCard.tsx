@@ -28,7 +28,7 @@ export default function DetectionFontCard({ item, delay }: DetectionFontCardProp
           ) : null}
         </div>
         <div
-          className="text-[2.4rem] leading-none"
+          className="text-[2.4rem] leading-none text-black"
           style={{
             fontFamily: item.family,
             fontWeight: item.weight ? Number.parseInt(item.weight, 10) : undefined,
