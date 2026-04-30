@@ -6,8 +6,14 @@ export interface CustomEmailSetupRequest {
 
 export interface DNSRecords {
   mx: Array<{ priority: number; value: string }>;
-  txt: string[];
+  txt: Array<{ name: string; value: string }>;
   cname: Array<{ name: string; value: string }>;
+  setupAt?: string;
+  fromEmail?: string;
+  dkimTokens?: string[];
+  verificationToken?: string;
+  verificationStatus?: string;
+  sesVerificationToken?: string;
 }
 
 export interface CustomEmailSetupResponse {
