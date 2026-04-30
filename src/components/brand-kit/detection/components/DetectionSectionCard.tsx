@@ -15,7 +15,7 @@ export default function DetectionSectionCard({
   return (
     <div
       className={cn(
-        "border border-border rounded-[1.6rem] p-[1.6rem] sm:p-[2rem] bg-primary shadow-sm highlight-inside",
+        "border border-border rounded-[1.6rem] p-[1.6rem] sm:p-[1rem] bg-primary shadow-sm highlight-inside",
         className,
       )}
     >

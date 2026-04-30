@@ -15,7 +15,7 @@ export default function BrandKitDetectionModal({
       onClose={onClose}
       size="xxl"
       isBlur
-      className="bg-primary"
+      className="bg-primary xl:max-w-[144rem]"
     >
       <BrandKitDetectionModalContent
         isOpen={isOpen}
