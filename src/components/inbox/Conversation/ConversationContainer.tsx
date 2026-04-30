@@ -15,7 +15,7 @@ const ConversationContainer = forwardRef<
     <>
       <div
         ref={ref}
-        className="absolute h-[calc(100dvh-16.5rem)] sm:h-[calc(100dvh-5.7rem)] overflow-auto overscroll-none w-full inset-0 bg-primary shadow-sm transition-all"
+        className="absolute h-[calc(100dvh-6.2rem)] sm:h-[calc(100dvh-5.7rem)] overflow-auto overscroll-none w-full inset-0 bg-primary shadow-sm transition-all"
       >
         <div className={cn("sticky top-0 z-20 bg-primary transition-all")}>
           <div className="border-b border-b-gray-60">{header}</div>
