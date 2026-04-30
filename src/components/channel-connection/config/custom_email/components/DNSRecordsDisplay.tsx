@@ -63,18 +63,18 @@ export default function DNSRecordsDisplay({
     ...(dnsRecords?.mx ?? []).map((r) => ({
       type: "MX",
       name: "@",
-      value: r.value,
-      priority: r.priority,
+      value: r?.value || "",
+      priority: r?.priority,
     })),
-    ...(dnsRecords?.txt ?? []).map((v) => ({
+    ...(dnsRecords?.txt ?? []).map((r) => ({
       type: "TXT",
-      name: "@",
-      value: v,
+      name: r?.name || "@",
+      value: r?.value || "",
     })),
     ...(dnsRecords?.cname ?? []).map((r) => ({
       type: "CNAME",
-      name: r.name,
-      value: r.value,
+      name: r?.name || "",
+      value: r?.value || "",
     })),
   ];
 
@@ -156,7 +156,7 @@ export default function DNSRecordsDisplay({
             Next Steps
           </Heading>
           <ul className="space-y-[0.8rem] mb-[1.2rem]">
-            {instructions.steps.map((step, idx) => (
+            {(instructions?.steps ?? []).map((step, idx) => (
               <li key={idx} className="flex items-start gap-[0.8rem]">
                 <span className="shrink-0 w-[2rem] h-[2rem] bg-brand-primary text-white text-[1.2rem] flex items-center justify-center rounded-full">
                   {idx + 1}
@@ -165,10 +165,10 @@ export default function DNSRecordsDisplay({
               </li>
             ))}
           </ul>
-          {instructions.note && (
+          {instructions?.note && (
             <div className="pt-[1.2rem] border-t border-brand-primary/10">
               <Text size="sm" className="italic">
-                Note: {instructions.note}
+                Note: {instructions?.note}
               </Text>
             </div>
           )}

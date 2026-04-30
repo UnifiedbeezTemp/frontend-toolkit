@@ -1,4 +1,5 @@
 import { ChannelConnection } from "../../../types/channelConnectionTypes";
+import { DNSRecords } from "../../../services/customEmailService";
 
 export interface CustomEmailAccount {
   id: number;
@@ -24,16 +25,7 @@ export interface CustomEmailAccount {
     provider: string;
     email: string;
     displayName: string;
-    dnsRecords: {
-      mx: Array<{ value: string; priority: number }>;
-      txt: string[];
-      cname: Array<{ name: string; value: string }>;
-      setupAt: string;
-      fromEmail: string;
-      dkimTokens: string[];
-      verificationToken: string;
-      verificationStatus: string;
-    };
+    dnsRecords: DNSRecords;
     isActive: boolean;
     isDefault: boolean;
     createdAt: string;
