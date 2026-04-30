@@ -14,7 +14,7 @@ export default function DetectionSectionRenderer({
     case "logo":
       return <DetectionLogoSection logoUrl={section.logoUrl} />;
     case "fonts":
-      return <DetectionTypographySection fonts={section.fonts} />;
+      return <DetectionTypographySection fonts={section.fonts} scale={section.scale} />;
     case "colors":
       return <DetectionColorsSection colors={section.colors} />;
     case "socials":
