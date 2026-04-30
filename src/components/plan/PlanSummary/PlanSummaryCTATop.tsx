@@ -96,7 +96,7 @@ export default function PlanSummaryCTATop({
           setIsMenuOpen(false);
           handleOpen();
         }}
-        actionLabel="Upgrade Plan"
+        actionLabel="Change Plan"
         isActionDisabled={isUpgradePlanDisabled}
       />
     </>
