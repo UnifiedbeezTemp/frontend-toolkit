@@ -12,21 +12,21 @@ const ConversationContainer = forwardRef<
   }
 >(({ header, pinnedBar, body, composer, className }, ref) => {
   return (
-    <>
+    <div className="absolute inset-0 h-[100dvh] sm:h-[calc(100dvh-5.7rem)] flex flex-col bg-primary shadow-sm transition-all overflow-hidden">
+      <div className={cn("z-20 bg-primary transition-all shrink-0")}>
+        <div className="border-b border-b-gray-60">{header}</div>
+        {pinnedBar && <div className="w-full">{pinnedBar}</div>}
+      </div>
       <div
         ref={ref}
-        className="absolute h-[calc(100dvh-6.2rem)] sm:h-[calc(100dvh-5.7rem)] overflow-auto overscroll-none w-full inset-0 bg-primary shadow-sm transition-all"
+        className="flex-1 overflow-y-auto overscroll-none px-4 scroll-smooth"
       >
-        <div className={cn("sticky top-0 z-20 bg-primary transition-all")}>
-          <div className="border-b border-b-gray-60">{header}</div>
-          {pinnedBar && <div className="w-full">{pinnedBar}</div>}
-        </div>
-        <div className="min-h-full px-4">{body}</div>
-        <div className="sticky bottom-0 py-6 px-4 bg-primary z-10">
-          {composer}
-        </div>
+        {body}
       </div>
-    </>
+      <div className="shrink-0 py-6 px-4 bg-primary z-10 border-t border-t-gray-60">
+        {composer}
+      </div>
+    </div>
   );
 });
 
