@@ -20,4 +20,9 @@ export const mapConversationToUI = (
   channel: apiConvo.channelType,
   avatarColor: "bg-brand-primary",
   participants: apiConvo.allParticipants,
+  accountId: apiConvo.accountId,
+  isInternal: apiConvo.isInternal,
+  assignedToUserId: apiConvo.assignedToUserId,
+  lastMessageAt: apiConvo.lastMessageAt,
+  updatedAt: apiConvo.updatedAt,
 });

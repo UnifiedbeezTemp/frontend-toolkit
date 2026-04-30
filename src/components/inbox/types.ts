@@ -65,6 +65,11 @@ export interface Conversation {
     | ChannelType;
   labelIds?: string[];
   assignedTo?: AssignedUser[];
+  accountId?: number;
+  isInternal?: boolean;
+  assignedToUserId?: number | null;
+  lastMessageAt?: string;
+  updatedAt?: string;
 }
 
 export interface TagPillProps {
