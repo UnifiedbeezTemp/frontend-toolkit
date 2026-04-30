@@ -17,7 +17,16 @@ export type DetectionFontItem = {
   weight: FontWeight | null;
 };
 
-export type DetectionColorId = "primary" | "accent" | "background" | "button";
+export type DetectionColorId =
+  | "primary"
+  | "accent"
+  | "background"
+  | "button"
+  | "buttonText"
+  | "heading"
+  | "bodyText"
+  | "link"
+  | "muted";
 
 export type DetectionColorItem = {
   id: DetectionColorId;
@@ -47,16 +56,23 @@ export type DetectionSocialItem = {
   iconKey: DetectionSocialIconKey;
 };
 
+export type DetectionScaleItem = {
+  id: string;
+  label: string;
+  value: string;
+};
+
 export type BrandKitDetectionViewModel = {
   logoUrl: string | null;
   fonts: DetectionFontItem[];
+  scale: DetectionScaleItem[];
   colors: DetectionColorItem[];
   socials: DetectionSocialItem[];
 };
 
 export type BrandKitDetectionSection =
   | { id: "logo"; logoUrl: string }
-  | { id: "fonts"; fonts: DetectionFontItem[] }
+  | { id: "fonts"; fonts: DetectionFontItem[]; scale: DetectionScaleItem[] }
   | { id: "colors"; colors: DetectionColorItem[] }
   | { id: "socials"; socials: DetectionSocialItem[] }
   | { id: "empty" };
@@ -86,6 +102,7 @@ export type DetectionLogoSectionProps = {
 
 export type DetectionTypographySectionProps = {
   fonts: DetectionFontItem[];
+  scale: DetectionScaleItem[];
 };
 
 export type DetectionFontCardProps = {

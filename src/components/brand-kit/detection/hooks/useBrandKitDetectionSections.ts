@@ -14,8 +14,12 @@ export const useBrandKitDetectionSections = (
       sections.push({ id: "logo", logoUrl: viewModel.logoUrl });
     }
 
-    if (viewModel.fonts.length > 0) {
-      sections.push({ id: "fonts", fonts: viewModel.fonts });
+    if (viewModel.fonts.length > 0 || viewModel.scale.length > 0) {
+      sections.push({
+        id: "fonts",
+        fonts: viewModel.fonts,
+        scale: viewModel.scale,
+      });
     }
 
     if (viewModel.colors.length > 0) {
