@@ -2,13 +2,18 @@ import { ChannelAccountConfigStatus } from "./channelAccountTypes";
 
 export type TimeUnit = "SECONDS" | "MINUTES" | "HOURS" | "DAYS";
 
+export interface EscalationContact {
+  email: string;
+  fullName: string;
+}
+
 export interface ChannelAccountEscalationConfig {
   enabled: boolean;
   unansweredMessagesThreshold: number;
   timeAmount: number;
   timeUnit: TimeUnit;
   keywords: unknown[];
-  contacts: unknown[];
+  contacts: EscalationContact[];
   escalateToAllMembers: boolean;
 }
 
