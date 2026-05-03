@@ -1,6 +1,5 @@
 import React, { createElement } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { cn } from "../../lib/utils";
 
 /**
@@ -100,6 +99,8 @@ export default function Button({
 
   if (as) {
     return createElement(
+      // framer-motion's callable factory is not typed for runtime element names.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       motion(as as any),
       {
         ...props,

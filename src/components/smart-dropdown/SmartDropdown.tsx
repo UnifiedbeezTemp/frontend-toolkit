@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useDropdownPosition } from "./hooks/useDropdownPosition";
@@ -47,7 +47,6 @@ export default function SmartDropdown({
   children,
 }: SmartDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
   const [triggerWidth, setTriggerWidth] = useState<number | null>(null);
 
   const {
@@ -61,7 +60,7 @@ export default function SmartDropdown({
     offset,
   });
 
-  const { handleDropdownClick } = useDropdownInteractions({
+  useDropdownInteractions({
     isOpen,
     onClose,
     dropdownRef,
@@ -106,7 +105,6 @@ export default function SmartDropdown({
 
   useEffect(() => {
     if (isOpen) {
-      setIsMounted(true);
       calculatePosition();
 
       const timeoutId = setTimeout(() => {
@@ -118,13 +116,11 @@ export default function SmartDropdown({
 
       return () => clearTimeout(timeoutId);
     } else {
-      setIsMounted(false);
       resetCalculation();
-      setTriggerWidth(null);
     }
   }, [isOpen, calculatePosition, refinePosition, resetCalculation]);
 
-  if (!isOpen && !isMounted) return null;
+  if (!isOpen || typeof document === "undefined") return null;
 
   return createPortal(
     <AnimatePresence>

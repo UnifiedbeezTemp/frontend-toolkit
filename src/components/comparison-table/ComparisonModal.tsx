@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import Modal from "../modal/Modal";
-import ComparisonTable from "./ComparisonTable";
-import CloseModalButton from "../modal/CloseModalButton";
-import PlanSelectionToggle from "../plan-selection/tabs/PlanSelectionToggle";
+import { useMemo, useState } from "react";
 import { useUser } from "../../contexts/UserContext";
+import CloseModalButton from "../modal/CloseModalButton";
+import Modal from "../modal/Modal";
 import { OriginalPlan } from "../plan/types";
-
+import PlanSelectionToggle from "../plan-selection/tabs/PlanSelectionToggle";
+import ComparisonTable from "./ComparisonTable";
 
 interface ComparisonModalProps {
   isOpen: boolean;
@@ -15,7 +14,7 @@ interface ComparisonModalProps {
   onClose: () => void;
   onSelectPlan?: (planId: string) => void;
   onAddonsClick?: (planId?: string) => void;
-  currentUserPlan?: OriginalPlan
+  currentUserPlan?: OriginalPlan;
 }
 
 export default function ComparisonModal({
@@ -24,7 +23,7 @@ export default function ComparisonModal({
   onSelectPlan,
   onAddonsClick,
   allowBillingCycleToggle = true,
-  currentUserPlan
+  currentUserPlan,
 }: ComparisonModalProps) {
   const { user } = useUser();
   const defaultIsYearly = useMemo(() => {
@@ -33,12 +32,6 @@ export default function ComparisonModal({
     return false;
   }, [user?.billing_cycle, user?.planBillingInterval]);
 
-  const [isYearly, setIsYearly] = useState(defaultIsYearly);
-
-  useEffect(() => {
-    if (isOpen) setIsYearly(defaultIsYearly);
-  }, [defaultIsYearly, isOpen]);
-
   return (
     <Modal
       isOpen={isOpen}
@@ -46,23 +39,59 @@ export default function ComparisonModal({
       size="fullscreen"
       className="w-[calc(100vw-2rem)] lg:w-fit rounded-[2.5rem] mx-auto overflow-hidden"
     >
-      <div className="max-w-[160rem] mx-auto relative pt-0 lg:pt-15">
-        {allowBillingCycleToggle && <div className="absolute top-4 left-4 z-[60]">
-          <PlanSelectionToggle isYearly={isYearly} onTabChange={setIsYearly} />
-        </div>}
-        <CloseModalButton
-          onClick={onClose}
-          className="sticky lg:absolute top-4 ml-auto mr-4 right-0 z-[60]"
+      {isOpen && (
+        <ComparisonModalContent
+          key={String(defaultIsYearly)}
+          allowBillingCycleToggle={allowBillingCycleToggle}
+          currentUserPlan={currentUserPlan}
+          defaultIsYearly={defaultIsYearly}
+          onAddonsClick={onAddonsClick}
+          onClose={onClose}
+          onSelectPlan={onSelectPlan}
         />
-        <div className="w-[98%] mx-auto overflow-auto">
-          <ComparisonTable
-            onSelectPlan={onSelectPlan}
-            onAddonsClick={onAddonsClick}
-            isYearly={isYearly}
-            currentUserPlan={currentUserPlan}
-          />
-        </div>
-      </div>
+      )}
     </Modal>
+  );
+}
+
+interface ComparisonModalContentProps {
+  allowBillingCycleToggle: boolean;
+  currentUserPlan?: OriginalPlan;
+  defaultIsYearly: boolean;
+  onAddonsClick?: (planId?: string) => void;
+  onClose: () => void;
+  onSelectPlan?: (planId: string) => void;
+}
+
+function ComparisonModalContent({
+  allowBillingCycleToggle,
+  currentUserPlan,
+  defaultIsYearly,
+  onAddonsClick,
+  onClose,
+  onSelectPlan,
+}: ComparisonModalContentProps) {
+  const [isYearly, setIsYearly] = useState(defaultIsYearly);
+
+  return (
+    <div className="max-w-[160rem] mx-auto relative pt-0 lg:pt-15">
+      {allowBillingCycleToggle && (
+        <div className="absolute top-4 left-4 z-[60]">
+          <PlanSelectionToggle isYearly={isYearly} onTabChange={setIsYearly} />
+        </div>
+      )}
+      <CloseModalButton
+        onClick={onClose}
+        className="sticky lg:absolute top-4 ml-auto mr-4 right-0 z-[60]"
+      />
+      <div className="w-[98%] mx-auto overflow-auto">
+        <ComparisonTable
+          onSelectPlan={onSelectPlan}
+          onAddonsClick={onAddonsClick}
+          isYearly={isYearly}
+          currentUserPlan={currentUserPlan}
+        />
+      </div>
+    </div>
   );
 }

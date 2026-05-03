@@ -43,7 +43,6 @@ function ImageComponent({
   ...props
 }: ImageComponentProps) {
   const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const isMountedRef = useRef(false);
 
   const shouldUseUnoptimized = useMemo(
@@ -65,7 +64,6 @@ function ImageComponent({
       if (isMountedRef.current) {
         startTransition(() => {
           setHasError(false);
-          setIsLoading(true);
         });
       }
     }, 0);
@@ -89,18 +87,6 @@ function ImageComponent({
     [onError],
   );
 
-  const handleLoad = useCallback(() => {
-    if (isMountedRef.current) {
-      requestAnimationFrame(() => {
-        if (isMountedRef.current) {
-          startTransition(() => {
-            setIsLoading(false);
-          });
-        }
-      });
-    }
-  }, []);
-
   return (
     <div className={cn("relative", containerClassName)}>
       <Image
@@ -109,7 +95,7 @@ function ImageComponent({
         loading={props.priority ? undefined : loading}
         unoptimized={shouldUseUnoptimized}
         onError={handleError}
-        onLoad={handleLoad}
+        alt={props.alt || ""}
         className={cn(
           "object-cover transition-opacity duration-300",
           // isLoading && "opacity-0",

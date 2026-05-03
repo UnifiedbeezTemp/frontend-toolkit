@@ -8,7 +8,6 @@ import { useBulkSeatStatsPreview } from "../../plancard-preview/hooks/useBulkSea
 import { usePlanPreviewPricing } from "../../plancard-preview/hooks/usePlanPreviewPricing";
 import { PlanSummaryCardProps } from "../types";
 import PlanSummarySkeleton from "./PlanSummarySkeleton";
-
 import { useUser } from "../../../contexts/UserContext";
 
 export default function PlanSummaryCTATop({
