@@ -67,7 +67,9 @@ export async function fetchSseJson<TResult>(
   options?: FetchSseJsonOptions,
 ): Promise<TResult> {
   if (!apiBaseUrl) {
-    throw new Error("API base URL is not configured (NEXT_PUBLIC_SUPABASE_URL_TEST).");
+    throw new Error(
+      "API base URL is not configured (NEXT_PUBLIC_USE_ONBOARDING_BACKEND).",
+    );
   }
 
   const url = joinUrl(apiBaseUrl, path);

@@ -5,6 +5,7 @@ export const ACTIVE_TAB_LEASE_TTL_MS = 5_000;
 
 export interface ActiveTabLease {
   tabId: string;
+  ownerId: string;
   expiresAt: number;
 }
 
@@ -24,9 +25,11 @@ export function createActiveTabLease(
   tabId: string,
   now: number,
   ttl = ACTIVE_TAB_LEASE_TTL_MS,
+  ownerId = tabId,
 ): ActiveTabLease {
   return {
     tabId,
+    ownerId,
     expiresAt: now + ttl,
   };
 }
@@ -38,9 +41,17 @@ export function isActiveTabLeaseValid(
   return Boolean(
     lease &&
     lease.tabId &&
+    lease.ownerId &&
     Number.isFinite(lease.expiresAt) &&
     lease.expiresAt > now,
   );
+}
+
+export function isActiveTabLeaseOwnedBy(
+  lease: ActiveTabLease | null,
+  ownerId: string,
+): lease is ActiveTabLease {
+  return Boolean(lease && lease.ownerId === ownerId);
 }
 
 export function parseActiveTabLease(
@@ -60,6 +71,8 @@ export function parseActiveTabLease(
 
     return {
       tabId: parsed.tabId,
+      ownerId:
+        typeof parsed.ownerId === "string" ? parsed.ownerId : parsed.tabId,
       expiresAt: parsed.expiresAt,
     };
   } catch {
@@ -69,9 +82,10 @@ export function parseActiveTabLease(
 
 export function readActiveTabLease(
   storage: StorageReader,
+  storageKey = ACTIVE_TAB_STORAGE_KEY,
 ): ActiveTabLease | null {
   try {
-    return parseActiveTabLease(storage.getItem(ACTIVE_TAB_STORAGE_KEY));
+    return parseActiveTabLease(storage.getItem(storageKey));
   } catch {
     return null;
   }
@@ -80,9 +94,10 @@ export function readActiveTabLease(
 export function writeActiveTabLease(
   storage: StorageWriter,
   lease: ActiveTabLease,
+  storageKey = ACTIVE_TAB_STORAGE_KEY,
 ): void {
   try {
-    storage.setItem(ACTIVE_TAB_STORAGE_KEY, JSON.stringify(lease));
+    storage.setItem(storageKey, JSON.stringify(lease));
   } catch {
     // Ignore storage failures and fall back to the current tab remaining usable.
   }
@@ -90,14 +105,15 @@ export function writeActiveTabLease(
 
 export function clearActiveTabLeaseIfOwned(
   storage: StorageReader & StorageRemover,
-  tabId: string,
+  ownerId: string,
+  storageKey = ACTIVE_TAB_STORAGE_KEY,
 ): void {
-  const lease = readActiveTabLease(storage);
+  const lease = readActiveTabLease(storage, storageKey);
 
-  if (lease?.tabId !== tabId) return;
+  if (!isActiveTabLeaseOwnedBy(lease, ownerId)) return;
 
   try {
-    storage.removeItem(ACTIVE_TAB_STORAGE_KEY);
+    storage.removeItem(storageKey);
   } catch {
     // Ignore storage failures and let the lease expire naturally.
   }

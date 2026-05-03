@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "type-check": "tsc --noEmit",
+    "test:active-tab": "tsc -p tsconfig.active-tab-tests.json && node --test .test-dist/tests/**/*.test.js",
     "dev": "echo 'Development: Use in consuming projects'",
     "build": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build"

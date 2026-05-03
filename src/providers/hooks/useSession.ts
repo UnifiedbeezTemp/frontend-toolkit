@@ -7,6 +7,7 @@ import { useToast } from "../../components/ui/toast/ToastProvider";
 import { ProfileSetupResponse } from "../../api/services/auth";
 import { AuthStatus } from "../../contexts/types";
 import { redirectToLogin } from "../../utils/redirectToLogin";
+import { extractErrorMessage } from "../../utils/extractErrorMessage";
 
 export default function useSession() {
   const [showSessionExpired, setShowSessionExpired] = useState(false);
@@ -36,7 +37,7 @@ export default function useSession() {
         showToast({
           id: error.details?.correlationId,
           title: "Error",
-          description: error.message.message,
+          description: extractErrorMessage(error),
           variant: "error",
         });
       }
