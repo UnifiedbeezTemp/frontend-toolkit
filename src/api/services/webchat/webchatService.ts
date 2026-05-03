@@ -282,4 +282,17 @@ export const webchatService = {
   ): Promise<void> {
     return api.post(`/webchat/links/${linkId}/move-to-label/${labelId}`);
   },
+ 
+  async reorderDirectItems(
+    webchatId: string | number,
+    payload: {
+      items: Array<{
+        type: "channel" | "link";
+        id: number;
+        displayOrder: number;
+      }>;
+    },
+  ): Promise<unknown> {
+    return api.patch(`/webchat/${webchatId}/direct-items/reorder`, payload);
+  },
 };

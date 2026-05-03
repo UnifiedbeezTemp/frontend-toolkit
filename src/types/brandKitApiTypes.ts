@@ -121,6 +121,9 @@ export interface BrandDetectionResponse {
   detectedAccentColor?: string | null;
   detectedBackgroundColor?: string | null;
   detectedButtonColor?: string | null;
+  buttonTextColor?: string | null;
+  fontColors?: ApiFontColors | null;
+  typographyScale?: ApiTypographyScale | null;
   headerFontStyle?: string | null;
   headerFontWeight?: string | null;
   bodyFontStyle?: string | null;

@@ -1,34 +1,48 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useAppMutation } from "../../../../../api";
 import {
   CustomEmailSetupResponse,
   CustomEmailSetupRequest,
   setupCustomEmailReceiving,
   disconnectCustomEmail,
+  DNSRecords,
+  verifyCustomEmailReceiving,
+  CustomEmailVerifyResponse,
 } from "../../../../../services/customEmailService";
 import { useToast } from "../../../../ui/toast/ToastProvider";
 import { extractErrorMessage } from "../../../../../utils/extractErrorMessage";
 
 interface UseCustomEmailIntegrationProps {
   channelId: number;
+  initialEmailAccountId?: number | null;
   onComplete?: (response: CustomEmailSetupResponse) => void;
+  onVerificationSuccess?: (response: CustomEmailVerifyResponse) => void;
   onRefetchChannels?: () => Promise<void> | void;
 }
 
 export const useCustomEmailIntegration = ({
   channelId,
+  initialEmailAccountId,
   onComplete,
+  onVerificationSuccess,
   onRefetchChannels,
 }: UseCustomEmailIntegrationProps) => {
   const { showToast } = useToast();
-  const [dnsRecords, setDnsRecords] = useState<
-    Array<{
-      type: string;
-      name: string;
-      value: string;
-      priority?: number;
-    }>
-  >([]);
+  const [dnsRecords, setDnsRecords] = useState<DNSRecords | null>(null);
+  const [instructions, setInstructions] = useState<
+    CustomEmailSetupResponse["instructions"] | null
+  >(null);
+  const [emailAccountId, setEmailAccountId] = useState<number | null>(
+    initialEmailAccountId || null,
+  );
+  const [verificationError, setVerificationError] = useState<string>("");
+  const [missingReceiving, setMissingReceiving] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (initialEmailAccountId) {
+      setEmailAccountId(initialEmailAccountId);
+    }
+  }, [initialEmailAccountId]);
 
   const setupMutation = useAppMutation<
     CustomEmailSetupRequest,
@@ -39,8 +53,14 @@ export const useCustomEmailIntegration = ({
     },
     {
       onSuccess: async (response) => {
-        if (response.dnsRecords && response.dnsRecords.length > 0) {
+        if (response.dnsRecords) {
           setDnsRecords(response.dnsRecords);
+        }
+        if (response.instructions) {
+          setInstructions(response.instructions);
+        }
+        if (response.emailAccountId) {
+          setEmailAccountId(response.emailAccountId);
         }
         showToast({
           title: "Success",
@@ -68,6 +88,52 @@ export const useCustomEmailIntegration = ({
     },
   );
 
+  const verifyMutation = useAppMutation<number, CustomEmailVerifyResponse>(
+    async (id) => {
+      return await verifyCustomEmailReceiving(id);
+    },
+    {
+      onSuccess: async (response) => {
+        if (response.success) {
+          showToast({
+            title: "Verification Successful",
+            description: "Your custom email has been verified.",
+            variant: "success",
+          });
+          if (onVerificationSuccess) {
+            onVerificationSuccess(response);
+          }
+          if (onRefetchChannels) {
+            await onRefetchChannels();
+          }
+        } else {
+          setMissingReceiving(response.missingReceiving || []);
+
+          if (
+            response?.missingReceiving &&
+            response?.missingReceiving?.length > 0
+          ) {
+            setVerificationError(
+              `Missing records: ${(response.missingReceiving || []).join(", ")}`,
+            );
+          }
+        }
+      },
+      onError: (error: unknown) => {
+        const message = extractErrorMessage(
+          error,
+          "Failed to verify custom email",
+        );
+        setVerificationError(message);
+        showToast({
+          title: "Verification Error",
+          description: message,
+          variant: "error",
+        });
+      },
+    },
+  );
+
   const disconnectMutation = useAppMutation<
     number,
     { success: boolean; message?: string }
@@ -82,7 +148,11 @@ export const useCustomEmailIntegration = ({
           description: "Custom email disconnected successfully",
           variant: "success",
         });
-        setDnsRecords([]); // Clear DNS records on disconnect
+        setDnsRecords(null);
+        setInstructions(null);
+        setEmailAccountId(null);
+        setVerificationError("");
+        setMissingReceiving([]);
         if (onRefetchChannels) {
           await onRefetchChannels();
         }
@@ -101,14 +171,21 @@ export const useCustomEmailIntegration = ({
   );
 
   const startIntegration = useCallback(
-    (domain: string) => {
+    (fromEmail: string) => {
       setupMutation.mutate({
-        channelId,
-        domain,
+        fromEmail,
       });
     },
-    [channelId, setupMutation],
+    [setupMutation],
   );
+
+  const handleVerify = useCallback(() => {
+    if (emailAccountId) {
+      setVerificationError("");
+      setMissingReceiving([]);
+      verifyMutation.mutate(emailAccountId);
+    }
+  }, [emailAccountId, verifyMutation]);
 
   const handleConfirmDelete = useCallback(
     (accountId: number) => {
@@ -119,9 +196,14 @@ export const useCustomEmailIntegration = ({
 
   return {
     startIntegration,
+    handleVerify,
     isLoading: setupMutation.isPending,
+    isVerifying: verifyMutation.isPending,
     isDeleting: disconnectMutation.isPending,
     dnsRecords,
+    instructions,
+    verificationError,
+    missingReceiving,
     handleConfirmDelete,
   };
 };

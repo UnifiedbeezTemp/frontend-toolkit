@@ -443,6 +443,7 @@ export const useTeamManagement = (): TeamManagementController => {
       }
 
       await invalidateInvitations()
+      await invalidateMembers()
     } catch (requestError) {
       const message = extractErrorMessage(
         requestError,
@@ -515,6 +516,7 @@ export const useTeamManagement = (): TeamManagementController => {
           }
 
           await invalidateInvitations()
+          await invalidateMembers()
           return
         }
 
@@ -557,6 +559,7 @@ export const useTeamManagement = (): TeamManagementController => {
           variant: "success",
         })
         await invalidateInvitations()
+        await invalidateMembers()
       } catch (requestError) {
         const message = extractErrorMessage(
           requestError,
@@ -721,6 +724,7 @@ export const useTeamManagement = (): TeamManagementController => {
         }
 
         await invalidateInvitations()
+        await invalidateMembers()
       } catch (requestError) {
         const message = extractErrorMessage(
           requestError,
@@ -873,6 +877,7 @@ export const useTeamManagement = (): TeamManagementController => {
         })
 
         await invalidateInvitations()
+        await invalidateMembers()
       } catch (requestError) {
         const message = extractErrorMessage(
           requestError,
@@ -936,6 +941,7 @@ export const useTeamManagement = (): TeamManagementController => {
             variant: "success",
           })
           await invalidateInvitations()
+          await invalidateMembers()
         }
 
         updateUserActionState(user.id, "remove", createIdleAsyncActionState())
@@ -998,6 +1004,7 @@ export const useTeamManagement = (): TeamManagementController => {
 
           dispatch(updateMemberRole({ id: user.id, role: roleOption.type }))
           await invalidateMembers()
+          await invalidateInvitations()
         } else {
           await updateInvitationRole({
             invitationId: user.id,
@@ -1011,6 +1018,7 @@ export const useTeamManagement = (): TeamManagementController => {
             updateInvitedUserRoleId({ id: user.id, roleId: roleOption.id }),
           )
           await invalidateInvitations()
+          await invalidateMembers()
         }
 
         updateUserActionState(
@@ -1153,7 +1161,8 @@ export const useTeamManagement = (): TeamManagementController => {
         })
 
         await invalidateInvitations()
-
+        await invalidateMembers()
+ 
         showToast({
           title:
             response.message ??
@@ -1385,6 +1394,7 @@ export const useTeamManagement = (): TeamManagementController => {
       })
 
       await invalidateInvitations()
+      await invalidateMembers()
     } catch (requestError) {
       const message = extractErrorMessage(
         requestError,

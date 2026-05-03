@@ -32,7 +32,7 @@ export default function BrandKitDetectionModalContent({
         action={<CloseModalButton onClick={onDone} />}
       />
 
-      <div className="px-[1.4rem] sm:px-[2.4rem] pb-[2rem] sm:pb-[2.4rem] pt-[1.6rem] sm:pt-[2.4rem] grid grid-cols-1 xl:grid-cols-2 gap-[1.4rem] xl:gap-[2.4rem]">
+      <div className="px-[1.4rem] sm:px-[2.4rem] pb-[2rem] sm:pb-[2.4rem] pt-[1.6rem] sm:pt-[2.4rem] grid grid-cols-1 xl:grid-cols-4 gap-[1.4rem] xl:gap-[1rem]">
         <AnimatePresence initial={false}>
           {sections.slice(0, visibleCount).map((section) => (
             <DetectionReveal key={section.id}>

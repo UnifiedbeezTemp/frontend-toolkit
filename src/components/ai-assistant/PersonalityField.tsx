@@ -63,6 +63,7 @@ export default function PersonalityField({
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         triggerRef={triggerRef}
+        maxHeight="none"
       >
         <div className="flex flex-col max-h-[30rem] overflow-y-auto p-[0.5rem]">
           {options.map((option) => (

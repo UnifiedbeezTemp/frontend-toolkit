@@ -17,8 +17,8 @@ export default function PlanSummaryCTATop({
   isLoading,
   isUpgradePlanDisabled,
   purchasedAddons,
-  onAddonsClick = () => {},
-  onSelect = () => {},
+  onAddonsClick = () => { },
+  onSelect = () => { },
 }: PlanSummaryCardProps) {
   const icons = useSupabaseIcons();
   const { user } = useUser();

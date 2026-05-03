@@ -1,21 +1,44 @@
 import { api } from "../api";
 
 export interface CustomEmailSetupRequest {
-  channelId: number;
-  domain: string;
+  fromEmail: string;
 }
 
-export interface DNSRecord {
-  type: string;
-  name: string;
-  value: string;
-  priority?: number;
+export interface DNSRecords {
+  mx: Array<{ priority: number; value: string }>;
+  txt: Array<{ name: string; value: string }>;
+  cname: Array<{ name: string; value: string }>;
+  setupAt?: string;
+  fromEmail?: string;
+  dkimTokens?: string[];
+  verificationToken?: string;
+  verificationStatus?: string;
+  sesVerificationToken?: string;
 }
 
 export interface CustomEmailSetupResponse {
   success: boolean;
+  connectedChannelId: number;
+  emailAccountId: number;
+  domain: string;
+  fromEmail: string;
+  dnsRecords: DNSRecords;
+  instructions: {
+    steps: string[];
+    note: string;
+  };
   message?: string;
-  dnsRecords?: DNSRecord[];
+}
+
+export interface CustomEmailVerifyResponse {
+  success: boolean;
+  domain: string;
+  fromEmail?: string;
+  canReceive: boolean;
+  canSend: boolean;
+  verifiedBy?: string;
+  missingReceiving?: string[];
+  dkimStatus?: string;
 }
 
 export const setupCustomEmailReceiving = async (
@@ -24,7 +47,16 @@ export const setupCustomEmailReceiving = async (
   const response = await api.post<
     CustomEmailSetupRequest,
     CustomEmailSetupResponse
-  >("/channels/email/custom/setup-receiving", data);
+  >("/channels/email/custom/setup", data);
+  return response;
+};
+
+export const verifyCustomEmailReceiving = async (
+  emailAccountId: number,
+): Promise<CustomEmailVerifyResponse> => {
+  const response = await api.post<void, CustomEmailVerifyResponse>(
+    `/channels/email/custom/${emailAccountId}/verify`,
+  );
   return response;
 };
 
