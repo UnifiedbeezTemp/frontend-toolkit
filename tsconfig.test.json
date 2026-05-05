@@ -9,5 +9,5 @@
     "target": "ES2022",
     "types": ["node"]
   },
-  "include": ["tests/**/*.ts", "src/hooks/activeTabLock.ts"]
+  "include": ["tests/**/*.ts"]
 }
