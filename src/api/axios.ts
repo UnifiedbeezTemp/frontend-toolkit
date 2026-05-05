@@ -6,6 +6,8 @@ import { APIError } from "./types";
 const axiosInstance = axios.create({
   baseURL: apiBaseUrl,
   withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
   headers: {
     "Content-Type": "application/json",
   },
