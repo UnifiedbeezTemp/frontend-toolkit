@@ -31,7 +31,8 @@ interface ButtonProps {
   children: React.ReactNode;
   loadingText?: string;
   ref?: React.RefObject<HTMLButtonElement | null>;
-  as?: string
+  as?: string;
+  "aria-label"?: string;
 }
 
 export default function Button({
