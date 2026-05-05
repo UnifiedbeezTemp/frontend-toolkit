@@ -1,3 +1,5 @@
+// Legacy env name: this currently holds the onboarding API base URL.
+// Do not rename it until deployment environments are migrated.
 export const apiBaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL_TEST;
 
 export const authBaseUrl = `${apiBaseUrl}/auth`;
