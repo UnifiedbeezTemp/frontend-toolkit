@@ -8,7 +8,6 @@ import { useBulkSeatStatsPreview } from "../../plancard-preview/hooks/useBulkSea
 import { usePlanPreviewPricing } from "../../plancard-preview/hooks/usePlanPreviewPricing";
 import { PlanSummaryCardProps } from "../types";
 import PlanSummarySkeleton from "./PlanSummarySkeleton";
-
 import { useUser } from "../../../contexts/UserContext";
 
 export default function PlanSummaryCTATop({
@@ -17,8 +16,8 @@ export default function PlanSummaryCTATop({
   isLoading,
   isUpgradePlanDisabled,
   purchasedAddons,
-  onAddonsClick = () => {},
-  onSelect = () => {},
+  onAddonsClick = () => { },
+  onSelect = () => { },
 }: PlanSummaryCardProps) {
   const icons = useSupabaseIcons();
   const { user } = useUser();
@@ -96,7 +95,7 @@ export default function PlanSummaryCTATop({
           setIsMenuOpen(false);
           handleOpen();
         }}
-        actionLabel="Upgrade Plan"
+        actionLabel="Change Plan"
         isActionDisabled={isUpgradePlanDisabled}
       />
     </>

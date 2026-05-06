@@ -3,13 +3,15 @@ import { ComparisonPlan, ComparisonFeature } from "./types";
 import { cn } from "../../lib/utils";
 import Button from "../ui/Button";
 import Tooltip from "../ui/Tooltip";
-
+import { OriginalPlan } from "../plan/types";
+import useGetPlanRank from "../full-plan-card/hooks/useGetPlanRank"
 interface ComparisonDesktopProps {
   plans: ComparisonPlan[];
   features: ComparisonFeature[];
   icons: Record<string, string | null>;
   onSelectPlan?: (planId: string) => void;
   onAddonsClick?: (planId: string) => void;
+  currentUserPlan?: OriginalPlan
 }
 
 export default function ComparisonDesktop({
@@ -18,7 +20,9 @@ export default function ComparisonDesktop({
   icons,
   onSelectPlan,
   onAddonsClick,
+  currentUserPlan
 }: ComparisonDesktopProps) {
+  const { isPlanLowerThanCurrent } = useGetPlanRank()
   return (
     <div className="hidden lg:block overflow-x-auto">
       <div className="min-w-[120rem] border border-input-stroke rounded-[2.4rem] bg-white overflow-hidden">
@@ -127,14 +131,18 @@ export default function ComparisonDesktop({
                       className={cn(
                         "w-full py-2 text-sm font-bold",
                         plan.isCurrentPlan &&
-                          "btn-gradient text-primary border-0 opacity-50 cursor-not-allowed",
+                        "btn-gradient text-primary border-0 opacity-50 cursor-not-allowed",
                       )}
                       disabled={plan.isCurrentPlan}
                       onClick={() =>
                         !plan.isCurrentPlan && onSelectPlan?.(plan.id)
                       }
                     >
-                      {plan.isCurrentPlan ? "Current Plan" : plan.ctaText}
+                      {plan.isCurrentPlan ? "Current Plan" : isPlanLowerThanCurrent(
+                        plan.id,
+                        currentUserPlan?.planType,
+                      )
+                        ? `Downgrade to ${plan.id}` : plan.ctaText}
                     </Button>
                     <div className="flex items-center gap-2">
                       {icons.stripeIconCircle && (

@@ -1,4 +1,5 @@
 import { useAppQuery } from "../../../query";
+import { extractErrorMessage } from "../../../../utils/extractErrorMessage";
 import { OriginalplansService } from "../plansServices";
 
 export const usePlans = () => {
@@ -7,7 +8,9 @@ export const usePlans = () => {
     () => OriginalplansService.getAllPlans()
   );
 
-  const errorMessage = error ? (error.message?.message || "An error occurred") : null;
+  const errorMessage = error
+    ? extractErrorMessage(error, "An error occurred")
+    : null;
 
   return {
     plans: data || [],

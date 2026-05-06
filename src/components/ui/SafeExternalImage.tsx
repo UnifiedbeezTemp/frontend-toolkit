@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import { useState, useEffect, useRef, useCallback, memo, ReactNode } from "react"
-
 import { cn } from "../../lib/utils"
 import { analyzeImageLuminance } from "../../utils/imageLuminance"
 
@@ -62,7 +62,8 @@ function SafeExternalImage({
   useEffect(() => {
     const img = imgRef.current
     if (img && img.complete && img.naturalWidth > 0) {
-      handleLoad()
+      const id = window.setTimeout(handleLoad, 0)
+      return () => window.clearTimeout(id)
     }
   }, [src, handleLoad])
 
@@ -92,7 +93,6 @@ function SafeExternalImage({
       {isLoading && (
         <div className="absolute inset-0 bg-gray-100 animate-pulse" />
       )}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imgRef}
         src={src}
@@ -109,4 +109,3 @@ function SafeExternalImage({
 }
 
 export default memo(SafeExternalImage)
-

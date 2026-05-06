@@ -1,6 +1,5 @@
 import React, { createElement } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { cn } from "../../lib/utils";
 
 /**
@@ -32,7 +31,8 @@ interface ButtonProps {
   children: React.ReactNode;
   loadingText?: string;
   ref?: React.RefObject<HTMLButtonElement | null>;
-  as?: string
+  as?: string;
+  "aria-label"?: string;
 }
 
 export default function Button({
@@ -100,6 +100,8 @@ export default function Button({
 
   if (as) {
     return createElement(
+      // framer-motion's callable factory is not typed for runtime element names.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       motion(as as any),
       {
         ...props,

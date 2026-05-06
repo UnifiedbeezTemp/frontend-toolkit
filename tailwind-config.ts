@@ -1,6 +1,6 @@
 // tailwind.config.js
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
     // This will be extended in each Next.js project
@@ -12,3 +12,4 @@ module.exports = {
   },
   plugins: [],
 };
+export default config

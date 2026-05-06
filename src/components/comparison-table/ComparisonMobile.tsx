@@ -4,6 +4,8 @@ import { ComparisonPlan, ComparisonFeature } from "./types";
 import { cn } from "../../lib/utils";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
+import { OriginalPlan } from "../plan/types";
+import useGetPlanRank from "../full-plan-card/hooks/useGetPlanRank";
 
 interface ComparisonMobileProps {
   plans: ComparisonPlan[];
@@ -12,6 +14,7 @@ interface ComparisonMobileProps {
   onSelectPlan?: (planId: string) => void;
   onAddonsClick?: (planId?: string) => void;
   isYearly?: boolean;
+  currentUserPlan?: OriginalPlan
 }
 
 export default function ComparisonMobile({
@@ -21,9 +24,10 @@ export default function ComparisonMobile({
   onSelectPlan,
   onAddonsClick,
   isYearly = false,
+  currentUserPlan
 }: ComparisonMobileProps) {
   const [activeIndex, setActiveIndex] = useState(1);
-
+  const { isPlanLowerThanCurrent } = useGetPlanRank()
   const nextPlan = () => {
     setActiveIndex((prev) => (prev + 1) % plans.length);
   };
@@ -147,14 +151,18 @@ export default function ComparisonMobile({
               className={cn(
                 "flex-1 py-2.5 text-sm font-bold",
                 activePlan.isCurrentPlan &&
-                  "btn-gradient text-primary border-0 opacity-50 cursor-not-allowed",
+                "btn-gradient text-primary border-0 opacity-50 cursor-not-allowed",
               )}
               disabled={activePlan.isCurrentPlan}
               onClick={() =>
                 !activePlan.isCurrentPlan && onSelectPlan?.(activePlan.id)
               }
             >
-              {activePlan.isCurrentPlan ? "Current Plan" : activePlan.ctaText}
+              {activePlan.isCurrentPlan ? "Current Plan" : isPlanLowerThanCurrent(
+                activePlan.id,
+                currentUserPlan?.planType,
+              )
+                ? `Downgrade to ${activePlan.id}` : activePlan.ctaText}
             </Button>
 
             <div className="flex gap-2">

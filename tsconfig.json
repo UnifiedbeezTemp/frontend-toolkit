@@ -5,15 +5,15 @@
     "strict": true,
     "skipLibCheck": true,
 
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
 
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
 
-    "types": ["react", "react-dom"],
+    "types": ["react", "react-dom", "node"],
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src", "src/assets/icons/SmileIcon.tsx", "src/assets/icons/BadgeCheckIcon.tsx"]
