@@ -1,7 +1,6 @@
 "use client";
 
 import React, {
-  useEffect,
   useState,
   useMemo,
   useRef,
@@ -33,6 +32,33 @@ const isExternalUrl = (src: ImageProps["src"]): boolean => {
   }
 };
 
+const getOptimizedImageOrigins = (): Set<string> => {
+  const origins = new Set(["https://woplvzpumzbpydgumpgc.supabase.co"]);
+  const configuredSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+  if (configuredSupabaseUrl) {
+    try {
+      origins.add(new URL(configuredSupabaseUrl).origin);
+    } catch {
+      // Ignore malformed public config here; env validation reports it earlier.
+    }
+  }
+
+  return origins;
+};
+
+const OPTIMIZED_IMAGE_ORIGINS = getOptimizedImageOrigins();
+
+const isOptimizedRemoteUrl = (src: ImageProps["src"]): boolean => {
+  if (typeof src !== "string") return false;
+
+  try {
+    return OPTIMIZED_IMAGE_ORIGINS.has(new URL(src).origin);
+  } catch {
+    return false;
+  }
+};
+
 function ImageComponent({
   className,
   containerClassName,
@@ -43,33 +69,25 @@ function ImageComponent({
   ...props
 }: ImageComponentProps) {
   const [hasError, setHasError] = useState(false);
+  const [trackedSrc, setTrackedSrc] = useState(props.src);
   const isMountedRef = useRef(false);
 
   const shouldUseUnoptimized = useMemo(
-    () => isExternalUrl(props.src),
+    () => isExternalUrl(props.src) && !isOptimizedRemoteUrl(props.src),
     [props.src],
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     isMountedRef.current = true;
     return () => {
       isMountedRef.current = false;
     };
   }, []);
 
-  useEffect(() => {
-    if (!isMountedRef.current) return;
-
-    const timer = setTimeout(() => {
-      if (isMountedRef.current) {
-        startTransition(() => {
-          setHasError(false);
-        });
-      }
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [props.src]);
+  if (props.src !== trackedSrc) {
+    setTrackedSrc(props.src);
+    setHasError(false);
+  }
 
   const handleError = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
