@@ -14,26 +14,25 @@ export default function CustomEmailRequirements({
   isLoading = false,
 }: CustomEmailRequirementsProps) {
   const icons = useSupabaseIcons();
-  const [domain, setDomain] = useState("");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (!domain.trim()) {
-      setError("Please enter a domain");
+    if (!email.trim()) {
+      setError("Please enter an email address");
       return;
     }
 
-    const domainPattern =
-      /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
-    if (!domainPattern.test(domain.trim())) {
-      setError("Please enter a valid domain (e.g., example.com)");
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email.trim())) {
+      setError("Please enter a valid email address (e.g., support@yourdomain.com)");
       return;
     }
 
-    onConnect(domain.trim());
+    onConnect(email.trim());
   };
 
   return (
@@ -43,18 +42,18 @@ export default function CustomEmailRequirements({
           <Heading className="mb-[1.5rem] lg:text-[2rem]" size="sm">
             Requirements
           </Heading>
-
+ 
           <div className="bg-input-filled px-[1.6rem] py-[2.4rem] rounded-[.8rem] border border-input-stroke">
             <label className="block mb-[0.6rem] space-y-[0.6rem]">
-              <Heading size="sm">Domain</Heading>
-              <Text>Enter the domain you want to add.</Text>
+              <Heading size="sm">Email address</Heading>
+              <Text>Enter the email address you want to add.</Text>
             </label>
             <Input
-              type="text"
-              placeholder="example.com"
-              value={domain}
+              type="email"
+              placeholder="support@yourdomain.com"
+              value={email}
               onChange={(e) => {
-                setDomain(e.target.value);
+                setEmail(e.target.value);
                 setError("");
               }}
               disabled={isLoading}
@@ -69,7 +68,7 @@ export default function CustomEmailRequirements({
               <span className="text-[1rem]">
                 Email supports basic functions only (no CC, BCC, forwards, or
                 contact forms).{" "}
-                <span className="underline text-brand-primary">Learn more</span>
+                {/* <span className="underline text-brand-primary">Learn more</span> */}
               </span>{" "}
               <ImageComponent
                 src={icons.infoCircle2}

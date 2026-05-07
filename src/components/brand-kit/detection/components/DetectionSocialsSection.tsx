@@ -18,7 +18,7 @@ export default function DetectionSocialsSection({
       iconSrc={icons.link}
       iconAlt="Links"
     >
-      <div className="flex flex-col gap-[0.8rem] xl:grid xl:grid-cols-2 xl:gap-[1.2rem]">
+      <div className="flex flex-col gap-[0.8rem] xl:grid xl:grid-cols-1 xl:gap-[1.2rem]">
         {socials.map((item, index) => (
           <motion.a
             key={item.id}

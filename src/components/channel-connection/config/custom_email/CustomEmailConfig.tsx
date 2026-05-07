@@ -24,9 +24,46 @@ export default function CustomEmailConfig({
   onEditConnection,
 }: CustomEmailConfigProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const startIntegrationRef = useRef<((domain: string) => void) | undefined>(undefined);
+  const startIntegrationRef = useRef<((email: string) => void) | undefined>(
+    undefined,
+  );
 
-  const channelId = parseInt(channel.id) || 0;
+  const channelId = Number(channel.id) || 0;
+  const initialEmailAccountId = (
+    connection?.configuration as Record<string, unknown>
+  )?.customEmailAccountId as number | undefined;
+
+  const {
+    startIntegration,
+    handleVerify,
+    isLoading: isCustomEmailConnecting,
+    isVerifying,
+    isDeleting,
+    dnsRecords,
+    instructions,
+    verificationError,
+    handleConfirmDelete: handleIntegrationDelete,
+  } = useCustomEmailIntegration({
+    channelId,
+    initialEmailAccountId,
+    onComplete: (response) => {
+      // if (response.success) {
+      //   handleConnectionSuccess();
+      // }
+    },
+    onVerificationSuccess: (response) => {
+      if (response.success) {
+        if (onRefetchChannels) {
+          onRefetchChannels();
+        }
+        // Only close flow if we were in the initial requirements flow
+        if (!connection) {
+          onCancel?.();
+        }
+      }
+    },
+    onRefetchChannels,
+  });
 
   const {
     showRequirements,
@@ -46,16 +83,7 @@ export default function CustomEmailConfig({
       }
     },
     onEditConnection,
-  });
-
-  const { startIntegration, isLoading: isCustomEmailConnecting, dnsRecords } = useCustomEmailIntegration({
-    channelId,
-    onComplete: (response) => {
-      if (response.success) {
-        handleConnectionSuccess();
-      }
-    },
-    onRefetchChannels,
+    onConfirmDelete: handleIntegrationDelete,
   });
 
   useEffect(() => {
@@ -65,9 +93,17 @@ export default function CustomEmailConfig({
   if (showRequirements && !connection) {
     return (
       <div>
-        {dnsRecords.length > 0 ? (
-          <div className={`${isDesktop ? "px-[2.8rem] py-[3.1rem] pr-[1.7rem]" : "px-[1.6rem] pb-[4rem]"}`}>
-            <DNSRecordsDisplay dnsRecords={dnsRecords} />
+        {dnsRecords ? (
+          <div
+            className={`${isDesktop ? "px-[2.8rem] py-[3.1rem] pr-[1.7rem]" : "px-[1.6rem] pb-[4rem]"}`}
+          >
+            <DNSRecordsDisplay
+              dnsRecords={dnsRecords}
+              instructions={instructions}
+              onVerify={handleVerify}
+              isVerifying={isVerifying}
+              verificationError={verificationError}
+            />
           </div>
         ) : (
           <CustomEmailRequirements
@@ -85,15 +121,18 @@ export default function CustomEmailConfig({
         <CustomEmailConnectionDetails
           connection={connection}
           onDelete={handleDeleteClick}
-          isDeleting={isLoading}
+          isDeleting={isDeleting}
           variant={isDesktop ? "desktop" : "mobile"}
+          onVerify={handleVerify}
+          isVerifying={isVerifying}
+          verificationError={verificationError}
         />
         <DeleteChannelModal
           isOpen={showDeleteModal}
           onClose={handleCloseDeleteModal}
           onConfirm={handleConfirmDelete}
           channelName={channel.channelName ?? ""}
-          isLoading={isLoading}
+          isLoading={isDeleting}
         />
       </>
     );
@@ -101,4 +140,3 @@ export default function CustomEmailConfig({
 
   return null;
 }
-

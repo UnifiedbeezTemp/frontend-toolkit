@@ -4,9 +4,10 @@ import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
 interface UseCustomEmailHandlersProps {
   connection?: ChannelConnection | null;
   onSave: (data: Record<string, unknown>) => void;
-  startCustomEmailIntegration?: (domain: string) => void;
+  startCustomEmailIntegration?: (fromEmail: string) => void;
   onConnectionSuccess?: () => void;
   onEditConnection?: (connection: ChannelConnection | null) => void;
+  onConfirmDelete?: (accountId: number) => void;
 }
 
 export function useCustomEmailHandlers({
@@ -15,6 +16,7 @@ export function useCustomEmailHandlers({
   startCustomEmailIntegration,
   onConnectionSuccess,
   onEditConnection,
+  onConfirmDelete,
 }: UseCustomEmailHandlersProps) {
   const [showRequirements, setShowRequirements] = useState(!connection);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -25,7 +27,7 @@ export function useCustomEmailHandlers({
       setShowRequirements(true);
       return;
     }
-    
+
     if (connection?.id) {
       setShowRequirements(false);
     } else {
@@ -33,9 +35,9 @@ export function useCustomEmailHandlers({
     }
   }, [connection?.id, forceShowRequirements]);
 
-  const handleConnect = (domain: string) => {
+  const handleConnect = (fromEmail: string) => {
     if (startCustomEmailIntegration) {
-      startCustomEmailIntegration(domain);
+      startCustomEmailIntegration(fromEmail);
     }
   };
 
@@ -44,8 +46,8 @@ export function useCustomEmailHandlers({
   };
 
   const handleConfirmDelete = () => {
-    if (connection) {
-      onSave({ _delete: true });
+    if (connection && onConfirmDelete) {
+      onConfirmDelete(Number(connection.id));
     }
   };
 
@@ -71,4 +73,3 @@ export function useCustomEmailHandlers({
     handleConnectionSuccess,
   };
 }
-

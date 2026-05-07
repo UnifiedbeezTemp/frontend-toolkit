@@ -43,6 +43,7 @@ export type ChannelType =
   | "WHATSAPP"
   | "FACEBOOK_MESSENGER"
   | "INSTAGRAM"
+  | "INSTAGRAM_DIRECT"
   | "TELEGRAM"
   | "EMAIL"
   | "SMS"

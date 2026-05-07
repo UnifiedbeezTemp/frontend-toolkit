@@ -2,8 +2,12 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useAppMutation } from "../../../../../api";
-import { TelegramConnectResponse, telegramService } from "../../../../../services/telegramService";
+import {
+  TelegramConnectResponse,
+  telegramService,
+} from "../../../../../services/telegramService";
 import { useToast } from "../../../../ui/toast/ToastProvider";
+import { extractErrorMessage } from "../../../../../utils/extractErrorMessage";
 
 export type TelegramAuthMethod = "phone" | "qr" | null;
 export type PhoneSteps = "phone" | "code" | "2fa";
@@ -35,10 +39,14 @@ export const useTelegramIntegration = ({
         variant: "success",
       });
     },
-    onError: () => {
+    onError: (error) => {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Failed to send verification code.",
+      );
       showToast({
         title: "Error",
-        description: "Failed to send verification code.",
+        description: errorMessage,
         variant: "error",
       });
     },
@@ -64,10 +72,14 @@ export const useTelegramIntegration = ({
           });
         }
       },
-      onError: () => {
+      onError: (error) => {
+        const errorMessage = extractErrorMessage(
+          error,
+          "Invalid verification code.",
+        );
         showToast({
           title: "Error",
-          description: "Invalid verification code.",
+          description: errorMessage,
           variant: "error",
         });
       },
@@ -87,10 +99,14 @@ export const useTelegramIntegration = ({
         if (onRefetchChannels) await onRefetchChannels();
         onComplete?.(data);
       },
-      onError: () => {
+      onError: (error) => {
+        const errorMessage = extractErrorMessage(
+          error,
+          "Invalid 2FA password.",
+        );
         showToast({
           title: "Error",
-          description: "Invalid 2FA password.",
+          description: errorMessage,
           variant: "error",
         });
       },
@@ -103,10 +119,14 @@ export const useTelegramIntegration = ({
       setSessionId(data.sessionId);
       startPolling(data.sessionId);
     },
-    onError: () => {
+    onError: (error) => {
+      const errorMessage = extractErrorMessage(
+        error,
+        "Failed to generate QR code.",
+      );
       showToast({
         title: "Error",
-        description: "Failed to generate QR code.",
+        description: errorMessage,
         variant: "error",
       });
     },
@@ -190,10 +210,14 @@ export const useTelegramIntegration = ({
           await onRefetchChannels();
         }
       },
-      onError: () => {
+      onError: (error) => {
+        const errorMessage = extractErrorMessage(
+          error,
+          "Failed to disconnect Telegram account",
+        );
         showToast({
           title: "Error",
-          description: "Failed to disconnect Telegram account",
+          description: errorMessage,
           variant: "error",
         });
       },

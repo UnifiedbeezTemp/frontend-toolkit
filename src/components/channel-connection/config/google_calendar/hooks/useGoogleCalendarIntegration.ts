@@ -167,7 +167,7 @@ export const useGoogleCalendarIntegration = ({
   const startIntegration = useCallback(() => {
     const currentPath = window.location.pathname + window.location.search;
     const encodedPath = encodeURIComponent(currentPath);
-    window.location.href = `${apiBaseUrl}/google/auth?redirect_path=${encodedPath}`;
+    window.location.href = `${apiBaseUrl}/channels/calendar/google/auth?redirect_path=${encodedPath}`;
   }, []);
 
   /*

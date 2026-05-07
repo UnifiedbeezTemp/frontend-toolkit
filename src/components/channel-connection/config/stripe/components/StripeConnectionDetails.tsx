@@ -41,20 +41,18 @@ export default function StripeConnectionDetails({
               <Heading size="lg" className="text-[1.8rem]">
                 Stripe Connected
               </Heading>
-              <Text size="sm" className="text-text-secondary">
-                {connection.name || "Connected"}
-              </Text>
+             
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Text size="sm" className="font-bold">
-                Status
+                Account ID
               </Text>
-              <div className="px-3 py-1 bg-primary-10/10 text-primary-10 rounded-full text-xs font-medium">
-                Active
-              </div>
+              <Text size="sm" className="text-text-secondary">
+                {connection?.name || "Stripe"}
+              </Text>
             </div>
             <div className="flex items-center justify-between">
               <Text size="sm" className="font-bold">

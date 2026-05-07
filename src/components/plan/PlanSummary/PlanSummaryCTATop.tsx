@@ -1,30 +1,23 @@
+import { useEffect, useRef, useState } from "react";
 import { getPlansData } from "../../../data/plansData";
 import { useToggle } from "../../../hooks/useToggle";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
+import PlanCardPreviewDisplay from "../../plancard-preview/components/PlanCardPreviewDisplay";
 import PlanPreviewModal from "../../plancard-preview/components/PlanPreviewModal";
-import Button from "../../ui/Button";
-import Heading from "../../ui/Heading";
+import { useBulkSeatStatsPreview } from "../../plancard-preview/hooks/useBulkSeatStatsPreview";
+import { usePlanPreviewPricing } from "../../plancard-preview/hooks/usePlanPreviewPricing";
 import { PlanSummaryCardProps } from "../types";
-import PlanAddOns from "./PlanAddons";
-import ImageComponent from "../../ui/ImageComponent";
-import PlanIcon from "./PlanIcon";
-import PlanPricingAndInterval from "./PlanPricingAndInterval";
-import PlanSummaryActions from "./PlanSummaryActions";
-import PlanSummaryContainer from "./PlanSummaryContainer";
 import PlanSummarySkeleton from "./PlanSummarySkeleton";
-import PlanTag from "./PlanTag";
-
 import { useUser } from "../../../contexts/UserContext";
 
 export default function PlanSummaryCTATop({
   plan,
-  isOwnPlan,
   className,
   isLoading,
   isUpgradePlanDisabled,
   purchasedAddons,
-  onAddonsClick = () => {},
-  onSelect = () => {},
+  onAddonsClick = () => { },
+  onSelect = () => { },
 }: PlanSummaryCardProps) {
   const icons = useSupabaseIcons();
   const { user } = useUser();
@@ -33,9 +26,38 @@ export default function PlanSummaryCTATop({
     setFalse: handleClose,
     setTrue: handleOpen,
   } = useToggle();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isYearly = user?.planBillingInterval === "YEARLY";
-  const totalPrice = isYearly ? plan.yearlyPriceEur || 0 : plan.priceEur;
+  const previewPlan = getPlansData([plan], icons)[0];
+  const isOrganisation = plan.planType?.toUpperCase() === "ORGANISATION";
+  const { bulkSeatsCount, hasActiveBulkSeats, bulkSeatsMonthlyTotal } =
+    useBulkSeatStatsPreview({
+      enabled: isOrganisation,
+    });
+  const { addonsTotal, totalPrice } = usePlanPreviewPricing({
+    plan: previewPlan,
+    addons: purchasedAddons,
+    monthlyPrice: plan.priceEur,
+    isYearly,
+    bulkSeatsMonthlyTotal,
+  });
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   if (isLoading) return <PlanSummarySkeleton />;
   return (
@@ -43,91 +65,39 @@ export default function PlanSummaryCTATop({
       <PlanPreviewModal
         isOpen={showDetails}
         onClose={handleClose}
-        plan={getPlansData([plan], icons)[0]}
+        plan={previewPlan}
         isYearly={isYearly}
         totalPrice={totalPrice}
         onAddonsClick={onAddonsClick}
         onSelect={onSelect}
       />
-      <PlanSummaryContainer className={className}>
-        <div className="flex flex-wrap justify-between w-full gap-8">
-          <div className="flex flex-col justify-between items-start gap-11 lg:gap-13.5 w-full">
-            <div className="flex justify-between items-start w-full">
-              <div className="flex flex-col mr-auto">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <PlanIcon
-                    planType={plan.planType}
-                    className="-mt-2 -ml-1.5 w-max scale-[0.6666]"
-                  />
-                  <div className="flex items-center gap-4.5 -mt-1.5">
-                    <Heading
-                      as="h4"
-                      className="capitalize text-[1.8rem] text-dark-base-100"
-                    >
-                      {plan.name} Plan
-                    </Heading>
-                    <PlanTag plan={plan} isOwnPlan={isOwnPlan} />
-                  </div>
-                </div>
-                <PlanPricingAndInterval
-                  plan={plan}
-                  isYearly={isYearly}
-                  price={totalPrice}
-                />
-              </div>
-              <div className="hidden md:block">
-                <PlanSummaryActions
-                  plan={plan}
-                  onUpgradePlan={onSelect}
-                  isUpgradePlanDisabled={isUpgradePlanDisabled}
-                  handleMoreClick={handleOpen}
-                />
-              </div>
-            </div>
-
-            <div>
-              {(plan.addons?.length > 0 ||
-                (purchasedAddons && purchasedAddons.length > 0)) && (
-                <>
-                  <Button
-                    variant="secondary"
-                    className="bg-primary text-[1rem] font-bold leading-base py-1.5 px-2.25 mt-auto mb-2"
-                  >
-                    Add-ons
-                  </Button>
-                  {plan.addons?.length > 0 && <PlanAddOns plan={plan} />}
-                  {purchasedAddons && purchasedAddons.length > 0 && (
-                    <div className="flex flex-wrap gap-2 text-sm text-gray-700">
-                      {purchasedAddons.map((addon) => (
-                        <div key={addon.id} className="icon-list-item">
-                          <span className="bg-secondary-green-100 w-3 h-3 flex justify-center items-center rounded-full">
-                            <ImageComponent
-                              width={6}
-                              height={6}
-                              alt="checkmark"
-                              src={icons.checkMark}
-                              className="text-white"
-                            />
-                          </span>
-                          <span>{`${addon.used ?? 0} ${addon.name}`}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-            <div className="block md:hidden w-full">
-              <PlanSummaryActions
-                plan={plan}
-                onUpgradePlan={onSelect}
-                isUpgradePlanDisabled={isUpgradePlanDisabled}
-                handleMoreClick={handleOpen}
-              />
-            </div>
-          </div>
-        </div>
-      </PlanSummaryContainer>
+      <PlanCardPreviewDisplay
+        className={className}
+        plan={previewPlan}
+        isAddons={false}
+        planType={plan.planType}
+        addonsTotal={addonsTotal}
+        totalPrice={totalPrice}
+        selectedAddons={purchasedAddons}
+        bulkSeatsCount={hasActiveBulkSeats ? bulkSeatsCount : 0}
+        isYearly={isYearly}
+        isOneSided
+        isMenuOpen={isMenuOpen}
+        menuRef={menuRef}
+        onAddonsClick={onAddonsClick}
+        onComparePlansClick={(event) => {
+          event?.preventDefault();
+          onSelect();
+        }}
+        onUpgradeClick={onSelect}
+        onMenuToggle={() => setIsMenuOpen((value) => !value)}
+        onSeeDetailsClick={() => {
+          setIsMenuOpen(false);
+          handleOpen();
+        }}
+        actionLabel="Change Plan"
+        isActionDisabled={isUpgradePlanDisabled}
+      />
     </>
   );
 }

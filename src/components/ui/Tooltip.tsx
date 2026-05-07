@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../lib/utils";
@@ -27,71 +27,63 @@ export default function Tooltip({
   containerClassNames,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const [positionStyle, setPositionStyle] = useState<React.CSSProperties>({});
   const triggerRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const updateCoords = () => {
-    if (triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      setCoords({
-        top: rect.top + window.scrollY,
-        left: rect.left + window.scrollX,
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (isVisible) {
-      updateCoords();
-      window.addEventListener("scroll", updateCoords, true);
-      window.addEventListener("resize", updateCoords);
-    }
-    return () => {
-      window.removeEventListener("scroll", updateCoords, true);
-      window.removeEventListener("resize", updateCoords);
-    };
-  }, [isVisible]);
-
-  const getPositionStyles = () => {
-    if (!triggerRef.current) return {};
+  const updateCoords = useCallback(() => {
+    if (!triggerRef.current) return;
     const rect = triggerRef.current.getBoundingClientRect();
     const scrollY = window.scrollY;
     const scrollX = window.scrollX;
+    let nextPositionStyle: React.CSSProperties = {};
 
     switch (position) {
       case "top":
-        return {
+        nextPositionStyle = {
           top: rect.top + scrollY,
           left: rect.left + scrollX + rect.width / 2,
           transform: "translate(-50%, -100%) translateY(-10px)",
         };
+        break;
       case "bottom":
-        return {
+        nextPositionStyle = {
           top: rect.bottom + scrollY,
           left: rect.left + scrollX + rect.width / 2,
           transform: "translate(-50%, 0) translateY(10px)",
         };
+        break;
       case "left":
-        return {
+        nextPositionStyle = {
           top: rect.top + scrollY + rect.height / 2,
           left: rect.left + scrollX,
           transform: "translate(-100%, -50%) translateX(-10px)",
         };
+        break;
       case "right":
-        return {
+        nextPositionStyle = {
           top: rect.top + scrollY + rect.height / 2,
           left: rect.right + scrollX,
           transform: "translate(0, -50%) translateX(10px)",
         };
-      default:
-        return {};
+        break;
     }
-  };
+
+    setPositionStyle(nextPositionStyle);
+  }, [position]);
+
+  useEffect(() => {
+    if (isVisible) {
+      const id = window.setTimeout(updateCoords, 0);
+      window.addEventListener("scroll", updateCoords, true);
+      window.addEventListener("resize", updateCoords);
+
+      return () => {
+        window.clearTimeout(id);
+        window.removeEventListener("scroll", updateCoords, true);
+        window.removeEventListener("resize", updateCoords);
+      };
+    }
+  }, [isVisible, updateCoords]);
 
   const arrowClasses = {
     top: "top-full left-1/2 -translate-x-1/2 border-t-primary",
@@ -110,7 +102,7 @@ export default function Tooltip({
           style={{
             position: "absolute",
             zIndex: 9999,
-            ...getPositionStyles(),
+            ...positionStyle,
           }}
           className={cn(
             "pointer-events-none",
@@ -149,7 +141,8 @@ export default function Tooltip({
       >
         {children}
       </div>
-      {mounted && createPortal(tooltipContent, document.body)}
+      {typeof document !== "undefined" &&
+        createPortal(tooltipContent, document.body)}
     </>
   );
 }

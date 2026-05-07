@@ -35,6 +35,9 @@ export interface BulkSeatStats {
   totalSeats: number | null;
   unlimited: boolean;
   canAddMembers: boolean;
+  billing?: {
+    monthlyTotal: number;
+  };
 }
 
 export interface GetBulkSeatsResponse {

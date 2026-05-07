@@ -1,15 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { api, useAppQuery } from "../../api";
 import { APIError } from "../../api/types";
 import { useToast } from "../../components/ui/toast/ToastProvider";
 import { ProfileSetupResponse } from "../../api/services/auth";
 import { AuthStatus } from "../../contexts/types";
-import { redirectToLogin } from "../../utils/redirectToLogin";
+import { extractErrorMessage } from "../../utils/extractErrorMessage";
 
 export default function useSession() {
-  const [showSessionExpired, setShowSessionExpired] = useState(false);
   const { data, isPending, isError, error, refetch } = useAppQuery<
     ProfileSetupResponse["user"],
     APIError
@@ -30,23 +29,23 @@ export default function useSession() {
 
   const { showToast } = useToast();
 
+  const showSessionExpired = useMemo(() => {
+    if (!isError || error?.status !== 401 || typeof window === "undefined") {
+      return false;
+    }
+
+    return localStorage.getItem("hb_session_active") === "true";
+  }, [error?.status, isError]);
+
   useEffect(() => {
     if (isError && error) {
       if (error.status !== 401) {
         showToast({
           id: error.details?.correlationId,
           title: "Error",
-          description: error.message.message,
+          description: extractErrorMessage(error),
           variant: "error",
         });
-      }
-
-      if (error.status === 401) {
-        const wasSessionActive =
-          localStorage.getItem("hb_session_active") === "true";
-        if (wasSessionActive) {
-          setShowSessionExpired(true);
-        }
       }
     }
   }, [isError, error, showToast]);

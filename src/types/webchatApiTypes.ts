@@ -92,37 +92,30 @@ export interface WebchatConfigDto {
   };
   communicationLabels?: CommunicationLabel[];
   liveChats?: WebchatLiveChatDto[];
-  directChannels?: DirectChannelItem[];
-  directLinks?: DirectLinkItem[];
+  directItems: DirectItem[];
 }
 
-export interface DirectLinkItem {
+export interface DirectItem {
+  type: "channel" | "link";
   id: number;
-  webchatConfigId: number;
-  linkType: "WEBSITE" | "EMAIL" | "PHONE";
-  icon: string;
-  text: string;
-  websiteUrl: string | null;
-  emailAddress: string | null;
-  phoneNumber: string | null;
+  accountType?: string;
+  accountId?: number;
+  displayName?: string;
+  icon?: string;
   displayOrder: number;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  type?: "link";
+  linkType?: "WEBSITE" | "EMAIL" | "PHONE";
+  text?: string;
+  websiteUrl?: string | null;
+  emailAddress?: string | null;
+  phoneNumber?: string | null;
 }
 
-export interface DirectChannelItem {
-  id: number;
-  webchatConfigId: number;
-  accountType: string;
-  accountId: number;
-  displayName: string;
-  icon: string;
-  displayOrder: number;
-  createdAt: string;
-  updatedAt: string;
-  type?: "channel";
+export interface ReorderDirectItemsPayload {
+  items: Array<{
+    type: "channel" | "link";
+    id: number;
+    displayOrder: number;
+  }>;
 }
 
 export interface LabelLinkItem {

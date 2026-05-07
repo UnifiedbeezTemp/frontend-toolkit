@@ -1,9 +1,13 @@
 import axios from "axios";
 import { apiBaseUrl } from "./rootUrls";
+import { notifySessionExpired } from "./authSessionEvents";
+import { APIError } from "./types";
 
 const axiosInstance = axios.create({
   baseURL: apiBaseUrl,
   withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
   headers: {
     "Content-Type": "application/json",
   },
@@ -17,7 +21,7 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axiosInstance.interceptors.response.use(
@@ -26,18 +30,24 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     const status = error.response?.status ?? 500;
-    return Promise.reject({
+    const responseMessage = error.response?.data?.message;
+    const apiError: APIError = {
       status,
       message:
-        (error?.status === 0 || error?.code === "OFFLINE" || error?.code === "NETWORK_ERROR")
+        error?.status === 0 ||
+        error?.code === "OFFLINE" ||
+        error?.code === "NETWORK_ERROR"
           ? "You aren't connected to the internet. Please connect and try again."
-          :
-          error.response?.data?.message ||
-          error.message ||
-          "Something went wrong",
+          : responseMessage || error.message || "Something went wrong",
       details: error.response?.data || null,
-    });
-  }
+    };
+
+    if (status === 401) {
+      notifySessionExpired(apiError);
+    }
+
+    return Promise.reject(apiError);
+  },
 );
 
 export default axiosInstance;

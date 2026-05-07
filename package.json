@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "type-check": "tsc --noEmit",
+    "pretest": "node -e \"require('node:fs').rmSync('.test-dist', { recursive: true, force: true })\"",
+    "test": "tsc -p tsconfig.test.json && node --test .test-dist/tests/**/*.test.js",
     "dev": "echo 'Development: Use in consuming projects'",
     "build": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build"
@@ -22,7 +24,7 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.19.39",
     "typescript": "^5.0.0"
   },
   "dependencies": {

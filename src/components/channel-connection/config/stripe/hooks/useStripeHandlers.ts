@@ -3,14 +3,14 @@ import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
 
 interface UseStripeHandlersProps {
   connection?: ChannelConnection | null;
-  onSave: (data: Record<string, unknown>) => void;
   startStripeIntegration?: () => void;
+  onConfirmDelete?: (accountId: number) => void;
 }
 
 export function useStripeHandlers({
   connection,
-  onSave,
   startStripeIntegration,
+  onConfirmDelete,
 }: UseStripeHandlersProps) {
   const [showRequirements, setShowRequirements] = useState(!connection);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -26,8 +26,8 @@ export function useStripeHandlers({
   };
 
   const handleConfirmDelete = () => {
-    if (connection) {
-      onSave({ _delete: true });
+    if (connection && onConfirmDelete) {
+      onConfirmDelete(Number(connection.id));
     }
   };
 

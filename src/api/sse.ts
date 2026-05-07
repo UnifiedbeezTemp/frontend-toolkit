@@ -1,4 +1,5 @@
 import { apiBaseUrl } from "./rootUrls";
+import { notifySessionExpired } from "./authSessionEvents";
 
 type FetchSseJsonOptions = {
   headers?: HeadersInit;
@@ -66,7 +67,9 @@ export async function fetchSseJson<TResult>(
   options?: FetchSseJsonOptions,
 ): Promise<TResult> {
   if (!apiBaseUrl) {
-    throw new Error("API base URL is not configured (NEXT_PUBLIC_SUPABASE_URL_TEST).");
+    throw new Error(
+      "API base URL is not configured (NEXT_PUBLIC_SUPABASE_URL_TEST).",
+    );
   }
 
   const url = joinUrl(apiBaseUrl, path);
@@ -91,7 +94,12 @@ export async function fetchSseJson<TResult>(
   }
 
   if (!res.ok) {
-    return Promise.reject(await toRequestError(res));
+    const requestError = await toRequestError(res);
+    if (requestError.status === 401) {
+      notifySessionExpired(requestError);
+    }
+
+    return Promise.reject(requestError);
   }
 
   const contentType = res.headers.get("content-type") ?? "";

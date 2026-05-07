@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ChannelConnection, ChannelConnectionFormData } from "../../../../../types/channelConnectionTypes";
+import {
+  ChannelConnection,
+  ChannelConnectionFormData,
+} from "../../../../../types/channelConnectionTypes";
 
 export interface InstagramFormData {
   profileName: string;
@@ -28,12 +31,30 @@ export function useInstagramConfig(connection?: ChannelConnection | null) {
     reset,
   } = useForm<InstagramFormData>({
     defaultValues: {
-      profileName: typeof connection?.configuration?.profileName === 'string' ? connection.configuration.profileName : "",
-      readConfirmation: typeof connection?.configuration?.readConfirmation === 'boolean' ? connection.configuration.readConfirmation : false,
-      quickReactions: typeof connection?.configuration?.quickReactions === 'boolean' ? connection.configuration.quickReactions : false,
-      mentions: typeof connection?.configuration?.mentions === 'boolean' ? connection.configuration.mentions : false,
-      conversationStarters: typeof connection?.configuration?.conversationStarters === 'boolean' ? connection.configuration.conversationStarters : false,
-      profileImageUrl: typeof connection?.configuration?.profileImageUrl === 'string' ? connection.configuration.profileImageUrl : null,
+      profileName:
+        typeof connection?.configuration?.profileName === "string"
+          ? connection.configuration.profileName
+          : "",
+      readConfirmation:
+        typeof connection?.configuration?.readConfirmation === "boolean"
+          ? connection.configuration.readConfirmation
+          : false,
+      quickReactions:
+        typeof connection?.configuration?.quickReactions === "boolean"
+          ? connection.configuration.quickReactions
+          : false,
+      mentions:
+        typeof connection?.configuration?.mentions === "boolean"
+          ? connection.configuration.mentions
+          : false,
+      conversationStarters:
+        typeof connection?.configuration?.conversationStarters === "boolean"
+          ? connection.configuration.conversationStarters
+          : false,
+      profileImageUrl:
+        typeof connection?.configuration?.profileImageUrl === "string"
+          ? connection.configuration.profileImageUrl
+          : null,
     },
   });
 
@@ -77,7 +98,9 @@ export function useInstagramConfig(connection?: ChannelConnection | null) {
     setProfileImageUrl(URL.createObjectURL(file));
   };
 
-  const prepareFormData = (data: InstagramFormData): ChannelConnectionFormData => {
+  const prepareFormData = (
+    data: InstagramFormData,
+  ): ChannelConnectionFormData => {
     const formData: ChannelConnectionFormData = {
       name: data.profileName || "",
       profileName: data.profileName || "",
@@ -116,4 +139,3 @@ export function useInstagramConfig(connection?: ChannelConnection | null) {
     prepareFormData,
   };
 }
-

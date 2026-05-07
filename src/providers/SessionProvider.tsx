@@ -7,6 +7,7 @@ import { UserContext } from "../contexts/UserContext";
 import ErrorDisplay from "../components/error-display/ErrorDisplay";
 import SessionExpiredModal from "../components/session/SessionExpiredModal";
 import { redirectToLogin } from "../utils/redirectToLogin";
+import { extractErrorMessage } from "../utils/extractErrorMessage";
 
 export default function SessionProvider({ children }: PropsWithChildren) {
   const {
@@ -39,7 +40,11 @@ export default function SessionProvider({ children }: PropsWithChildren) {
     return (
       <div className="w-screen h-screen flex items-center justify-center">
         <ErrorDisplay
-          message={error?.message?.message}
+          message={
+            error
+              ? extractErrorMessage(error, "We had trouble loading your session")
+              : undefined
+          }
           onRetry={refetch}
           onReportError={() => {}}
           onGoToHomepage={() => {}}

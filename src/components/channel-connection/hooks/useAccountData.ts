@@ -15,13 +15,13 @@ import { ZoomAccount } from "../mappers/zoomFormMapper";
 import { ShopifyAccount } from "../mappers/shopifyFormMapper";
 import { SelectedChannel } from "../../../types/channelApiTypes";
 import { LiveChatConnection } from "../mappers/livechatFormMapper";
+import { CustomEmailAccount } from "../mappers/customEmailFormMapper";
 
 export const useAccountData = (
   channelName: string,
   accountId: string | number | null,
   channel?: SelectedChannel | null,
 ): ChannelConnection | null => {
-
   return useMemo(() => {
     if (!accountId || !channelName) return null;
 
@@ -101,6 +101,7 @@ export const useAccountData = (
       const account = accounts.find(
         (acc) => String(acc.id) === String(accountId),
       );
+
       if (account) {
         return mapper(account);
       }
@@ -118,7 +119,7 @@ export const useAccountData = (
     }
 
     if (channelName === "custom_email" && channel) {
-      const accounts = (channel.emailAccounts || []) as GmailAccount[];
+      const accounts = (channel.emailAccounts || []) as CustomEmailAccount[];
       const customAccounts = accounts.filter(
         (acc) => acc.provider === "custom",
       );
@@ -136,6 +137,17 @@ export const useAccountData = (
       const account = accounts.find(
         (acc) => String(acc.id) === String(accountId),
       );
+      if (account) {
+        return mapper(account);
+      }
+    }
+    if (channelName === "instagram_direct" && channel) {
+      const accounts = (channel.facebookAccounts ||
+        []) as unknown as FacebookAccount[];
+        const account = accounts.find(
+          (acc) => String(acc.id) === String(accountId),
+        );
+        console.log(account)
       if (account) {
         return mapper(account);
       }
@@ -205,6 +217,16 @@ export const useAccountData = (
     if (channelName === "shopify" && channel) {
       const accounts = (channel.shopifyAccounts ||
         []) as unknown as ShopifyAccount[];
+      const account = accounts.find(
+        (acc) => String(acc.id) === String(accountId),
+      );
+      if (account) {
+        return mapper(account);
+      }
+    }
+
+    if (channelName === "stripe" && channel) {
+      const accounts = (channel.stripeAccounts || []) as unknown as ShopifyAccount[];
       const account = accounts.find(
         (acc) => String(acc.id) === String(accountId),
       );

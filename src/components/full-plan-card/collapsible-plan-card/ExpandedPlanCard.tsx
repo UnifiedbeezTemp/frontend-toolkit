@@ -3,7 +3,6 @@
 import { useCollapsiblePlanCard } from "./hooks/useCollapsiblePlanCard";
 import CollapsiblePlanCardHeader from "./CollapsiblePlanCardHeader";
 import CollapsiblePlanCardFooter from "./CollapsiblePlanCardFooter";
-import { Plan } from "../../../api/services/plan/types";
 import { cn } from "../../../lib/utils";
 import ImageComponent from "../../ui/ImageComponent";
 import { CollapsiblePlanCardProps } from "./types";

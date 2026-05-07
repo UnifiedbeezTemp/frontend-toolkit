@@ -137,7 +137,9 @@ export const webchatService = {
   async getWebchatEmbed(
     webchatId: string | number,
   ): Promise<WebchatEmbedResponse> {
-    return api.get<WebchatEmbedResponse>(`/webchat/${webchatId}/embed`);
+    return api.get<WebchatEmbedResponse>(`/webchat/${webchatId}/embed`, {
+      withCredentials: false,
+    });
   },
 
   async sendInstructionsByEmail(
@@ -279,5 +281,18 @@ export const webchatService = {
     labelId: number | string,
   ): Promise<void> {
     return api.post(`/webchat/links/${linkId}/move-to-label/${labelId}`);
+  },
+ 
+  async reorderDirectItems(
+    webchatId: string | number,
+    payload: {
+      items: Array<{
+        type: "channel" | "link";
+        id: number;
+        displayOrder: number;
+      }>;
+    },
+  ): Promise<unknown> {
+    return api.patch(`/webchat/${webchatId}/direct-items/reorder`, payload);
   },
 };

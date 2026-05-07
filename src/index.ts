@@ -9,3 +9,7 @@ export { default as PaymentConfirmationModal } from "./components/plan-selection
 export { getPlansData } from "./data/plansData";
 export { useAddonsAccess } from "./hooks/useAddonsAccess";
 export * from "./components/plan-selection/modals/AvailableAddonsPreviewModal";
+export * from "./api/authSessionEvents";
+export { default as AuthSessionExpiredProvider } from "./providers/AuthSessionExpiredProvider";
+export type { AuthSessionExpiredProviderProps } from "./providers/AuthSessionExpiredProvider";
+export { ToastProvider, useToast } from "./components/ui/toast/ToastProvider";

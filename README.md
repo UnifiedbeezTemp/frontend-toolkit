@@ -71,6 +71,7 @@ Stuck? Run git submodule update --init --recursive
 Broken? Delete shared/ and re-add submodule
 Confused? Ask team before pushing shared changes
 Members module migration: see src/components/members/MIGRATION.md
+Auth session expiry integration: see AUTH_SESSION_EVENTS.md
 
 Remember: Shared changes affect ALL projects. Test thoroughly!
 DO NOT PUSH DIRECTLY TO MAIN BRANCH!

@@ -58,7 +58,7 @@ export default function InstagramRequirements({
             <Text size="sm">Administrator access to your Facebook page</Text>
           </div>
 
-          <div className="flex items-center gap-[1.2rem]">
+          {/* <div className="flex items-center gap-[1.2rem]">
             <Checkbox
               size="sm"
               checked={true}
@@ -68,7 +68,7 @@ export default function InstagramRequirements({
             <Text size="sm">
               Your Facebook page and Instagram account must be linked together
             </Text>
-          </div>
+          </div> */}
          </div>
         </div>
 
