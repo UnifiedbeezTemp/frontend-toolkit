@@ -73,11 +73,7 @@ export interface Conversation {
 }
 
 export interface TagPillProps {
-<<<<<<< HEAD
-  label: string| ReactNode;
-=======
   label: string | ReactNode;
->>>>>>> main
   showIcon?: boolean;
   className?: string;
   isDismissable?: boolean;

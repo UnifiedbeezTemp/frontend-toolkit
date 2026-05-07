@@ -28,7 +28,7 @@ export default function InactiveTabOverlay({ handleClaimTab, isActive, heading, 
           icon={<Monitor03 width={48} height={48} />}
           variant="secondary"
         /> 
-        <Heading className="text-[2.4rem] md:text-[3.2rem]">
+        <Heading className="text-[2.4rem] md:text-[3.2rem] text-center">
           {heading || "Session active in another tab"}
         </Heading>
         <Text className="text-base text-center text-md md:text-base">

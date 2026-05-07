@@ -41,6 +41,7 @@ export interface UserProfile {
   twoFactorEnabled?: boolean;
   hasActiveSubscription?: boolean;
   isBeehive?: boolean;
+  wentLiveAt?: string | null;
 }
 
 export const createEmptyUser = (): UserProfile => {

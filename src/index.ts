@@ -13,3 +13,5 @@ export * from "./api/authSessionEvents";
 export { default as AuthSessionExpiredProvider } from "./providers/AuthSessionExpiredProvider";
 export type { AuthSessionExpiredProviderProps } from "./providers/AuthSessionExpiredProvider";
 export { ToastProvider, useToast } from "./components/ui/toast/ToastProvider";
+export * from "./components/channels/hooks/useChannelSetupStatus";
+export * from "./components/channels/utils/channelConnections";
