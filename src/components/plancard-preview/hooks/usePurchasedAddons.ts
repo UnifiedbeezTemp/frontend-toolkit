@@ -1,11 +1,11 @@
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { api, useAppQuery } from "../../../api";
 import {
   Addon,
   PurchasedAddonResponse,
 } from "../../../store/onboarding/types/addonTypes";
 import { useSupabaseIcons } from "../../../lib/supabase/useSupabase";
-import { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
 import { useUser } from "../../../contexts/UserContext";
 import { ApiAddon } from "../../../types/apiAddonTypes";
 import { getAddonUiMetadata } from "../../../data/addonsData";

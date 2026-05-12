@@ -14,7 +14,7 @@ interface SelectableOptionProps {
   selectedBgClassName?: string
   centerCheckIndicator?: boolean
   selectedIndicatorClassName?: string
-  as?: any
+  as?: React.ElementType
 }
 
 export default function SelectableOption({

@@ -6,11 +6,11 @@ import {
   ACTIVE_TAB_STORAGE_KEY,
   clearActiveTabLeaseIfOwned,
   createActiveTabLease,
+  isActiveTabLeaseOwnedBy,
   isActiveTabLeaseValid,
   readActiveTabLease,
   writeActiveTabLease,
 } from "./activeTabLock";
-
 
 function generateTabId(): string {
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
@@ -38,13 +38,16 @@ function getOrCreateTabId(TAB_ID_SESSION_KEY: string): string {
   }
 }
 
-function getInitialIsActive(tabId: string): boolean {
+function getInitialIsActive(
+  ownerId: string,
+  activeTabStorageKey: string,
+): boolean {
   if (typeof window === "undefined") return true;
 
-  const lease = readActiveTabLease(window.localStorage);
+  const lease = readActiveTabLease(window.localStorage, activeTabStorageKey);
   const now = Date.now();
 
-  if (lease?.tabId === tabId) {
+  if (isActiveTabLeaseOwnedBy(lease, ownerId)) {
     return true;
   }
 
@@ -60,47 +63,61 @@ interface UseActiveTabResult {
   claimTab: () => void;
 }
 
-export default function useActiveTab({ 
-  tabIdSessionKey, 
-  activeTabLeaseTTLInMs = ACTIVE_TAB_LEASE_TTL_MS, 
-  activeTabStorageKey = ACTIVE_TAB_STORAGE_KEY, 
-  activeTabChannelName = ACTIVE_TAB_CHANNEL_NAME 
-}: { 
-  tabIdSessionKey: string, 
-  activeTabLeaseTTLInMs?: number, 
-  activeTabStorageKey: string, 
-  activeTabChannelName?: string 
+export default function useActiveTab({
+  tabIdSessionKey,
+  activeTabLeaseTTLInMs = ACTIVE_TAB_LEASE_TTL_MS,
+  activeTabStorageKey = ACTIVE_TAB_STORAGE_KEY,
+  activeTabChannelName = ACTIVE_TAB_CHANNEL_NAME,
+}: {
+  tabIdSessionKey: string;
+  activeTabLeaseTTLInMs?: number;
+  activeTabStorageKey?: string;
+  activeTabChannelName?: string;
 }): UseActiveTabResult {
   const [tabId] = useState(() => getOrCreateTabId(tabIdSessionKey));
-  const [isActive, setIsActive] = useState(() => getInitialIsActive(tabId));
+  const [ownerId] = useState(generateTabId);
+  const [isActive, setIsActive] = useState(() =>
+    getInitialIsActive(ownerId, activeTabStorageKey),
+  );
   const channelRef = useRef<BroadcastChannel | null>(null);
 
   const broadcastPresence = useCallback((): void => {
     channelRef.current?.postMessage({
       type: "TAB_STATE_UPDATED",
       tabId,
+      ownerId,
     });
-  }, [tabId]);
+  }, [ownerId, tabId]);
 
   const takeOwnership = useCallback((): void => {
     if (typeof window === "undefined") return;
 
     writeActiveTabLease(
       window.localStorage,
-      createActiveTabLease(tabId, Date.now(), activeTabLeaseTTLInMs),
+      createActiveTabLease(tabId, Date.now(), activeTabLeaseTTLInMs, ownerId),
+      activeTabStorageKey,
     );
     setIsActive(true);
     broadcastPresence();
-  }, [broadcastPresence, tabId]);
+  }, [
+    activeTabLeaseTTLInMs,
+    activeTabStorageKey,
+    broadcastPresence,
+    ownerId,
+    tabId,
+  ]);
 
   const syncOwnership = useCallback(
     (allowClaim: boolean): boolean => {
       if (typeof window === "undefined") return true;
 
-      const lease = readActiveTabLease(window.localStorage);
+      const lease = readActiveTabLease(
+        window.localStorage,
+        activeTabStorageKey,
+      );
       const now = Date.now();
 
-      if (lease?.tabId === tabId) {
+      if (isActiveTabLeaseOwnedBy(lease, ownerId)) {
         setIsActive(true);
         return true;
       }
@@ -118,7 +135,7 @@ export default function useActiveTab({
       setIsActive(false);
       return false;
     },
-    [tabId, takeOwnership],
+    [activeTabStorageKey, ownerId, takeOwnership],
   );
 
   const claimTab = useCallback((): void => {
@@ -136,7 +153,8 @@ export default function useActiveTab({
     if (isActive) {
       writeActiveTabLease(
         window.localStorage,
-        createActiveTabLease(tabId, Date.now(), activeTabLeaseTTLInMs),
+        createActiveTabLease(tabId, Date.now(), activeTabLeaseTTLInMs, ownerId),
+        activeTabStorageKey,
       );
     }
 
@@ -149,13 +167,17 @@ export default function useActiveTab({
     }
 
     const heartbeatId = window.setInterval(() => {
-      const lease = readActiveTabLease(window.localStorage);
+      const lease = readActiveTabLease(
+        window.localStorage,
+        activeTabStorageKey,
+      );
       const now = Date.now();
 
-      if (lease?.tabId === tabId) {
+      if (isActiveTabLeaseOwnedBy(lease, ownerId)) {
         writeActiveTabLease(
           window.localStorage,
-          createActiveTabLease(tabId, now, activeTabLeaseTTLInMs),
+          createActiveTabLease(tabId, now, activeTabLeaseTTLInMs, ownerId),
+          activeTabStorageKey,
         );
         return;
       }
@@ -174,7 +196,11 @@ export default function useActiveTab({
     };
 
     const releaseOwnership = (): void => {
-      clearActiveTabLeaseIfOwned(window.localStorage, tabId);
+      clearActiveTabLeaseIfOwned(
+        window.localStorage,
+        ownerId,
+        activeTabStorageKey,
+      );
       broadcastPresence();
     };
 
@@ -194,7 +220,17 @@ export default function useActiveTab({
       channelRef.current?.close();
       channelRef.current = null;
     };
-  }, [broadcastPresence, isActive, syncOwnership, tabId, takeOwnership]);
+  }, [
+    activeTabChannelName,
+    activeTabLeaseTTLInMs,
+    activeTabStorageKey,
+    broadcastPresence,
+    isActive,
+    ownerId,
+    syncOwnership,
+    tabId,
+    takeOwnership,
+  ]);
 
   return { isActive, claimTab };
 }

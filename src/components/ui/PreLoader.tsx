@@ -1,7 +1,10 @@
 "use client";
 
-import Player from "lottie-react";
-import animationData from "../../animations/Preloader.json";
+import dynamic from "next/dynamic";
+
+const PreLoaderAnimation = dynamic(() => import("./PreLoaderAnimation"), {
+  ssr: false,
+});
 
 interface PreLoaderProps {
   className?: string;
@@ -18,17 +21,7 @@ export default function PreLoader({
     <div
       className={`flex items-center justify-center ${isPage ? "min-h-screen" : ""} ${className}`}
     >
-      <Player
-        autoplay
-        loop
-        animationData={{
-          ...animationData,
-          layers: animationData.layers.filter(
-            (layer) => layer.nm !== "Rectangle 1",
-          ),
-        }}
-        style={{ height }}
-      />
+      <PreLoaderAnimation height={height} />
     </div>
   );
 }
