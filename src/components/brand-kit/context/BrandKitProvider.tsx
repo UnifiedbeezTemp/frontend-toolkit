@@ -26,6 +26,7 @@ import { BrandDetectionOverride } from "./contextTypes"
 import BrandKitDetectionModal from "../detection/BrandKitDetectionModal"
 
 const INITIAL_READONLY_FIELDS: BrandKitReadonlyState = {
+  id: "",
   companyLogoUrl: "",
 }
 

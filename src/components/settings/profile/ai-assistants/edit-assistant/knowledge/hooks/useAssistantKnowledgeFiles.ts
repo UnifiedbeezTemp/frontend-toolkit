@@ -2,7 +2,11 @@
 
 import { useCallback, useState, useEffect, useRef } from "react";
 import { UploadedFile } from "../../../../../../knowledge-files/types";
-import { AIAssistant } from "../../../../../../../types/aiAssistantTypes";
+import type {
+  AIAssistant,
+  AssistantKnowledgeFileSummary,
+  BusinessKnowledgeFile,
+} from "../../../../../../../types/aiAssistantTypes";
 import { UseAssistantKnowledgeFilesReturn } from "../types";
 import { useToast } from "../../../../../../ui/toast/useToast";
 import {
@@ -32,9 +36,28 @@ export function useAssistantKnowledgeFiles(
       assistant?.knowledgeFiles &&
       Array.isArray(assistant.knowledgeFiles)
     ) {
-      const saved = assistant.knowledgeFiles.map(
-        convertBusinessFileToUploadedFile,
-      );
+      const toUploadedFile = (
+        file: BusinessKnowledgeFile | AssistantKnowledgeFileSummary,
+      ): UploadedFile => {
+        if ("userId" in file) {
+          return convertBusinessFileToUploadedFile(file);
+        }
+
+        return {
+          id: file.id.toString(),
+          documentId: file.id,
+          name: file.fileName,
+          size: file.fileSize,
+          type: file.fileType,
+          progress: 100,
+          status: "saved",
+          isFromBackend: true,
+          filePath: file.filePath,
+          url: file.filePath,
+        };
+      };
+
+      const saved = assistant.knowledgeFiles.map(toUploadedFile);
       setSavedFiles(saved);
 
       setUploadingFiles((prev) => {

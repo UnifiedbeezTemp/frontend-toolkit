@@ -9,6 +9,8 @@ export interface PlaceholderFormData {
 }
 
 export function usePlaceholderConfig(connection?: ChannelConnection | null) {
+  const configuration = connection?.configuration as Record<string, unknown> | undefined;
+
   const {
     control,
     handleSubmit: formHandleSubmit,
@@ -18,18 +20,25 @@ export function usePlaceholderConfig(connection?: ChannelConnection | null) {
     reset,
   } = useForm<PlaceholderFormData>({
     defaultValues: {
-      name: connection?.configuration?.name || "",
-      apiKey: connection?.configuration?.apiKey || "",
-      apiSecret: connection?.configuration?.apiSecret || "",
+      name: typeof configuration?.name === "string" ? configuration.name : "",
+      apiKey:
+        typeof configuration?.apiKey === "string" ? configuration.apiKey : "",
+      apiSecret:
+        typeof configuration?.apiSecret === "string"
+          ? configuration.apiSecret
+          : "",
     },
   });
 
   useEffect(() => {
-    if (connection?.configuration) {
+    if (configuration) {
       reset({
-        name: connection.configuration.name || "",
-        apiKey: connection.configuration.apiKey || "",
-        apiSecret: connection.configuration.apiSecret || "",
+        name: typeof configuration.name === "string" ? configuration.name : "",
+        apiKey: typeof configuration.apiKey === "string" ? configuration.apiKey : "",
+        apiSecret:
+          typeof configuration.apiSecret === "string"
+            ? configuration.apiSecret
+            : "",
       });
     } else {
       reset({
@@ -57,4 +66,3 @@ export function usePlaceholderConfig(connection?: ChannelConnection | null) {
     prepareFormData,
   };
 }
-
