@@ -60,7 +60,6 @@ export const useTelegramIntegration = ({
           if (onRefetchChannels) await onRefetchChannels();
           onComplete?.({
             success: true,
-            connectedAt: new Date().toISOString(),
           });
         }
       },
@@ -129,7 +128,6 @@ export const useTelegramIntegration = ({
           if (onRefetchChannels) await onRefetchChannels();
           onComplete?.({
             success: true,
-            connectedAt: new Date().toISOString(),
           });
         }
       } catch (e) {

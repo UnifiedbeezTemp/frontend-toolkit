@@ -27,6 +27,7 @@ export default function ChannelSelector({
       <Input
         ref={triggerRef}
         onClick={onToggle}
+        onChange={() => {}}
         className="w-full placeholder:text-md text-md cursor-pointer"
         value={selectedChannelLabel || "Select a communication channel"}
         readOnly

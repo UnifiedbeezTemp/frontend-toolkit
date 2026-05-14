@@ -31,8 +31,27 @@ export const useCustomEmailIntegration = ({
     },
     {
       onSuccess: async (response) => {
-        if (response.dnsRecords && response.dnsRecords.length > 0) {
-          setDnsRecords(response.dnsRecords);
+        const nextDnsRecords = [
+          ...(response.dnsRecords?.mx ?? []).map((r) => ({
+            type: "MX",
+            name: response.domain,
+            value: r.value,
+            priority: r.priority,
+          })),
+          ...(response.dnsRecords?.txt ?? []).map((r) => ({
+            type: "TXT",
+            name: r.name,
+            value: r.value,
+          })),
+          ...(response.dnsRecords?.cname ?? []).map((r) => ({
+            type: "CNAME",
+            name: r.name,
+            value: r.value,
+          })),
+        ];
+
+        if (nextDnsRecords.length > 0) {
+          setDnsRecords(nextDnsRecords);
         }
         showToast({
           title: "Success",
@@ -72,4 +91,3 @@ export const useCustomEmailIntegration = ({
     dnsRecords,
   };
 };
-

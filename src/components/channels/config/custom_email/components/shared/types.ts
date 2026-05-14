@@ -13,9 +13,8 @@ export interface DNSRecordsDisplayProps {
 }
 
 export interface CustomEmailConnectionDetailsProps {
-  connection: import("../../../../../types/channelConnectionTypes").ChannelConnection;
+  connection: import("../../../../../../types/channelConnectionTypes").ChannelConnection;
   onDelete: () => void;
   isDeleting?: boolean;
   variant?: "desktop" | "mobile";
 }
-

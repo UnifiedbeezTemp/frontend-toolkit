@@ -51,6 +51,7 @@ export function useBrandKitChangeDetection({
       socialLinks: links,
       logo,
       readonlyFields: {
+        id: brandKitData.id != null ? brandKitData.id.toString() : "",
         companyLogoUrl: brandKitData.companyLogoUrl ?? "",
       },
     }

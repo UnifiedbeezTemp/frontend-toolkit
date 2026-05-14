@@ -17,14 +17,24 @@ export interface GmailStatusColors {
 export const extractGmailDisplayData = (
   connection: ChannelConnection
 ): GmailDisplayData => {
+  const configuration = connection.configuration as Record<string, unknown>;
+
   const email =
-    (connection.configuration)?.email || connection.name || "Unknown Email";
-  const displayName = (connection.configuration)?.displayName || "";
-  const canReceive = (connection.configuration)?.canReceive ?? false;
-  const canSend = (connection.configuration)?.canSend ?? false;
+    (typeof configuration.email === "string" ? configuration.email : null) ||
+    connection.name ||
+    "Unknown Email";
+  const displayName =
+    typeof configuration.displayName === "string" ? configuration.displayName : "";
+  const canReceive =
+    typeof configuration.canReceive === "boolean" ? configuration.canReceive : false;
+  const canSend =
+    typeof configuration.canSend === "boolean" ? configuration.canSend : false;
   const verificationStatus =
-    (connection.configuration)?.verificationStatus || "PENDING";
-  const provider = (connection.configuration)?.provider || "gmail";
+    typeof configuration.verificationStatus === "string"
+      ? configuration.verificationStatus
+      : "PENDING";
+  const provider =
+    typeof configuration.provider === "string" ? configuration.provider : "gmail";
 
   return {
     email,
@@ -61,5 +71,4 @@ export const getGmailStatusText = (status: string): string => {
       return status;
   }
 };
-
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChannelConnection } from "../../../../types/channelConnectionTypes";
+import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
 
 interface UseTelegramHandlersProps {
   connection?: ChannelConnection | null;
