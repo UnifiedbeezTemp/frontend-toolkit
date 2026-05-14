@@ -73,15 +73,58 @@ export function useDropdownInteractions({
   useEffect(() => {
     if (!isOpen) return;
 
+    const getFocusableItems = () => {
+      if (!dropdownRef.current) return [];
+
+      return Array.from(
+        dropdownRef.current.querySelectorAll<HTMLElement>(
+          [
+            "button:not([disabled])",
+            "a[href]",
+            "input:not([disabled])",
+            "textarea:not([disabled])",
+            "select:not([disabled])",
+            "[tabindex]:not([tabindex='-1'])",
+          ].join(","),
+        ),
+      );
+    };
+
+    const focusItem = (index: number) => {
+      const focusableItems = getFocusableItems();
+      if (focusableItems.length === 0) return;
+
+      const nextIndex =
+        (index + focusableItems.length) % focusableItems.length;
+      focusableItems[nextIndex].focus();
+    };
+
     const handleKeyDown = (event: KeyboardEvent) => {
+      const focusableItems = getFocusableItems();
+      const currentIndex = focusableItems.findIndex(
+        (item) => item === document.activeElement,
+      );
+
       switch (event.key) {
         case "Escape":
           onClose();
+          triggerRef.current?.focus();
           break;
         case "ArrowDown":
+          event.preventDefault();
+          focusItem(currentIndex + 1);
+          break;
         case "ArrowUp":
           event.preventDefault();
-          // TODO: Implement focus management
+          focusItem(currentIndex - 1);
+          break;
+        case "Home":
+          event.preventDefault();
+          focusItem(0);
+          break;
+        case "End":
+          event.preventDefault();
+          focusItem(focusableItems.length - 1);
           break;
         case "Tab":
           onClose();
@@ -91,7 +134,7 @@ export function useDropdownInteractions({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [dropdownRef, isOpen, onClose, triggerRef]);
 
   useEffect(() => {
     if (!isOpen) return;

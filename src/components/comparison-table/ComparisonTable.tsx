@@ -8,12 +8,14 @@ import ComparisonSkeleton from "./ComparisonSkeleton";
 import Heading from "../ui/Heading";
 import Text from "../ui/Text";
 import Button from "../ui/Button";
+import { OriginalPlan } from "../plan/types";
 
 interface ComparisonTableProps {
   className?: string;
   onSelectPlan?: (planId: string) => void;
   onAddonsClick?: (planId?: string) => void;
   isYearly?: boolean;
+  currentUserPlan?: OriginalPlan
 }
 
 export default function ComparisonTable({
@@ -21,6 +23,7 @@ export default function ComparisonTable({
   onSelectPlan,
   onAddonsClick,
   isYearly = false,
+  currentUserPlan
 }: ComparisonTableProps) {
   const { plans, loading, error, retry, icons } = useComparisonPlans();
   const features = React.useMemo(() => {
@@ -72,7 +75,8 @@ export default function ComparisonTable({
         icons={icons}
         onAddonsClick={onAddonsClick}
         onSelectPlan={onSelectPlan}
-      />
+        currentUserPlan={currentUserPlan}
+        />
       <ComparisonMobile
         plans={plans}
         features={features}
@@ -80,6 +84,7 @@ export default function ComparisonTable({
         icons={icons}
         onSelectPlan={onSelectPlan}
         isYearly={isYearly}
+        currentUserPlan={currentUserPlan}
       />
     </div>
   );

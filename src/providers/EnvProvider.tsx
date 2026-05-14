@@ -3,12 +3,16 @@
 import { createContext, useContext } from "react";
 
 type Env = {
-  NEXT_PUBLIC_SUPABASE_URL?: string
-  NEXT_PUBLIC_USE_ONBOARDING_BACKEND?: string
-  NEXT_PUBLIC_SUPABASE_URL_TEST?: string
-  NEXT_PUBLIC_AUTH_BASE?: string
-  NEXT_PUBLIC_MANUAL_ONBOARDING_BASE_URL?: string
-  NEXT_PUBLIC_BEEHIVE_BASE_URL?: string
+  NEXT_PUBLIC_SUPABASE_URL?: string;
+  NEXT_PUBLIC_SUPABASE_ANON_KEY?: string;
+  NEXT_PUBLIC_USE_ONBOARDING_BACKEND?: "true" | "false";
+  NEXT_PUBLIC_SUPABASE_URL_TEST?: string;
+  NEXT_PUBLIC_AUTH_BASE?: string;
+  NEXT_PUBLIC_MANUAL_ONBOARDING_BASE_URL?: string;
+  NEXT_PUBLIC_BEEHIVE_BASE_URL?: string;
+  NEXT_PUBLIC_BASE?: string;
+  NEXT_PUBLIC_BEEHIVE_URL?: string;
+  NEXT_PUBLIC_ALLOWED_RETURN_TO_ORIGINS?: string;
 };
 
 const EnvContext = createContext<Env | null>(null);
