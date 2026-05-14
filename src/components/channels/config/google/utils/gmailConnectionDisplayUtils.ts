@@ -17,14 +17,27 @@ export interface GmailStatusColors {
 export const extractGmailDisplayData = (
   connection: ChannelConnection
 ): GmailDisplayData => {
-  const email =
-    (connection.configuration)?.email || connection.name || "Unknown Email";
-  const displayName = (connection.configuration)?.displayName || "";
-  const canReceive = (connection.configuration)?.canReceive ?? false;
-  const canSend = (connection.configuration)?.canSend ?? false;
-  const verificationStatus =
-    (connection.configuration)?.verificationStatus || "PENDING";
-  const provider = (connection.configuration)?.provider || "gmail";
+  const config = connection.configuration ?? {};
+  const emailFromConfig = typeof config["email"] === "string" ? config["email"] : "";
+  const displayNameFromConfig =
+    typeof config["displayName"] === "string" ? config["displayName"] : "";
+  const canReceiveFromConfig =
+    typeof config["canReceive"] === "boolean" ? config["canReceive"] : false;
+  const canSendFromConfig =
+    typeof config["canSend"] === "boolean" ? config["canSend"] : false;
+  const verificationStatusFromConfig =
+    typeof config["verificationStatus"] === "string"
+      ? config["verificationStatus"]
+      : "PENDING";
+  const providerFromConfig =
+    typeof config["provider"] === "string" ? config["provider"] : "gmail";
+
+  const email = emailFromConfig || connection.name || "Unknown Email";
+  const displayName = displayNameFromConfig;
+  const canReceive = canReceiveFromConfig;
+  const canSend = canSendFromConfig;
+  const verificationStatus = verificationStatusFromConfig;
+  const provider = providerFromConfig;
 
   return {
     email,
@@ -61,5 +74,4 @@ export const getGmailStatusText = (status: string): string => {
       return status;
   }
 };
-
 

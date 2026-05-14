@@ -91,7 +91,7 @@ export const useConnectionData = (
             isActive: channel.isActive,
             isConnected: channel.isConnected,
             credentials: channel.credentials,
-            connectedAt: channel.connectedAt || null,
+            connectedAt: channel.connectedAt ?? "",
             lastSyncAt: channel.lastSyncAt,
           },
         };

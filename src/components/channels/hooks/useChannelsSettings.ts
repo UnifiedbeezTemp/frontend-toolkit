@@ -92,9 +92,10 @@ export function useChannelsSettings() {
       availableChannels.categories,
     ).reduce(
       (acc, [key, category]) => {
+        const available = category.available ?? category.channels
         acc[key as keyof ChannelsApiResponse["categories"]] = {
           ...category,
-          available: category.available.filter((channel) =>
+          available: available.filter((channel) =>
             connectedIds.has(channel.id),
           ),
         };
@@ -104,6 +105,7 @@ export function useChannelsSettings() {
     );
 
     return {
+      ...availableChannels,
       categories: filteredCategories,
     };
   }, [availableChannels, selectedChannels]);

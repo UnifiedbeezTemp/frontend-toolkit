@@ -82,7 +82,9 @@ export default function MobileLibraryAutomationList({
             {/* Business Goal Dropdown */}
             <div className="relative">
               <button
-                ref={(el) => (triggerRefs.current[automation.id] = el)}
+                ref={(el) => {
+                  triggerRefs.current[automation.id] = el
+                }}
                 onClick={() =>
                   setOpenDropdownId(
                     openDropdownId === automation.id ? null : automation.id,

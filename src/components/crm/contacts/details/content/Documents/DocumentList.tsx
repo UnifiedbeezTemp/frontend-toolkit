@@ -5,6 +5,7 @@ import Text from "../../../../../ui/Text";
 import DocumentItem from "./DocumentItem";
 import DocumentPreviewModal from "./DocumentPreviewModal";
 import { useDocumentList } from "../hooks/useDocumentList";
+import type { DocumentActivity } from "../types";
 
 interface DocumentListProps {
   contactName: string;

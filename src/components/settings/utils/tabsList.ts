@@ -9,6 +9,7 @@ export interface Tab {
 export const getTabsList = (icons: {
   profileActive: string;
   profileInactive: string;
+  mastercard?: string;
   preferenceActive: string;
   preferenceInactive: string;
   notificationsActive: string;
@@ -27,8 +28,8 @@ export const getTabsList = (icons: {
   },
   {
     name: "Plans & billings",
-    iconActive: icons.mastercard,
-    iconInactive: icons.mastercard,
+    iconActive: icons.mastercard ?? icons.profileActive,
+    iconInactive: icons.mastercard ?? icons.profileInactive,
     isDynamic: true,
     subTabs: ["Your Plan", "Invoice", "Budget", "Credit"],
   },

@@ -20,11 +20,14 @@ export function useChannelConnections() {
       data: ChannelConnectionFormData,
       name?: string
     ) => {
+      const resolveString = (value: unknown) =>
+        typeof value === "string" && value.trim() ? value : undefined;
+
       const connectionName =
         name ||
-        data.name ||
-        data.displayName ||
-        data.internalName ||
+        resolveString(data["name"]) ||
+        resolveString(data["displayName"]) ||
+        resolveString(data["internalName"]) ||
         `${channelId} Connection ${(connections[channelId]?.length || 0) + 1}`;
 
       const newConnection: ChannelConnection = {
@@ -79,7 +82,7 @@ export function useChannelConnections() {
   );
 
   const hasConnections = useCallback(
-    (channelId: number): boolean => {
+    (channelId: string): boolean => {
       return (connections[channelId]?.length || 0) > 0;
     },
     [connections]

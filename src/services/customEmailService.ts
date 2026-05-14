@@ -1,8 +1,8 @@
 import { api } from "../api";
 
-export interface CustomEmailSetupRequest {
-  fromEmail: string;
-}
+export type CustomEmailSetupRequest =
+  | { fromEmail: string }
+  | { channelId: number; domain: string };
 
 export interface DNSRecords {
   mx: Array<{ priority: number; value: string }>;

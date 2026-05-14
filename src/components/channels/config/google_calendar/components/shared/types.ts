@@ -1,4 +1,4 @@
-import { ChannelConnection } from "../../../../../types/channelConnectionTypes";
+import { ChannelConnection } from "../../../../../../types/channelConnectionTypes";
 
 export interface GoogleCalendarConnectionDetailsProps {
   connection: ChannelConnection;

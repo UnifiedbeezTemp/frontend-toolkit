@@ -1,7 +1,12 @@
 import { useCallback, useState } from "react";
 import { extractErrorMessage } from "../../webchat/utils/errorUtils";
 import { useAppMutation } from "../../../../../api";
-import { CustomEmailSetupResponse, CustomEmailSetupRequest, setupCustomEmailReceiving } from "../../../../../services/customEmailService";
+import {
+  CustomEmailSetupResponse,
+  CustomEmailSetupRequest,
+  DNSRecords,
+  setupCustomEmailReceiving,
+} from "../../../../../services/customEmailService";
 import { useToast } from "../../../../ui/toast/ToastProvider";
 
 interface UseCustomEmailIntegrationProps {
@@ -9,6 +14,29 @@ interface UseCustomEmailIntegrationProps {
   onComplete?: (response: CustomEmailSetupResponse) => void;
   onRefetchChannels?: () => Promise<void> | void;
 }
+
+const normalizeDnsRecords = (dnsRecords: DNSRecords) => {
+  const mx = (dnsRecords.mx ?? []).map((record) => ({
+    type: "MX",
+    name: "@",
+    value: record.value,
+    priority: record.priority,
+  }));
+
+  const txt = (dnsRecords.txt ?? []).map((record) => ({
+    type: "TXT",
+    name: record.name,
+    value: record.value,
+  }));
+
+  const cname = (dnsRecords.cname ?? []).map((record) => ({
+    type: "CNAME",
+    name: record.name,
+    value: record.value,
+  }));
+
+  return [...mx, ...txt, ...cname];
+};
 
 export const useCustomEmailIntegration = ({
   channelId,
@@ -31,9 +59,7 @@ export const useCustomEmailIntegration = ({
     },
     {
       onSuccess: async (response) => {
-        if (response.dnsRecords && response.dnsRecords.length > 0) {
-          setDnsRecords(response.dnsRecords);
-        }
+        setDnsRecords(normalizeDnsRecords(response.dnsRecords));
         showToast({
           title: "Success",
           description: response.message || "Custom email setup initiated successfully",
@@ -72,4 +98,3 @@ export const useCustomEmailIntegration = ({
     dnsRecords,
   };
 };
-

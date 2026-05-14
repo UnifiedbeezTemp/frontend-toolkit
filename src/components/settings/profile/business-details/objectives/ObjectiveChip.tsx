@@ -1,7 +1,7 @@
-import { BusinessObjective } from "@/shared/src/data/businessObjectives";
+import type { BusinessInfo } from "../utils/types";
 
 interface ObjectiveChipProps {
-  objective: BusinessObjective;
+  objective: BusinessInfo["objectives"][number];
 }
 
 export function ObjectiveChip({ objective }: ObjectiveChipProps) {

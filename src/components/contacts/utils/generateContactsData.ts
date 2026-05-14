@@ -2,10 +2,10 @@ import { Contact } from "../../../store/slices/contactSlice";
 
 export const generateContactsData = (): Contact[] => {
   const statuses: Contact["status"][] = [
-    "Active",
-    "Unconfirmed",
-    "Unsubscribed",
-    "Bounced",
+    "active",
+    "unconfirmed",
+    "unsubscribed",
+    "bounced",
   ];
 
   const names = [
