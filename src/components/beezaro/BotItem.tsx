@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import Button from "../ui/Button";
 import ImageComponent from "../ui/ImageComponent";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";

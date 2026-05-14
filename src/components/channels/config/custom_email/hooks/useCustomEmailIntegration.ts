@@ -60,6 +60,28 @@ export const useCustomEmailIntegration = ({
     {
       onSuccess: async (response) => {
         setDnsRecords(normalizeDnsRecords(response.dnsRecords));
+        const nextDnsRecords = [
+          ...(response.dnsRecords?.mx ?? []).map((r) => ({
+            type: "MX",
+            name: response.domain,
+            value: r.value,
+            priority: r.priority,
+          })),
+          ...(response.dnsRecords?.txt ?? []).map((r) => ({
+            type: "TXT",
+            name: r.name,
+            value: r.value,
+          })),
+          ...(response.dnsRecords?.cname ?? []).map((r) => ({
+            type: "CNAME",
+            name: r.name,
+            value: r.value,
+          })),
+        ];
+
+        if (nextDnsRecords.length > 0) {
+          setDnsRecords(nextDnsRecords);
+        }
         showToast({
           title: "Success",
           description: response.message || "Custom email setup initiated successfully",

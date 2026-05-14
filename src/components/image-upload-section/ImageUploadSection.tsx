@@ -1,3 +1,4 @@
+import React from "react";
 import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import Button from "../ui/Button";
 import { useImageUpload } from "./hooks/useImageUpload";
@@ -5,7 +6,6 @@ import { useProfileImage } from "./hooks/useProfileImage";
 import Text from "../ui/Text";
 import { ImageUploadSectionProps } from "./types";
 import Heading from "../ui/Heading";
-import React from "react";
 import ImageComponent from "../ui/ImageComponent";
 import CameraModal from "./components/CameraModal";
 import { ImagePreview } from "./components/ImagePreview";

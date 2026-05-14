@@ -1,6 +1,19 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { UseChatAutoScrollOptions } from "./types";
 
+function scrollElementToBottom(
+  element: HTMLElement | null,
+  behavior: ScrollBehavior,
+) {
+  if (!element) return false;
+
+  element.scrollTo({
+    top: element.scrollHeight,
+    behavior,
+  });
+  return true;
+}
+
 export default function useChatAutoScroll<
   T extends HTMLElement,
   TMsg = unknown
@@ -21,15 +34,18 @@ export default function useChatAutoScroll<
     if (!el) return;
 
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    const nextIsAtBottom = distanceFromBottom <= bottomOffset;
 
-    setIsAtBottom(distanceFromBottom <= bottomOffset);
+    setIsAtBottom((current) =>
+      current === nextIsAtBottom ? current : nextIsAtBottom,
+    );
   }, [bottomOffset, containerRef]);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
-    el.addEventListener("scroll", handleScroll);
+    el.addEventListener("scroll", handleScroll, { passive: true });
     return () => el.removeEventListener("scroll", handleScroll);
   }, [handleScroll, containerRef]);
 
@@ -38,16 +54,30 @@ export default function useChatAutoScroll<
     const isNewMessage = messages.length > prevMsgCount.current;
 
     if (isFirstLoad || (isNewMessage && isAtBottom)) {
-      bottomRef.current?.scrollIntoView({ behavior, block: "end" });
+      const didScrollContainer = scrollElementToBottom(
+        containerRef.current,
+        behavior,
+      );
+
+      if (!didScrollContainer) {
+        bottomRef.current?.scrollIntoView({ behavior, block: "end" });
+      }
     }
 
     hasMounted.current = true;
     prevMsgCount.current = messages.length;
-  }, [messages.length, isAtBottom, behavior]);
+  }, [messages.length, isAtBottom, behavior, containerRef]);
 
   const scrollToBottom = useCallback(() => {
-    bottomRef.current?.scrollIntoView({ behavior, block: "end" });
-  }, [behavior]);
+    const didScrollContainer = scrollElementToBottom(
+      containerRef.current,
+      behavior,
+    );
+
+    if (!didScrollContainer) {
+      bottomRef.current?.scrollIntoView({ behavior, block: "end" });
+    }
+  }, [behavior, containerRef]);
 
   return { bottomRef, scrollToBottom };
 }

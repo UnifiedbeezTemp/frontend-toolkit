@@ -7,11 +7,11 @@ export type ConversationHeaderAction = {
   key: string
   ariaLabel: string
   icon: ReactNode
-  onClick?: (elementRef?: RefObject<HTMLElement | null>) => void
+  onClick?: (elementRef?: RefObject<HTMLButtonElement | null>) => void
   variant?: "primary" | "secondary"
   disabled?: boolean
   hidden?: boolean
-  ref?: RefObject<HTMLElement | null>
+  ref?: RefObject<HTMLButtonElement | null>
 }
 
 export function ConversationHeaderActions({
@@ -21,7 +21,7 @@ export function ConversationHeaderActions({
   actions: ConversationHeaderAction[]
   className?: string
 }) {
-  const defaultButtonRef = useRef(null)
+  const defaultButtonRef = useRef<HTMLButtonElement | null>(null)
   return (
     <div className={cn("flex items-center gap-3", className)}>
       {actions

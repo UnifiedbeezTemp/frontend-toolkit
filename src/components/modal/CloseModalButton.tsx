@@ -1,5 +1,4 @@
 import TimesIcon from "../../assets/icons/TimesIcon";
-import { useSupabaseIcons } from "../../lib/supabase/useSupabase";
 import IconButton from "../ui/IconButton";
 
 interface Props {
@@ -8,7 +7,6 @@ interface Props {
 }
 
 export default function CloseModalButton({ onClick, className }: Props) {
-  const icons = useSupabaseIcons();
   return (
     <IconButton
       className={className}

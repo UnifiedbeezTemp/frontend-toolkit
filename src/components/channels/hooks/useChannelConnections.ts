@@ -20,14 +20,17 @@ export function useChannelConnections() {
       data: ChannelConnectionFormData,
       name?: string
     ) => {
-      const resolveString = (value: unknown) =>
-        typeof value === "string" && value.trim() ? value : undefined;
+      const nameFromData = typeof data.name === "string" ? data.name : undefined;
+      const displayNameFromData =
+        typeof data.displayName === "string" ? data.displayName : undefined;
+      const internalNameFromData =
+        typeof data.internalName === "string" ? data.internalName : undefined;
 
       const connectionName =
         name ||
-        resolveString(data["name"]) ||
-        resolveString(data["displayName"]) ||
-        resolveString(data["internalName"]) ||
+        nameFromData ||
+        displayNameFromData ||
+        internalNameFromData ||
         `${channelId} Connection ${(connections[channelId]?.length || 0) + 1}`;
 
       const newConnection: ChannelConnection = {

@@ -9,15 +9,7 @@ export interface PlaceholderFormData {
 }
 
 export function usePlaceholderConfig(connection?: ChannelConnection | null) {
-  const getDefaultValues = (input?: ChannelConnection | null): PlaceholderFormData => {
-    const config = input?.configuration ?? {};
-    const name = typeof config["name"] === "string" ? config["name"] : "";
-    const apiKey = typeof config["apiKey"] === "string" ? config["apiKey"] : "";
-    const apiSecret =
-      typeof config["apiSecret"] === "string" ? config["apiSecret"] : "";
-
-    return { name, apiKey, apiSecret };
-  };
+  const configuration = connection?.configuration as Record<string, unknown> | undefined;
 
   const {
     control,
@@ -27,11 +19,34 @@ export function usePlaceholderConfig(connection?: ChannelConnection | null) {
     register,
     reset,
   } = useForm<PlaceholderFormData>({
-    defaultValues: getDefaultValues(connection),
+    defaultValues: {
+      name: typeof configuration?.name === "string" ? configuration.name : "",
+      apiKey:
+        typeof configuration?.apiKey === "string" ? configuration.apiKey : "",
+      apiSecret:
+        typeof configuration?.apiSecret === "string"
+          ? configuration.apiSecret
+          : "",
+    },
   });
 
   useEffect(() => {
-    reset(getDefaultValues(connection));
+    if (configuration) {
+      reset({
+        name: typeof configuration.name === "string" ? configuration.name : "",
+        apiKey: typeof configuration.apiKey === "string" ? configuration.apiKey : "",
+        apiSecret:
+          typeof configuration.apiSecret === "string"
+            ? configuration.apiSecret
+            : "",
+      });
+    } else {
+      reset({
+        name: "",
+        apiKey: "",
+        apiSecret: "",
+      });
+    }
   }, [connection, reset]);
 
   const prepareFormData = (data: PlaceholderFormData): ChannelConnectionFormData => {

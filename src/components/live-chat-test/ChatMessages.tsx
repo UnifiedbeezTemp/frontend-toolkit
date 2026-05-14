@@ -1,12 +1,12 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import {
   useSupabaseIcons,
 } from "../../lib/supabase/useSupabase";
 import { ChatMessage } from "./types";
 import MessageBubble from "./MessageBubble";
 import TypingIndicator from "./TypingIndicator";
-import { useRef, useEffect } from "react";
 
 interface ChatMessagesProps {
   messages: ChatMessage[];
