@@ -154,7 +154,7 @@ export function useBrandKitMapper() {
     }
 
     const readonlyFields: BrandKitReadonlyState = {
-      id: apiData.id != null ? apiData.id.toString() : "",
+      id: String(apiData.id ?? ""),
       companyLogoUrl: nonEmptyString(apiData.companyLogoUrl),
     }
 

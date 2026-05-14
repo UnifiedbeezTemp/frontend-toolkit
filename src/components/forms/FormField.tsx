@@ -23,7 +23,7 @@ interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onInput?: React.InputEventHandler<HTMLInputElement>;
 }
 
 export default function FormField<

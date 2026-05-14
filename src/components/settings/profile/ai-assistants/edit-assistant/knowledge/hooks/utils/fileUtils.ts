@@ -1,8 +1,11 @@
-import { BusinessKnowledgeFile } from "../../../../../../../../types/aiAssistantTypes";
+import type {
+  AssistantKnowledgeFileSummary,
+  BusinessKnowledgeFile,
+} from "../../../../../../../../types/aiAssistantTypes";
 import { UploadedFile } from "../../../../../../../knowledge-files/types";
 
 export const convertBusinessFileToUploadedFile = (
-  file: BusinessKnowledgeFile,
+  file: BusinessKnowledgeFile | AssistantKnowledgeFileSummary,
 ): UploadedFile => ({
   id: file.id.toString(),
   documentId: file.id,

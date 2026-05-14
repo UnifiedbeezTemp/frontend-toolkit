@@ -1,4 +1,4 @@
-import { TagCategory } from "../../../../store/slices/tagSlice";
+import { TagCategory } from "../../../store/slices/tagSlice";
 
 export interface CRMTag {
   id: string;

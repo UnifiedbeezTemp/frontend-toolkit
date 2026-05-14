@@ -72,6 +72,10 @@ export default function KnowledgeFiles({ onFilesChange }: Props) {
           removeFile={removeFile}
           cancelUpload={cancelUpload}
           deletingFileId={deletingFileId}
+          hasUnsavedFiles={false}
+          unsavedFilesCount={0}
+          onSaveUnsavedFiles={() => {}}
+          isSubmitting={false}
         />
       ) : (
         <WebsitesCard

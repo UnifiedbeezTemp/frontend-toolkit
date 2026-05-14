@@ -1,9 +1,8 @@
-import { BusinessObjective } from "@/shared/src/types/businessObjectiveTypes";
 import { useMediaQuery } from "@/shared/src/hooks/useMediaQuery";
 
-export function useObjectiveDisplay(
-  objectives: { title: string; description: string }[]
-) {
+export function useObjectiveDisplay<
+  TObjective extends { title: string; description: string },
+>(objectives: TObjective[]) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const isTablet = useMediaQuery("(min-width: 640px)");
 
