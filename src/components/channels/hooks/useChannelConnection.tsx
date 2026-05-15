@@ -28,9 +28,7 @@ export function useChannelConnection() {
   };
 
   const isChannelConnected = (channelId: string) => {
-    const numericChannelId = Number.parseInt(channelId, 10);
-    if (!Number.isFinite(numericChannelId)) return false;
-    return hasConnections(numericChannelId);
+    return hasConnections(channelId);
   };
 
   return {

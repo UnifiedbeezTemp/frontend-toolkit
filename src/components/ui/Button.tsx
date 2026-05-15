@@ -27,6 +27,7 @@ interface ButtonProps {
   disabled?: boolean;
   loading?: boolean;
   type?: "button" | "submit" | "reset";
+  form?: string;
   className?: string;
   children: React.ReactNode;
   loadingText?: string;
